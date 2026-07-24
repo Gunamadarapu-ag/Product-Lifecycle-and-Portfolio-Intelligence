@@ -240,6 +240,9 @@ export const TABS = [
   { id: 6, name: 'Top-Down Drilldown' },
   { id: 7, name: 'Agent Orchestrator' },
   { id: 8, name: 'SKU Assortment' },
+  { id: 9, name: 'Rationalisation Home' },
+  { id: 10, name: 'SKU Drill Down' },
+  { id: 11, name: 'Task Tracker' },
 ];
 
 export const SKUS = [

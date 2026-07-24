@@ -5,7 +5,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  Activity, Rocket, Layers, Scissors, AlertOctagon, Home, Cpu, Award, BarChart3, LayoutDashboard, Zap, BookOpen, Download
+  Activity, Rocket, Layers, Scissors, AlertOctagon, Home, Cpu, Award, BarChart3, LayoutDashboard, Zap, BookOpen, Download,
+  DollarSign, Play, CheckSquare, Folder
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -27,6 +28,10 @@ import { ProfitabilityTree } from './components/dashboard/profitability/Profitab
 import { SignalsBoard, VP_SIGNALS_DATA } from './components/dashboard/signals-board/SignalsBoard';
 import { AuditDrawer } from './components/dashboard/AuditDrawer';
 import { SKURationalization } from './components/dashboard/sku-rationalization/SKURationalization';
+import { RationalisationTab } from './components/dashboard/sku-rationalization/RationalisationTab';
+import { DemoTab } from './components/dashboard/sku-rationalization/DemoTab';
+import { TrackerTab, DEFAULT_TASKS, Task } from './components/dashboard/sku-rationalization/TrackerTab';
+import { SKUSubNav } from './components/dashboard/sku-rationalization/SKUSubNav';
 import { WelcomeGate } from './components/common/WelcomeGate';
 import { TopDownDrilldown } from './components/dashboard/drilldown/TopDownDrilldown';
 import { AgentOrchestrator } from './components/dashboard/orchestrator/AgentOrchestrator';
@@ -53,6 +58,9 @@ const getTabDisplayName = (id: number, name: string): string => {
     case 6: return 'Top-Down Drill';
     case 7: return 'Agent Orchestrator';
     case 8: return 'SKU Assortment';
+    case 9: return 'Rationalisation Home';
+    case 10: return 'SKU Drill Down';
+    case 11: return 'Task Tracker';
     default: return name;
   }
 };
@@ -105,9 +113,22 @@ export default function App() {
   });
 
   const [activeAuditMetric, setActiveAuditMetric] = useState<string | null>(null);
+  const [trackerTasks, setTrackerTasks] = useState<Record<string, Task[]>>(DEFAULT_TASKS);
+  const [skuDrilldownActionFilter, setSkuDrilldownActionFilter] = useState<string>('All');
+  const [skuDrilldownSearchQuery, setSkuDrilldownSearchQuery] = useState<string>('');
 
   const activeTabRef = useRef(activeTab);
   activeTabRef.current = activeTab;
+
+  // Redirect Product Manager from tab 4 to tab 9, and VP from 9/10/11 to 4
+  useEffect(() => {
+    if (activeTab === 4 && role === 'Product Manager') {
+      setActiveTab(9);
+    }
+    if ((activeTab === 9 || activeTab === 10 || activeTab === 11) && role === 'VP Product Management') {
+      setActiveTab(4);
+    }
+  }, [activeTab, role]);
 
   const timelineRangeRef = useRef(timelineRange);
   timelineRangeRef.current = timelineRange;
@@ -272,6 +293,7 @@ export default function App() {
      if (tab.id === 6) icon = LayoutDashboard;
      if (tab.id === 7) icon = Cpu;
      if (tab.id === 8) icon = Award;
+     if (tab.id === 9) icon = Scissors;
      return { ...tab, icon };
   });
 
@@ -341,50 +363,85 @@ export default function App() {
         }
       />
 
-      <div className="max-w-[1600px] mx-auto px-6 py-6 font-body">
+      <div className="w-full max-w-full pr-6 pl-0 py-6 font-body">
         <div className="flex flex-col lg:flex-row gap-6">
           
           {/* Left Sidebar Tabs Navigation */}
-          {!showSkuPerformancePage && (
-            <aside className="w-full lg:w-28 shrink-0 lg:sticky lg:top-16 self-start">
-            <div className="flex flex-row lg:flex-col gap-3 lg:gap-3 p-3 lg:py-4 lg:px-1.5 bg-white dark:bg-white/5 border border-acies-yellow/15 dark:border-white/10 rounded-2xl items-center justify-start overflow-x-auto lg:overflow-y-auto lg:max-h-[calc(100vh-120px)] scroll-smooth no-scrollbar shadow-sm shadow-acies-yellow/5 transition-colors duration-200">
-              {tabs.map((tab) => {
-                const isActive = activeTab === tab.id;
-                const displayName = getTabDisplayName(tab.id, tab.name);
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className="flex flex-col items-center group cursor-pointer border-none bg-transparent outline-none transition-all duration-200 shrink-0 w-20"
-                  >
-                    <div
-                      className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                        isActive
-                          ? 'bg-acies-yellow text-white dark:text-acies-gray shadow-md shadow-acies-yellow/20'
-                          : 'bg-acies-yellow/5 dark:bg-white/5 text-acies-gray/60 dark:text-white/50 group-hover:bg-acies-yellow/10 group-hover:dark:bg-white/10 group-hover:text-acies-gray dark:group-hover:text-white'
-                      }`}
-                    >
-                      <tab.icon
-                        size={20}
-                        strokeWidth={isActive ? 2 : 1.5}
-                        className="transition-transform duration-200 group-hover:scale-105"
-                      />
-                    </div>
-                    <span
-                      className={`mt-1.5 text-[9px] font-semibold text-center leading-tight tracking-wide break-words w-full px-1 transition-colors duration-200 ${
-                        isActive 
-                          ? 'text-acies-yellow font-bold' 
-                          : 'text-acies-gray/50 dark:text-white/40 group-hover:text-acies-gray/80 dark:group-hover:text-white/70'
-                      }`}
-                    >
-                      {displayName}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-            </aside>
-          )}
+          {!showSkuPerformancePage && (() => {
+            const hasSubdivisions = activeTab === 9 || activeTab === 10 || activeTab === 11;
+            return (
+              <aside className={`w-full shrink-0 lg:sticky lg:top-16 self-start transition-all duration-300 ${
+                hasSubdivisions ? 'lg:w-44' : 'lg:w-22'
+              }`}>
+                <div className={`flex flex-row lg:flex-col gap-3 p-2 lg:py-3 bg-white dark:bg-white/5 border border-acies-yellow/15 dark:border-white/10 rounded-2xl items-center justify-start overflow-x-auto lg:overflow-y-auto lg:max-h-[calc(100vh-120px)] scroll-smooth no-scrollbar shadow-sm shadow-acies-yellow/5 transition-all duration-300 ${
+                  hasSubdivisions ? 'lg:px-2' : 'lg:px-0.5'
+                }`}>
+                  {tabs.filter(tab => tab.id < 9).map((tab) => {
+                    const isActive = activeTab === tab.id || (tab.id === 4 && (activeTab === 9 || activeTab === 10 || activeTab === 11));
+                    const displayName = getTabDisplayName(tab.id, tab.name);
+                    return (
+                      <React.Fragment key={tab.id}>
+                        <button
+                          onClick={() => setActiveTab(tab.id)}
+                          className="flex flex-col items-center group cursor-pointer border-none bg-transparent outline-none transition-all duration-200 shrink-0 w-16"
+                        >
+                          <div
+                            className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                              isActive
+                                ? 'bg-acies-yellow text-white dark:text-acies-gray shadow-md shadow-acies-yellow/20'
+                                : 'bg-acies-yellow/5 dark:bg-white/5 text-acies-gray/60 dark:text-white/50 group-hover:bg-acies-yellow/10 group-hover:dark:bg-white/10 group-hover:text-acies-gray dark:group-hover:text-white'
+                            }`}
+                          >
+                            <tab.icon
+                              size={20}
+                              strokeWidth={isActive ? 2 : 1.5}
+                              className="transition-transform duration-200 group-hover:scale-105"
+                            />
+                          </div>
+                          <span
+                            className={`mt-1.5 text-[9px] font-semibold text-center leading-tight tracking-wide break-words w-full px-1 transition-colors duration-200 ${
+                              isActive 
+                                ? 'text-acies-yellow font-bold' 
+                                : 'text-acies-gray/50 dark:text-white/40 group-hover:text-acies-gray/80 dark:group-hover:text-white/70'
+                            }`}
+                          >
+                            {displayName}
+                          </span>
+                        </button>
+
+                        {/* Submenu for SKU Rationalisation */}
+                        {tab.id === 4 && (activeTab === 9 || activeTab === 10 || activeTab === 11) && (
+                          <div className="flex flex-col gap-1 my-2 p-1.5 bg-black/[0.02] dark:bg-white/[0.02] rounded-xl border border-black/5 dark:border-white/5 animate-fadeIn w-full text-left">
+                            {[
+                              { id: 9, label: 'Rationalisation Home' },
+                              { id: 10, label: 'SKU Drill Down' },
+                              { id: 11, label: 'Task Tracker' }
+                            ].map((sub) => {
+                              const isSubActive = activeTab === sub.id;
+                              return (
+                                <button
+                                  key={sub.id}
+                                  onClick={() => setActiveTab(sub.id)}
+                                  className={`w-full flex items-center gap-1.5 py-1 px-1.5 rounded transition-all border-none cursor-pointer text-left ${
+                                    isSubActive
+                                      ? 'bg-[#1e3a8a]/20 dark:bg-[#1e3a8a]/40 text-[#2563eb] dark:text-[#38bdf8] font-bold'
+                                      : 'bg-transparent text-zinc-500 dark:text-zinc-450 hover:text-zinc-800 dark:hover:text-zinc-200'
+                                  }`}
+                                >
+                                  <span className="text-[10px]">•</span>
+                                  <span className="text-[10px] tracking-wide whitespace-nowrap">{sub.label}</span>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
+                </div>
+              </aside>
+            );
+          })()}
 
           {/* Main Content Area */}
           <main className="flex-1 min-w-0">
@@ -396,7 +453,7 @@ export default function App() {
               />
             ) : (
               <>
-                {activeTab !== 0 && !(activeTab === 3 && isProfitabilitySimulatorOpen) && !(activeTab === 4 && role === 'VP Product Management') && !(activeTab === 5 && isExploreOpen) && (
+                {activeTab !== 0 && activeTab !== 9 && activeTab !== 10 && activeTab !== 11 && !(activeTab === 3 && isProfitabilitySimulatorOpen) && !(activeTab === 4 && role === 'VP Product Management') && !(activeTab === 5 && isExploreOpen) && (
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                     <div>
                       <h2 className="text-xl font-display leading-tight text-acies-gray dark:text-white">{tabs[activeTab]?.name || 'Unknown Module'}</h2>
@@ -407,12 +464,12 @@ export default function App() {
                 {activeTab !== 0 && (() => {
                   const tabKpis = (() => {
                     if (activeTab === 1) {
-                      if (role === 'VP Product Management') return [];
+                      if (role === 'VP Product Management' || role === 'Product Manager' || role === 'Pricing and Margin Partner') return [];
                       return filteredKPIS.filter(kpi => 
                         ['Net Sales (Portfolio)', 'Avg Gross Margin', 'Revenue Concentration', 'Long-Tail SKU Burden'].includes(kpi.label)
                       );
                     }
-                    if (activeTab === 2 && role === 'VP Product Management') {
+                    if (activeTab === 2 && (role === 'VP Product Management' || role === 'Product Manager')) {
                       return [
                         {
                           label: 'Overall Readiness %',
@@ -587,7 +644,34 @@ export default function App() {
                     {activeTab === 6 && <TopDownDrilldown isDarkMode={isDarkMode} role={role} timelineRange={timelineRange} setTimelineRange={setTimelineRange} />}
                     {activeTab === 7 && <AgentOrchestrator isDarkMode={isDarkMode} role={role} />}
                     {activeTab === 8 && <AssortmentOverview role={role} isDarkMode={isDarkMode} onAuditClick={setActiveAuditMetric} timelineRange={timelineRange} />}
-                    {(activeTab < 0 || activeTab > 8) ? (
+                    {activeTab === 9 && (
+                      <RationalisationTab 
+                        setActiveTab={setActiveTab} 
+                        setSelectedRoadmapPhaseFilter={setSkuDrilldownActionFilter} 
+                        setSkuDrilldownSearchQuery={setSkuDrilldownSearchQuery}
+                        tasks={trackerTasks}
+                        setTasks={setTrackerTasks}
+                      />
+                    )}
+                    {activeTab === 10 && (
+                      <DemoTab 
+                        role={role} 
+                        tasks={trackerTasks} 
+                        setTasks={setTrackerTasks} 
+                        setActiveTab={setActiveTab} 
+                        actionFilter={skuDrilldownActionFilter}
+                        setActionFilter={setSkuDrilldownActionFilter}
+                        searchQuery={skuDrilldownSearchQuery}
+                        setSearchQuery={setSkuDrilldownSearchQuery}
+                      />
+                    )}
+                    {activeTab === 11 && (
+                      <TrackerTab 
+                        tasks={trackerTasks} 
+                        setTasks={setTrackerTasks} 
+                      />
+                    )}
+                    {(activeTab < 0 || activeTab > 11) ? (
                       <div className="flex flex-col items-center justify-center min-h-[550px] glass-card">
                         <div className="w-16 h-16 rounded-full bg-acies-yellow/10 flex items-center justify-center mb-6">
                           <Zap size={32} className="text-acies-yellow" />

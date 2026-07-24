@@ -9,18 +9,26 @@ import { Mail, MessageSquare, X } from 'lucide-react';
 interface EmailComposerModalProps {
   isOpen: boolean;
   onClose: () => void;
-  initialEmail: { to: string; subject: string; body: string; name: string };
+  initialEmail: { to: string; subject: string; body: string; name: string; messageBody?: string };
   onSend: (recipientName: string, recipientEmail: string, subject: string, body: string, channel: 'email' | 'message') => void;
 }
 
 const RECIPIENT_OPTIONS = [
+  // PM-relevant contacts at the top
+  { name: 'Amit Verma', title: 'NPD Product Lead', email: 'amit.verma@aciesglobal.com' },
+  { name: 'Amit Mehta', title: 'Product Pricing Director', email: 'amit.mehta@aciesglobal.com' },
+  { name: 'Karan Johar', title: 'Director of Commercial Portfolio', email: 'karan.johar@aciesglobal.com' },
+  { name: 'Ananya Sen', title: 'Director of Portfolio Finance', email: 'ananya.sen@aciesglobal.com' },
+  { name: 'Siddharth Roy', title: 'Marketing Manager', email: 'siddharth.roy@aciesglobal.com' },
+  { name: 'Rohan Das', title: 'Supply Chain Lead', email: 'rohan.das@aciesglobal.com' },
+  { name: 'Nehal Gupta', title: 'Retail Operations Manager', email: 'nehal.gupta@aciesglobal.com' },
+  
+  // Existing contacts
   { name: 'Marcus Ng', title: 'Global Procurement Director', email: 'marcus.ng@aciesglobal.com' },
   { name: 'Dr. Elena Rostova', title: 'R&D Product Lead', email: 'elena.rostova@aciesglobal.com' },
   { name: 'Vijay Kumar', title: 'APAC Logistics Head', email: 'vijay.kumar@aciesglobal.com' },
   { name: 'Rohan Sharma', title: 'Plant Manager - Baddi', email: 'rohan.sharma@aciesglobal.com' },
-  { name: 'Amit Mehta', title: 'Supplier Quality QA Lead', email: 'amit.mehta@aciesglobal.com' },
   { name: 'Pooja Iyer', title: 'Citrus Category Manager', email: 'pooja.iyer@aciesglobal.com' },
-  { name: 'Siddharth Roy', title: 'NPD Project Lead', email: 'siddharth.roy@aciesglobal.com' },
   { name: 'Nisha Patel', title: 'Demand Planning Lead', email: 'nisha.patel@aciesglobal.com' },
   { name: 'Rajesh Verma', title: 'VP Sales', email: 'rajesh.verma@aciesglobal.com' },
   { name: 'Jean-Pierre Dubois', title: 'Commodities Hedging Director', email: 'jp.dubois@aciesglobal.com' },
@@ -34,6 +42,21 @@ const RECIPIENT_OPTIONS = [
   { name: 'Custom Recipient...', title: 'Manually specify details', email: 'custom' }
 ];
 
+const generateCasualMessage = (formalBody: string, name: string): string => {
+  if (!formalBody) return '';
+  const firstName = name ? name.split(' ')[0] : 'there';
+  const clean = formalBody
+    .replace(/Dear\s+[A-Za-z.\s]+,?\n*/i, '')
+    .replace(/Hi\s+[A-Za-z.\s]+,?\n*/i, '')
+    .replace(/I hope this email finds you well\.?\n*/i, '')
+    .replace(/I hope you are doing well\.?\n*/i, '')
+    .replace(/Thanks,?\n*[A-Za-z\s]*/i, '')
+    .replace(/Best regards,?\n*[A-Za-z\s]*/i, '')
+    .trim();
+  
+  return `Hey ${firstName}, quick question - ${clean.charAt(0).toLowerCase() + clean.slice(1)}`;
+};
+
 export const EmailComposerModal: React.FC<EmailComposerModalProps> = ({
   isOpen,
   onClose,
@@ -46,6 +69,9 @@ export const EmailComposerModal: React.FC<EmailComposerModalProps> = ({
   const [recipientEmail, setRecipientEmail] = useState<string>('');
   const [subject, setSubject] = useState<string>('');
   const [body, setBody] = useState<string>('');
+
+  const [emailBodyState, setEmailBodyState] = useState<string>('');
+  const [messageBodyState, setMessageBodyState] = useState<string>('');
 
   // Update form inputs when initialEmail changes
   useEffect(() => {
@@ -61,9 +87,20 @@ export const EmailComposerModal: React.FC<EmailComposerModalProps> = ({
         setRecipientEmail(initialEmail.to);
       }
       setSubject(initialEmail.subject || '');
-      setBody(initialEmail.body || '');
+      
+      const emailDraft = initialEmail.body || '';
+      const msgDraft = initialEmail.messageBody || generateCasualMessage(initialEmail.body, initialEmail.name);
+
+      setEmailBodyState(emailDraft);
+      setMessageBodyState(msgDraft);
+      setBody(activeTab === 'email' ? emailDraft : msgDraft);
     }
   }, [initialEmail]);
+
+  const handleTabChange = (tab: 'email' | 'message') => {
+    setActiveTab(tab);
+    setBody(tab === 'email' ? emailBodyState : messageBodyState);
+  };
 
   // Handle changing the select dropdown
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -84,8 +121,10 @@ export const EmailComposerModal: React.FC<EmailComposerModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[70] flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[150] flex items-center justify-center p-4">
       <div className="w-full max-w-lg bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/15 p-6 rounded shadow-2xl flex flex-col gap-4 text-xs">
+        
+        {/* Header */}
         <div className="flex justify-between items-center border-b border-black/15 dark:border-white/15 pb-2">
           <div className="flex items-center gap-1.5">
             <span className="text-[14px] font-display font-bold text-zinc-800 dark:text-zinc-100">
@@ -94,7 +133,7 @@ export const EmailComposerModal: React.FC<EmailComposerModalProps> = ({
           </div>
           <button 
             onClick={onClose}
-            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-650 cursor-pointer border-none bg-transparent"
+            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-655 cursor-pointer border-none bg-transparent"
           >
             <X size={14} />
           </button>
@@ -104,7 +143,7 @@ export const EmailComposerModal: React.FC<EmailComposerModalProps> = ({
         <div className="grid grid-cols-2 p-0.5 bg-zinc-100 dark:bg-zinc-800/80 rounded-xl">
           <button
             type="button"
-            onClick={() => setActiveTab('email')}
+            onClick={() => handleTabChange('email')}
             className={`flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg font-bold text-[10.5px] cursor-pointer transition-all border-none outline-none ${
               activeTab === 'email'
                 ? 'bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-100 shadow-sm'
@@ -116,7 +155,7 @@ export const EmailComposerModal: React.FC<EmailComposerModalProps> = ({
           </button>
           <button
             type="button"
-            onClick={() => setActiveTab('message')}
+            onClick={() => handleTabChange('message')}
             className={`flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg font-bold text-[10.5px] cursor-pointer transition-all border-none outline-none ${
               activeTab === 'message'
                 ? 'bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-100 shadow-sm'
@@ -145,39 +184,37 @@ export const EmailComposerModal: React.FC<EmailComposerModalProps> = ({
             </select>
           </div>
 
-          {/* Conditional Manual Inputs */}
-          {selectedRecipient === 'custom' && (
-            <div className="grid grid-cols-2 gap-3 animate-fadeIn">
-              <div className="flex flex-col gap-1">
-                <label className="font-bold text-[9px] uppercase tracking-wider text-zinc-400">Contact Name</label>
-                <input 
-                  type="text" 
-                  value={recipientName}
-                  onChange={(e) => setRecipientName(e.target.value)}
-                  placeholder="E.g., Marcus Ng"
-                  className="w-full px-3 py-2 border border-black/10 dark:border-white/10 bg-transparent rounded font-medium text-zinc-700 dark:text-zinc-300 outline-none focus:border-[#6d28d9] dark:focus:border-[#a78bfa] transition-colors"
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <label className="font-bold text-[9px] uppercase tracking-wider text-zinc-400">
-                  {activeTab === 'email' ? 'Contact Email' : 'Contact Email / Handle'}
-                </label>
-                <input 
-                  type="email" 
-                  value={recipientEmail}
-                  onChange={(e) => setRecipientEmail(e.target.value)}
-                  placeholder="E.g., marcus@acies.com"
-                  className="w-full px-3 py-2 border border-black/10 dark:border-white/10 bg-transparent rounded font-medium text-zinc-700 dark:text-zinc-300 outline-none focus:border-[#6d28d9] dark:focus:border-[#a78bfa] transition-colors"
-                />
-              </div>
+          {/* Always Visible Inputs */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-col gap-1">
+              <label className="font-bold text-[9px] uppercase tracking-wider text-zinc-400">Contact Name</label>
+              <input 
+                type="text" 
+                value={recipientName}
+                onChange={(e) => {
+                  setRecipientName(e.target.value);
+                  setSelectedRecipient('custom');
+                }}
+                placeholder="E.g., Marcus Ng"
+                className="w-full px-3 py-2 border border-black/10 dark:border-white/10 bg-transparent rounded font-medium text-zinc-700 dark:text-zinc-300 outline-none focus:border-[#6d28d9] dark:focus:border-[#a78bfa] transition-colors"
+              />
             </div>
-          )}
-
-          {selectedRecipient !== 'custom' && (
-            <div className="px-3 py-2 border border-black/10 dark:border-white/10 bg-zinc-50 dark:bg-white/5 rounded font-medium text-zinc-500 dark:text-zinc-450 leading-relaxed">
-              Recipient: <span className="font-bold text-zinc-700 dark:text-zinc-300">{recipientName}</span> ({recipientEmail})
+            <div className="flex flex-col gap-1">
+              <label className="font-bold text-[9px] uppercase tracking-wider text-zinc-400">
+                {activeTab === 'email' ? 'Contact Email' : 'Contact Email / Handle'}
+              </label>
+              <input 
+                type="email" 
+                value={recipientEmail}
+                onChange={(e) => {
+                  setRecipientEmail(e.target.value);
+                  setSelectedRecipient('custom');
+                }}
+                placeholder="E.g., marcus@acies.com"
+                className="w-full px-3 py-2 border border-black/10 dark:border-white/10 bg-transparent rounded font-medium text-zinc-700 dark:text-zinc-300 outline-none focus:border-[#6d28d9] dark:focus:border-[#a78bfa] transition-colors"
+              />
             </div>
-          )}
+          </div>
           
           {activeTab === 'email' && (
             <div className="flex flex-col gap-1">
@@ -198,12 +235,21 @@ export const EmailComposerModal: React.FC<EmailComposerModalProps> = ({
             <textarea 
               rows={6}
               value={body}
-              onChange={(e) => setBody(e.target.value)}
+              onChange={(e) => {
+                const val = e.target.value;
+                setBody(val);
+                if (activeTab === 'email') {
+                  setEmailBodyState(val);
+                } else {
+                  setMessageBodyState(val);
+                }
+              }}
               className="px-3 py-2 border border-black/10 dark:border-white/10 bg-transparent rounded font-medium text-zinc-700 dark:text-zinc-300 outline-none focus:border-[#6d28d9] dark:focus:border-[#a78bfa] transition-colors resize-none font-sans"
             />
           </div>
         </div>
 
+        {/* Footer */}
         <div className="flex justify-end gap-2 border-t border-black/15 dark:border-white/15 pt-3">
           <button 
             onClick={onClose}

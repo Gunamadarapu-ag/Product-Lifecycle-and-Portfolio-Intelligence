@@ -801,6 +801,50 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
 
   return (
     <div className="space-y-6">
+      {/* Quick Navigation Bar */}
+      <div className="flex flex-wrap items-center gap-2 bg-white/60 dark:bg-white/5 border border-black/5 dark:border-white/10 p-2 rounded-sm shadow-sm text-[9px] font-bold uppercase tracking-wider">
+        <span className="text-zinc-400 dark:text-zinc-500 mr-2 uppercase tracking-widest text-[8px]">Quick Jump:</span>
+        <button 
+          onClick={() => {
+            const el = document.getElementById('launch-kpis');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }}
+          className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-350 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
+        >
+          📊 Launch KPIs
+        </button>
+        <span className="text-zinc-300 dark:text-zinc-700">|</span>
+        <button 
+          onClick={() => {
+            const el = document.getElementById('launch-stage-gates');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }}
+          className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-350 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
+        >
+          ⚡ Stage Gate Status
+        </button>
+        <span className="text-zinc-300 dark:text-zinc-700">|</span>
+        <button 
+          onClick={() => {
+            const el = document.getElementById('launch-pipeline');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }}
+          className="px-2.5 py-1 hover:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
+        >
+          🎯 Pipeline Overview
+        </button>
+        <span className="text-zinc-300 dark:text-zinc-700">|</span>
+        <button 
+          onClick={() => {
+            const el = document.getElementById('launch-ai-risks');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }}
+          className="px-2.5 py-1 hover:bg-purple-500/10 text-purple-600 dark:text-purple-400 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
+        >
+          📈 AI Risk Predictions
+        </button>
+      </div>
+
       {/* Filters + Action Bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 px-4 py-2 rounded-sm shadow-sm">
         <div className="flex flex-wrap items-center gap-2">
@@ -877,7 +921,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
       </div>
 
       {/* Row 1: KPI Cards + Risk & Escalation Center */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+      <div id="launch-kpis" className="grid grid-cols-1 xl:grid-cols-12 gap-6">
         
         {/* Left: Overall Launch Readiness Gauge */}
         <div className="xl:col-span-3 lg:col-span-4 bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-5 rounded-sm shadow-sm flex flex-col items-center justify-center text-center p-4 py-5 gap-3 relative overflow-hidden group">
@@ -1068,7 +1112,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
 
 
       {/* Row 1.5: Stage Gate Status Tracker */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div id="launch-stage-gates" className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* Full-width Panel: Stage Gate Status Tracker */}
         <div className="lg:col-span-12 bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-5 rounded-sm shadow-sm flex flex-col justify-between space-y-4 text-left">
@@ -1165,7 +1209,6 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                     key={gate.stageName}
                     onClick={() => {
                       setSelectedStageName(gate.stageName);
-                      setDrawerProductId(selectedProductId);
                       setIsDrawerOpen(true);
                     }}
                     className="flex flex-col items-center group relative z-10 focus:outline-none transition-transform hover:scale-105 active:scale-95 bg-transparent border-none p-0 cursor-pointer w-1/5"
@@ -1341,7 +1384,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
       </div>
 
       {/* Row 2: Launch Pipeline Overview & Financial Impact */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+      <div id="launch-pipeline" className="grid grid-cols-1 xl:grid-cols-12 gap-6">
         
         {/* Launch Pipeline Overview */}
         <div className="xl:col-span-6 bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-5 rounded-sm shadow-sm space-y-4">
@@ -1981,7 +2024,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
       </div>
 
       {/* Row 3: AI Risk Predictions */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+      <div id="launch-ai-risks" className="grid grid-cols-1 xl:grid-cols-12 gap-6">
         
         {/* AI Risk Predictions */}
         <div className="xl:col-span-12 bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-5 rounded-sm shadow-sm space-y-4">

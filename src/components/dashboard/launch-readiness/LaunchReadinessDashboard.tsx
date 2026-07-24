@@ -27,7 +27,7 @@ interface LaunchReadinessDashboardProps {
 export const LaunchReadinessDashboard: React.FC<LaunchReadinessDashboardProps> = ({ 
   role, isDarkMode, onAuditClick, tourActive, onTourClose, simulateDelay, setSimulateDelay 
 }) => {
-  if (role === 'VP Product Management') {
+  if (role === 'VP Product Management' || role === 'Product Manager') {
     return <VPLaunchReadinessView isDarkMode={isDarkMode} simulateDelay={simulateDelay} setSimulateDelay={setSimulateDelay} onAuditClick={onAuditClick} />;
   }
   const accentColor = isDarkMode ? '#a78bfa' : '#6d28d9';
@@ -148,9 +148,53 @@ export const LaunchReadinessDashboard: React.FC<LaunchReadinessDashboardProps> =
           </p>
         </div>
       </div>
-
-
-
+      {/* Quick Navigation Bar */}
+      <div className="flex flex-wrap items-center gap-2 bg-white/60 dark:bg-white/5 border border-black/5 dark:border-white/10 p-2 rounded-sm shadow-sm text-[9px] font-bold uppercase tracking-wider">
+        <span className="text-zinc-400 dark:text-zinc-500 mr-2 uppercase tracking-widest text-[8px]">Quick Jump:</span>
+        <button 
+          onClick={() => {
+            const el = document.getElementById('brief-form');
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }}
+          className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-350 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
+        >
+          📦 New SKU Brief
+        </button>
+        {hasScored && (
+          <>
+            <span className="text-zinc-300 dark:text-zinc-700">|</span>
+            <button 
+              onClick={() => {
+                const el = document.getElementById('verdict-results');
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-350 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
+            >
+              ⚡ Readiness Verdict
+            </button>
+            <span className="text-zinc-300 dark:text-zinc-700">|</span>
+            <button 
+              onClick={() => {
+                const el = document.getElementById('radar-map');
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="px-2.5 py-1 hover:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
+            >
+              🎯 Radar Map
+            </button>
+            <span className="text-zinc-300 dark:text-zinc-700">|</span>
+            <button 
+              onClick={() => {
+                const el = document.getElementById('cost-risk-impact');
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="px-2.5 py-1 hover:bg-purple-500/10 text-purple-600 dark:text-purple-400 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
+            >
+              📈 Cost & Risk Impact
+            </button>
+          </>
+        )}
+      </div>
       {/* Guide Panel Accordion */}
       <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4">
         <button 
@@ -184,7 +228,7 @@ export const LaunchReadinessDashboard: React.FC<LaunchReadinessDashboardProps> =
       </div>
 
       {/* New SKU Brief Form */}
-      <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-5">
+      <div id="brief-form" className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-5">
         <h3 className="text-xs font-bold uppercase tracking-widest mb-4">📦 New SKU Brief</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="flex flex-col gap-1">
@@ -320,7 +364,7 @@ export const LaunchReadinessDashboard: React.FC<LaunchReadinessDashboardProps> =
         <div className="space-y-6">
           
           {/* Scoring Verdict Grid */}
-          <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-5">
+          <div id="verdict-results" className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-5">
             <h4 className="text-xs font-bold uppercase tracking-widest pb-3 border-b border-black/5 dark:border-white/5 mb-4 flex items-center gap-2">
               Launch Readiness Score:
               <span className={`text-[10px] font-extrabold px-3 py-0.5 rounded-sm ${currentVerdictColor}`}>
@@ -346,7 +390,7 @@ export const LaunchReadinessDashboard: React.FC<LaunchReadinessDashboardProps> =
           </div>
 
           {/* Radar Chart */}
-          <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-5">
+          <div id="radar-map" className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-5">
             <h3 className="text-xs font-bold uppercase tracking-widest mb-1">Readiness Radar Map</h3>
             <p className="text-[9px] text-zinc-500 uppercase tracking-widest mb-4">Your SKU (blue) vs category benchmark average (grey)</p>
             
@@ -387,7 +431,7 @@ export const LaunchReadinessDashboard: React.FC<LaunchReadinessDashboardProps> =
             return (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-5 space-y-4">
+                  <div id="cost-risk-impact" className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-5 space-y-4">
                     <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400">Cost & Risk Impact</h3>
                     <div className="space-y-3.5">
                       <div className="grid grid-cols-2 gap-4">

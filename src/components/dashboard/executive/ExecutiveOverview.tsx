@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  TrendingUp, TrendingDown, Check, X, AlertTriangle, RefreshCw, Zap, Clock, Home, List, PieChart, BarChart2, Calendar, LayoutGrid,
-  LineChart as LucideLineChart, AreaChart as LucideAreaChart, Radar as LucideRadar, Activity, ChevronDown, ChevronUp, BookOpen, Cpu
+  TrendingUp, TrendingDown, Check, X, AlertTriangle, RefreshCw, Zap, Clock, Home, List, Table, PieChart, BarChart2, Calendar, LayoutGrid,
+  LineChart as LucideLineChart, AreaChart as LucideAreaChart, Radar as LucideRadar, Activity, ChevronDown, ChevronUp, BookOpen, Cpu, Frown
 } from 'lucide-react';
 import { 
   ResponsiveContainer, AreaChart, Area, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, BarChart, Bar, Cell, PieChart as RePieChart, Pie, Legend,
@@ -653,6 +653,14 @@ const generateInitialEvents = () => {
   return list;
 };
 
+const FLAGGED_SKUS = [
+  { name: 'Premium Cold Brew 250ml', reason: 'Revenue decline', value: '-18.2%', color: '#ef4444', pct: 80, isRed: true },
+  { name: 'BrandB Chips', reason: 'Margin decline', value: '-6.2 pts', color: '#f59e0b', pct: 60, isRed: false },
+  { name: 'Organic Whole Milk 1K', reason: 'Sentiment drop', value: '3.2 / 5', color: '#ef4444', pct: 62, isRed: true },
+  { name: 'Mango Fizz 500ml', reason: 'Revenue decline', value: '-9.1%', color: '#f59e0b', pct: 45, isRed: false },
+  { name: 'Toilet Paper 12-Pack', reason: 'Stockout risk', value: 'High', color: '#f59e0b', pct: 38, isRed: false },
+];
+
 export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setActiveTab, isDarkMode, onAuditClick, timelineRange, onViewAllSkus }) => {
   const [alerts, setAlerts] = useState(() => VP_ALERTS.map(a => ({ ...a })));
   const [approvals, setApprovals] = useState(() => VP_APPROVALS.map(a => ({ ...a })));
@@ -664,6 +672,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
     return baseKpis.map(k => ({ ...k, sparkPoints: k.spark.map((v, i) => ({ index: i, value: v })) }));
   });
   const [lastRefreshed, setLastRefreshed] = useState<string>('Refreshed just now');
+  const [attentionViewMode, setAttentionViewMode] = useState<'progress' | 'table' | 'cards'>('cards');
 
   useEffect(() => {
     let baseKpis = VP_KPI_BASE;
@@ -1053,7 +1062,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
         })}
       </div>
 
-      {role !== 'VP Product Management' && alertsBlock}
+      {role === 'Pricing and Margin Partner' && alertsBlock}
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -1311,7 +1320,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
       </div>
 
       {/* Bottom Row grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className={`grid grid-cols-1 ${role === 'Product Manager' ? 'lg:grid-cols-2' : 'lg:grid-cols-3'} gap-4`}>
         
         {/* Top SKU Performance List */}
         <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-3.5 h-[400px] flex flex-col">
@@ -1454,9 +1463,166 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
             title="View All SKUs in SKU Rationalization Command Desk"
           >
             <span>View All SKUs</span>
-            <span className="text-[11px]">&rarr;</span>
           </button>
         </div>
+
+        {/* Products requiring attention (PM only) */}
+        {role === 'Product Manager' && (
+          <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-3.5 h-[400px] flex flex-col justify-between">
+            <div className="flex flex-col flex-1 min-h-0">
+              <h3 className="text-[11px] font-bold uppercase tracking-widest pb-2 border-b border-black/5 dark:border-white/5 mb-2.5 flex items-center justify-between gap-1.5 shrink-0">
+                <span>Products requiring attention</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[8.5px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">5 flagged</span>
+                  <div className="flex items-center border border-black/10 dark:border-white/10 rounded-md overflow-hidden bg-black/5 dark:bg-white/5 p-0.5 ml-1 normal-case shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => setAttentionViewMode('cards')}
+                      className={`p-1 px-2 transition-all cursor-pointer border-none flex items-center justify-center rounded-sm shrink-0 ${
+                        attentionViewMode === 'cards' 
+                          ? 'bg-blue-500 text-white shadow-sm' 
+                          : 'text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-100 bg-transparent'
+                      }`}
+                      title="Cards View"
+                    >
+                      <LayoutGrid size={12} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAttentionViewMode('progress')}
+                      className={`p-1 px-2 transition-all cursor-pointer border-none flex items-center justify-center rounded-sm shrink-0 ${
+                        attentionViewMode === 'progress' 
+                          ? 'bg-blue-500 text-white shadow-sm' 
+                          : 'text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-100 bg-transparent'
+                      }`}
+                      title="Progress View"
+                    >
+                      <Activity size={12} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAttentionViewMode('table')}
+                      className={`p-1 px-2 transition-all cursor-pointer border-none flex items-center justify-center rounded-sm shrink-0 ${
+                        attentionViewMode === 'table' 
+                          ? 'bg-blue-500 text-white shadow-sm' 
+                          : 'text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-100 bg-transparent'
+                      }`}
+                      title="Table View"
+                    >
+                      <Table size={12} />
+                    </button>
+                  </div>
+                </div>
+              </h3>
+
+              {attentionViewMode === 'cards' ? (
+                <div className="grid grid-cols-2 gap-2 overflow-y-auto flex-1 pr-1.5 pb-2 min-h-0 no-scrollbar">
+                  {FLAGGED_SKUS.map(s => {
+                    let icon = <TrendingDown size={11} />;
+                    let labelColor = 'text-red-500';
+                    let valueColor = 'text-red-500';
+                    
+                    if (s.reason === 'Revenue decline') {
+                      icon = <TrendingDown size={11} />;
+                      labelColor = 'text-red-500';
+                      valueColor = 'text-red-500';
+                    } else if (s.reason === 'Margin decline') {
+                      icon = <BarChart2 size={11} />;
+                      labelColor = 'text-amber-500';
+                      valueColor = 'text-amber-500';
+                    } else if (s.reason === 'Sentiment drop') {
+                      icon = <Frown size={11} />;
+                      labelColor = 'text-red-500';
+                      valueColor = 'text-red-500';
+                    } else if (s.reason === 'Stockout risk') {
+                      icon = <AlertTriangle size={11} />;
+                      labelColor = 'text-amber-500';
+                      valueColor = 'text-amber-500';
+                    }
+
+                    return (
+                      <div key={s.name} className="bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 p-2 rounded-sm flex flex-col justify-between h-[85px] hover:border-acies-yellow/20 transition-all">
+                        <div>
+                          <div className={`flex items-center gap-1 text-[8.5px] font-bold uppercase tracking-wider ${labelColor}`}>
+                            {icon}
+                            <span>{s.reason}</span>
+                          </div>
+                          <h4 className="text-[10px] font-extrabold text-zinc-800 dark:text-zinc-200 truncate mt-1 leading-tight" title={s.name}>
+                            {s.name}
+                          </h4>
+                        </div>
+                        <div className={`font-black text-[13px] tracking-tight ${valueColor} leading-none mt-1`}>
+                          {s.value}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : attentionViewMode === 'progress' ? (
+                <div className="space-y-4 overflow-y-auto flex-1 pr-1.5 pb-2 min-h-0 no-scrollbar">
+                  {FLAGGED_SKUS.map(s => (
+                    <div key={s.name} className="space-y-1 block py-0.5 px-0.5">
+                      <div className="flex justify-between items-center text-[10.5px]">
+                        <span className="font-bold text-zinc-700 dark:text-zinc-300">
+                          {s.name} <span className="text-[8.5px] font-normal text-zinc-400 dark:text-zinc-500 ml-1.5">{s.reason}</span>
+                        </span>
+                        <span className={`font-extrabold ${s.isRed ? 'text-red-500' : 'text-amber-500'}`}>{s.value}</span>
+                      </div>
+                      <div className="w-full h-1.5 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden">
+                        <div className="h-full rounded-full transition-all" style={{ width: `${s.pct}%`, backgroundColor: s.color }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="overflow-y-auto flex-1 pr-1.5 pb-2 min-h-0 no-scrollbar">
+                  <table className="w-full text-left border-collapse text-[10.5px]">
+                    <thead>
+                      <tr className="border-b border-black/5 dark:border-white/5 text-[9px] uppercase tracking-widest text-zinc-400 dark:text-zinc-500 font-extrabold">
+                        <th className="py-2 px-1">Product</th>
+                        <th className="py-2 px-1">Issue</th>
+                        <th className="py-2 px-1">Metric</th>
+                        <th className="py-2 px-1 text-right">Trend</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-black/[0.03] dark:divide-white/[0.03]">
+                      {FLAGGED_SKUS.map(s => (
+                        <tr key={s.name} className="hover:bg-black/[0.01] dark:hover:bg-white/[0.01]">
+                          <td className="py-2.5 px-1 font-bold text-zinc-700 dark:text-zinc-300 truncate max-w-[145px]" title={s.name}>
+                            {s.name}
+                          </td>
+                          <td className="py-2.5 px-1 text-zinc-455 dark:text-zinc-500 font-semibold">
+                            {s.reason.replace(' decline', '').replace(' drop', '').replace(' risk', '')}
+                          </td>
+                          <td className={`py-2.5 px-1 font-extrabold ${s.isRed ? 'text-red-500' : 'text-amber-500'}`}>
+                            {s.value}
+                          </td>
+                          <td className={`py-2.5 px-1 text-right font-extrabold ${s.isRed ? 'text-red-500' : 'text-amber-500'}`}>
+                            <span className="text-xs">↘</span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                if (onViewAllSkus) {
+                  onViewAllSkus();
+                }
+              }}
+              className="w-full mt-2.5 py-2 border border-black/10 dark:border-white/15 hover:bg-black/5 dark:hover:bg-white/5 rounded text-[9.5px] font-bold text-zinc-705 dark:text-zinc-350 transition-all flex items-center justify-center gap-1 cursor-pointer bg-transparent shrink-0"
+              title="View All Flagged SKUs"
+            >
+              <span>View all flagged SKUs</span>
+              <span className="text-[11px]">&rarr;</span>
+            </button>
+          </div>
+        )}
 
         {/* Top Customer Insights List */}
         <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-3.5 h-[400px] flex flex-col">
@@ -1656,7 +1822,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
         </div>
       </div>
 
-      {role === 'VP Product Management' && (
+      {(role === 'VP Product Management' || role === 'Product Manager') && (
         <div className="space-y-4 mt-4">
           <div>
             {alertsBlock}

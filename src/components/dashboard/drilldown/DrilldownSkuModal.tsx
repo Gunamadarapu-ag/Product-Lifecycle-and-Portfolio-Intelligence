@@ -12,6 +12,7 @@ import {
 } from 'recharts';
 import { SKUS as GLOBAL_SKUS } from '../../../constants/data';
 import { EmailComposerModal } from '../portfolio-health/EmailComposerModal';
+import { SuccessFeedbackModal } from '../portfolio-health/SuccessFeedbackModal';
 import { TimelineRange, getFilteredSKUS } from '../../../utils/timeframe';
 import { useMemo } from 'react';
 
@@ -46,6 +47,15 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
   const SKUS = useMemo(() => getFilteredSKUS(GLOBAL_SKUS, timelineRange), [timelineRange]);
   const [detailTab, setDetailTab] = useState<'profit' | 'supply' | 'ai'>('profit');
   const [isEmailOpen, setIsEmailOpen] = useState(false);
+  const [successFeedback, setSuccessFeedback] = useState<{
+    isOpen: boolean;
+    recipientName: string;
+    recipientTitle: string;
+    recipientEmail: string;
+    contextType: 'approval' | 'bottleneck' | 'signal';
+    contextTitle: string;
+    channel: 'email' | 'message';
+  } | null>(null);
   const [emailData, setEmailData] = useState({ to: '', name: '', subject: '', body: '' });
 
   // Simulator range slider states
@@ -601,11 +611,34 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
         isOpen={isEmailOpen}
         onClose={() => setIsEmailOpen(false)}
         initialEmail={emailData}
-        onSend={(recipientName, recipientEmail, subject, body) => {
-          alert(`Sourcing action request successfully sent to ${recipientName} (${recipientEmail})!`);
+        onSend={(recipientName, recipientEmail, subject, body, channel) => {
+          const title = REGIONS_CONFIG[selectedRegion]?.role || 'Regional Lead';
+          setSuccessFeedback({
+            isOpen: true,
+            recipientName,
+            recipientTitle: title,
+            recipientEmail,
+            contextType: 'signal',
+            contextTitle: subject || `Sourcing Action for ${skuName}`,
+            channel: channel || 'email'
+          });
           setIsEmailOpen(false);
         }}
       />
+
+      {successFeedback && (
+        <SuccessFeedbackModal
+          isOpen={successFeedback.isOpen}
+          onClose={() => setSuccessFeedback(null)}
+          recipientName={successFeedback.recipientName}
+          recipientTitle={successFeedback.recipientTitle}
+          recipientEmail={successFeedback.recipientEmail}
+          contextType={successFeedback.contextType}
+          contextTitle={successFeedback.contextTitle}
+          isDarkMode={isDarkMode}
+          channel={successFeedback.channel}
+        />
+      )}
     </div>
   );
 };
