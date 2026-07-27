@@ -483,20 +483,6 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
 
   return (
     <div className="space-y-6">
-      
-      {/* Strategic Header */}
-      <div className="glass-card bg-acies-gray text-white py-5 px-6 relative overflow-hidden">
-        <div className="absolute top-0 right-0 p-4 opacity-5 rotate-12 pointer-events-none">
-          <MessageSquare size={100} />
-        </div>
-        <div>
-          <p className="text-[9px] uppercase font-bold tracking-widest opacity-40 mb-2">Automated Risk Alerts</p>
-          <h2 className="text-xl font-display font-medium text-white mb-2">Signals Board</h2>
-          <p className="text-xs text-zinc-300 font-medium max-w-xl leading-relaxed">
-            AI-surfaced operational and financial alerts ranked by severity. Acknowledge completed investigations, add manual field alerts, or jump straight to optimization modules.
-          </p>
-        </div>
-      </div>
 
       {/* Quick Navigation Bar for Product Manager */}
       {role === 'Product Manager' && (
