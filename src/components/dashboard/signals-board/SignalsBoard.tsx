@@ -523,48 +523,8 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
           >
             VP Strategic Signals
           </button>
-          <button 
-            type="button"
-            onClick={() => document.getElementById('sig-add-manual')?.scrollIntoView({ behavior: 'smooth' })}
-            className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/5 text-zinc-650 dark:text-zinc-350 rounded transition-all cursor-pointer border-none bg-transparent font-bold"
-          >
-            Add Manual Signal
-          </button>
         </div>
       )}
-
-
-      {/* Guide Accordion */}
-      <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4">
-        <button 
-          onClick={() => setGuideOpen(!guideOpen)}
-          className="w-full text-left font-bold text-xs uppercase tracking-widest text-acies-yellow flex justify-between items-center cursor-pointer border-none bg-transparent"
-        >
-          <span>📖 Using the signals board</span>
-          <span className="text-[10px]">{guideOpen ? '✕ Collapse' : '▲ Expand'}</span>
-        </button>
-
-        {guideOpen && (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 pt-4 border-t border-black/5 dark:border-white/5 mt-3 text-xs leading-relaxed text-zinc-600 dark:text-zinc-300 font-medium">
-            <div>
-              <h4 className="font-bold text-acies-gray dark:text-white mb-1.5">1. Severity ranking</h4>
-              <p>🔴 Critical → 🟡 Warning → 🔵 Info. Clear Critical alerts first to resolve immediate stockout and pricing risks.</p>
-            </div>
-            <div>
-              <h4 className="font-bold text-acies-gray dark:text-white mb-1.5">2. Filter by type</h4>
-              <p>Use filters to narrow signals to your functional area — Supply, Margin, Demand, Launch, Cannibalization.</p>
-            </div>
-            <div>
-              <h4 className="font-bold text-acies-gray dark:text-white mb-1.5">3. Acknowledge & Action</h4>
-              <p>Click "Acknowledge" to mark alerts reviewed. Click "Action" to jump active tabs directly to the relevant dashboard for audit.</p>
-            </div>
-            <div>
-              <h4 className="font-bold text-acies-gray dark:text-white mb-1.5">4. Surfaced Field Reports</h4>
-              <p>Use the Manual Signal Form to flag supply chain disruptions or pricing feedback noticed on the ground.</p>
-            </div>
-          </div>
-        )}
-      </div>
 
       {/* Dynamic InboxAccess Panel based on role */}
       <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-5 space-y-4">
@@ -618,190 +578,6 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
         )}
       </div>
 
-      {/* Add Manual Signal Form */}
-      <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-5">
-        <h3 className="text-xs font-bold uppercase tracking-widest mb-4">🔔 Add Manual Signal</h3>
-        <form onSubmit={handleAddSignal} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="flex flex-col gap-1">
-            <label className="text-[8px] font-bold uppercase tracking-widest opacity-40">Title</label>
-            <input 
-              type="text" 
-              placeholder="e.g. Stockout in Kerala region"
-              value={sigTitle}
-              onChange={(e) => setSigTitle(e.target.value)}
-              className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-2 text-xs font-semibold text-acies-gray dark:text-white outline-none"
-            />
-          </div>
-          <div className="flex flex-col gap-1">
-            <label className="text-[8px] font-bold uppercase tracking-widest opacity-40">Severity</label>
-            <select 
-              value={sigSev}
-              onChange={(e) => setSigSev(e.target.value as any)}
-              className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-2 text-xs font-semibold text-acies-gray dark:text-white outline-none"
-            >
-              <option value="critical">🔴 Critical</option>
-              <option value="warning">🟡 Warning</option>
-              <option value="info">🔵 Info</option>
-            </select>
-          </div>
-          <div className="flex flex-col gap-1">
-            <label className="text-[8px] font-bold uppercase tracking-widest opacity-40">Type</label>
-            <select 
-              value={sigType}
-              onChange={(e) => setSigType(e.target.value)}
-              className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-2 text-xs font-semibold text-acies-gray dark:text-white outline-none"
-            >
-              <option>Supply</option>
-              <option>Margin</option>
-              <option>Demand</option>
-              <option>Launch</option>
-              <option>Cannibalization</option>
-            </select>
-          </div>
-          <div className="flex flex-col gap-1">
-            <label className="text-[8px] font-bold uppercase tracking-widest opacity-40">Detail</label>
-            <input 
-              type="text" 
-              placeholder="Brief description..."
-              value={sigDetail}
-              onChange={(e) => setSigDetail(e.target.value)}
-              className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-2 text-xs font-semibold text-acies-gray dark:text-white outline-none"
-            />
-          </div>
-          <div className="sm:col-span-2 lg:col-span-4 flex justify-end mt-2">
-            <button 
-              type="submit"
-              className="px-5 py-2 bg-acies-gray text-white text-[9px] font-bold uppercase tracking-widest hover:bg-acies-yellow hover:text-acies-gray transition-all cursor-pointer border-none"
-            >
-              Add Signal
-            </button>
-          </div>
-        </form>
-      </div>
-
-      {/* Dynamic Filters tabs */}
-      <div className="flex gap-2">
-        {[
-          { id: 'all', label: 'All' },
-          { id: 'critical', label: '🔴 Critical' },
-          { id: 'warning', label: '🟡 Warning' },
-          { id: 'info', label: '🔵 Info' },
-        ].map(btn => (
-          <button
-            key={btn.id}
-            onClick={() => setSevFilter(btn.id)}
-            className={`px-4 py-2 border rounded-full text-[9px] font-extrabold uppercase tracking-wider cursor-pointer transition-all ${
-              sevFilter === btn.id 
-                ? 'bg-acies-yellow/15 border-acies-yellow text-acies-yellow' 
-                : 'border-black/10 dark:border-white/10 text-zinc-500 hover:bg-black/5 dark:hover:bg-white/5'
-            }`}
-          >
-            {btn.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Signals Inbox list */}
-      <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-5 space-y-4">
-        {filteredSignals.length === 0 ? (
-          <p className="text-xs text-center py-6 font-bold uppercase text-zinc-500">No signals in folder.</p>
-        ) : (
-          <div className="divide-y divide-black/5 dark:divide-white/5 space-y-3.5">
-            {filteredSignals.map(sig => {
-              const borderCol = sig.sev === 'critical' ? 'border-red-500/30' : sig.sev === 'warning' ? 'border-amber-500/30' : 'border-blue-500/30';
-              const indicatorBg = sig.sev === 'critical' ? 'bg-red-500/10 text-red-500' : sig.sev === 'warning' ? 'bg-amber-500/10 text-amber-500' : 'bg-blue-500/10 text-blue-500';
-              
-              // Action triggers
-              const handleAction = () => {
-                if (sig.type === 'Margin' || sig.type === 'Cannibalization') {
-                  setActiveTab(4); // jumps to SKU Rationalization
-                } else if (sig.type === 'Supply') {
-                  setActiveTab(1); // jumps to Portfolio map
-                }
-              };
-
-              return (
-                <div key={sig.id} className={`pt-3.5 flex justify-between items-center gap-4 transition-all border-l-2 ${borderCol} pl-3 ${sig.ack ? 'opacity-40' : ''}`}>
-                  <div className="flex items-center gap-3.5 min-w-0">
-                    <div className={`w-8 h-8 rounded-full shrink-0 flex items-center justify-center text-xs ${indicatorBg}`}>
-                      {sig.sev === 'critical' ? '🔴' : sig.sev === 'warning' ? '🟡' : '🔵'}
-                    </div>
-                    <div className="min-w-0 space-y-0.5">
-                      <h4 className="text-[11px] font-bold text-acies-gray dark:text-white flex items-center gap-2 truncate">
-                        {sig.title}
-                        <span className="text-[8px] font-extrabold px-1.5 py-0.5 bg-black/5 dark:bg-white/10 rounded-sm opacity-55">
-                          {sig.type}
-                        </span>
-                      </h4>
-                      <p className="text-[10px] text-zinc-500 dark:text-zinc-400 truncate mt-0.5">{sig.detail}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-2 shrink-0">
-                    <span className={`text-[8.5px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm shrink-0 ${indicatorBg}`}>
-                      {sig.sev.toUpperCase()}
-                    </span>
-                    <button 
-                      onClick={() => handleToggleAck(sig.id)}
-                      className="text-[9px] font-bold uppercase tracking-widest border border-black/10 dark:border-white/10 px-2 py-1.5 hover:bg-black/5 dark:hover:bg-white/5 transition-all cursor-pointer rounded-sm"
-                    >
-                      {sig.ack ? 'Re-open' : 'Acknowledge'}
-                    </button>
-                    {!sig.ack && (
-                      <button 
-                        onClick={handleAction}
-                        className="text-[9px] font-bold uppercase tracking-widest bg-acies-gray text-white px-2 py-1.5 hover:bg-acies-yellow hover:text-acies-gray transition-all cursor-pointer rounded-sm border-none flex items-center gap-1"
-                      >
-                        <Play size={8} fill="currentColor" />
-                        Action
-                      </button>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
-
-      {/* Signal Timeline Area chart */}
-      <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-5">
-        <h3 className="text-xs font-bold uppercase tracking-widest mb-1">Signal Timeline — Last 30 Days</h3>
-        <p className="text-[9px] text-zinc-500 uppercase tracking-widest mb-4">Historical signal frequency by severity type</p>
-        
-        <div className="h-64">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={timelineData} margin={{ top: 10, right: 10, left: -25, bottom: 5 }}>
-              <defs>
-                <linearGradient id="grad-crit" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#A32D2D" stopOpacity={0.2}/>
-                  <stop offset="100%" stopColor="#A32D2D" stopOpacity={0}/>
-                </linearGradient>
-                <linearGradient id="grad-warn" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#854F0B" stopOpacity={0.2}/>
-                  <stop offset="100%" stopColor="#854F0B" stopOpacity={0}/>
-                </linearGradient>
-                <linearGradient id="grad-info" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#185FA5" stopOpacity={0.2}/>
-                  <stop offset="100%" stopColor="#185FA5" stopOpacity={0}/>
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
-              <XAxis dataKey="date" tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 9 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 9 }} axisLine={false} tickLine={false} />
-              <Tooltip 
-                contentStyle={{ backgroundColor: '#1f1f1f', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }}
-                itemStyle={{ fontSize: 11 }}
-              />
-              <Legend wrapperStyle={{ fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.05em' }} />
-              
-              <Area type="monotone" dataKey="Critical" stroke="#A32D2D" strokeWidth={1.5} fill="url(#grad-crit)" />
-              <Area type="monotone" dataKey="Warning" stroke="#854F0B" strokeWidth={1.5} fill="url(#grad-warn)" />
-              <Area type="monotone" dataKey="Info" stroke="#185FA5" strokeWidth={1.5} fill="url(#grad-info)" />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
       {/* Competitor Analysis Decision Console Block (Only for Product Manager) */}
       {role === 'Product Manager' && (
         <div id="sig-competitor-console" className="glass-card bg-white dark:bg-[#0b1329] border border-black/10 dark:border-[#1e294b] p-6 rounded-sm shadow-xl space-y-6 text-zinc-805 dark:text-slate-100">
@@ -819,7 +595,9 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
               type="button"
               onClick={() => setActiveEngine('promo')}
               className={`px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider rounded-sm cursor-pointer transition-all border-none outline-none ${
-                activeEngine === 'promo' ? 'bg-blue-600 text-white shadow-md' : 'bg-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-white'
+                activeEngine === 'promo' 
+                  ? 'bg-blue-600 text-white shadow-md' 
+                  : 'bg-transparent text-zinc-400 hover:text-white'
               }`}
             >
               ⚙ PromoAI
@@ -828,7 +606,9 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
               type="button"
               onClick={() => setActiveEngine('pricing')}
               className={`px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider rounded-sm cursor-pointer transition-all border-none outline-none ${
-                activeEngine === 'pricing' ? 'bg-blue-600 text-white shadow-md' : 'bg-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-white'
+                activeEngine === 'pricing' 
+                  ? 'bg-blue-600 text-white shadow-md' 
+                  : 'bg-transparent text-zinc-400 hover:text-white'
               }`}
             >
               ⚙ PricingAI
@@ -837,7 +617,9 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
               type="button"
               onClick={() => setActiveEngine('compete')}
               className={`px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider rounded-sm cursor-pointer transition-all border-none outline-none ${
-                activeEngine === 'compete' ? 'bg-blue-600 text-white shadow-md' : 'bg-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-white'
+                activeEngine === 'compete' 
+                  ? 'bg-blue-600 text-white shadow-md' 
+                  : 'bg-transparent text-zinc-400 hover:text-white'
               }`}
             >
               ⚙ CompeteAI
@@ -846,7 +628,9 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
               type="button"
               onClick={() => setActiveEngine('bundle')}
               className={`px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider rounded-sm cursor-pointer transition-all border-none outline-none ${
-                activeEngine === 'bundle' ? 'bg-blue-600 text-white shadow-md' : 'bg-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-white'
+                activeEngine === 'bundle' 
+                  ? 'bg-blue-600 text-white shadow-md' 
+                  : 'bg-transparent text-zinc-400 hover:text-white'
               }`}
             >
               ⚙ BundleAI
@@ -855,7 +639,9 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
               type="button"
               onClick={() => setActiveEngine('estimate')}
               className={`px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider rounded-sm cursor-pointer transition-all border-none outline-none ${
-                activeEngine === 'estimate' ? 'bg-blue-600 text-white shadow-md' : 'bg-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-white'
+                activeEngine === 'estimate' 
+                  ? 'bg-blue-600 text-white shadow-md' 
+                  : 'bg-transparent text-zinc-400 hover:text-white'
               }`}
             >
               ⚙ EstimateAI <span className="text-[8px] text-amber-400 lowercase italic ml-1">– new</span>
@@ -951,7 +737,7 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                     <div className="space-y-2">
                       <div className="flex justify-between items-center text-[10px] font-semibold text-zinc-500 dark:text-zinc-400">
                         <span>Pepsi price</span>
-                        <span className="text-amber-650 dark:text-amber-600 dark:text-amber-500 font-bold">₹{pepsiPrice.toFixed(2)}</span>
+                        <span className="text-amber-655 dark:text-amber-600 dark:text-amber-500 font-bold">₹{pepsiPrice.toFixed(2)}</span>
                       </div>
                       <input 
                         type="range" 
@@ -1363,7 +1149,7 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                 <div className="overflow-x-auto border border-black/5 dark:border-white/5 rounded-sm pt-2">
                   <table className="w-full text-left text-xs border-collapse">
                     <thead>
-                      <tr className="border-b border-black/10 dark:border-[#1e294b]/60 text-[9px] font-bold uppercase tracking-widest text-zinc-555 dark:text-zinc-400 bg-zinc-50 dark:bg-black/20">
+                      <tr className="border-b border-black/10 dark:border-[#1e294b]/65 text-[9px] font-bold uppercase tracking-widest text-zinc-555 dark:text-zinc-400 bg-zinc-50 dark:bg-black/20">
                         <th className="py-3 px-4">Metric</th>
                         <th className="py-3 px-4">
                           You — {selectedSKU === 'Lays' ? "Lay's Classic 52g" : selectedSKU === 'Doritos' ? "Doritos Nacho Cheese 60g" : "Kurkure Masala Munch 50g"}
@@ -1382,15 +1168,15 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                         </td>
                         <td className="py-3.5 px-4">
                           ₹{selectedSKU === 'Lays' ? '21' : selectedSKU === 'Doritos' ? '32' : '16'}
-                          <span className="ml-2 text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">-1.0</span>
+                          <span className="ml-2 text-[10px] text-emerald-650 dark:text-emerald-400 font-bold">-1.0</span>
                         </td>
                         <td className="py-3.5 px-4">
                           ₹{selectedSKU === 'Lays' ? '18' : selectedSKU === 'Doritos' ? '28' : '14'}
-                          <span className="ml-2 text-[10px] text-red-600 dark:text-red-500 font-bold">+2.0</span>
+                          <span className="ml-2 text-[10px] text-red-600 dark:text-red-505 font-bold">+2.0</span>
                         </td>
                         <td className="py-3.5 px-4">
                           ₹{selectedSKU === 'Lays' ? '12' : selectedSKU === 'Doritos' ? '18' : '10'}
-                          <span className="ml-2 text-[10px] text-red-600 dark:text-red-500 font-bold">+8.0</span>
+                          <span className="ml-2 text-[10px] text-red-600 dark:text-red-505 font-bold">+8.0</span>
                         </td>
                       </tr>
 
@@ -1401,13 +1187,13 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                           {selectedSKU === 'Lays' ? '14%' : selectedSKU === 'Doritos' ? '18%' : '12%'}
                         </td>
                         <td className="py-3.5 px-4">
-                          6% <span className="ml-2 text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">+8.4</span>
+                          6% <span className="ml-2 text-[10px] text-emerald-655 dark:text-emerald-400 font-bold">+8.4</span>
                         </td>
                         <td className="py-3.5 px-4">
-                          1% <span className="ml-2 text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">+13.4</span>
+                          1% <span className="ml-2 text-[10px] text-emerald-655 dark:text-emerald-400 font-bold">+13.4</span>
                         </td>
                         <td className="py-3.5 px-4">
-                          9% <span className="ml-2 text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">+5.4</span>
+                          9% <span className="ml-2 text-[10px] text-emerald-655 dark:text-emerald-400 font-bold">+5.4</span>
                         </td>
                       </tr>
 
@@ -1421,7 +1207,7 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                           6 <span className="ml-2 text-[10px] text-red-655 dark:text-red-500 font-bold">-2.0</span>
                         </td>
                         <td className="py-3.5 px-4">
-                          1 <span className="ml-2 text-[10px] text-emerald-650 dark:text-emerald-400 font-bold">+3.0</span>
+                          1 <span className="ml-2 text-[10px] text-emerald-655 dark:text-emerald-400 font-bold">+3.0</span>
                         </td>
                         <td className="py-3.5 px-4">
                           11 <span className="ml-2 text-[10px] text-red-655 dark:text-red-500 font-bold">-7.0</span>
@@ -1438,10 +1224,10 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                           96% <span className="ml-2 text-[10px] text-red-655 dark:text-red-500 font-bold">-4.0</span>
                         </td>
                         <td className="py-3.5 px-4">
-                          78% <span className="ml-2 text-[10px] text-emerald-650 dark:text-emerald-400 font-bold">+14.0</span>
+                          78% <span className="ml-2 text-[10px] text-emerald-655 dark:text-emerald-400 font-bold">+14.0</span>
                         </td>
                         <td className="py-3.5 px-4">
-                          61% <span className="ml-2 text-[10px] text-emerald-650 dark:text-emerald-400 font-bold">+31.0</span>
+                          61% <span className="ml-2 text-[10px] text-emerald-655 dark:text-emerald-400 font-bold">+31.0</span>
                         </td>
                       </tr>
 
@@ -1728,13 +1514,8 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
       )}
 
     </div>
-
   );
 };
-
-// ==========================================
-// VP Signals Board View
-
 export interface VPSignal {
   id: string;
   title: string;

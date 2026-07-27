@@ -1390,6 +1390,13 @@ const VPCommandCenter: React.FC<{
 }> = ({ isDarkMode, onAuditClick, timelineRange, role }) => {
   const SKUS = getFilteredSKUS(GLOBAL_SKUS, timelineRange);
   const accentColor = isDarkMode ? '#a78bfa' : '#6d28d9';
+
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
   const gridStroke = isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
   const tickColor = isDarkMode ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
   const tooltipBg = isDarkMode ? '#1f1f1f' : '#fff';
