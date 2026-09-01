@@ -139,7 +139,7 @@ export const TrackerTab: React.FC<TrackerTabProps> = ({ tasks: propsTasks, setTa
         <div>
           <span className="text-[9px] font-black text-indigo-500 uppercase tracking-widest block">RATIONALISATION MANAGEMENT BOARD</span>
           <h2 className="text-xl font-display leading-tight text-acies-gray dark:text-white font-bold mt-1">Rationalisation Tracker</h2>
-          <p className="text-[9.5px] text-zinc-450 dark:text-zinc-500 uppercase font-semibold mt-0.5">Track cross-functional rollout steps and integration milestones</p>
+          <p className="text-[9.5px] text-zinc-500 dark:text-zinc-500 uppercase font-semibold mt-0.5">Track cross-functional rollout steps and integration milestones</p>
         </div>
       </div>
 
@@ -193,7 +193,7 @@ export const TrackerTab: React.FC<TrackerTabProps> = ({ tasks: propsTasks, setTa
                 </span>
               </div>
               <div className="my-1">
-                <h4 className="text-4xl font-display font-black text-zinc-850 dark:text-zinc-100 leading-none">
+                <h4 className="text-4xl font-display font-black text-zinc-900 dark:text-zinc-100 leading-none">
                   {activeCount}
                 </h4>
                 <p className="text-[9.5px] font-bold text-zinc-400 dark:text-zinc-500 mt-2 uppercase tracking-wider">
@@ -202,7 +202,7 @@ export const TrackerTab: React.FC<TrackerTabProps> = ({ tasks: propsTasks, setTa
               </div>
               <div className={`pt-2.5 border-t flex items-center justify-between text-[8.5px] font-black uppercase tracking-wider w-full ${
                 hasNewTasks 
-                  ? 'border-red-500/20 text-red-600 dark:text-red-450' 
+                  ? 'border-red-500/20 text-red-600 dark:text-red-500' 
                   : 'border-black/5 dark:border-white/5 text-indigo-600 dark:text-indigo-400'
               }`}>
                 <span>{hasNewTasks ? 'New tasks - click to read' : isExpanded ? 'Click to collapse' : 'Click to expand'}</span>
@@ -258,7 +258,7 @@ export const TrackerTab: React.FC<TrackerTabProps> = ({ tasks: propsTasks, setTa
                   </div>
 
                   {/* Title */}
-                  <h4 className="text-xs font-bold text-zinc-800 dark:text-zinc-150 leading-snug pr-8">
+                  <h4 className="text-xs font-bold text-zinc-800 dark:text-zinc-200 leading-snug pr-8">
                     {task.title}
                   </h4>
 
@@ -266,7 +266,7 @@ export const TrackerTab: React.FC<TrackerTabProps> = ({ tasks: propsTasks, setTa
                   <div className="flex items-baseline gap-1.5 text-[9px] text-zinc-400 dark:text-zinc-500 font-bold">
                     <span>{task.createdAt ? getElapsedTime(task.createdAt) : task.duration}</span>
                     {task.progress && (
-                      <span className="bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-450 px-1 rounded">
+                      <span className="bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-500 px-1 rounded">
                         {task.progress}
                       </span>
                     )}
@@ -275,7 +275,7 @@ export const TrackerTab: React.FC<TrackerTabProps> = ({ tasks: propsTasks, setTa
                   {/* Footer Row (Due date & Avatars) */}
                   <div className="flex justify-between items-center border-t border-black/5 dark:border-white/5 pt-3 mt-1">
                     {/* Left: Alerts & Date */}
-                    <div className="flex items-center gap-1.5 text-[8.5px] font-semibold text-zinc-450 dark:text-zinc-500">
+                    <div className="flex items-center gap-1.5 text-[8.5px] font-semibold text-zinc-500 dark:text-zinc-500">
                       {task.alertType === 'red-alarm' && <Bell size={10} className="text-red-500 fill-red-500/20 animate-bounce" />}
                       {task.alertType === 'exclamation' && <AlertCircle size={10} className="text-red-500" />}
                       <Calendar size={10} />
@@ -328,7 +328,7 @@ export const TrackerTab: React.FC<TrackerTabProps> = ({ tasks: propsTasks, setTa
                 </div>
               ))}
               {colTasks.length === 0 && (
-                <div className="col-span-full py-10 border-2 border-dashed border-black/5 dark:border-white/5 rounded-xl text-center text-zinc-455 dark:text-zinc-500 font-bold uppercase tracking-widest text-[9.5px]">
+                <div className="col-span-full py-10 border-2 border-dashed border-black/5 dark:border-white/5 rounded-xl text-center text-zinc-500 dark:text-zinc-500 font-bold uppercase tracking-widest text-[9.5px]">
                   No active tasks in this workstream
                 </div>
               )}
@@ -360,7 +360,7 @@ export const TrackerTab: React.FC<TrackerTabProps> = ({ tasks: propsTasks, setTa
                             </span>
                           ))}
                         </div>
-                        <h4 className="text-xs font-bold text-zinc-800 dark:text-zinc-150 leading-snug line-through decoration-zinc-400 decoration-1">
+                        <h4 className="text-xs font-bold text-zinc-800 dark:text-zinc-200 leading-snug line-through decoration-zinc-400 decoration-1">
                           {task.title}
                         </h4>
                         <div className="flex items-baseline gap-1.5 text-[9px] text-zinc-400 dark:text-zinc-500 font-bold">
@@ -370,7 +370,7 @@ export const TrackerTab: React.FC<TrackerTabProps> = ({ tasks: propsTasks, setTa
                           </span>
                         </div>
                         <div className="flex justify-between items-center border-t border-black/5 dark:border-white/5 pt-3 mt-1">
-                          <div className="flex items-center gap-1.5 text-[8.5px] font-semibold text-zinc-450 dark:text-zinc-500">
+                          <div className="flex items-center gap-1.5 text-[8.5px] font-semibold text-zinc-500 dark:text-zinc-500">
                             <Bell size={10} className="text-emerald-500" />
                             <Calendar size={10} />
                             <span className="font-mono">{task.dueDate}</span>
@@ -405,7 +405,7 @@ export const TrackerTab: React.FC<TrackerTabProps> = ({ tasks: propsTasks, setTa
             className="bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-sm max-w-sm w-full overflow-hidden shadow-2xl relative flex flex-col animate-slideIn p-5 text-left text-zinc-800 dark:text-zinc-200"
           >
             <div className="flex justify-between items-center border-b border-black/5 dark:border-white/5 pb-2.5 mb-4">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-indigo-650 dark:text-indigo-400">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-400">
                 Add Task to {columns.find(c => c.key === targetColumn)?.label}
               </h3>
               <button 
@@ -491,7 +491,7 @@ export const TrackerTab: React.FC<TrackerTabProps> = ({ tasks: propsTasks, setTa
               <button 
                 type="button" 
                 onClick={() => setIsAddModalOpen(false)}
-                className="px-3.5 py-1.5 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-zinc-650 dark:text-zinc-400 rounded text-[9px] font-bold uppercase tracking-wider hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer"
+                className="px-3.5 py-1.5 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-zinc-700 dark:text-zinc-400 rounded text-[9px] font-bold uppercase tracking-wider hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer"
               >
                 Cancel
               </button>

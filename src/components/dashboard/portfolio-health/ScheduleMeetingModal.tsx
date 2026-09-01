@@ -161,7 +161,7 @@ export const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
 
         {/* Item Details */}
         <div className="flex justify-between items-start gap-2 bg-zinc-50 dark:bg-white/5 p-3 rounded border border-black/5 dark:border-white/10">
-          <div className="flex items-center gap-1.5 text-zinc-550 dark:text-zinc-300">
+          <div className="flex items-center gap-1.5 text-zinc-600 dark:text-zinc-300">
             <Users size={12} className="text-zinc-400" />
             <span className="font-bold text-[10px] uppercase tracking-wider">{approval.title}</span>
           </div>
@@ -175,7 +175,7 @@ export const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
         {/* Root Cause Context */}
         <div>
           <p className="font-bold text-[9px] uppercase tracking-widest text-zinc-400 mb-1">Approval Request context</p>
-          <p className="text-zinc-655 dark:text-zinc-350 leading-relaxed font-normal">
+          <p className="text-zinc-700 dark:text-zinc-400 leading-relaxed font-normal">
             To proceed with this item, a cross-functional alignment session is required with the departments owning the execution risks, commercial strategies, and capital reserves.
           </p>
         </div>
@@ -186,7 +186,7 @@ export const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
           {options.map((s, idx) => (
             <div 
               key={idx} 
-              className="p-3 bg-white dark:bg-zinc-850 border border-black/5 dark:border-white/10 rounded-sm hover:border-black/15 dark:hover:border-white/20 transition-all flex flex-col gap-1.5 shadow-sm"
+              className="p-3 bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/10 rounded-sm hover:border-black/15 dark:hover:border-white/20 transition-all flex flex-col gap-1.5 shadow-sm"
             >
               <div className="flex items-start gap-1.5">
                 <span className="text-[11px] font-bold text-blue-500 shrink-0 mt-0.5">0{idx + 1}</span>

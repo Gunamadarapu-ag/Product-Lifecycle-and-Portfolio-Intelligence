@@ -58,7 +58,7 @@ export const BottleneckDetailsModal: React.FC<BottleneckDetailsModalProps> = ({
             {onPrev && (
               <button 
                 onClick={onPrev}
-                className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-650 cursor-pointer border-none bg-transparent"
+                className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 cursor-pointer border-none bg-transparent"
                 title="Previous Health Concern"
               >
                 <ChevronLeft size={14} />
@@ -67,7 +67,7 @@ export const BottleneckDetailsModal: React.FC<BottleneckDetailsModalProps> = ({
             {onNext && (
               <button 
                 onClick={onNext}
-                className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-650 cursor-pointer border-none bg-transparent"
+                className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 cursor-pointer border-none bg-transparent"
                 title="Next Health Concern"
               >
                 <ChevronRight size={14} />
@@ -76,7 +76,7 @@ export const BottleneckDetailsModal: React.FC<BottleneckDetailsModalProps> = ({
             <span className="text-zinc-300 dark:text-zinc-700 mx-1">|</span>
             <button 
               onClick={onClose}
-              className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-650 cursor-pointer border-none bg-transparent"
+              className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 cursor-pointer border-none bg-transparent"
             >
               <X size={14} />
             </button>
@@ -99,7 +99,7 @@ export const BottleneckDetailsModal: React.FC<BottleneckDetailsModalProps> = ({
 
         <div>
           <p className="font-bold text-[9px] uppercase tracking-widest text-zinc-400 mb-1">Root Cause / Portfolio Impact</p>
-          <p className="text-zinc-655 dark:text-zinc-350 leading-relaxed font-normal">{bottleneck.cause}</p>
+          <p className="text-zinc-700 dark:text-zinc-400 leading-relaxed font-normal">{bottleneck.cause}</p>
         </div>
 
         <div className="space-y-2">
@@ -107,7 +107,7 @@ export const BottleneckDetailsModal: React.FC<BottleneckDetailsModalProps> = ({
           {bottleneck.suggestions.map((s, idx) => (
             <div 
               key={idx} 
-              className="p-3 bg-white dark:bg-zinc-850 border border-black/5 dark:border-white/10 rounded-sm hover:border-black/15 dark:hover:border-white/20 transition-all flex flex-col gap-1.5 shadow-sm"
+              className="p-3 bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/10 rounded-sm hover:border-black/15 dark:hover:border-white/20 transition-all flex flex-col gap-1.5 shadow-sm"
             >
               <div className="flex items-start gap-1.5">
                 <span className="text-[11px] font-bold text-indigo-500 shrink-0 mt-0.5">0{idx + 1}</span>

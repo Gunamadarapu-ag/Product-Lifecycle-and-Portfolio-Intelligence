@@ -149,7 +149,7 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
         <Activity size={24} className="text-zinc-400 animate-pulse" />
         <div>
           <p className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Score a pair first</p>
-          <p className="text-[10px] text-zinc-300 dark:text-zinc-650 font-bold uppercase mt-0.5">Please evaluate products on the scatter map or scorer</p>
+          <p className="text-[10px] text-zinc-300 dark:text-zinc-700 font-bold uppercase mt-0.5">Please evaluate products on the scatter map or scorer</p>
         </div>
       </div>
     );
@@ -364,12 +364,12 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
             <strong>[1] ANALYSIS STATUS:</strong> <span className="text-emerald-500 font-extrabold">COMPLETED</span>
           </div>
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
-          <div className="grid grid-cols-3 gap-2 text-[9px] font-bold text-center border-b pb-1.5 border-black/5 dark:border-white/5 text-zinc-450">
+          <div className="grid grid-cols-3 gap-2 text-[9px] font-bold text-center border-b pb-1.5 border-black/5 dark:border-white/5 text-zinc-500">
             <div>Metric</div>
-            <div className="text-purple-650 dark:text-purple-400">{skuA ? skuA.split(' ')[0] : ''}</div>
+            <div className="text-purple-700 dark:text-purple-400">{skuA ? skuA.split(' ')[0] : ''}</div>
             <div className="text-emerald-500">{skuB ? skuB.split(' ')[0] : ''}</div>
           </div>
-          <div className="grid grid-cols-3 gap-2 text-[9px] font-semibold text-center divide-y divide-black/[0.02] dark:divide-white/[0.02] text-zinc-550 dark:text-zinc-400">
+          <div className="grid grid-cols-3 gap-2 text-[9px] font-semibold text-center divide-y divide-black/[0.02] dark:divide-white/[0.02] text-zinc-600 dark:text-zinc-400">
             <div className="text-left font-bold text-[8px] uppercase">Base Retail Price</div>
             <div>$90</div>
             <div>$80</div>
@@ -389,7 +389,7 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="flex justify-between items-end pt-4">
             <div>
-              <span className="text-zinc-450 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
+              <span className="text-zinc-500 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
               <span className="font-serif italic text-sm font-extrabold text-zinc-900 dark:text-zinc-100">David Miller</span>
               <span className="block text-[8px] text-zinc-400 font-sans">Category Financial Controller</span>
             </div>
@@ -421,7 +421,7 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
             <span className="text-zinc-400 block uppercase tracking-wider text-[8px] font-bold font-sans">Promotional Calendar Slots</span>
             <div className="grid grid-cols-6 gap-1.5 text-[8px] text-center font-bold">
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(w => (
-                <div key={w} className={`p-1 rounded border bg-black/5 dark:bg-white/5 border-transparent text-zinc-450`}>
+                <div key={w} className={`p-1 rounded border bg-black/5 dark:bg-white/5 border-transparent text-zinc-500`}>
                   Wk {w} {w === 4 || w === 8 ? '✅' : ''}
                 </div>
               ))}
@@ -430,7 +430,7 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="flex justify-between items-end pt-4">
             <div>
-              <span className="text-zinc-450 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
+              <span className="text-zinc-500 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
               <span className="font-serif italic text-sm font-extrabold text-zinc-900 dark:text-zinc-100">Clara Higgins</span>
               <span className="block text-[8px] text-zinc-400 font-sans">Brand Promotion Director</span>
             </div>
@@ -468,7 +468,7 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="flex justify-between items-end pt-4">
             <div>
-              <span className="text-zinc-450 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
+              <span className="text-zinc-500 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
               <span className="font-serif italic text-sm font-extrabold text-zinc-900 dark:text-zinc-100">Vikash Sharma</span>
               <span className="block text-[8px] text-zinc-400 font-sans">Portfolio Review Secretariat</span>
             </div>
@@ -505,7 +505,7 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="flex justify-between items-end pt-4">
             <div>
-              <span className="text-zinc-450 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
+              <span className="text-zinc-500 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
               <span className="font-serif italic text-sm font-extrabold text-zinc-900 dark:text-zinc-100">Linda Carter</span>
               <span className="block text-[8px] text-zinc-400 font-sans">Category Portfolio Director</span>
             </div>
@@ -541,7 +541,7 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="flex justify-between items-end pt-4">
             <div>
-              <span className="text-zinc-450 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
+              <span className="text-zinc-500 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
               <span className="font-serif italic text-sm font-extrabold text-zinc-900 dark:text-zinc-100">David Reynolds</span>
               <span className="block text-[8px] text-zinc-400 font-sans">Director of Material Requirements Planning</span>
             </div>
@@ -591,7 +591,7 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="flex justify-between items-end pt-4">
             <div>
-              <span className="text-zinc-450 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
+              <span className="text-zinc-500 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
               <span className="font-serif italic text-sm font-extrabold text-zinc-900 dark:text-zinc-100">Rajesh Nair</span>
               <span className="block text-[8px] text-zinc-400 font-sans">Director of Manufacturing Operations</span>
             </div>
@@ -640,7 +640,7 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="flex justify-between items-end pt-4">
             <div>
-              <span className="text-zinc-450 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
+              <span className="text-zinc-500 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
               <span className="font-serif italic text-sm font-extrabold text-zinc-900 dark:text-zinc-100">Sarah Jenkins</span>
               <span className="block text-[8px] text-zinc-400 font-sans">VP Category Management & Brand Planning</span>
             </div>
@@ -678,7 +678,7 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="flex justify-between items-end pt-4">
             <div>
-              <span className="text-zinc-450 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
+              <span className="text-zinc-500 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
               <span className="font-serif italic text-sm font-extrabold text-zinc-900 dark:text-zinc-100">Marcus Brody</span>
               <span className="block text-[8px] text-zinc-400 font-sans">Supply Chain & Logistics Operations Manager</span>
             </div>
@@ -727,7 +727,7 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="flex justify-between items-end pt-4">
             <div>
-              <span className="text-zinc-450 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
+              <span className="text-zinc-500 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
               <span className="font-serif italic text-sm font-extrabold text-zinc-900 dark:text-zinc-100">Ananya Roy</span>
               <span className="block text-[8px] text-zinc-400 font-sans">Lead Pricing & FP&A Analyst</span>
             </div>
@@ -764,7 +764,7 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="flex justify-between items-end pt-4">
             <div>
-              <span className="text-zinc-450 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
+              <span className="text-zinc-500 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
               <span className="font-serif italic text-sm font-extrabold text-zinc-900 dark:text-zinc-100">Vikram Rathore</span>
               <span className="block text-[8px] text-zinc-400 font-sans">DC Warehouse Director</span>
             </div>
@@ -818,7 +818,7 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
                   unfreezeSkuReplenishment(skuA);
                 }
               }}
-              className="p-2 hover:bg-black/5 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-lg transition text-zinc-450 hover:text-zinc-800 dark:hover:text-white cursor-pointer bg-transparent"
+              className="p-2 hover:bg-black/5 dark:hover:bg-white/5 border border-black/10 dark:border-white/10 rounded-lg transition text-zinc-500 hover:text-zinc-800 dark:hover:text-white cursor-pointer bg-transparent"
               title="Reset Pair Audit"
             >
               <RefreshCw size={12} />
@@ -866,7 +866,7 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
               }}
             >
               <div className="flex items-center justify-between">
-                <span className="text-zinc-450 dark:text-zinc-400">{getTeamIcon(team.shortName)}</span>
+                <span className="text-zinc-500 dark:text-zinc-400">{getTeamIcon(team.shortName)}</span>
                 <span className="text-[6.5px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded" style={{ color: team.dotColor, background: team.dotBg, border: `1px solid ${team.dotBorder}` }}>
                   {team.isLead ? 'LEAD' : 'SUPP'}
                 </span>
@@ -874,7 +874,7 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
               <p className="text-[9px] font-black uppercase tracking-wider text-acies-gray dark:text-zinc-200">
                 {team.shortName}
               </p>
-              <div className="flex items-center gap-1.5 mt-0.5 text-[8.5px] font-bold text-zinc-450">
+              <div className="flex items-center gap-1.5 mt-0.5 text-[8.5px] font-bold text-zinc-500">
                 <span>{completedCount}/{teamSteps.length} Signed-off</span>
                 {isDone && <Check size={10} className="text-emerald-500 stroke-[3.5]" />}
               </div>
@@ -886,7 +886,7 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
       {/* Steps List */}
       <div className="rounded-xl overflow-hidden border border-black/10 dark:border-white/10">
         <div className="flex justify-between items-center px-4 py-3 bg-black/[0.02] dark:bg-white/[0.02] border-b border-black/10 dark:border-white/10">
-          <span className="text-[9px] font-black uppercase tracking-widest text-zinc-450 dark:text-zinc-400 flex items-center gap-1.5">
+          <span className="text-[9px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
             {getTeamIcon(activeTeam.shortName)}
             <span>{activeTeam.name} — Action List</span>
           </span>
@@ -914,16 +914,16 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
                       className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-black border transition-all ${
                         isCompleted 
                           ? 'bg-emerald-500 border-emerald-500 text-white' 
-                          : 'bg-black/5 dark:bg-white/5 border-black/10 dark:border-white/10 text-zinc-550'
+                          : 'bg-black/5 dark:bg-white/5 border-black/10 dark:border-white/10 text-zinc-600'
                       }`}
                     >
                       {isCompleted ? <Check size={11} className="stroke-[3]" /> : si + 1}
                     </div>
                     <div>
-                      <p className={`text-[10px] font-black uppercase tracking-wider ${isCompleted ? 'line-through text-zinc-400 dark:text-zinc-650' : 'text-acies-gray dark:text-zinc-200'}`}>
+                      <p className={`text-[10px] font-black uppercase tracking-wider ${isCompleted ? 'line-through text-zinc-400 dark:text-zinc-700' : 'text-acies-gray dark:text-zinc-200'}`}>
                         {step.label}
                       </p>
-                      <p className="text-[8.5px] font-medium text-zinc-450 dark:text-zinc-500 leading-relaxed mt-0.5">
+                      <p className="text-[8.5px] font-medium text-zinc-500 dark:text-zinc-500 leading-relaxed mt-0.5">
                         {step.detail}
                       </p>
                     </div>
@@ -941,10 +941,10 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
                       <>
                         {si === 0 && (
                           <div className="border border-black/10 dark:border-white/10 rounded-lg p-3 bg-white dark:bg-acies-gray space-y-2">
-                            <span className="text-[8px] font-black uppercase tracking-wider text-zinc-450 dark:text-zinc-500">Pricing Ladder Details</span>
-                            <div className="grid grid-cols-3 gap-2 text-[8px] font-bold text-center border-b pb-1.5 border-black/5 dark:border-white/5 text-zinc-450">
+                            <span className="text-[8px] font-black uppercase tracking-wider text-zinc-500 dark:text-zinc-500">Pricing Ladder Details</span>
+                            <div className="grid grid-cols-3 gap-2 text-[8px] font-bold text-center border-b pb-1.5 border-black/5 dark:border-white/5 text-zinc-500">
                               <div>Metric</div>
-                              <div className="text-purple-650 dark:text-purple-400">{skuA ? skuA.split(' ')[0] : ''}</div>
+                              <div className="text-purple-700 dark:text-purple-400">{skuA ? skuA.split(' ')[0] : ''}</div>
                               <div className="text-emerald-500">{skuB ? skuB.split(' ')[0] : ''}</div>
                             </div>
                             <div className="grid grid-cols-3 gap-2 text-[9px] font-semibold text-center divide-y divide-black/[0.02] dark:divide-white/[0.02] text-zinc-500 dark:text-zinc-400">
@@ -963,7 +963,7 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
 
                         {si === 1 && (
                           <div className="border border-black/10 dark:border-white/10 rounded-lg p-3 bg-white dark:bg-acies-gray space-y-3">
-                            <div className="flex justify-between items-center text-[8px] font-black uppercase text-zinc-450 dark:text-zinc-500">
+                            <div className="flex justify-between items-center text-[8px] font-black uppercase text-zinc-500 dark:text-zinc-500">
                               <span>Cross-Price Elasticity Sandbox</span>
                               <span className="text-purple-500">Price Gap Shift: {pricingPriceShift > 0 ? `+${pricingPriceShift}%` : `${pricingPriceShift}%`}</span>
                             </div>
@@ -977,7 +977,7 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
                                 className="w-full h-1 bg-black/10 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-purple-500"
                               />
                             </div>
-                            <div className="bg-black/5 dark:bg-white/5 p-2 rounded text-[8px] font-bold space-y-1 text-zinc-450">
+                            <div className="bg-black/5 dark:bg-white/5 p-2 rounded text-[8px] font-bold space-y-1 text-zinc-500">
                               <div className="flex justify-between">
                                 <span>Projected shift to sibling {skuB ? skuB.split(' ')[0] : ''}:</span>
                                 <span className="text-emerald-500">+{(15 + pricingPriceShift * 0.8).toFixed(1)}% volume</span>
@@ -992,13 +992,13 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
 
                         {si === 2 && (
                           <div className="border border-black/10 dark:border-white/10 rounded-lg p-3 bg-white dark:bg-acies-gray space-y-2">
-                            <span className="text-[8px] font-black uppercase tracking-wider text-zinc-450 dark:text-zinc-500 block">Weekly Promotion Overlap Review</span>
+                            <span className="text-[8px] font-black uppercase tracking-wider text-zinc-500 dark:text-zinc-500 block">Weekly Promotion Overlap Review</span>
                             <div className="grid grid-cols-6 gap-1.5 text-[8px] text-center font-bold">
                               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(w => (
                                 <div key={w} className={`p-1 rounded border ${
                                   !calendarDeconflicted && (w === 4 || w === 8) 
                                     ? 'bg-red-500/10 border-red-500/30 text-red-500' 
-                                    : 'bg-black/5 dark:bg-white/5 border-transparent text-zinc-450'
+                                    : 'bg-black/5 dark:bg-white/5 border-transparent text-zinc-500'
                                 }`}>
                                   Wk {w}
                                   {!calendarDeconflicted && (w === 4 || w === 8) ? ' ⚠️' : ''}
@@ -1023,8 +1023,8 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
 
                         {si === 3 && (
                           <div className="border border-black/10 dark:border-white/10 rounded-lg p-3 bg-white dark:bg-acies-gray space-y-2">
-                            <span className="text-[8px] font-black uppercase tracking-wider text-zinc-450 dark:text-zinc-500 block">Rationalization Brief Parameters</span>
-                            <div className="text-[8.5px] font-bold space-y-1 bg-black/5 dark:bg-white/5 p-2 rounded text-zinc-450">
+                            <span className="text-[8px] font-black uppercase tracking-wider text-zinc-500 dark:text-zinc-500 block">Rationalization Brief Parameters</span>
+                            <div className="text-[8.5px] font-bold space-y-1 bg-black/5 dark:bg-white/5 p-2 rounded text-zinc-500">
                               <div className="flex justify-between"><span>Risk score:</span><span>{(pairRisk*100).toFixed(0)}%</span></div>
                               <div className="flex justify-between"><span>Revenue at risk:</span><span>${Math.round(pairRisk * 42)} M</span></div>
                               <div className="flex justify-between"><span>Sibling variant:</span><span>{skuB}</span></div>
@@ -1046,10 +1046,10 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
 
                         {si === 1 && (
                           <div className="border border-black/10 dark:border-white/10 rounded-lg p-3 bg-white dark:bg-acies-gray space-y-2">
-                            <span className="text-[8px] font-black uppercase tracking-wider text-zinc-450 dark:text-zinc-500 block">Manufacturing capacity audit</span>
+                            <span className="text-[8px] font-black uppercase tracking-wider text-zinc-500 dark:text-zinc-500 block">Manufacturing capacity audit</span>
                             <div className="space-y-2">
                               <div>
-                                <div className="flex justify-between text-[8px] font-bold text-zinc-450">
+                                <div className="flex justify-between text-[8px] font-bold text-zinc-500">
                                   <span>{skuB} current utilization:</span>
                                   <span>82%</span>
                                 </div>
@@ -1058,7 +1058,7 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
                                 </div>
                               </div>
                               <div>
-                                <div className="flex justify-between text-[8px] font-bold text-zinc-450">
+                                <div className="flex justify-between text-[8px] font-bold text-zinc-500">
                                   <span>Projected utilization with absorbed volume:</span>
                                   <span className="text-emerald-500 font-extrabold">89%</span>
                                 </div>
@@ -1075,7 +1075,7 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
 
                         {si === 2 && (
                           <div className="border border-black/10 dark:border-white/10 rounded-lg p-3 bg-white dark:bg-acies-gray space-y-3">
-                            <span className="text-[8px] font-black uppercase tracking-wider text-zinc-450 dark:text-zinc-500 block">Exit Strategy Configuration</span>
+                            <span className="text-[8px] font-black uppercase tracking-wider text-zinc-500 dark:text-zinc-500 block">Exit Strategy Configuration</span>
                             <div className="space-y-2">
                               <div className="space-y-1.5">
                                 <div className="flex justify-between text-[8.5px] font-bold text-zinc-400">
@@ -1113,9 +1113,9 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
 
                         {si === 1 && (
                           <div className="border border-black/10 dark:border-white/10 rounded-lg p-3 bg-white dark:bg-acies-gray space-y-2">
-                            <span className="text-[8px] font-black uppercase tracking-wider text-zinc-450 dark:text-zinc-500 block">MRP safety buffer</span>
+                            <span className="text-[8px] font-black uppercase tracking-wider text-zinc-500 dark:text-zinc-500 block">MRP safety buffer</span>
                             <div className="space-y-2">
-                              <div className="flex justify-between text-[8.5px] font-bold text-zinc-405">
+                              <div className="flex justify-between text-[8.5px] font-bold text-zinc-400">
                                 <span>Adjust Sibling Safety Stock:</span>
                                 <span className="text-purple-500 font-black">+{supplySafetyStockShift}%</span>
                               </div>
@@ -1134,8 +1134,8 @@ export const ActionRoutingPanel: React.FC<ActionRoutingPanelProps> = ({
 
                         {si === 2 && (
                           <div className="border border-black/10 dark:border-white/10 rounded-lg p-3 bg-white dark:bg-acies-gray space-y-2">
-                            <span className="text-[8px] font-black uppercase tracking-wider text-zinc-450 dark:text-zinc-500 block">Form SC-114 Bay Release</span>
-                            <div className="text-[8.5px] font-bold text-zinc-450 space-y-1 bg-black/5 dark:bg-white/5 p-2 rounded">
+                            <span className="text-[8px] font-black uppercase tracking-wider text-zinc-500 dark:text-zinc-500 block">Form SC-114 Bay Release</span>
+                            <div className="text-[8.5px] font-bold text-zinc-500 space-y-1 bg-black/5 dark:bg-white/5 p-2 rounded">
                               <div className="flex justify-between"><span>Assigned Bays:</span><span>4 Bays (DC-2, DC-4)</span></div>
                               <div className="flex justify-between"><span>Freed Working Capital:</span><span className="text-emerald-500 font-extrabold">${Math.round(pairRisk * 40)}L</span></div>
                             </div>

@@ -416,7 +416,7 @@ const VPProfitabilityTreeView: React.FC<{
         <div className="lg:col-span-3 glass-card bg-white dark:bg-[#1a1a24]/90 border border-black/10 dark:border-white/10 rounded-xl overflow-hidden shadow-sm flex flex-col h-[350px]">
           <div className="p-3.5 sm:p-4 border-b border-black/5 dark:border-white/5 flex flex-col justify-between items-start gap-3 shrink-0">
             <div className="w-full flex justify-between items-center">
-              <h3 className="text-xs font-bold text-zinc-855 dark:text-zinc-150 uppercase tracking-wider">
+              <h3 className="text-xs font-bold text-zinc-900 dark:text-zinc-200 uppercase tracking-wider">
                 REVENUE VS PROFIT TREND
               </h3>
               {/* Time Horizon Button Toggles */}
@@ -429,7 +429,7 @@ const VPProfitabilityTreeView: React.FC<{
                     className={`px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider rounded transition-all cursor-pointer border-none outline-none ${
                       trendHorizon === horizon
                         ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm'
-                        : 'text-zinc-400 dark:text-zinc-500 hover:text-zinc-650 dark:hover:text-zinc-300 bg-transparent'
+                        : 'text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 bg-transparent'
                     }`}
                   >
                     {horizon}
@@ -439,7 +439,7 @@ const VPProfitabilityTreeView: React.FC<{
             </div>
             
             {/* Custom Legend */}
-            <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-zinc-550 dark:text-zinc-400">
+            <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-zinc-600 dark:text-zinc-400">
               <div className="flex items-center gap-1.5">
                 <div className="w-3 h-3 rounded-sm bg-[#2563eb]" />
                 <span>Revenue</span>
@@ -538,10 +538,10 @@ const VPProfitabilityTreeView: React.FC<{
         <div className="lg:col-span-2 glass-card bg-white dark:bg-[#1a1a24]/90 border border-black/10 dark:border-white/10 rounded-xl overflow-hidden shadow-sm flex flex-col h-[350px]">
           <div className="flex items-center justify-between p-3.5 border-b bg-teal-500/[0.03] shrink-0">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-lg bg-teal-500/15 text-teal-650 dark:text-teal-400 flex items-center justify-center text-xs flex-shrink-0">
+              <div className="w-6 h-6 rounded-lg bg-teal-500/15 text-teal-700 dark:text-teal-400 flex items-center justify-center text-xs flex-shrink-0">
                 <Award size={14} className="stroke-[2.5]" />
               </div>
-              <span className="text-[11px] font-bold font-display text-teal-650 dark:text-teal-400">
+              <span className="text-[11px] font-bold font-display text-teal-700 dark:text-teal-400">
                 Top profit contributors
               </span>
             </div>
@@ -577,7 +577,7 @@ const VPProfitabilityTreeView: React.FC<{
                   Brand
                 </button>
               </div>
-              <span className="text-[9px] font-bold text-zinc-450 dark:text-zinc-505 uppercase tracking-wider shrink-0 font-sans">
+              <span className="text-[9px] font-bold text-zinc-500 dark:text-zinc-500 uppercase tracking-wider shrink-0 font-sans">
                 YTD
               </span>
             </div>
@@ -682,7 +682,7 @@ const VPProfitabilityTreeView: React.FC<{
               </div>
               <button
                 onClick={() => setSelectedDetail(null)}
-                className="text-zinc-450 hover:text-zinc-700 dark:hover:text-zinc-200 p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-all border-none outline-none cursor-pointer"
+                className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-200 p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-all border-none outline-none cursor-pointer"
               >
                 ✕
               </button>
@@ -693,11 +693,11 @@ const VPProfitabilityTreeView: React.FC<{
               {/* Summary KPIs */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-3 bg-zinc-50 dark:bg-zinc-900/30 border border-black/5 dark:border-white/5 rounded-xl">
-                  <span className="text-[9px] font-bold text-zinc-450 uppercase tracking-wider block mb-1">Profit Contribution</span>
+                  <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-wider block mb-1">Profit Contribution</span>
                   <span className="text-lg font-extrabold text-zinc-800 dark:text-zinc-100">${selectedDetail.value} M</span>
                 </div>
                 <div className="p-3 bg-zinc-50 dark:bg-zinc-900/30 border border-black/5 dark:border-white/5 rounded-xl">
-                  <span className="text-[9px] font-bold text-zinc-450 uppercase tracking-wider block mb-1">Portfolio Share</span>
+                  <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-wider block mb-1">Portfolio Share</span>
                   <span className="text-lg font-extrabold text-zinc-800 dark:text-zinc-100">{selectedDetail.percent}%</span>
                 </div>
               </div>
@@ -733,11 +733,11 @@ const VPProfitabilityTreeView: React.FC<{
                     ]
                   ).map((item: any, idx: number) => (
                     <div key={idx} className="space-y-1">
-                      <div className="flex justify-between text-xs font-semibold text-zinc-700 dark:text-zinc-350">
+                      <div className="flex justify-between text-xs font-semibold text-zinc-700 dark:text-zinc-400">
                         <span>{item.name}</span>
                         <div className="flex gap-3">
                           <span className="font-bold">${item.val}M</span>
-                          <span className="text-zinc-505 dark:text-zinc-500 font-mono text-[10px]">{item.pct}%</span>
+                          <span className="text-zinc-500 dark:text-zinc-500 font-mono text-[10px]">{item.pct}%</span>
                         </div>
                       </div>
                       <div className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-full h-1 overflow-hidden">
@@ -773,11 +773,11 @@ const VPProfitabilityTreeView: React.FC<{
                     ]
                   ).map((item: any, idx: number) => (
                     <div key={idx} className="space-y-1">
-                      <div className="flex justify-between text-xs font-semibold text-zinc-700 dark:text-zinc-355">
+                      <div className="flex justify-between text-xs font-semibold text-zinc-700 dark:text-zinc-400">
                         <span>{item.name}</span>
                         <div className="flex gap-3">
                           <span className="font-bold">${item.val}M</span>
-                          <span className="text-zinc-505 dark:text-zinc-500 font-mono text-[10px]">{item.pct}%</span>
+                          <span className="text-zinc-500 dark:text-zinc-500 font-mono text-[10px]">{item.pct}%</span>
                         </div>
                       </div>
                       <div className="w-full bg-zinc-100 dark:bg-zinc-800 rounded-full h-1 overflow-hidden">
@@ -842,10 +842,10 @@ const VPProfitabilityTreeView: React.FC<{
                         #{sku.rank}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-semibold text-zinc-850 dark:text-zinc-200 truncate">{sku.name}</p>
+                        <p className="text-xs font-semibold text-zinc-900 dark:text-zinc-200 truncate">{sku.name}</p>
                         <p className="text-[10px] text-zinc-400 dark:text-zinc-500 truncate">{sku.detail}</p>
                       </div>
-                      <div className="text-xs font-extrabold text-zinc-850 dark:text-zinc-100 shrink-0">
+                      <div className="text-xs font-extrabold text-zinc-900 dark:text-zinc-100 shrink-0">
                         ${sku.val}M
                       </div>
                     </div>
@@ -878,7 +878,7 @@ const VPProfitabilityTreeView: React.FC<{
               </div>
               <button
                 onClick={() => setOpenBreakdownModal(null)}
-                className="text-zinc-450 hover:text-zinc-700 dark:hover:text-zinc-200 p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-all border-none outline-none cursor-pointer"
+                className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-200 p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-all border-none outline-none cursor-pointer"
               >
                 ✕
               </button>
@@ -907,8 +907,8 @@ const VPProfitabilityTreeView: React.FC<{
                           {item.name}
                         </button>
                         <div className="flex items-center gap-3">
-                          <span className="font-bold text-zinc-850 dark:text-zinc-150">${item.value}M</span>
-                          <span className="text-zinc-455 dark:text-zinc-500 font-mono w-8 text-right">{item.percent}%</span>
+                          <span className="font-bold text-zinc-900 dark:text-zinc-200">${item.value}M</span>
+                          <span className="text-zinc-500 dark:text-zinc-500 font-mono w-8 text-right">{item.percent}%</span>
                         </div>
                       </div>
                       <div className="w-full bg-black/5 dark:bg-white/5 rounded-full h-1.5 overflow-hidden">
@@ -938,8 +938,8 @@ const VPProfitabilityTreeView: React.FC<{
                           {item.name}
                         </button>
                         <div className="flex items-center gap-3">
-                          <span className="font-bold text-zinc-850 dark:text-zinc-150">${item.value}M</span>
-                          <span className="text-zinc-455 dark:text-zinc-500 font-mono w-8 text-right">{item.percent}%</span>
+                          <span className="font-bold text-zinc-900 dark:text-zinc-200">${item.value}M</span>
+                          <span className="text-zinc-500 dark:text-zinc-500 font-mono w-8 text-right">{item.percent}%</span>
                         </div>
                       </div>
                       <div className="w-full bg-black/5 dark:bg-white/5 rounded-full h-1.5 overflow-hidden">
@@ -960,14 +960,14 @@ const VPProfitabilityTreeView: React.FC<{
         <div className="lg:col-span-2 glass-card bg-white dark:bg-[#1a1a24]/90 border border-black/10 dark:border-white/10 rounded-xl overflow-hidden shadow-sm">
           <div className="flex items-center justify-between p-3.5 border-b bg-red-500/[0.03]">
             <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-lg bg-red-500/15 text-red-650 dark:text-red-400 flex items-center justify-center text-sm flex-shrink-0">
+              <div className="w-7 h-7 rounded-lg bg-red-500/15 text-red-700 dark:text-red-400 flex items-center justify-center text-sm flex-shrink-0">
                 <AlertTriangle size={16} className="stroke-[2.5]" />
               </div>
-              <span className="text-[12px] font-bold font-display text-red-650 dark:text-red-400">
+              <span className="text-[12px] font-bold font-display text-red-700 dark:text-red-400">
                 Profit leakage — loss-making areas
               </span>
             </div>
-            <span className="text-xs font-bold text-red-500 dark:text-red-455 font-mono">
+            <span className="text-xs font-bold text-red-500 dark:text-red-500 font-mono">
               Total: −$3.1M
             </span>
           </div>
@@ -987,7 +987,7 @@ const VPProfitabilityTreeView: React.FC<{
                   >
                     <div>
                       <div className="flex justify-between items-center">
-                        <span className="text-xs font-bold text-zinc-850 dark:text-zinc-200 flex items-center gap-2">
+                        <span className="text-xs font-bold text-zinc-900 dark:text-zinc-200 flex items-center gap-2">
                           {item.title}
                           {!isExpanded && (
                             <span className="text-[7.5px] font-bold text-red-500/80 dark:text-red-400/85 border border-red-500/20 dark:border-red-400/30 bg-red-500/5 dark:bg-red-400/10 rounded px-1.5 py-0.2 animate-pulse uppercase tracking-wider">
@@ -1015,7 +1015,7 @@ const VPProfitabilityTreeView: React.FC<{
                       <div className="mt-4 pt-4 border-t border-red-500/10 grid grid-cols-1 md:grid-cols-3 gap-4 animate-fade-in text-[10px] font-sans">
                         {/* WHERE */}
                         <div className="space-y-1 bg-black/[0.02] dark:bg-white/[0.01] p-2.5 rounded-lg border border-red-500/5">
-                          <div className="flex items-center gap-1.5 text-red-650 dark:text-red-400 font-black uppercase tracking-wider text-[8px]">
+                          <div className="flex items-center gap-1.5 text-red-700 dark:text-red-400 font-black uppercase tracking-wider text-[8px]">
                             <MapPin size={10} className="stroke-[2.5]" />
                             Where
                           </div>
@@ -1025,7 +1025,7 @@ const VPProfitabilityTreeView: React.FC<{
                         </div>
                         {/* WHY */}
                         <div className="space-y-1 bg-black/[0.02] dark:bg-white/[0.01] p-2.5 rounded-lg border border-red-500/5">
-                          <div className="flex items-center gap-1.5 text-red-650 dark:text-red-400 font-black uppercase tracking-wider text-[8px]">
+                          <div className="flex items-center gap-1.5 text-red-700 dark:text-red-400 font-black uppercase tracking-wider text-[8px]">
                             <HelpCircle size={10} className="stroke-[2.5]" />
                             Why
                           </div>
@@ -1035,7 +1035,7 @@ const VPProfitabilityTreeView: React.FC<{
                         </div>
                         {/* HOW */}
                         <div className="space-y-1 bg-black/[0.02] dark:bg-white/[0.01] p-2.5 rounded-lg border border-red-500/5 col-span-1">
-                          <div className="flex items-center gap-1.5 text-red-650 dark:text-red-400 font-black uppercase tracking-wider text-[8px]">
+                          <div className="flex items-center gap-1.5 text-red-700 dark:text-red-400 font-black uppercase tracking-wider text-[8px]">
                             <Workflow size={10} className="stroke-[2.5]" />
                             How (Operational Impact)
                           </div>
@@ -1060,14 +1060,14 @@ const VPProfitabilityTreeView: React.FC<{
       <div className="glass-card bg-white dark:bg-[#1a1a24]/90 border border-black/10 dark:border-white/10 rounded-xl overflow-hidden shadow-sm">
         <div className="flex items-center justify-between p-3.5 border-b bg-emerald-500/[0.03]">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-emerald-500/15 text-emerald-650 dark:text-emerald-400 flex items-center justify-center text-sm flex-shrink-0">
+            <div className="w-7 h-7 rounded-lg bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 flex items-center justify-center text-sm flex-shrink-0">
               <Sparkles size={16} className="stroke-[2.5]" />
             </div>
-            <span className="text-[12px] font-bold font-display text-emerald-650 dark:text-emerald-400">
+            <span className="text-[12px] font-bold font-display text-emerald-700 dark:text-emerald-400">
               AI opportunity recommendations
             </span>
           </div>
-          <span className="text-[9.5px] font-bold text-zinc-450 dark:text-zinc-500 uppercase tracking-wider">
+          <span className="text-[9.5px] font-bold text-zinc-500 dark:text-zinc-500 uppercase tracking-wider">
             4 actions · ~$1.6M potential
           </span>
         </div>
@@ -1081,16 +1081,16 @@ const VPProfitabilityTreeView: React.FC<{
                   <TrendingUp size={16} className="stroke-[2.5]" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-zinc-850 dark:text-zinc-205">Dynamic pricing engine</h4>
-                  <p className="text-[10px] font-extrabold text-emerald-550 dark:text-emerald-400 mt-0.5">+$0.6M potential</p>
+                  <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-200">Dynamic pricing engine</h4>
+                  <p className="text-[10px] font-extrabold text-emerald-600 dark:text-emerald-400 mt-0.5">+$0.6M potential</p>
                 </div>
               </div>
-              <p className="text-[10px] text-zinc-550 dark:text-zinc-400 font-medium mt-3 leading-relaxed">
+              <p className="text-[10px] text-zinc-600 dark:text-zinc-400 font-medium mt-3 leading-relaxed">
                 Elasticity model on 2,400 SKUs optimises prices in real-time. Pilot on Electronics estimated 6.4% margin uplift.
               </p>
             </div>
             <div className="flex justify-between items-center mt-4">
-              <span className="text-[9px] font-bold text-emerald-655 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-500/20 px-2.5 py-1 rounded-full">
+              <span className="text-[9px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-500/20 px-2.5 py-1 rounded-full">
                 High impact
               </span>
               <button 
@@ -1110,16 +1110,16 @@ const VPProfitabilityTreeView: React.FC<{
                   <RefreshCw size={16} className="stroke-[2.5]" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-zinc-850 dark:text-zinc-205">Returns propensity AI</h4>
-                  <p className="text-[10px] font-extrabold text-emerald-550 dark:text-emerald-400 mt-0.5">+$0.4M potential</p>
+                  <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-200">Returns propensity AI</h4>
+                  <p className="text-[10px] font-extrabold text-emerald-600 dark:text-emerald-400 mt-0.5">+$0.4M potential</p>
                 </div>
               </div>
-              <p className="text-[10px] text-zinc-550 dark:text-zinc-400 font-medium mt-3 leading-relaxed">
+              <p className="text-[10px] text-zinc-600 dark:text-zinc-400 font-medium mt-3 leading-relaxed">
                 Pre-shipment risk scoring cuts return rate from 9.8% → 8.0%. Integrates with OMS with 2-week setup.
               </p>
             </div>
             <div className="flex justify-between items-center mt-4">
-              <span className="text-[9px] font-bold text-emerald-655 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-500/20 px-2.5 py-1 rounded-full">
+              <span className="text-[9px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-500/20 px-2.5 py-1 rounded-full">
                 High impact
               </span>
               <button 
@@ -1139,16 +1139,16 @@ const VPProfitabilityTreeView: React.FC<{
                   <Package size={16} className="stroke-[2.5]" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-zinc-850 dark:text-zinc-205">AI demand forecasting</h4>
-                  <p className="text-[10px] font-extrabold text-emerald-550 dark:text-emerald-400 mt-0.5">+$0.4M potential</p>
+                  <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-200">AI demand forecasting</h4>
+                  <p className="text-[10px] font-extrabold text-emerald-600 dark:text-emerald-400 mt-0.5">+$0.4M potential</p>
                 </div>
               </div>
-              <p className="text-[10px] text-zinc-550 dark:text-zinc-400 font-medium mt-3 leading-relaxed">
+              <p className="text-[10px] text-zinc-600 dark:text-zinc-400 font-medium mt-3 leading-relaxed">
                 LSTM time-series model lifts forecast accuracy to 88%, cutting overstock write-offs by 30% across 12 problem SKUs.
               </p>
             </div>
             <div className="flex justify-between items-center mt-4">
-              <span className="text-[9px] font-bold text-amber-655 dark:text-amber-400 bg-amber-500/10 dark:bg-amber-500/20 px-2.5 py-1 rounded-full">
+              <span className="text-[9px] font-bold text-amber-700 dark:text-amber-400 bg-amber-500/10 dark:bg-amber-500/20 px-2.5 py-1 rounded-full">
                 Medium
               </span>
               <button 
@@ -1168,16 +1168,16 @@ const VPProfitabilityTreeView: React.FC<{
                   <FileText size={16} className="stroke-[2.5]" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-zinc-850 dark:text-zinc-205">Contract intelligence</h4>
-                  <p className="text-[10px] font-extrabold text-emerald-550 dark:text-emerald-400 mt-0.5">+$0.2M potential</p>
+                  <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-200">Contract intelligence</h4>
+                  <p className="text-[10px] font-extrabold text-emerald-600 dark:text-emerald-400 mt-0.5">+$0.2M potential</p>
                 </div>
               </div>
-              <p className="text-[10px] text-zinc-550 dark:text-zinc-400 font-medium mt-3 leading-relaxed">
+              <p className="text-[10px] text-zinc-600 dark:text-zinc-400 font-medium mt-3 leading-relaxed">
                 NLP audit of 340 supplier contracts surfaces billing anomalies and triggers renegotiation workflow automatically.
               </p>
             </div>
             <div className="flex justify-between items-center mt-4">
-              <span className="text-[9px] font-bold text-amber-655 dark:text-amber-400 bg-amber-500/10 dark:bg-amber-500/20 px-2.5 py-1 rounded-full">
+              <span className="text-[9px] font-bold text-amber-700 dark:text-amber-400 bg-amber-500/10 dark:bg-amber-500/20 px-2.5 py-1 rounded-full">
                 Medium
               </span>
               <button 
@@ -1196,7 +1196,7 @@ const VPProfitabilityTreeView: React.FC<{
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white dark:bg-[#1a1a24]/90 border border-black/10 dark:border-white/10 rounded-xl p-4 gap-4 shadow-sm">
         <div>
           <h3 className="text-xs font-bold uppercase tracking-widest text-[#8b5cf6] dark:text-purple-300">P&L Tree Decomposition</h3>
-          <p className="text-[9.5px] text-zinc-450 dark:text-zinc-500 font-medium mt-0.5">Explore granular financial metrics across key operational areas</p>
+          <p className="text-[9.5px] text-zinc-500 dark:text-zinc-500 font-medium mt-0.5">Explore granular financial metrics across key operational areas</p>
         </div>
         <div className="flex gap-2 w-full sm:w-auto shrink-0">
           <button
@@ -1237,7 +1237,7 @@ const VPProfitabilityTreeView: React.FC<{
                   {n.items.map((it, idx) => (
                     <div key={idx} className="flex items-center gap-2 py-2 px-3 text-[11px] font-semibold hover:bg-black/[0.005]">
                       <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: n.dotColor }} />
-                      <span className="text-zinc-550 dark:text-zinc-400">{it.label}</span>
+                      <span className="text-zinc-600 dark:text-zinc-400">{it.label}</span>
                       {it.badge && (
                         <span className="text-[9px] font-black px-1.5 py-0.5 rounded ml-2" style={{ backgroundColor: it.bc, color: it.bcolor }}>
                           {it.badge}
@@ -1278,7 +1278,7 @@ const VPProfitabilityTreeView: React.FC<{
               </span>
             </div>
             {/* Custom Legend */}
-            <div className="flex items-center gap-4 text-[10.5px] font-semibold text-zinc-550 dark:text-zinc-400 mt-1">
+            <div className="flex items-center gap-4 text-[10.5px] font-semibold text-zinc-600 dark:text-zinc-400 mt-1">
               <div className="flex items-center gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full bg-[#5faad9]" />
                 <span>Spend</span>
@@ -1307,7 +1307,7 @@ const VPProfitabilityTreeView: React.FC<{
                 className={`px-3.5 py-1 text-xs font-bold rounded-lg border transition-all cursor-pointer ${
                   roiViewMode === 'category'
                     ? 'bg-[#18181b] text-white border-[#18181b] dark:bg-zinc-100 dark:text-zinc-900 dark:border-zinc-100 shadow-sm'
-                    : 'bg-transparent text-zinc-500 border-zinc-200 hover:text-zinc-800 hover:border-zinc-300 dark:text-zinc-405 dark:border-zinc-800 dark:hover:text-zinc-200 dark:hover:border-zinc-700'
+                    : 'bg-transparent text-zinc-500 border-zinc-200 hover:text-zinc-800 hover:border-zinc-300 dark:text-zinc-400 dark:border-zinc-800 dark:hover:text-zinc-200 dark:hover:border-zinc-700'
                 }`}
               >
                 Category
@@ -1319,7 +1319,7 @@ const VPProfitabilityTreeView: React.FC<{
                 className={`px-3.5 py-1 text-xs font-bold rounded-lg border transition-all cursor-pointer ${
                   roiViewMode === 'sku'
                     ? 'bg-[#18181b] text-white border-[#18181b] dark:bg-zinc-100 dark:text-zinc-900 dark:border-zinc-100 shadow-sm'
-                    : 'bg-transparent text-zinc-500 border-zinc-200 hover:text-zinc-800 hover:border-zinc-300 dark:text-zinc-405 dark:border-zinc-800 dark:hover:text-zinc-200 dark:hover:border-zinc-700'
+                    : 'bg-transparent text-zinc-500 border-zinc-200 hover:text-zinc-800 hover:border-zinc-300 dark:text-zinc-400 dark:border-zinc-800 dark:hover:text-zinc-200 dark:hover:border-zinc-700'
                 }`}
               >
                 SKU
@@ -1541,7 +1541,7 @@ const VPProfitabilityTreeView: React.FC<{
             </div>
             <div className="p-4 bg-black/[0.01] dark:bg-white/[0.01] border border-black/5 dark:border-white/5 rounded-lg space-y-1">
               <p className="text-[8px] font-extrabold uppercase tracking-widest text-zinc-400">SKUS BELOW 20% MARGIN</p>
-              <h5 className={`text-base font-display font-black ${scenarioSkusBelow20 > 2 ? 'text-red-505' : 'text-zinc-700 dark:text-zinc-200'}`}>{scenarioSkusBelow20}</h5>
+              <h5 className={`text-base font-display font-black ${scenarioSkusBelow20 > 2 ? 'text-red-500' : 'text-zinc-700 dark:text-zinc-200'}`}>{scenarioSkusBelow20}</h5>
               <p className="text-[9px] font-mono text-red-500 font-extrabold">Critical</p>
             </div>
           </div>
@@ -1643,7 +1643,7 @@ const VPProfitabilityTreeView: React.FC<{
                 <h5 className="text-[11px] font-bold text-zinc-800 dark:text-zinc-200 mt-1">
                   SKU Category: <span className="text-[#8b5cf6] font-extrabold">{selectedCell.category}</span> · Month: <span className="font-mono">{selectedCell.month}</span>
                 </h5>
-                <p className="text-[9.5px] text-zinc-555 dark:text-zinc-400 font-medium">
+                <p className="text-[9.5px] text-zinc-600 dark:text-zinc-400 font-medium">
                   Detailed audit shows gross margin of <span className="font-bold font-mono text-[#8b5cf6]">{selectedCell.val}%</span>. 
                   {selectedCell.val >= 40 ? ' Highly profitable segment, exceeding all target margin thresholds.' : selectedCell.val >= 35 ? ' Margin is strong and stable in line with expectations.' : selectedCell.val >= 30 ? ' Stable margin, monitored for commodity inflation pressure.' : ' Attention required! Promo leakage or COGS surge compressing bottom line.'}
                 </p>
@@ -1946,10 +1946,10 @@ export const ProfitabilityTree: React.FC<ProfitabilityTreeProps> = ({
           <div className="space-y-5 pt-2 text-xs font-semibold">
             {breakevenSKUs.map((s, idx) => (
               <div key={idx} className="space-y-1.5">
-                <div className="flex justify-between items-center font-bold text-zinc-805 dark:text-zinc-200">
+                <div className="flex justify-between items-center font-bold text-zinc-800 dark:text-zinc-200">
                   <div>
                     <p>{s.name}</p>
-                    <p className="text-[9px] text-zinc-450 uppercase font-medium">{s.detail}</p>
+                    <p className="text-[9px] text-zinc-500 uppercase font-medium">{s.detail}</p>
                   </div>
                   <span className="font-mono text-red-500 font-extrabold">{s.margin}% margin</span>
                 </div>

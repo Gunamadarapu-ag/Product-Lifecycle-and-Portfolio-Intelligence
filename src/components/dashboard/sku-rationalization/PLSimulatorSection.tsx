@@ -216,7 +216,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
               <div className="space-y-4 pt-2 border-t border-black/5 dark:border-white/5">
                 {simTab === 'remove' && (
                   <div className="space-y-3">
-                    <div className="p-3 bg-red-500/[0.03] border border-red-500/10 rounded-lg text-[10.5px] leading-relaxed text-zinc-650 dark:text-zinc-300 font-semibold space-y-1">
+                    <div className="p-3 bg-red-500/[0.03] border border-red-500/10 rounded-lg text-[10.5px] leading-relaxed text-zinc-700 dark:text-zinc-300 font-semibold space-y-1">
                       <span className="text-[8px] font-bold text-red-500 uppercase tracking-widest flex items-center gap-1">
                         <AlertTriangle size={10} /> Discontinuation Parameter
                       </span>
@@ -268,7 +268,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                         step="5"
                         value={sunsetTransferenceRate}
                         onChange={(e) => setSunsetTransferenceRate(parseInt(e.target.value))}
-                        className="w-full accent-purple-550 cursor-pointer h-1.5 rounded-lg bg-zinc-200 dark:bg-zinc-700 appearance-none"
+                        className="w-full accent-purple-600 cursor-pointer h-1.5 rounded-lg bg-zinc-200 dark:bg-zinc-700 appearance-none"
                       />
                     </div>
                   </div>
@@ -288,7 +288,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                         step="1"
                         value={priceChange}
                         onChange={(e) => setPriceChange(parseInt(e.target.value))}
-                        className="w-full accent-purple-550 cursor-pointer h-1.5 rounded-lg bg-zinc-200 dark:bg-zinc-700 appearance-none"
+                        className="w-full accent-purple-600 cursor-pointer h-1.5 rounded-lg bg-zinc-200 dark:bg-zinc-700 appearance-none"
                       />
                     </div>
 
@@ -304,7 +304,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                         step="0.1"
                         value={volumeElasticity}
                         onChange={(e) => setVolumeElasticity(parseFloat(e.target.value))}
-                        className="w-full accent-purple-550 cursor-pointer h-1.5 rounded-lg bg-zinc-200 dark:bg-zinc-700 appearance-none"
+                        className="w-full accent-purple-600 cursor-pointer h-1.5 rounded-lg bg-zinc-200 dark:bg-zinc-700 appearance-none"
                       />
                     </div>
                   </>
@@ -324,7 +324,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                         step="5"
                         value={projectedRevenue}
                         onChange={(e) => setProjectedRevenue(parseInt(e.target.value))}
-                        className="w-full accent-purple-550 cursor-pointer h-1.5 rounded-lg bg-zinc-200 dark:bg-zinc-700 appearance-none"
+                        className="w-full accent-purple-600 cursor-pointer h-1.5 rounded-lg bg-zinc-200 dark:bg-zinc-700 appearance-none"
                       />
                     </div>
 
@@ -340,7 +340,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                         step="1"
                         value={expectedMargin}
                         onChange={(e) => setExpectedMargin(parseInt(e.target.value))}
-                        className="w-full accent-purple-550 cursor-pointer h-1.5 rounded-lg bg-zinc-200 dark:bg-zinc-700 appearance-none"
+                        className="w-full accent-purple-600 cursor-pointer h-1.5 rounded-lg bg-zinc-200 dark:bg-zinc-700 appearance-none"
                       />
                     </div>
 
@@ -356,7 +356,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                         step="1"
                         value={cannibalizationRisk}
                         onChange={(e) => setCannibalizationRisk(parseInt(e.target.value))}
-                        className="w-full accent-purple-550 cursor-pointer h-1.5 rounded-lg bg-zinc-200 dark:bg-zinc-700 appearance-none"
+                        className="w-full accent-purple-600 cursor-pointer h-1.5 rounded-lg bg-zinc-200 dark:bg-zinc-700 appearance-none"
                       />
                     </div>
                   </>
@@ -398,7 +398,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                             Net: ${removeRevImpact > 0 ? '+' : ''}{removeRevImpact} M
                           </span>
                         </div>
-                        <div className="divide-y divide-black/5 dark:divide-white/5 text-[10px] font-bold space-y-1.5 font-mono text-zinc-600 dark:text-zinc-350">
+                        <div className="divide-y divide-black/5 dark:divide-white/5 text-[10px] font-bold space-y-1.5 font-mono text-zinc-600 dark:text-zinc-400">
                           <div className="flex justify-between pt-1">
                             <span>Discontinued SKU Sales ({selectedSku.name.split(' ')[0]}):</span>
                             <span className="text-red-500">$-{selectedSku.rev} M</span>
@@ -419,7 +419,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                       {/* Operational complexity savings (1 column) */}
                       <div className="bg-white dark:bg-[#1a1a24] p-3 rounded border border-black/5 dark:border-white/10 space-y-1 shadow-sm flex flex-col justify-between">
                         <div>
-                          <div className="text-[8px] font-black uppercase tracking-widest text-zinc-455">Complexity Savings</div>
+                          <div className="text-[8px] font-black uppercase tracking-widest text-zinc-500">Complexity Savings</div>
                           <div className="text-sm font-black text-blue-500 mt-1">$+{complexitySavings} M</div>
                         </div>
                         <div className="text-[7.5px] font-semibold text-zinc-500 leading-tight">
@@ -430,7 +430,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                       {/* Blended margin shift (1 column) */}
                       <div className="bg-white dark:bg-[#1a1a24] p-3 rounded border border-black/5 dark:border-white/10 space-y-1 shadow-sm flex flex-col justify-between">
                         <div>
-                          <div className="text-[8px] font-black uppercase tracking-widest text-zinc-455">Blended Margin Shift</div>
+                          <div className="text-[8px] font-black uppercase tracking-widest text-zinc-500">Blended Margin Shift</div>
                           <div className={`text-sm font-black mt-1 ${removeMarginImpact >= 0 ? 'text-emerald-500' : 'text-red-500'}`}>
                             {removeMarginImpact > 0 ? '+' : ''}{removeMarginImpact} pp
                           </div>
@@ -475,7 +475,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                             <>
                               <div className="h-3.5 w-full bg-black/10 dark:bg-white/10 rounded overflow-hidden flex text-[8.5px] font-black text-white shadow-inner">
                                 {trPct > 0 && (
-                                  <div style={{ width: `${trPct}%` }} className="bg-emerald-505 h-full flex items-center justify-center transition-all duration-300" title="Transferred to substitute">
+                                  <div style={{ width: `${trPct}%` }} className="bg-emerald-500 h-full flex items-center justify-center transition-all duration-300" title="Transferred to substitute">
                                     {trPct >= 10 ? `${trPct}%` : ''}
                                   </div>
                                 )}
@@ -495,7 +495,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                                   </div>
                                 )}
                               </div>
-                              <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-[7.5px] font-bold text-zinc-450 dark:text-zinc-500 uppercase mt-1">
+                              <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-[7.5px] font-bold text-zinc-500 dark:text-zinc-500 uppercase mt-1">
                                 <span className="flex items-center gap-1">🟢 Transferred: ${transferredVolume} M ({trPct}%)</span>
                                 <span className="flex items-center gap-1">🔵 Relief: ${cannibalizationRelief} M ({reliefPct}%)</span>
                                 <span className="flex items-center gap-1">🔴 Leakage: ${(leakageVolume * 0.6).toFixed(1)} M ({leakPct}%)</span>
@@ -511,7 +511,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                   {simTab === 'price' && (
                     <>
                       <div className="bg-white dark:bg-[#1a1a24] p-3 rounded border border-black/5 dark:border-white/10 space-y-1 shadow-sm">
-                        <div className="text-[8px] font-black uppercase tracking-widest text-zinc-455">Revenue Delta</div>
+                        <div className="text-[8px] font-black uppercase tracking-widest text-zinc-500">Revenue Delta</div>
                         <div className={`text-sm font-black ${revDelta >= 0 ? 'text-emerald-500' : 'text-red-500'}`}>
                           {revDelta > 0 ? '+' : ''}${revDelta} M
                         </div>
@@ -522,7 +522,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                       </div>
 
                       <div className="bg-white dark:bg-[#1a1a24] p-3 rounded border border-black/5 dark:border-white/10 space-y-1 shadow-sm">
-                        <div className="text-[8px] font-black uppercase tracking-widest text-zinc-455">New Item Margin</div>
+                        <div className="text-[8px] font-black uppercase tracking-widest text-zinc-500">New Item Margin</div>
                         <div className={`text-sm font-black ${newMargin > selectedSku.margin ? 'text-emerald-500' : 'text-red-500'}`}>
                           {newMargin}%
                         </div>
@@ -533,7 +533,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                       </div>
 
                       <div className="bg-white dark:bg-[#1a1a24] p-3 rounded border border-black/5 dark:border-white/10 space-y-1 shadow-sm">
-                        <div className="text-[8px] font-black uppercase tracking-widest text-zinc-455">Volume displacement</div>
+                        <div className="text-[8px] font-black uppercase tracking-widest text-zinc-500">Volume displacement</div>
                         <div className={`text-sm font-black ${volChange >= 0 ? 'text-emerald-500' : 'text-amber-500'}`}>
                           {(volChange * 100).toFixed(1)}%
                         </div>
@@ -544,7 +544,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                       </div>
 
                       <div className="bg-white dark:bg-[#1a1a24] p-3 rounded border border-black/5 dark:border-white/10 space-y-1 shadow-sm">
-                        <div className="text-[8px] font-black uppercase tracking-widest text-zinc-455">Volume Elasticity</div>
+                        <div className="text-[8px] font-black uppercase tracking-widest text-zinc-500">Volume Elasticity</div>
                         <div className={`text-sm font-black ${Math.abs(priceChange) > 15 ? 'text-red-500' : 'text-emerald-500'}`}>
                           {volumeElasticity.toFixed(1)}x
                         </div>
@@ -580,7 +580,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                             </AreaChart>
                           </ResponsiveContainer>
                         </div>
-                        <p className="text-[7.5px] text-zinc-450 dark:text-zinc-500 font-bold uppercase tracking-wider text-center">
+                        <p className="text-[7.5px] text-zinc-500 dark:text-zinc-500 font-bold uppercase tracking-wider text-center">
                           Simulated revenue output across pricing corridors from -30% to +40%
                         </p>
                       </div>
@@ -590,16 +590,16 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                   {simTab === 'launch' && (
                     <>
                       <div className="bg-white dark:bg-[#1a1a24] p-3 rounded border border-black/5 dark:border-white/10 space-y-1 shadow-sm">
-                        <div className="text-[8px] font-black uppercase tracking-widest text-zinc-455">Projected Sales</div>
+                        <div className="text-[8px] font-black uppercase tracking-widest text-zinc-500">Projected Sales</div>
                         <div className="text-sm font-black text-blue-500">${netLaunchRev} M</div>
-                        <div className="text-[7.5px] font-semibold text-zinc-550">{`Minus ${Math.round(cannHaircut * 100)}% displacement`}</div>
+                        <div className="text-[7.5px] font-semibold text-zinc-600">{`Minus ${Math.round(cannHaircut * 100)}% displacement`}</div>
                         <div className="w-full h-1 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden mt-1">
                           <div className="h-full bg-blue-500" style={{ width: `${Math.min(100, netLaunchRev / 2)}%` }} />
                         </div>
                       </div>
 
                       <div className="bg-white dark:bg-[#1a1a24] p-3 rounded border border-black/5 dark:border-white/10 space-y-1 shadow-sm">
-                        <div className="text-[8px] font-black uppercase tracking-widest text-zinc-455">Expected Margin</div>
+                        <div className="text-[8px] font-black uppercase tracking-widest text-zinc-500">Expected Margin</div>
                         <div className="text-sm font-black text-emerald-500">{expectedMargin}%</div>
                         <div className="text-[7.5px] font-semibold text-zinc-500">Item margin projection</div>
                         <div className="w-full h-1 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden mt-1">
@@ -608,11 +608,11 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                       </div>
 
                       <div className="bg-white dark:bg-[#1a1a24] p-3 rounded border border-black/5 dark:border-white/10 space-y-1 shadow-sm">
-                        <div className="text-[8px] font-black uppercase tracking-widest text-zinc-455">Displacement impact</div>
+                        <div className="text-[8px] font-black uppercase tracking-widest text-zinc-500">Displacement impact</div>
                         <div className={`text-sm font-black ${cannibalizationRisk === 2 ? 'text-red-500' : cannibalizationRisk === 1 ? 'text-amber-500' : 'text-emerald-500'}`}>
                           {cannRiskLabel}
                         </div>
-                        <div className="text-[7.5px] font-semibold text-zinc-550 truncate" title={`Displaces ~$${(projectedRevenue * cannHaircut).toFixed(1)} M`}>
+                        <div className="text-[7.5px] font-semibold text-zinc-600 truncate" title={`Displaces ~$${(projectedRevenue * cannHaircut).toFixed(1)} M`}>
                           {`Displaces ~$${(projectedRevenue * cannHaircut).toFixed(1)} M`}
                         </div>
                         <div className="w-full h-1 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden mt-1">
@@ -621,7 +621,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                       </div>
 
                       <div className="bg-white dark:bg-[#1a1a24] p-3 rounded border border-black/5 dark:border-white/10 space-y-1 shadow-sm">
-                        <div className="text-[8px] font-black uppercase tracking-widest text-zinc-455">Complexity Delta</div>
+                        <div className="text-[8px] font-black uppercase tracking-widest text-zinc-500">Complexity Delta</div>
                         <div className="text-sm font-black text-amber-500">Moderate</div>
                         <div className="text-[7.5px] font-semibold text-zinc-500">Adds complexity +0.04</div>
                         <div className="w-full h-1 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden mt-1">
@@ -647,7 +647,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                             </div>
                           )}
                         </div>
-                        <div className="flex justify-between text-[8px] font-bold text-zinc-450 dark:text-zinc-500 uppercase mt-1">
+                        <div className="flex justify-between text-[8px] font-bold text-zinc-500 dark:text-zinc-500 uppercase mt-1">
                           <span className="flex items-center gap-1">🟢 Net Incremental: ${netLaunchRev.toFixed(1)} M</span>
                           <span className="flex items-center gap-1">🔴 Cannibalized Sibling: ${(projectedRevenue * cannHaircut).toFixed(1)} M</span>
                         </div>
@@ -674,18 +674,18 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                     </span>
                   </div>
 
-                  <p className="text-[10.5px] text-zinc-850 dark:text-zinc-200 leading-relaxed font-black uppercase tracking-wide font-sans">
+                  <p className="text-[10.5px] text-zinc-900 dark:text-zinc-200 leading-relaxed font-black uppercase tracking-wide font-sans">
                     <strong>Verdict:</strong> {netProfitImpact >= 0 
                       ? `DELIST & MIGRATE ${selectedSku.name.split(' ')[0]} ➔ ${sunsetSubstituteSku ? sunsetSubstituteSku.name.split(' ')[0] : 'Sibling'}` 
                       : `HOLD DISCONTINUATION / ADJUST PRICE`}
                   </p>
 
-                  <div className="text-[9.5px] text-zinc-550 dark:text-zinc-400 space-y-2 leading-relaxed font-semibold">
+                  <div className="text-[9.5px] text-zinc-600 dark:text-zinc-400 space-y-2 leading-relaxed font-semibold">
                     <p>
                       <strong>Core Rationale:</strong> Sunsetting <strong className="text-zinc-700 dark:text-white">{selectedSku.name}</strong> eliminates a low-value, high-complexity variant ({selectedSku.cx * 100}% complexity score). 
                       {sunsetSubstituteSku ? (
                         <span>
-                          {" "}Migrating buyers to the higher-margin substitute <strong className="text-zinc-700 dark:text-white">{sunsetSubstituteSku.name}</strong> ({sunsetSubstituteSku.margin}% margin vs {selectedSku.margin}%) recaptures <strong className="text-emerald-505">${transferredVolume} M</strong> of revenue.
+                          {" "}Migrating buyers to the higher-margin substitute <strong className="text-zinc-700 dark:text-white">{sunsetSubstituteSku.name}</strong> ({sunsetSubstituteSku.margin}% margin vs {selectedSku.margin}%) recaptures <strong className="text-emerald-500">${transferredVolume} M</strong> of revenue.
                         </span>
                       ) : null}
                       {" "}This triggers a complexity cost savings of <strong className="text-blue-500">${complexitySavings} M</strong> and recovers <strong className="text-blue-500">${cannibalizationRelief} M</strong> in cannibalization relief on the substitute.
@@ -694,12 +694,12 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                       <strong>Net Portfolio Impact:</strong> Total profit shifts by <strong className={netProfitImpact >= 0 ? 'text-emerald-500' : 'text-red-500'}>${netProfitImpact} M</strong> with a blended margin shift of <strong className={removeMarginImpact >= 0 ? 'text-emerald-500' : 'text-red-500'}>{removeMarginImpact > 0 ? '+' : ''}{removeMarginImpact}pp</strong>.
                     </p>
                     <p>
-                      <strong>Implementation Strategy:</strong> Issue 60-day notices to retail partners. Raise safety stock buffers by <strong className="text-purple-550">15%</strong> on substitute {sunsetSubstituteSku ? sunsetSubstituteSku.name.split(' ')[0] : 'sibling'} to capture shifted volume and prevent stockout leakages.
+                      <strong>Implementation Strategy:</strong> Issue 60-day notices to retail partners. Raise safety stock buffers by <strong className="text-purple-600">15%</strong> on substitute {sunsetSubstituteSku ? sunsetSubstituteSku.name.split(' ')[0] : 'sibling'} to capture shifted volume and prevent stockout leakages.
                     </p>
                   </div>
                 </div>
               ) : (
-                <div className="p-3.5 bg-acies-yellow/[0.03] dark:bg-white/[0.01] border border-black/10 dark:border-white/10 rounded-xl text-[10.5px] leading-relaxed text-zinc-550 dark:text-zinc-450 font-semibold relative flex gap-2 items-start">
+                <div className="p-3.5 bg-acies-yellow/[0.03] dark:bg-white/[0.01] border border-black/10 dark:border-white/10 rounded-xl text-[10.5px] leading-relaxed text-zinc-600 dark:text-zinc-500 font-semibold relative flex gap-2 items-start">
                   <Cpu size={14} className="text-acies-yellow shrink-0 mt-0.5 animate-pulse" />
                   <div>
                     {simTab === 'price' && (

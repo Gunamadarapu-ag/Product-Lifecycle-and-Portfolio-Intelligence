@@ -357,7 +357,7 @@ export const SKURationalization: React.FC<SKURationalizationProps> = ({ role, is
                   onChange={(e) => setLedgerSearch(e.target.value)}
                   className="w-full bg-black/5 dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-lg py-2 px-3 pl-8 text-xs font-semibold text-acies-gray dark:text-white outline-none focus:border-emerald-600"
                 />
-                <span className="absolute left-2.5 top-2.5 text-zinc-450 dark:text-zinc-500 text-xs">
+                <span className="absolute left-2.5 top-2.5 text-zinc-500 dark:text-zinc-500 text-xs">
                   <Search size={12} />
                 </span>
               </div>
@@ -391,7 +391,7 @@ export const SKURationalization: React.FC<SKURationalizationProps> = ({ role, is
                 <tbody className="divide-y divide-black/5 dark:divide-white/5 font-medium">
                   {filteredLogs.map((log) => (
                     <tr key={log.id} className="hover:bg-black/[0.01] dark:hover:bg-white/[0.01]">
-                      <td className="py-3 px-3 font-mono font-bold text-zinc-450">{log.id}</td>
+                      <td className="py-3 px-3 font-mono font-bold text-zinc-500">{log.id}</td>
                       <td className="py-3 px-3 text-zinc-400 font-bold whitespace-nowrap">{log.timestamp}</td>
                       <td className="py-3 px-3">
                         <div className="font-black text-acies-gray dark:text-zinc-200">
@@ -409,7 +409,7 @@ export const SKURationalization: React.FC<SKURationalizationProps> = ({ role, is
                         </span>
                       </td>
                       <td className="py-3 px-3 font-extrabold uppercase text-acies-gray dark:text-zinc-200">{log.actionLabel}</td>
-                      <td className="py-3 px-3 text-zinc-500 dark:text-zinc-450 leading-relaxed max-w-sm">
+                      <td className="py-3 px-3 text-zinc-500 dark:text-zinc-500 leading-relaxed max-w-sm">
                         <div className="font-black text-[9px] text-zinc-400 uppercase">Params: {log.details}</div>
                         <div className="mt-0.5">{log.rationale}</div>
                       </td>
@@ -441,7 +441,7 @@ export const SKURationalization: React.FC<SKURationalizationProps> = ({ role, is
                               </button>
                             );
                           }
-                          return <span className="text-zinc-400 dark:text-zinc-650">—</span>;
+                          return <span className="text-zinc-400 dark:text-zinc-700">—</span>;
                         })()}
                       </td>
                     </tr>
@@ -487,7 +487,7 @@ export const SKURationalization: React.FC<SKURationalizationProps> = ({ role, is
       {/* Full-Screen Action Control Room Modal Overlay */}
       {state.isControlCenterOpen && createPortal(
         <div className="fixed inset-0 bg-black/60 dark:bg-black/85 backdrop-blur-sm z-[999] flex items-center justify-center p-4 sm:p-6 md:p-10 animate-fadeIn font-sans">
-          <div className="bg-white dark:bg-acies-offwhite border border-black/10 dark:border-white/10 rounded-2xl w-full max-w-5xl h-[90vh] flex flex-col overflow-hidden shadow-2xl relative text-zinc-850 dark:text-white">
+          <div className="bg-white dark:bg-acies-offwhite border border-black/10 dark:border-white/10 rounded-2xl w-full max-w-5xl h-[90vh] flex flex-col overflow-hidden shadow-2xl relative text-zinc-900 dark:text-white">
             {/* Header */}
             <div className="px-6 py-4 border-b border-black/5 dark:border-white/5 flex justify-between items-center bg-black/[0.02] dark:bg-white/[0.02]">
               <div>
@@ -495,13 +495,13 @@ export const SKURationalization: React.FC<SKURationalizationProps> = ({ role, is
                   <Activity className="text-purple-600 dark:text-purple-400 stroke-[2.5]" size={16} />
                   <span>Action Control Desk</span>
                 </h3>
-                <p className="text-[9px] text-zinc-400 dark:text-zinc-555 font-bold uppercase mt-1">
+                <p className="text-[9px] text-zinc-400 dark:text-zinc-600 font-bold uppercase mt-1">
                   Manage and authorize operations for sibling variant: {state.skuA} vs {state.skuB}
                 </p>
               </div>
               <button
                 onClick={() => state.setIsControlCenterOpen(false)}
-                className="p-1.5 hover:bg-black/5 dark:hover:bg-white/5 border-none rounded-lg cursor-pointer text-zinc-450 hover:text-zinc-800 dark:hover:text-white transition bg-transparent"
+                className="p-1.5 hover:bg-black/5 dark:hover:bg-white/5 border-none rounded-lg cursor-pointer text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition bg-transparent"
               >
                 <X size={16} />
               </button>
@@ -552,7 +552,7 @@ export const SKURationalization: React.FC<SKURationalizationProps> = ({ role, is
       {/* Document Viewer Modal Overlay */}
       {state.selectedDoc && documentTemplates[state.selectedDoc] && createPortal(
         <div className="fixed inset-0 bg-black/60 dark:bg-black/85 backdrop-blur-sm z-[1000] flex items-center justify-center p-4 sm:p-6 animate-fadeIn font-mono">
-          <div className="bg-zinc-50 dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-xl w-full max-w-2xl h-[85vh] flex flex-col overflow-hidden shadow-2xl relative text-zinc-850 dark:text-zinc-100">
+          <div className="bg-zinc-50 dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-xl w-full max-w-2xl h-[85vh] flex flex-col overflow-hidden shadow-2xl relative text-zinc-900 dark:text-zinc-100">
             {/* Header */}
             <div className="px-6 py-4 border-b border-black/5 dark:border-white/5 flex justify-between items-center bg-black/[0.02] dark:bg-white/[0.02]">
               <div>
@@ -574,7 +574,7 @@ export const SKURationalization: React.FC<SKURationalizationProps> = ({ role, is
                     }, 1200);
                   }}
                   disabled={isPrinting || isDownloading}
-                  className="p-1.5 hover:bg-black/5 dark:hover:bg-white/5 border-none rounded-lg cursor-pointer text-zinc-450 hover:text-zinc-850 dark:hover:text-white transition bg-transparent disabled:opacity-55"
+                  className="p-1.5 hover:bg-black/5 dark:hover:bg-white/5 border-none rounded-lg cursor-pointer text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition bg-transparent disabled:opacity-55"
                   title="Print Document"
                 >
                   <Printer size={14} />
@@ -598,14 +598,14 @@ export const SKURationalization: React.FC<SKURationalizationProps> = ({ role, is
                     }, 1200);
                   }}
                   disabled={isPrinting || isDownloading}
-                  className="p-1.5 hover:bg-black/5 dark:hover:bg-white/5 border-none rounded-lg cursor-pointer text-zinc-450 hover:text-zinc-850 dark:hover:text-white transition bg-transparent disabled:opacity-55"
+                  className="p-1.5 hover:bg-black/5 dark:hover:bg-white/5 border-none rounded-lg cursor-pointer text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition bg-transparent disabled:opacity-55"
                   title="Download PDF/Report"
                 >
                   <Download size={14} />
                 </button>
                 <button
                   onClick={() => state.setSelectedDoc(null)}
-                  className="p-1.5 hover:bg-black/5 dark:hover:bg-white/5 border-none rounded-lg cursor-pointer text-zinc-450 hover:text-zinc-850 dark:hover:text-white transition bg-transparent"
+                  className="p-1.5 hover:bg-black/5 dark:hover:bg-white/5 border-none rounded-lg cursor-pointer text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition bg-transparent"
                   title="Close"
                 >
                   <X size={14} />
@@ -616,7 +616,7 @@ export const SKURationalization: React.FC<SKURationalizationProps> = ({ role, is
             {/* Document Body Area */}
             <div className="flex-1 overflow-y-auto p-8 relative bg-white dark:bg-[#16161c]">
               {/* Paper Look */}
-              <div className="border border-zinc-250 dark:border-zinc-800 p-6 rounded shadow-sm bg-zinc-50/50 dark:bg-zinc-900/30 min-h-full flex flex-col justify-between relative">
+              <div className="border border-zinc-300 dark:border-zinc-800 p-6 rounded shadow-sm bg-zinc-50/50 dark:bg-zinc-900/30 min-h-full flex flex-col justify-between relative">
                 
                 {/* Confidential Watermark Ribbon */}
                 <div className="absolute top-2 right-2 text-[6px] tracking-widest font-sans font-bold px-1.5 py-0.5 rounded border border-red-500/20 text-red-500 bg-red-500/5 rotate-[5deg] uppercase">
@@ -657,7 +657,7 @@ export const SKURationalization: React.FC<SKURationalizationProps> = ({ role, is
                 <div className="absolute inset-0 bg-black/55 backdrop-blur-xs flex items-center justify-center animate-fadeIn z-50">
                   <div className="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-xl p-6 shadow-xl flex flex-col items-center gap-3">
                     <RefreshCw size={24} className="animate-spin text-purple-600 dark:text-purple-400" />
-                    <span className="text-xs font-bold uppercase tracking-wider text-zinc-850 dark:text-zinc-250 font-sans">
+                    <span className="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-300 font-sans">
                       Sending to Vault Printer...
                     </span>
                   </div>
@@ -668,7 +668,7 @@ export const SKURationalization: React.FC<SKURationalizationProps> = ({ role, is
                 <div className="absolute inset-0 bg-black/55 backdrop-blur-xs flex items-center justify-center animate-fadeIn z-50">
                   <div className="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-xl p-6 shadow-xl flex flex-col items-center gap-3">
                     <RefreshCw size={24} className="animate-spin text-purple-600 dark:text-purple-400" />
-                    <span className="text-xs font-bold uppercase tracking-wider text-zinc-850 dark:text-zinc-250 font-sans">
+                    <span className="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-300 font-sans">
                       Generating Verification Report...
                     </span>
                   </div>

@@ -129,7 +129,7 @@ export const RegionalChannelPerformance: React.FC<RegionalChannelPerformanceProp
           <select 
             value={selectedCategory}
             onChange={(e) => handleCategoryChange(e.target.value)}
-            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-650 dark:text-zinc-350 outline-none cursor-pointer"
+            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
           >
             <option value="All">All Categories</option>
             <option value="Beverages">Beverages</option>
@@ -146,7 +146,7 @@ export const RegionalChannelPerformance: React.FC<RegionalChannelPerformanceProp
           <select 
             value={selectedSkuName}
             onChange={(e) => setSelectedSkuName(e.target.value)}
-            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-650 dark:text-zinc-350 outline-none cursor-pointer max-w-xs"
+            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer max-w-xs"
           >
             <option value="All">All SKUs</option>
             {availableSkus.map(s => (
@@ -169,7 +169,7 @@ export const RegionalChannelPerformance: React.FC<RegionalChannelPerformanceProp
             <div className="flex justify-between items-center mb-4 border-b border-black/5 dark:border-white/5 pb-2">
               <div className="flex items-center gap-2">
                 <Globe size={13} className="text-[#6d28d9] dark:text-[#a78bfa]" />
-                <h4 className="text-xs uppercase font-extrabold tracking-wider text-zinc-750 dark:text-zinc-200">Region-wise SKU Performance</h4>
+                <h4 className="text-xs uppercase font-extrabold tracking-wider text-zinc-800 dark:text-zinc-200">Region-wise SKU Performance</h4>
               </div>
               <span className="text-[8px] uppercase font-bold text-zinc-400">Revenue ($ M)</span>
             </div>
@@ -212,7 +212,7 @@ export const RegionalChannelPerformance: React.FC<RegionalChannelPerformanceProp
             <div className="flex justify-between items-center mb-4 border-b border-black/5 dark:border-white/5 pb-2">
               <div className="flex items-center gap-2">
                 <ShoppingBag size={13} className="text-[#6d28d9] dark:text-[#a78bfa]" />
-                <h4 className="text-xs uppercase font-extrabold tracking-wider text-zinc-750 dark:text-zinc-200">Channel-wise SKU Performance</h4>
+                <h4 className="text-xs uppercase font-extrabold tracking-wider text-zinc-800 dark:text-zinc-200">Channel-wise SKU Performance</h4>
               </div>
               <span className="text-[8px] uppercase font-bold text-zinc-400">Sales & Margin</span>
             </div>
@@ -254,27 +254,27 @@ export const RegionalChannelPerformance: React.FC<RegionalChannelPerformanceProp
         </h4>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-[9.5px] leading-relaxed">
           <div className="p-3 bg-black/5 dark:bg-white/5 rounded-sm space-y-1">
-            <span className="text-zinc-550 block uppercase font-bold text-[8px]">Sales Volume</span>
+            <span className="text-zinc-600 block uppercase font-bold text-[8px]">Sales Volume</span>
             <span className="text-sm font-extrabold text-zinc-800 dark:text-white block font-mono">
               ${insights.totalSales.toFixed(1)} M
             </span>
-            <p className="text-zinc-450 mt-1 font-medium">Blended sales footprint across all listed channels in Q1.</p>
+            <p className="text-zinc-500 mt-1 font-medium">Blended sales footprint across all listed channels in Q1.</p>
           </div>
 
           <div className="p-3 bg-black/5 dark:bg-white/5 rounded-sm space-y-1">
-            <span className="text-zinc-550 block uppercase font-bold text-[8px]">Dominant Geography</span>
+            <span className="text-zinc-600 block uppercase font-bold text-[8px]">Dominant Geography</span>
             <span className="text-sm font-extrabold text-zinc-800 dark:text-white block">
               {insights.topRegionName} <span className="text-xs font-mono font-medium text-purple-500">(${insights.topRegionSales.toFixed(1)} M)</span>
             </span>
-            <p className="text-zinc-450 mt-1 font-medium">Represents the highest regional cluster, driving the major mix volume.</p>
+            <p className="text-zinc-500 mt-1 font-medium">Represents the highest regional cluster, driving the major mix volume.</p>
           </div>
 
           <div className="p-3 bg-black/5 dark:bg-white/5 rounded-sm space-y-1">
-            <span className="text-zinc-550 block uppercase font-bold text-[8px]">Primary Channel</span>
+            <span className="text-zinc-600 block uppercase font-bold text-[8px]">Primary Channel</span>
             <span className="text-sm font-extrabold text-zinc-800 dark:text-white block">
               {insights.topChannelName} <span className="text-xs font-mono font-medium text-emerald-500">(${insights.topChannelSales.toFixed(1)} M)</span>
             </span>
-            <p className="text-zinc-450 mt-1 font-medium">Hypermarket channel continues to act as the primary margin driver.</p>
+            <p className="text-zinc-500 mt-1 font-medium">Hypermarket channel continues to act as the primary margin driver.</p>
           </div>
         </div>
       </div>

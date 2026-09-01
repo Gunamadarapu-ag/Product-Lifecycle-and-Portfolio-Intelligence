@@ -176,7 +176,7 @@ export const CalculatorScorer: React.FC<CalculatorScorerProps> = ({
         </button>
 
         {guideOpen && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-black/5 dark:border-white/5 mt-3 text-[11px] leading-relaxed text-zinc-555 dark:text-zinc-400 font-semibold animate-fadeIn">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-black/5 dark:border-white/5 mt-3 text-[11px] leading-relaxed text-zinc-600 dark:text-zinc-400 font-semibold animate-fadeIn">
             <div className="space-y-1">
               <h4 className="font-bold text-acies-gray dark:text-white uppercase text-[9px] tracking-wider text-[#8b5cf6]">1. Cannibalization Scatter Map</h4>
               <p>Represents variant overlaps. Bubble size denotes revenue at risk. Click bubbles to auto-load pairs inside the scorer card.</p>
@@ -313,22 +313,22 @@ export const CalculatorScorer: React.FC<CalculatorScorerProps> = ({
               <div className="p-3 bg-black/5 dark:bg-[#121214]/60 border border-black/5 dark:border-white/5 rounded text-center">
                 <p className="text-[8px] font-bold uppercase tracking-widest opacity-45 mb-1">Variant A (To delist)</p>
                 <h5 className="text-[11px] font-bold truncate text-acies-gray dark:text-white" title={skuA}>{skuA}</h5>
-                <p className="text-[9px] font-bold text-zinc-450 dark:text-zinc-500 mt-0.5">${revA} M · Margin {marginA}%</p>
+                <p className="text-[9px] font-bold text-zinc-500 dark:text-zinc-500 mt-0.5">${revA} M · Margin {marginA}%</p>
               </div>
               <div className="p-3 bg-black/5 dark:bg-[#121214]/60 border border-black/5 dark:border-white/5 rounded text-center">
                 <p className="text-[8px] font-bold uppercase tracking-widest opacity-45 mb-1">Variant B (Substitute)</p>
                 <h5 className="text-[11px] font-bold truncate text-acies-gray dark:text-white" title={skuB}>{skuB}</h5>
-                <p className="text-[9px] font-bold text-zinc-450 dark:text-zinc-500 mt-0.5">${revB} M · Margin {marginB}%</p>
+                <p className="text-[9px] font-bold text-zinc-500 dark:text-zinc-500 mt-0.5">${revB} M · Margin {marginB}%</p>
               </div>
               <div className="p-3 bg-black/5 dark:bg-[#121214]/60 border border-black/5 dark:border-white/5 rounded text-center">
                 <p className="text-[8px] font-bold uppercase tracking-widest opacity-45 mb-1">Cross Correlation</p>
                 <h5 className="text-base font-display font-extrabold text-[#8b5cf6] dark:text-purple-300">{correlation.toFixed(2)}</h5>
-                <p className="text-[8px] font-bold uppercase tracking-wider text-zinc-450 dark:text-zinc-500 mt-0.5">Substitution strength</p>
+                <p className="text-[8px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-500 mt-0.5">Substitution strength</p>
               </div>
               <div className="p-3 bg-black/5 dark:bg-[#121214]/60 border border-black/5 dark:border-white/5 rounded text-center">
                 <p className="text-[8px] font-bold uppercase tracking-widest opacity-45 mb-1">Substitution Threat</p>
                 <h5 className="text-base font-display font-extrabold text-acies-gray dark:text-white">{(pairRisk * 100).toFixed(0)}%</h5>
-                <p className="text-[8px] font-bold uppercase tracking-wider text-zinc-450 dark:text-zinc-500 mt-0.5">Transfer potential</p>
+                <p className="text-[8px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-500 mt-0.5">Transfer potential</p>
               </div>
             </div>
 
@@ -342,7 +342,7 @@ export const CalculatorScorer: React.FC<CalculatorScorerProps> = ({
                     <Sliders size={12} className="text-acies-yellow" />
                     Demand Transference & Assortment Simulator
                   </h4>
-                  <p className="text-[9px] text-zinc-450 dark:text-zinc-500 font-bold uppercase tracking-wider">
+                  <p className="text-[9px] text-zinc-500 dark:text-zinc-500 font-bold uppercase tracking-wider">
                     Compare outcomes across distinct transfer scenarios to determine the optimal strategy
                   </p>
                 </div>
@@ -390,7 +390,7 @@ export const CalculatorScorer: React.FC<CalculatorScorerProps> = ({
                           <span className="text-[10px] font-extrabold uppercase text-acies-gray dark:text-white leading-none">{scen.name}</span>
                           {isActive && <CheckCircle2 size={11} className="text-[#8b5cf6] stroke-[3]" />}
                         </div>
-                        <span className="text-[8px] font-bold uppercase text-zinc-450 dark:text-zinc-500">{scen.desc}</span>
+                        <span className="text-[8px] font-bold uppercase text-zinc-500 dark:text-zinc-500">{scen.desc}</span>
                       </div>
                       
                       <div className="flex justify-between items-end mt-2 pt-2 border-t border-black/5 dark:border-white/5">

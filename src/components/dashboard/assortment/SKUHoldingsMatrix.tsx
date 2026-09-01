@@ -131,7 +131,7 @@ export const SKUHoldingsMatrix: React.FC<SKUHoldingsMatrixProps> = () => {
               className={`px-3 py-1 text-[8.5px] font-bold uppercase tracking-wider rounded transition-all cursor-pointer ${
                 selectedCategory === cat
                   ? 'bg-white dark:bg-zinc-800 text-acies-yellow shadow-sm'
-                  : 'text-zinc-450 hover:text-zinc-650 dark:hover:text-zinc-200'
+                  : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-200'
               }`}
             >
               {cat}
@@ -141,7 +141,7 @@ export const SKUHoldingsMatrix: React.FC<SKUHoldingsMatrixProps> = () => {
 
         {/* Search Bar Input */}
         <div className="relative w-full lg:w-72">
-          <Search size={12} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-450" />
+          <Search size={12} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-500" />
           <input
             type="text"
             placeholder="Search variant name..."
@@ -160,19 +160,19 @@ export const SKUHoldingsMatrix: React.FC<SKUHoldingsMatrixProps> = () => {
           <table className="w-full text-left border-collapse text-[9.5px]">
             <thead>
               <tr className="bg-black/5 dark:bg-zinc-900 border-b border-black/10 dark:border-white/10 text-[8.5px] font-bold uppercase tracking-wider text-zinc-400">
-                <th className="py-2.5 px-3 cursor-pointer select-none hover:text-zinc-250 min-w-[140px]" onClick={() => handleSort('name')}>
+                <th className="py-2.5 px-3 cursor-pointer select-none hover:text-zinc-300 min-w-[140px]" onClick={() => handleSort('name')}>
                   <div className="flex items-center gap-1">
                     SKU Name
                     <ArrowUpDown size={10} />
                   </div>
                 </th>
-                <th className="py-2.5 px-2 cursor-pointer select-none hover:text-zinc-250" onClick={() => handleSort('rev')}>
+                <th className="py-2.5 px-2 cursor-pointer select-none hover:text-zinc-300" onClick={() => handleSort('rev')}>
                   <div className="flex items-center gap-1">
                     Sales
                     <ArrowUpDown size={10} />
                   </div>
                 </th>
-                <th className="py-2.5 px-2 cursor-pointer select-none hover:text-zinc-250" onClick={() => handleSort('margin')}>
+                <th className="py-2.5 px-2 cursor-pointer select-none hover:text-zinc-300" onClick={() => handleSort('margin')}>
                   <div className="flex items-center gap-1">
                     Margin
                     <ArrowUpDown size={10} />
@@ -195,7 +195,7 @@ export const SKUHoldingsMatrix: React.FC<SKUHoldingsMatrixProps> = () => {
                 >
                   <td className="py-2 px-3 font-bold text-zinc-800 dark:text-zinc-200 truncate max-w-[160px]">
                     <span className="block truncate">{sku.name}</span>
-                    <span className="text-[7px] text-zinc-450 uppercase tracking-widest">{sku.cat}</span>
+                    <span className="text-[7px] text-zinc-500 uppercase tracking-widest">{sku.cat}</span>
                   </td>
                   <td className="py-2 px-2 font-mono font-bold text-zinc-500">${sku.rev}M</td>
                   <td className="py-2 px-2 font-mono font-bold text-emerald-500">{sku.margin}%</td>
@@ -256,7 +256,7 @@ export const SKUHoldingsMatrix: React.FC<SKUHoldingsMatrixProps> = () => {
                   </div>
                   <button 
                     onClick={() => setSelectedCell(null)}
-                    className="text-zinc-450 hover:text-zinc-700 dark:hover:text-zinc-200 border-none bg-transparent cursor-pointer p-0.5"
+                    className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-200 border-none bg-transparent cursor-pointer p-0.5"
                   >
                     <XCircle size={14} />
                   </button>
@@ -265,14 +265,14 @@ export const SKUHoldingsMatrix: React.FC<SKUHoldingsMatrixProps> = () => {
                 {/* SKU Details */}
                 <div className="space-y-2 text-[9px]">
                   <div>
-                    <span className="text-zinc-450 uppercase block font-bold text-[7.5px]">Selected SKU</span>
+                    <span className="text-zinc-500 uppercase block font-bold text-[7.5px]">Selected SKU</span>
                     <span className="font-bold text-zinc-800 dark:text-zinc-200">{details.sku.name}</span>
                     <span className="text-[7px] text-zinc-500 uppercase tracking-widest block">{details.sku.cat}</span>
                   </div>
 
                   {/* Status Box */}
                   <div className="pt-2">
-                    <span className="text-zinc-450 uppercase block font-bold text-[7.5px] mb-1">Holdings Status</span>
+                    <span className="text-zinc-500 uppercase block font-bold text-[7.5px] mb-1">Holdings Status</span>
                     {details.status === 'active' && (
                       <span className="px-2 py-0.5 rounded-full text-[7px] font-extrabold uppercase bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 inline-flex items-center gap-1">
                         <CheckCircle size={8} /> Listed / Healthy Stock
@@ -289,7 +289,7 @@ export const SKUHoldingsMatrix: React.FC<SKUHoldingsMatrixProps> = () => {
                       </span>
                     )}
                     {details.status === 'not-listed' && (
-                      <span className="px-2 py-0.5 rounded-full text-[7px] font-extrabold uppercase bg-zinc-500/10 text-zinc-400 border border-zinc-550/20 inline-flex items-center gap-1">
+                      <span className="px-2 py-0.5 rounded-full text-[7px] font-extrabold uppercase bg-zinc-500/10 text-zinc-400 border border-zinc-600/20 inline-flex items-center gap-1">
                         <Minus size={8} /> Not Listed in Catalog
                       </span>
                     )}
@@ -299,19 +299,19 @@ export const SKUHoldingsMatrix: React.FC<SKUHoldingsMatrixProps> = () => {
                   {details.status !== 'not-listed' && (
                     <div className="pt-3 border-t border-black/5 dark:border-white/5 space-y-1.5 font-mono">
                       <div className="flex justify-between">
-                        <span className="font-sans text-zinc-450 font-bold">Local Sales:</span>
+                        <span className="font-sans text-zinc-500 font-bold">Local Sales:</span>
                         <span className="font-bold text-zinc-700 dark:text-zinc-200">${details.localSalesVal} M</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="font-sans text-zinc-450 font-bold">Local Margin:</span>
+                        <span className="font-sans text-zinc-500 font-bold">Local Margin:</span>
                         <span className="font-bold text-emerald-500">{details.localMargin}%</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="font-sans text-zinc-450 font-bold">Supplier Lead Time:</span>
+                        <span className="font-sans text-zinc-500 font-bold">Supplier Lead Time:</span>
                         <span className="font-bold text-zinc-700 dark:text-zinc-200">{details.sku.lead} days</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="font-sans text-zinc-450 font-bold">Stockouts Count:</span>
+                        <span className="font-sans text-zinc-500 font-bold">Stockouts Count:</span>
                         <span className={`font-bold ${details.sku.stockouts >= 4 ? 'text-rose-500 font-extrabold' : 'text-zinc-500'}`}>
                           {details.sku.stockouts} / yr
                         </span>
@@ -322,7 +322,7 @@ export const SKUHoldingsMatrix: React.FC<SKUHoldingsMatrixProps> = () => {
 
                 {/* Sourcing Action Recommendations */}
                 <div className="pt-3 border-t border-black/5 dark:border-white/5">
-                  <span className="text-zinc-450 uppercase block font-bold text-[7.5px] mb-1">Prescriptive SLA</span>
+                  <span className="text-zinc-500 uppercase block font-bold text-[7.5px] mb-1">Prescriptive SLA</span>
                   <p className="text-[8.5px] leading-relaxed text-zinc-500">
                     {details.status === 'active' && 'Current replenishment cycle is stable. Maintain safety stock reserves.'}
                     {details.status === 'warning' && `Low velocity/volatility warning. Consider optimizing regional logistics buffers or re-negotiating supplier SLAs (lead time: ${details.sku.lead} days).`}
@@ -334,7 +334,7 @@ export const SKUHoldingsMatrix: React.FC<SKUHoldingsMatrixProps> = () => {
               </div>
 
               <div className="pt-4 border-t border-black/5 dark:border-white/5 text-[7px] text-zinc-400 font-sans flex items-center gap-1.5">
-                <Info size={10} className="text-zinc-450" />
+                <Info size={10} className="text-zinc-500" />
                 <span>Double-click cells to stage reallocations.</span>
               </div>
 
@@ -343,7 +343,7 @@ export const SKUHoldingsMatrix: React.FC<SKUHoldingsMatrixProps> = () => {
             <div className="p-5 border border-dashed border-black/10 dark:border-white/10 rounded-sm flex flex-col items-center justify-center text-center h-full min-h-[260px] opacity-55">
               <Filter size={20} className="text-zinc-400 mb-2" />
               <p className="text-[9px] uppercase font-extrabold tracking-widest text-zinc-500">Cell Diagnostics</p>
-              <p className="text-[8px] text-zinc-450 mt-1 max-w-[150px] leading-relaxed">Click any colored dot inside the holdings matrix to inspect SKU performance and sourcing diagnostics.</p>
+              <p className="text-[8px] text-zinc-500 mt-1 max-w-[150px] leading-relaxed">Click any colored dot inside the holdings matrix to inspect SKU performance and sourcing diagnostics.</p>
             </div>
           )}
         </div>

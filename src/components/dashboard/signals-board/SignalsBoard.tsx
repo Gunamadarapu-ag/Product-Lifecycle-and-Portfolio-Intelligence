@@ -566,11 +566,11 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
 
       {/* Competitor Analysis Decision Console Block (Only for Product Manager) */}
       {role === 'Product Manager' && (
-        <div id="sig-competitor-console" className="glass-card bg-white dark:bg-[#0b1329] border border-black/10 dark:border-[#1e294b] p-6 rounded-sm shadow-xl space-y-6 text-zinc-805 dark:text-slate-100">
+        <div id="sig-competitor-console" className="glass-card bg-white dark:bg-[#0b1329] border border-black/10 dark:border-[#1e294b] p-6 rounded-sm shadow-xl space-y-6 text-zinc-800 dark:text-slate-100">
           <div>
             <span className="text-[8px] font-extrabold uppercase tracking-widest text-amber-600 dark:text-amber-500">Try It Yourself</span>
-            <h2 className="text-xl font-bold uppercase tracking-wider text-zinc-805 dark:text-white mt-1">Drive all four engines</h2>
-            <p className="text-[10px] text-zinc-550 dark:text-zinc-400 mt-2 leading-relaxed max-w-3xl">
+            <h2 className="text-xl font-bold uppercase tracking-wider text-zinc-800 dark:text-white mt-1">Drive all four engines</h2>
+            <p className="text-[10px] text-zinc-600 dark:text-zinc-400 mt-2 leading-relaxed max-w-3xl">
               PromoAI and PricingAI optimize your own numbers. CompeteAI adds the missing half of the picture — what rivals are actually charging and promoting — so every recommendation is benchmarked, not guessed. BundleAI turns that intelligence into offers you can act on. Move the controls below and watch each engine respond live.
             </p>
           </div>
@@ -650,7 +650,7 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                     <select 
                       value={promoProduct}
                       onChange={(e) => setPromoProduct(e.target.value)}
-                      className="bg-zinc-50 dark:bg-[#0f1b35] border border-black/10 dark:border-[#1e294b] rounded p-2 text-xs font-semibold text-zinc-850 dark:text-white outline-none cursor-pointer"
+                      className="bg-zinc-50 dark:bg-[#0f1b35] border border-black/10 dark:border-[#1e294b] rounded p-2 text-xs font-semibold text-zinc-900 dark:text-white outline-none cursor-pointer"
                     >
                       <option value="Lays">Lay's – base 1,000 units/wk</option>
                       <option value="Doritos">Doritos – base 800 units/wk</option>
@@ -714,7 +714,7 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
               {activeEngine === 'pricing' && (
                 <>
                   <div className="flex flex-col gap-1.5">
-                    <div className="flex justify-between items-center text-[10px] font-bold text-zinc-550 dark:text-zinc-500 uppercase tracking-widest pb-1 border-b border-black/5 dark:border-[#1e294b]">
+                    <div className="flex justify-between items-center text-[10px] font-bold text-zinc-600 dark:text-zinc-500 uppercase tracking-widest pb-1 border-b border-black/5 dark:border-[#1e294b]">
                       <span>pricingai.decision_engine – Elasticity + Differential Evolution</span>
                     </div>
                   </div>
@@ -723,7 +723,7 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                     <div className="space-y-2">
                       <div className="flex justify-between items-center text-[10px] font-semibold text-zinc-500 dark:text-zinc-400">
                         <span>Pepsi price</span>
-                        <span className="text-amber-655 dark:text-amber-600 dark:text-amber-500 font-bold">₹{pepsiPrice.toFixed(2)}</span>
+                        <span className="text-amber-700 dark:text-amber-600 dark:text-amber-500 font-bold">₹{pepsiPrice.toFixed(2)}</span>
                       </div>
                       <input 
                         type="range" 
@@ -739,7 +739,7 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                     <div className="space-y-2">
                       <div className="flex justify-between items-center text-[10px] font-semibold text-zinc-500 dark:text-zinc-400">
                         <span>Mountain Dew price</span>
-                        <span className="text-amber-655 dark:text-amber-600 dark:text-amber-500 font-bold">₹{mtnDewPrice.toFixed(2)}</span>
+                        <span className="text-amber-700 dark:text-amber-600 dark:text-amber-500 font-bold">₹{mtnDewPrice.toFixed(2)}</span>
                       </div>
                       <input 
                         type="range" 
@@ -753,7 +753,7 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                     </div>
                   </div>
 
-                  <div className="bg-blue-50/70 dark:bg-[#121c29]/50 border border-blue-500/15 dark:border-blue-500/10 p-3 rounded-sm text-[9.5px] text-zinc-650 dark:text-zinc-400 leading-relaxed font-semibold">
+                  <div className="bg-blue-50/70 dark:bg-[#121c29]/50 border border-blue-500/15 dark:border-blue-500/10 p-3 rounded-sm text-[9.5px] text-zinc-700 dark:text-zinc-400 leading-relaxed font-semibold">
                     Cross-elasticity: raising Pepsi's price nudges some buyers toward Mountain Dew.
                   </div>
                 </>
@@ -769,7 +769,7 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                     <select 
                       value={competeRivalReaction}
                       onChange={(e) => setCompeteRivalReaction(e.target.value as any)}
-                      className="bg-zinc-50 dark:bg-[#0f1b35] border border-black/10 dark:border-[#1e294b] rounded p-2 text-xs font-semibold text-zinc-850 dark:text-white outline-none cursor-pointer"
+                      className="bg-zinc-50 dark:bg-[#0f1b35] border border-black/10 dark:border-[#1e294b] rounded p-2 text-xs font-semibold text-zinc-900 dark:text-white outline-none cursor-pointer"
                     >
                       <option value="aggressive">Aggressive (Matches all price changes)</option>
                       <option value="moderate">Moderate (Selective regional matching)</option>
@@ -806,7 +806,7 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                     <select 
                       value={bundleSelection}
                       onChange={(e) => setBundleSelection(e.target.value)}
-                      className="bg-zinc-50 dark:bg-[#0f1b35] border border-black/10 dark:border-[#1e294b] rounded p-2 text-xs font-semibold text-zinc-850 dark:text-white outline-none cursor-pointer"
+                      className="bg-zinc-50 dark:bg-[#0f1b35] border border-black/10 dark:border-[#1e294b] rounded p-2 text-xs font-semibold text-zinc-900 dark:text-white outline-none cursor-pointer"
                     >
                       <option value="Snacks+Soda">Lay's + Pepsi 750ml</option>
                       <option value="Snacks+Snacks">Lay's + Doritos Dual-Pack</option>
@@ -843,7 +843,7 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                     <select 
                       value={estimateSeasonality}
                       onChange={(e) => setEstimateSeasonality(e.target.value as any)}
-                      className="bg-zinc-50 dark:bg-[#0f1b35] border border-black/10 dark:border-[#1e294b] rounded p-2 text-xs font-semibold text-zinc-850 dark:text-white outline-none cursor-pointer"
+                      className="bg-zinc-50 dark:bg-[#0f1b35] border border-black/10 dark:border-[#1e294b] rounded p-2 text-xs font-semibold text-zinc-900 dark:text-white outline-none cursor-pointer"
                     >
                       <option value="high">High Season (Festive Q4 Peak)</option>
                       <option value="normal">Normal Season (Standard Quarter)</option>
@@ -968,13 +968,13 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                 <div className="space-y-3 pt-2">
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-[9px] text-zinc-500 dark:text-zinc-450 font-semibold w-16">Pepsi units</span>
+                      <span className="text-[9px] text-zinc-500 dark:text-zinc-500 font-semibold w-16">Pepsi units</span>
                       <div className="w-[80%] bg-zinc-200 dark:bg-zinc-200 dark:bg-zinc-800 h-2.5 rounded-full overflow-hidden flex">
                         <div className="bg-blue-600 h-full rounded-full transition-all duration-300" style={{ width: `${Math.min(100, (pricingPepsiDemand / 15000) * 100)}%` }}></div>
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-[9px] text-zinc-500 dark:text-zinc-455 font-semibold w-16">Mtn Dew units</span>
+                      <span className="text-[9px] text-zinc-500 dark:text-zinc-500 font-semibold w-16">Mtn Dew units</span>
                       <div className="w-[80%] bg-zinc-200 dark:bg-zinc-200 dark:bg-zinc-800 h-2.5 rounded-full overflow-hidden flex">
                         <div className="bg-orange-500 h-full rounded-full transition-all duration-300" style={{ width: `${Math.min(100, (pricingMtnDewDemand / 10000) * 100)}%` }}></div>
                       </div>
@@ -990,13 +990,13 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                   
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-[9px] text-zinc-500 dark:text-zinc-450 font-semibold">No promo</span>
+                      <span className="text-[9px] text-zinc-500 dark:text-zinc-500 font-semibold">No promo</span>
                       <div className="w-[70%] bg-zinc-200 dark:bg-zinc-200 dark:bg-zinc-800 h-2.5 rounded-full overflow-hidden flex">
                         <div className="bg-blue-600 h-full rounded-full transition-all duration-300" style={{ width: '40%' }}></div>
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-[9px] text-zinc-500 dark:text-zinc-455 font-semibold">With promo</span>
+                      <span className="text-[9px] text-zinc-500 dark:text-zinc-500 font-semibold">With promo</span>
                       <div className="w-[70%] bg-zinc-200 dark:bg-zinc-200 dark:bg-zinc-800 h-2.5 rounded-full overflow-hidden flex">
                         <div 
                           className="bg-orange-500 h-full rounded-full transition-all duration-300" 
@@ -1020,9 +1020,9 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                 ? "border border-emerald-500/30 bg-emerald-50/50 dark:bg-[#0a2020]/40 p-4 rounded-sm"
                 : "bg-red-50/70 dark:bg-[#1c121e]/80 border border-red-500/15 p-4 rounded-sm"
               }>
-                <p className="text-[10px] leading-relaxed text-zinc-755 dark:text-zinc-755 dark:text-zinc-350">
+                <p className="text-[10px] leading-relaxed text-zinc-800 dark:text-zinc-800 dark:text-zinc-400">
                   <strong className={activeEngine === 'pricing'
-                    ? "text-emerald-650 dark:text-emerald-450 uppercase tracking-widest text-[9px] mr-2 font-bold"
+                    ? "text-emerald-700 dark:text-emerald-500 uppercase tracking-widest text-[9px] mr-2 font-bold"
                     : "text-red-400 uppercase tracking-widest text-[8px] mr-2"
                   }>
                     VERDICT
@@ -1078,8 +1078,8 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                   </div>
                 </div>
 
-                <div className="bg-blue-50/70 dark:bg-[#121c29]/50 border border-blue-500/15 dark:border-blue-500/10 p-3 rounded-sm text-[9.5px] text-zinc-650 dark:text-zinc-400">
-                  🤖 <span className="font-bold text-zinc-705 dark:text-zinc-755 dark:text-zinc-350 ml-1">
+                <div className="bg-blue-50/70 dark:bg-[#121c29]/50 border border-blue-500/15 dark:border-blue-500/10 p-3 rounded-sm text-[9.5px] text-zinc-700 dark:text-zinc-400">
+                  🤖 <span className="font-bold text-zinc-700 dark:text-zinc-800 dark:text-zinc-400 ml-1">
                     {activeEngine === 'promo' && promoRivalText}
                     {activeEngine === 'pricing' && `Our price is ₹${pricingOurPrice} vs Rival ₹${pricingRivalPrice}.`}
                     {activeEngine === 'compete' && `Competitor reaction level is set to ${competeRivalReaction}.`}
@@ -1101,7 +1101,7 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
 
       {/* Separate Competitor SKU Tracking Block (Only for Product Manager) */}
       {role === 'Product Manager' && (
-        <div id="sig-competitor-tracker" className="glass-card bg-white dark:bg-[#0b1329] border border-black/10 dark:border-[#1e294b] p-6 rounded-sm shadow-xl space-y-6 text-zinc-805 dark:text-slate-100">
+        <div id="sig-competitor-tracker" className="glass-card bg-white dark:bg-[#0b1329] border border-black/10 dark:border-[#1e294b] p-6 rounded-sm shadow-xl space-y-6 text-zinc-800 dark:text-slate-100">
           
           <div className="pb-3 border-b border-black/10 dark:border-[#1e294b] flex items-center justify-between">
             <h3 className="text-xs font-bold uppercase tracking-widest text-[#d97706] dark:text-[#fbbf24] flex items-center gap-2">
@@ -1120,7 +1120,7 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
               <select 
                 value={selectedSKU || ''}
                 onChange={(e) => setSelectedSKU(e.target.value || null)}
-                className="bg-white dark:bg-zinc-900 border border-black/15 dark:border-[#1e294b] rounded p-2 text-xs font-semibold text-zinc-850 dark:text-white outline-none cursor-pointer w-full"
+                className="bg-white dark:bg-zinc-900 border border-black/15 dark:border-[#1e294b] rounded p-2 text-xs font-semibold text-zinc-900 dark:text-white outline-none cursor-pointer w-full"
               >
                 <option value="">-- Select SKU to analyze --</option>
                 <option value="Lays">Lay's Classic 52g</option>
@@ -1135,7 +1135,7 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                 <div className="overflow-x-auto border border-black/5 dark:border-white/5 rounded-sm pt-2">
                   <table className="w-full text-left text-xs border-collapse">
                     <thead>
-                      <tr className="border-b border-black/10 dark:border-[#1e294b]/65 text-[9px] font-bold uppercase tracking-widest text-zinc-555 dark:text-zinc-400 bg-zinc-50 dark:bg-black/20">
+                      <tr className="border-b border-black/10 dark:border-[#1e294b]/65 text-[9px] font-bold uppercase tracking-widest text-zinc-600 dark:text-zinc-400 bg-zinc-50 dark:bg-black/20">
                         <th className="py-3 px-4">Metric</th>
                         <th className="py-3 px-4">
                           You — {selectedSKU === 'Lays' ? "Lay's Classic 52g" : selectedSKU === 'Doritos' ? "Doritos Nacho Cheese 60g" : "Kurkure Masala Munch 50g"}
@@ -1154,15 +1154,15 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                         </td>
                         <td className="py-3.5 px-4">
                           ₹{selectedSKU === 'Lays' ? '21' : selectedSKU === 'Doritos' ? '32' : '16'}
-                          <span className="ml-2 text-[10px] text-emerald-650 dark:text-emerald-400 font-bold">-1.0</span>
+                          <span className="ml-2 text-[10px] text-emerald-700 dark:text-emerald-400 font-bold">-1.0</span>
                         </td>
                         <td className="py-3.5 px-4">
                           ₹{selectedSKU === 'Lays' ? '18' : selectedSKU === 'Doritos' ? '28' : '14'}
-                          <span className="ml-2 text-[10px] text-red-600 dark:text-red-505 font-bold">+2.0</span>
+                          <span className="ml-2 text-[10px] text-red-600 dark:text-red-500 font-bold">+2.0</span>
                         </td>
                         <td className="py-3.5 px-4">
                           ₹{selectedSKU === 'Lays' ? '12' : selectedSKU === 'Doritos' ? '18' : '10'}
-                          <span className="ml-2 text-[10px] text-red-600 dark:text-red-505 font-bold">+8.0</span>
+                          <span className="ml-2 text-[10px] text-red-600 dark:text-red-500 font-bold">+8.0</span>
                         </td>
                       </tr>
 
@@ -1173,13 +1173,13 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                           {selectedSKU === 'Lays' ? '14%' : selectedSKU === 'Doritos' ? '18%' : '12%'}
                         </td>
                         <td className="py-3.5 px-4">
-                          6% <span className="ml-2 text-[10px] text-emerald-655 dark:text-emerald-400 font-bold">+8.4</span>
+                          6% <span className="ml-2 text-[10px] text-emerald-700 dark:text-emerald-400 font-bold">+8.4</span>
                         </td>
                         <td className="py-3.5 px-4">
-                          1% <span className="ml-2 text-[10px] text-emerald-655 dark:text-emerald-400 font-bold">+13.4</span>
+                          1% <span className="ml-2 text-[10px] text-emerald-700 dark:text-emerald-400 font-bold">+13.4</span>
                         </td>
                         <td className="py-3.5 px-4">
-                          9% <span className="ml-2 text-[10px] text-emerald-655 dark:text-emerald-400 font-bold">+5.4</span>
+                          9% <span className="ml-2 text-[10px] text-emerald-700 dark:text-emerald-400 font-bold">+5.4</span>
                         </td>
                       </tr>
 
@@ -1190,13 +1190,13 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                           {selectedSKU === 'Lays' ? '4' : selectedSKU === 'Doritos' ? '5' : '3'}
                         </td>
                         <td className="py-3.5 px-4">
-                          6 <span className="ml-2 text-[10px] text-red-655 dark:text-red-500 font-bold">-2.0</span>
+                          6 <span className="ml-2 text-[10px] text-red-700 dark:text-red-500 font-bold">-2.0</span>
                         </td>
                         <td className="py-3.5 px-4">
-                          1 <span className="ml-2 text-[10px] text-emerald-655 dark:text-emerald-400 font-bold">+3.0</span>
+                          1 <span className="ml-2 text-[10px] text-emerald-700 dark:text-emerald-400 font-bold">+3.0</span>
                         </td>
                         <td className="py-3.5 px-4">
-                          11 <span className="ml-2 text-[10px] text-red-655 dark:text-red-500 font-bold">-7.0</span>
+                          11 <span className="ml-2 text-[10px] text-red-700 dark:text-red-500 font-bold">-7.0</span>
                         </td>
                       </tr>
 
@@ -1207,13 +1207,13 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                           {selectedSKU === 'Lays' ? '92%' : selectedSKU === 'Doritos' ? '95%' : '90%'}
                         </td>
                         <td className="py-3.5 px-4">
-                          96% <span className="ml-2 text-[10px] text-red-655 dark:text-red-500 font-bold">-4.0</span>
+                          96% <span className="ml-2 text-[10px] text-red-700 dark:text-red-500 font-bold">-4.0</span>
                         </td>
                         <td className="py-3.5 px-4">
-                          78% <span className="ml-2 text-[10px] text-emerald-655 dark:text-emerald-400 font-bold">+14.0</span>
+                          78% <span className="ml-2 text-[10px] text-emerald-700 dark:text-emerald-400 font-bold">+14.0</span>
                         </td>
                         <td className="py-3.5 px-4">
-                          61% <span className="ml-2 text-[10px] text-emerald-655 dark:text-emerald-400 font-bold">+31.0</span>
+                          61% <span className="ml-2 text-[10px] text-emerald-700 dark:text-emerald-400 font-bold">+31.0</span>
                         </td>
                       </tr>
 
@@ -1241,7 +1241,7 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                         <h4 className="text-xs font-bold text-zinc-900 dark:text-white leading-tight">
                           {skuComparisonData[selectedSKU]?.you.name}
                         </h4>
-                        <span className="bg-blue-600/20 text-blue-655 dark:text-blue-450 text-[8px] font-bold px-1.5 py-0.5 rounded tracking-wide">
+                        <span className="bg-blue-600/20 text-blue-700 dark:text-blue-500 text-[8px] font-bold px-1.5 py-0.5 rounded tracking-wide">
                           YOU
                         </span>
                       </div>
@@ -1252,9 +1252,9 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
 
                     <div className="space-y-3">
                       <div>
-                        <div className="flex justify-between text-[9px] font-bold uppercase tracking-wider text-zinc-555 dark:text-zinc-400 mb-1.5">
+                        <div className="flex justify-between text-[9px] font-bold uppercase tracking-wider text-zinc-600 dark:text-zinc-400 mb-1.5">
                           <span>Price — Last 8 Weeks</span>
-                          <span className="text-zinc-800 dark:text-zinc-350 font-bold">
+                          <span className="text-zinc-800 dark:text-zinc-400 font-bold">
                             {skuComparisonData[selectedSKU]?.you.priceHistory}
                           </span>
                         </div>
@@ -1272,21 +1272,21 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
 
                       <div className="flex justify-between items-center text-[10px] border-t border-black/5 dark:border-white/5 pt-2">
                         <span className="text-zinc-500 dark:text-zinc-400 font-semibold uppercase tracking-wider text-[8.5px]">Promo campaigns this quarter</span>
-                        <span className="font-bold text-zinc-805 dark:text-white">
+                        <span className="font-bold text-zinc-800 dark:text-white">
                           {skuComparisonData[selectedSKU]?.you.campaigns} campaigns
                         </span>
                       </div>
 
                       <div className="space-y-1 border-t border-black/5 dark:border-white/5 pt-2">
-                        <span className="text-zinc-555 dark:text-zinc-400 font-semibold uppercase tracking-wider text-[8.5px] block">Discount strategy</span>
+                        <span className="text-zinc-600 dark:text-zinc-400 font-semibold uppercase tracking-wider text-[8.5px] block">Discount strategy</span>
                         <div className="bg-blue-100/50 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 border border-blue-200/50 dark:border-blue-900/30 text-[9.5px] p-2 rounded-sm font-bold text-center">
                           {skuComparisonData[selectedSKU]?.you.discountPill}
                         </div>
                       </div>
 
                       <div className="border-t border-black/5 dark:border-white/5 pt-2 space-y-1.5">
-                        <span className="text-zinc-555 dark:text-zinc-400 font-semibold uppercase tracking-wider text-[8.5px] block">Availability</span>
-                        <div className="flex items-center gap-1.5 text-[10px] text-zinc-850 dark:text-white font-bold">
+                        <span className="text-zinc-600 dark:text-zinc-400 font-semibold uppercase tracking-wider text-[8.5px] block">Availability</span>
+                        <div className="flex items-center gap-1.5 text-[10px] text-zinc-900 dark:text-white font-bold">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                           <span>
                             {skuComparisonData[selectedSKU]?.you.availability} — {skuComparisonData[selectedSKU]?.you.availabilityPct}% of tracked outlets
@@ -1295,8 +1295,8 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                       </div>
 
                       <div className="border-t border-black/5 dark:border-white/5 pt-2 space-y-1.5">
-                        <span className="text-zinc-555 dark:text-zinc-455 font-semibold uppercase tracking-wider text-[8.5px] block">Promo frequency trend</span>
-                        <div className="flex items-center gap-1.5 text-[10px] text-red-655 dark:text-red-400 font-bold">
+                        <span className="text-zinc-600 dark:text-zinc-500 font-semibold uppercase tracking-wider text-[8.5px] block">Promo frequency trend</span>
+                        <div className="flex items-center gap-1.5 text-[10px] text-red-700 dark:text-red-400 font-bold">
                           <span>▲</span>
                           <span>{skuComparisonData[selectedSKU]?.you.trend}</span>
                         </div>
@@ -1321,9 +1321,9 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
 
                     <div className="space-y-3">
                       <div>
-                        <div className="flex justify-between text-[9px] font-bold uppercase tracking-wider text-zinc-555 dark:text-zinc-400 mb-1.5">
+                        <div className="flex justify-between text-[9px] font-bold uppercase tracking-wider text-zinc-600 dark:text-zinc-400 mb-1.5">
                           <span>Price — Last 8 Weeks</span>
-                          <span className="text-zinc-800 dark:text-zinc-350 font-bold">
+                          <span className="text-zinc-800 dark:text-zinc-400 font-bold">
                             {skuComparisonData[selectedSKU]?.rival1.priceHistory}
                           </span>
                         </div>
@@ -1341,13 +1341,13 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
 
                       <div className="flex justify-between items-center text-[10px] border-t border-black/5 dark:border-white/5 pt-2">
                         <span className="text-zinc-500 dark:text-zinc-400 font-semibold uppercase tracking-wider text-[8.5px]">Promo campaigns this quarter</span>
-                        <span className="font-bold text-zinc-805 dark:text-white">
+                        <span className="font-bold text-zinc-800 dark:text-white">
                           {skuComparisonData[selectedSKU]?.rival1.campaigns} campaigns
                         </span>
                       </div>
 
                       <div className="space-y-1 border-t border-black/5 dark:border-white/5 pt-2">
-                        <span className="text-zinc-555 dark:text-zinc-400 font-semibold uppercase tracking-wider text-[8.5px] block">Discount strategy</span>
+                        <span className="text-zinc-600 dark:text-zinc-400 font-semibold uppercase tracking-wider text-[8.5px] block">Discount strategy</span>
                         <div className="bg-red-50 dark:bg-red-950/20 text-red-800 dark:text-red-400 border border-red-200 dark:border-red-900/30 text-[9.5px] p-2 rounded-sm font-bold text-center">
                           {skuComparisonData[selectedSKU]?.rival1.discountPill}
                         </div>
@@ -1355,7 +1355,7 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
 
                       <div className="border-t border-black/5 dark:border-white/5 pt-2 space-y-1.5">
                         <span className="text-zinc-500 dark:text-zinc-400 font-semibold uppercase tracking-wider text-[8.5px] block">Availability</span>
-                        <div className="flex items-center gap-1.5 text-[10px] text-zinc-850 dark:text-white font-bold">
+                        <div className="flex items-center gap-1.5 text-[10px] text-zinc-900 dark:text-white font-bold">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                           <span>
                             {skuComparisonData[selectedSKU]?.rival1.availability} — {skuComparisonData[selectedSKU]?.rival1.availabilityPct}% of tracked outlets
@@ -1364,8 +1364,8 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                       </div>
 
                       <div className="border-t border-black/5 dark:border-white/5 pt-2 space-y-1.5">
-                        <span className="text-zinc-555 dark:text-zinc-455 font-semibold uppercase tracking-wider text-[8.5px] block">Promo frequency trend</span>
-                        <div className="flex items-center gap-1.5 text-[10px] text-red-655 dark:text-red-400 font-bold">
+                        <span className="text-zinc-600 dark:text-zinc-500 font-semibold uppercase tracking-wider text-[8.5px] block">Promo frequency trend</span>
+                        <div className="flex items-center gap-1.5 text-[10px] text-red-700 dark:text-red-400 font-bold">
                           <span>▲</span>
                           <span>{skuComparisonData[selectedSKU]?.rival1.trend}</span>
                         </div>
@@ -1390,9 +1390,9 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
 
                     <div className="space-y-3">
                       <div>
-                        <div className="flex justify-between text-[9px] font-bold uppercase tracking-wider text-zinc-555 dark:text-zinc-400 mb-1.5">
+                        <div className="flex justify-between text-[9px] font-bold uppercase tracking-wider text-zinc-600 dark:text-zinc-400 mb-1.5">
                           <span>Price — Last 8 Weeks</span>
-                          <span className="text-zinc-805 dark:text-zinc-350 font-bold">
+                          <span className="text-zinc-800 dark:text-zinc-400 font-bold">
                             {skuComparisonData[selectedSKU]?.rival2.priceHistory}
                           </span>
                         </div>
@@ -1409,22 +1409,22 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                       </div>
 
                       <div className="flex justify-between items-center text-[10px] border-t border-black/5 dark:border-white/5 pt-2">
-                        <span className="text-zinc-555 dark:text-zinc-405 font-semibold uppercase tracking-wider text-[8.5px]">Promo campaigns this quarter</span>
-                        <span className="font-bold text-zinc-850 dark:text-white">
+                        <span className="text-zinc-600 dark:text-zinc-400 font-semibold uppercase tracking-wider text-[8.5px]">Promo campaigns this quarter</span>
+                        <span className="font-bold text-zinc-900 dark:text-white">
                           {skuComparisonData[selectedSKU]?.rival2.campaigns} campaigns
                         </span>
                       </div>
 
                       <div className="space-y-1 border-t border-black/5 dark:border-white/5 pt-2">
-                        <span className="text-zinc-555 dark:text-zinc-400 font-semibold uppercase tracking-wider text-[8.5px] block">Discount strategy</span>
+                        <span className="text-zinc-600 dark:text-zinc-400 font-semibold uppercase tracking-wider text-[8.5px] block">Discount strategy</span>
                         <div className="bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-700 text-[9.5px] p-2 rounded-sm font-bold text-center">
                           {skuComparisonData[selectedSKU]?.rival2.discountPill}
                         </div>
                       </div>
 
                       <div className="border-t border-black/5 dark:border-white/5 pt-2 space-y-1.5">
-                        <span className="text-zinc-555 dark:text-zinc-400 font-semibold uppercase tracking-wider text-[8.5px] block">Availability</span>
-                        <div className="flex items-center gap-1.5 text-[10px] text-zinc-850 dark:text-white font-bold">
+                        <span className="text-zinc-600 dark:text-zinc-400 font-semibold uppercase tracking-wider text-[8.5px] block">Availability</span>
+                        <div className="flex items-center gap-1.5 text-[10px] text-zinc-900 dark:text-white font-bold">
                           <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
                           <span>
                             {skuComparisonData[selectedSKU]?.rival2.availability} — {skuComparisonData[selectedSKU]?.rival2.availabilityPct}% of tracked outlets
@@ -1433,8 +1433,8 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                       </div>
 
                       <div className="border-t border-black/5 dark:border-white/5 pt-2 space-y-1.5">
-                        <span className="text-zinc-555 dark:text-zinc-405 font-semibold uppercase tracking-wider text-[8.5px] block">Promo frequency trend</span>
-                        <div className="flex items-center gap-1.5 text-[10px] text-emerald-655 dark:text-emerald-450 font-bold">
+                        <span className="text-zinc-600 dark:text-zinc-400 font-semibold uppercase tracking-wider text-[8.5px] block">Promo frequency trend</span>
+                        <div className="flex items-center gap-1.5 text-[10px] text-emerald-700 dark:text-emerald-500 font-bold">
                           <span>▼</span>
                           <span>{skuComparisonData[selectedSKU]?.rival2.trend}</span>
                         </div>
@@ -1450,7 +1450,7 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
 
                 {/* Illustrative Alerts Section */}
                 <div className="space-y-3 pt-6 border-t border-black/10 dark:border-[#1e294b] mt-6">
-                  <div className="flex items-center gap-2 text-[10px] font-semibold text-emerald-655 dark:text-emerald-450">
+                  <div className="flex items-center gap-2 text-[10px] font-semibold text-emerald-700 dark:text-emerald-500">
                     <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
                     <span>Illustrative — in production these five fields refresh continuously from scraped/panel data rather than a point-in-time snapshot.</span>
                   </div>
@@ -1464,7 +1464,7 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
                         <span className="bg-orange-500/10 text-orange-600 dark:text-orange-400 text-[9px] font-extrabold uppercase tracking-widest px-2.5 py-0.5 rounded-sm border border-orange-500/20">
                           READ
                         </span>
-                        <p className="text-zinc-655 dark:text-zinc-350 text-[11px] leading-normal font-semibold">
+                        <p className="text-zinc-700 dark:text-zinc-400 text-[11px] leading-normal font-semibold">
                           {alertText}
                         </p>
                       </div>
@@ -1474,7 +1474,7 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
               </>
             ) : (
               <div className="border border-dashed border-black/10 dark:border-white/10 p-8 text-center rounded-sm bg-zinc-50/50 dark:bg-black/10">
-                <p className="text-xs text-zinc-405 dark:text-zinc-400 font-semibold">
+                <p className="text-xs text-zinc-400 dark:text-zinc-400 font-semibold">
                   Select a tracked SKU above to reveal current market competitor pricing, availability, and campaigns metrics audit.
                 </p>
               </div>
@@ -1490,8 +1490,8 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
         <div id="sig-exec-feed" className="pt-8 border-t border-black/10 dark:border-white/10 space-y-6">
           <div className="bg-white/40 dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm">
             <span className="text-[8px] font-extrabold uppercase tracking-widest text-[#6d28d9] dark:text-[#a78bfa]">Executive Integration</span>
-            <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-850 dark:text-white mt-1">VP Strategic Signals & Executive Analysis Feed</h3>
-            <p className="text-[10px] text-zinc-550 dark:text-zinc-400 mt-1 leading-normal">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-white mt-1">VP Strategic Signals & Executive Analysis Feed</h3>
+            <p className="text-[10px] text-zinc-600 dark:text-zinc-400 mt-1 leading-normal">
               Below are the executive signal feeds, alert maps, AI predictions, and market intelligence channels synced from the VP view.
             </p>
           </div>
@@ -1792,7 +1792,7 @@ const CompetitiveIntelligenceModal: React.FC<CompetitiveIntelligenceModalProps> 
           <div className="space-y-5 animate-fade-in">
             {/* Head-to-Head Comparison Table */}
             <div className="space-y-2.5">
-              <span className="text-[9.5px] font-bold uppercase tracking-wider text-zinc-450 dark:text-zinc-400 block">
+              <span className="text-[9.5px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block">
                 Metric Performance Breakdown
               </span>
               <div className="border border-black/10 dark:border-white/10 rounded overflow-hidden">
@@ -1835,7 +1835,7 @@ const CompetitiveIntelligenceModal: React.FC<CompetitiveIntelligenceModalProps> 
                 <Sparkles size={14} className="text-[#5850ec] dark:text-indigo-400 animate-pulse" />
                 <h5 className="font-bold uppercase tracking-wider text-[10.5px]">AI Recommendation: Optimize Our Product</h5>
               </div>
-              <p className="text-[11px] text-zinc-650 dark:text-zinc-300 leading-relaxed pl-5 relative">
+              <p className="text-[11px] text-zinc-700 dark:text-zinc-300 leading-relaxed pl-5 relative">
                 <span className="absolute left-0 top-0 text-[#6d28d9] dark:text-[#a78bfa] font-bold">💡</span>
                 {data.aiRecommendation}
               </p>
@@ -1866,7 +1866,7 @@ const CompetitiveIntelligenceModal: React.FC<CompetitiveIntelligenceModalProps> 
 
             {/* Before vs After Projections Table */}
             <div className="space-y-2.5">
-              <span className="text-[9px] font-bold uppercase tracking-wider text-zinc-450 dark:text-zinc-550 block">
+              <span className="text-[9px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-600 block">
                 Simulated Metric Improvements (Before vs After)
               </span>
               <div className="border border-black/10 dark:border-white/10 rounded overflow-hidden">
@@ -1875,7 +1875,7 @@ const CompetitiveIntelligenceModal: React.FC<CompetitiveIntelligenceModalProps> 
                     <tr className="bg-zinc-100 dark:bg-zinc-800 text-zinc-500 uppercase tracking-wider text-[8px] border-b border-black/10 dark:border-white/10">
                       <th className="p-2.5 font-bold">Metric Parameter</th>
                       <th className="p-2.5 font-bold text-zinc-500">Current (Before)</th>
-                      <th className="p-2.5 font-bold text-[#10b981] dark:text-emerald-450">Simulated (After)</th>
+                      <th className="p-2.5 font-bold text-[#10b981] dark:text-emerald-500">Simulated (After)</th>
                       <th className="p-2.5 font-bold text-right">Projected Delta</th>
                     </tr>
                   </thead>
@@ -1899,7 +1899,7 @@ const CompetitiveIntelligenceModal: React.FC<CompetitiveIntelligenceModalProps> 
             </div>
 
             {/* Explainer Note */}
-            <p className="text-[9px] text-zinc-400 dark:text-zinc-555 leading-normal italic">
+            <p className="text-[9px] text-zinc-400 dark:text-zinc-600 leading-normal italic">
               *Projections are generated via our AI Simulation Engine using dynamic consumer elasticity modeling and historical supermarket lift values.
             </p>
           </div>
@@ -1907,13 +1907,13 @@ const CompetitiveIntelligenceModal: React.FC<CompetitiveIntelligenceModalProps> 
 
         {/* Footer */}
         <div className="flex justify-between items-center border-t border-black/15 dark:border-white/15 pt-3.5">
-          <span className="text-[9px] text-zinc-500 dark:text-zinc-555 font-mono font-bold uppercase">Competitor Audit Log</span>
+          <span className="text-[9px] text-zinc-500 dark:text-zinc-600 font-mono font-bold uppercase">Competitor Audit Log</span>
           <div className="flex items-center gap-2">
             {activeModalTab === 'projection' && (
               <button 
                 type="button"
                 onClick={() => setActiveModalTab('comparison')}
-                className="px-3.5 py-2 bg-transparent hover:bg-black/5 dark:hover:bg-white/5 text-zinc-600 dark:text-zinc-300 text-[9px] font-extrabold uppercase tracking-widest rounded-sm border border-zinc-250 dark:border-zinc-700 transition-all cursor-pointer"
+                className="px-3.5 py-2 bg-transparent hover:bg-black/5 dark:hover:bg-white/5 text-zinc-600 dark:text-zinc-300 text-[9px] font-extrabold uppercase tracking-widest rounded-sm border border-zinc-300 dark:border-zinc-700 transition-all cursor-pointer"
               >
                 ← Back to Comparison
               </button>
@@ -2265,12 +2265,12 @@ const PortfolioDeepDiveModal: React.FC<PortfolioDeepDiveModalProps> = ({
         {/* Details Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="p-4 bg-zinc-50 dark:bg-zinc-800/40 rounded border border-black/5 dark:border-white/5 space-y-3">
-            <h4 className="text-[10px] font-bold text-zinc-700 dark:text-zinc-350 uppercase tracking-wider border-b border-black/5 dark:border-white/5 pb-1">Key Diagnostic Metrics</h4>
+            <h4 className="text-[10px] font-bold text-zinc-700 dark:text-zinc-400 uppercase tracking-wider border-b border-black/5 dark:border-white/5 pb-1">Key Diagnostic Metrics</h4>
             <div className="space-y-2">
               {data.details.map((d, i) => (
                 <div key={i} className="flex justify-between items-center text-[10px]">
                   <span className="text-zinc-400">{d.label}</span>
-                  <span className="font-bold text-zinc-750 dark:text-zinc-200">{d.value}</span>
+                  <span className="font-bold text-zinc-800 dark:text-zinc-200">{d.value}</span>
                 </div>
               ))}
             </div>
@@ -2291,7 +2291,7 @@ const PortfolioDeepDiveModal: React.FC<PortfolioDeepDiveModalProps> = ({
 
         {/* Chart */}
         <div className="p-4 bg-zinc-50 dark:bg-zinc-800/40 rounded border border-black/5 dark:border-white/5 space-y-3">
-          <h4 className="text-[10px] font-bold text-zinc-700 dark:text-zinc-350 uppercase tracking-wider border-b border-black/5 dark:border-white/5 pb-1">Performance Trend & Simulations</h4>
+          <h4 className="text-[10px] font-bold text-zinc-700 dark:text-zinc-400 uppercase tracking-wider border-b border-black/5 dark:border-white/5 pb-1">Performance Trend & Simulations</h4>
           <div className="h-44">
             <ResponsiveContainer width="100%" height="100%">
               {metricType === 'overlap' ? (
@@ -2391,7 +2391,7 @@ const RegionalAlertsModal: React.FC<RegionalAlertsModalProps> = ({
                   <ArrowLeft size={14} />
                   <span>Back</span>
                 </button>
-                <span className="text-zinc-300 dark:text-zinc-750">|</span>
+                <span className="text-zinc-300 dark:text-zinc-800">|</span>
                 <div className="flex items-center gap-1.5 text-[#6d28d9] dark:text-[#a78bfa]">
                   <Brain size={18} className="fill-[#6d28d9]/10" />
                   <span className="text-[10px] font-extrabold uppercase tracking-widest opacity-60">AI Alert Explainer</span>
@@ -2399,7 +2399,7 @@ const RegionalAlertsModal: React.FC<RegionalAlertsModalProps> = ({
               </div>
               <button 
                 onClick={onClose}
-                className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-200 cursor-pointer border-none bg-transparent"
+                className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 cursor-pointer border-none bg-transparent"
               >
                 <X size={16} />
               </button>
@@ -2442,7 +2442,7 @@ const RegionalAlertsModal: React.FC<RegionalAlertsModalProps> = ({
               <div className="space-y-2.5 p-3.5 rounded bg-emerald-500/5 dark:bg-emerald-500/10 border border-emerald-500/15">
                 <div className="flex items-center gap-1.5 text-zinc-700 dark:text-zinc-200">
                   <Sparkles size={14} className="text-[#5850ec] dark:text-indigo-400 animate-pulse" />
-                  <h5 className="font-bold uppercase tracking-wider text-[10px] text-emerald-600 dark:text-emerald-450">How can it be solved?</h5>
+                  <h5 className="font-bold uppercase tracking-wider text-[10px] text-emerald-600 dark:text-emerald-500">How can it be solved?</h5>
                 </div>
                 <div className="text-zinc-600 dark:text-zinc-300 leading-relaxed text-[11px]">
                   <p>{solutionText}</p>
@@ -2460,7 +2460,7 @@ const RegionalAlertsModal: React.FC<RegionalAlertsModalProps> = ({
                 </span>
                 <ul className="space-y-2 list-none pl-0">
                   {explainer.checklist.map((step, sIdx) => (
-                    <li key={sIdx} className="flex gap-2.5 text-[11px] text-zinc-650 dark:text-zinc-300 leading-relaxed bg-zinc-50/40 dark:bg-white/2 p-2.5 rounded border border-black/2 dark:border-white/2 hover:border-black/5 dark:hover:border-white/5 transition-all">
+                    <li key={sIdx} className="flex gap-2.5 text-[11px] text-zinc-700 dark:text-zinc-300 leading-relaxed bg-zinc-50/40 dark:bg-white/2 p-2.5 rounded border border-black/2 dark:border-white/2 hover:border-black/5 dark:hover:border-white/5 transition-all">
                       <CheckCircle2 size={14} className="text-emerald-500 shrink-0 mt-0.5" />
                       <span>{step}</span>
                     </li>
@@ -2475,7 +2475,7 @@ const RegionalAlertsModal: React.FC<RegionalAlertsModalProps> = ({
                 </span>
                 <div className="space-y-3.5 bg-zinc-50 dark:bg-zinc-900/50 p-3.5 rounded border border-black/5 dark:border-white/5">
                   <div className="space-y-0.5">
-                    <span className="text-[8.5px] font-bold uppercase tracking-wider text-zinc-450 dark:text-zinc-500 flex items-center gap-1">
+                    <span className="text-[8.5px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-500 flex items-center gap-1">
                       <User size={12} className="text-zinc-400" /> Assigned Owner
                     </span>
                     <p className="text-[11px] font-bold text-zinc-700 dark:text-zinc-200">
@@ -2484,7 +2484,7 @@ const RegionalAlertsModal: React.FC<RegionalAlertsModalProps> = ({
                   </div>
                   
                   <div className="space-y-0.5 border-t border-black/5 dark:border-white/5 pt-2.5">
-                    <span className="text-[8.5px] font-bold uppercase tracking-wider text-zinc-450 dark:text-zinc-500 flex items-center gap-1">
+                    <span className="text-[8.5px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-500 flex items-center gap-1">
                       <Clock size={12} className="text-zinc-400" /> Expected Lead Time
                     </span>
                     <p className="text-[11px] font-bold text-[#6d28d9] dark:text-[#a78bfa] font-mono">
@@ -2493,10 +2493,10 @@ const RegionalAlertsModal: React.FC<RegionalAlertsModalProps> = ({
                   </div>
 
                   <div className="space-y-0.5 border-t border-black/5 dark:border-white/5 pt-2.5">
-                    <span className="text-[8.5px] font-bold uppercase tracking-wider text-zinc-450 dark:text-zinc-500 flex items-center gap-1">
+                    <span className="text-[8.5px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-500 flex items-center gap-1">
                       <TrendingUp size={12} className="text-zinc-400" /> Expected Outcome
                     </span>
-                    <p className="text-[10.5px] font-bold text-emerald-600 dark:text-emerald-450 leading-normal font-mono">
+                    <p className="text-[10.5px] font-bold text-emerald-600 dark:text-emerald-500 leading-normal font-mono">
                       {explainer.outcome}
                     </p>
                   </div>
@@ -2508,7 +2508,7 @@ const RegionalAlertsModal: React.FC<RegionalAlertsModalProps> = ({
             <div className="flex justify-between items-center border-t border-black/15 dark:border-white/15 pt-3.5">
               <button 
                 onClick={() => setSelectedAlertId(null)}
-                className="px-3.5 py-2 bg-transparent hover:bg-black/5 dark:hover:bg-white/5 text-zinc-655 dark:text-zinc-300 text-[9px] font-extrabold uppercase tracking-widest rounded-sm border border-zinc-250 dark:border-zinc-700 transition-all cursor-pointer"
+                className="px-3.5 py-2 bg-transparent hover:bg-black/5 dark:hover:bg-white/5 text-zinc-700 dark:text-zinc-300 text-[9px] font-extrabold uppercase tracking-widest rounded-sm border border-zinc-300 dark:border-zinc-700 transition-all cursor-pointer"
               >
                 ← Back to Summary
               </button>
@@ -2544,7 +2544,7 @@ const RegionalAlertsModal: React.FC<RegionalAlertsModalProps> = ({
           </div>
           <button 
             onClick={onClose}
-            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-200 cursor-pointer border-none bg-transparent"
+            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 cursor-pointer border-none bg-transparent"
           >
             <X size={16} />
           </button>
@@ -2579,8 +2579,8 @@ const RegionalAlertsModal: React.FC<RegionalAlertsModalProps> = ({
                           <span className="font-mono text-[8.5px] font-bold text-[#6d28d9] dark:text-[#a78bfa] bg-[#6d28d9]/5 dark:bg-[#a78bfa]/5 px-1.5 py-0.5 rounded">
                             {sig.refCode}
                           </span>
-                          <span className="text-zinc-350 dark:text-zinc-600">•</span>
-                          <h4 className="text-[12px] font-bold text-zinc-800 dark:text-zinc-150 leading-tight">
+                          <span className="text-zinc-400 dark:text-zinc-600">•</span>
+                          <h4 className="text-[12px] font-bold text-zinc-800 dark:text-zinc-200 leading-tight">
                             {sig.title}
                           </h4>
                           <span className="text-[8px] font-extrabold px-1.5 py-0.5 bg-black/5 dark:bg-white/10 rounded-sm opacity-55">
@@ -2596,7 +2596,7 @@ const RegionalAlertsModal: React.FC<RegionalAlertsModalProps> = ({
                         <span className={`text-[8px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm inline-block ${indicatorBg}`}>
                           {sig.impact}
                         </span>
-                        <span className="text-[8px] font-semibold text-zinc-400 dark:text-zinc-550 uppercase tracking-widest font-mono block">
+                        <span className="text-[8px] font-semibold text-zinc-400 dark:text-zinc-600 uppercase tracking-widest font-mono block">
                           Cat: {sig.category}
                         </span>
                       </div>
@@ -2604,12 +2604,12 @@ const RegionalAlertsModal: React.FC<RegionalAlertsModalProps> = ({
 
                     {/* Trigger and Solution Summary */}
                     <div className="mt-2.5 pt-2 border-t border-black/[0.04] dark:border-white/[0.04] space-y-1.5 text-[10px] leading-relaxed">
-                      <p className="text-zinc-600 dark:text-zinc-350">
+                      <p className="text-zinc-600 dark:text-zinc-400">
                         <strong className="text-orange-600 dark:text-orange-400 uppercase tracking-wider text-[8px] mr-1.5">Trigger:</strong>
                         {triggerText}
                       </p>
-                      <p className="text-zinc-600 dark:text-zinc-350">
-                        <strong className="text-emerald-650 dark:text-emerald-400 uppercase tracking-wider text-[8px] mr-1.5">Solution:</strong>
+                      <p className="text-zinc-600 dark:text-zinc-400">
+                        <strong className="text-emerald-700 dark:text-emerald-400 uppercase tracking-wider text-[8px] mr-1.5">Solution:</strong>
                         {solutionText}
                       </p>
                     </div>
@@ -2845,7 +2845,7 @@ const VPSignalsBoardView: React.FC<{
               </button>
               <div>
                 <span className="text-[8.5px] font-extrabold uppercase tracking-widest text-[#6d28d9] dark:text-[#a78bfa]">Market Recommendations</span>
-                <h2 className="text-sm font-display font-bold text-zinc-805 dark:text-zinc-105 leading-tight mt-0.5">VP-Ready Signals Board</h2>
+                <h2 className="text-sm font-display font-bold text-zinc-800 dark:text-zinc-100 leading-tight mt-0.5">VP-Ready Signals Board</h2>
               </div>
             </div>
             <div className="flex items-center gap-1.5">
@@ -2858,7 +2858,7 @@ const VPSignalsBoardView: React.FC<{
             {/* Heading Block */}
             <div className="space-y-1 pb-3 border-b border-black/5 dark:border-white/5">
               <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Interactive Signal Filter</span>
-              <p className="text-[9.5px] text-zinc-550 dark:text-zinc-400 mt-0.5">Filter the urgency signals to isolate key decision areas.</p>
+              <p className="text-[9.5px] text-zinc-600 dark:text-zinc-400 mt-0.5">Filter the urgency signals to isolate key decision areas.</p>
             </div>
 
             {/* Filters & View Toggles Row */}
@@ -2872,7 +2872,7 @@ const VPSignalsBoardView: React.FC<{
                     className={`px-4 py-2 rounded text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer border-none ${
                       exploreFilter === f
                         ? 'bg-[#6d28d9] dark:bg-[#a78bfa] text-white shadow-sm'
-                        : 'bg-black/5 dark:bg-white/5 text-zinc-550 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white'
+                        : 'bg-black/5 dark:bg-white/5 text-zinc-600 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white'
                     }`}
                   >
                     {f}
@@ -2888,7 +2888,7 @@ const VPSignalsBoardView: React.FC<{
                   className={`px-2.5 py-0.5 text-[8.5px] font-bold uppercase tracking-wider rounded-sm transition-all border-none cursor-pointer outline-none ${
                     explorePageView === 'grid'
                       ? 'bg-[#5850ec] text-white shadow-sm'
-                      : `bg-transparent text-zinc-550 hover:text-zinc-805 dark:text-zinc-400 dark:hover:text-white`
+                      : `bg-transparent text-zinc-600 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white`
                   }`}
                 >
                   Grid
@@ -2899,7 +2899,7 @@ const VPSignalsBoardView: React.FC<{
                   className={`px-2.5 py-0.5 text-[8.5px] font-bold uppercase tracking-wider rounded-sm transition-all border-none cursor-pointer outline-none ${
                     explorePageView === 'table'
                       ? 'bg-[#5850ec] text-white shadow-sm'
-                      : `bg-transparent text-zinc-550 hover:text-zinc-805 dark:text-zinc-400 dark:hover:text-white`
+                      : `bg-transparent text-zinc-600 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white`
                   }`}
                 >
                   Table
@@ -2916,12 +2916,12 @@ const VPSignalsBoardView: React.FC<{
                     : (s.type === 'Growth' ? '#10b981' : '#3b82f6');
                   
                   const typeBadgeColor = s.type === 'Risk'
-                    ? 'bg-red-500/10 text-red-650 dark:text-red-400 border-red-500/25'
+                    ? 'bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/25'
                     : s.type === 'Supply'
-                    ? 'bg-amber-500/10 text-amber-650 dark:text-amber-400 border-amber-500/25'
+                    ? 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/25'
                     : s.type === 'Growth'
-                    ? 'bg-emerald-500/10 text-emerald-655 dark:text-emerald-400 border-emerald-500/25'
-                    : 'bg-blue-500/10 text-blue-650 dark:text-blue-400 border-blue-500/25';
+                    ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/25'
+                    : 'bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/25';
 
                   return (
                     <div 
@@ -2932,13 +2932,13 @@ const VPSignalsBoardView: React.FC<{
                       <div className="space-y-2">
                         <div className="flex justify-between items-start gap-4">
                           <div className="min-w-0 space-y-1">
-                            <h4 className="text-[12px] font-bold text-zinc-805 dark:text-zinc-155 flex items-center gap-2 flex-wrap">
+                            <h4 className="text-[12px] font-bold text-zinc-800 dark:text-zinc-200 flex items-center gap-2 flex-wrap">
                               {s.title}
                               <span className={`text-[8.5px] font-extrabold uppercase px-1.5 py-0.5 rounded border ${typeBadgeColor}`}>
                                 {s.type}
                               </span>
                             </h4>
-                            <p className="text-[10px] text-zinc-550 dark:text-zinc-400 leading-relaxed">{s.desc}</p>
+                            <p className="text-[10px] text-zinc-600 dark:text-zinc-400 leading-relaxed">{s.desc}</p>
                           </div>
 
                           {/* Urgency priority bar */}
@@ -2983,12 +2983,12 @@ const VPSignalsBoardView: React.FC<{
                         : (s.type === 'Growth' ? '#10b981' : '#3b82f6');
                       
                       const typeBadgeColor = s.type === 'Risk'
-                        ? 'bg-red-500/10 text-red-650 dark:text-red-400 border-red-500/25'
+                        ? 'bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/25'
                         : s.type === 'Supply'
-                        ? 'bg-amber-500/10 text-amber-650 dark:text-amber-400 border-amber-500/25'
+                        ? 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/25'
                         : s.type === 'Growth'
-                        ? 'bg-emerald-500/10 text-emerald-650 dark:text-emerald-400 border-emerald-500/25'
-                        : 'bg-blue-500/10 text-blue-650 dark:text-blue-400 border-blue-500/25';
+                        ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/25'
+                        : 'bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/25';
 
                       return (
                         <tr 
@@ -3040,7 +3040,7 @@ const VPSignalsBoardView: React.FC<{
               </button>
               <button
                 onClick={() => addToast('Board Exported', 'Strategic market signals report compiled and downloaded.', '#3b82f6')}
-                className="px-5 py-2.5 border border-black/10 dark:border-white/15 hover:bg-black/5 dark:hover:bg-white/5 rounded text-[10px] font-bold text-zinc-700 dark:text-zinc-350 transition-all flex items-center justify-center gap-1.5 cursor-pointer bg-transparent uppercase tracking-wider"
+                className="px-5 py-2.5 border border-black/10 dark:border-white/15 hover:bg-black/5 dark:hover:bg-white/5 rounded text-[10px] font-bold text-zinc-700 dark:text-zinc-400 transition-all flex items-center justify-center gap-1.5 cursor-pointer bg-transparent uppercase tracking-wider"
               >
                 <span>Export board summary</span>
                 <Download size={11} />
@@ -3063,7 +3063,7 @@ const VPSignalsBoardView: React.FC<{
           <select 
             value={filterRegion} 
             onChange={(e) => setFilterRegion(e.target.value)}
-            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-650 dark:text-zinc-350 outline-none cursor-pointer"
+            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
           >
             <option value="All">All Regions</option>
             <option value="APAC">APAC</option>
@@ -3075,7 +3075,7 @@ const VPSignalsBoardView: React.FC<{
           <select 
             value={filterCategory} 
             onChange={(e) => setFilterCategory(e.target.value)}
-            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-650 dark:text-zinc-350 outline-none cursor-pointer"
+            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
           >
             <option value="All">All Categories</option>
             <option value="Beverages">Beverages</option>
@@ -3087,7 +3087,7 @@ const VPSignalsBoardView: React.FC<{
           <select 
             value={filterType} 
             onChange={(e) => setFilterType(e.target.value)}
-            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-650 dark:text-zinc-350 outline-none cursor-pointer"
+            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
           >
             <option value="All">All Signal Types</option>
             <option value="Risk">Risk</option>
@@ -3101,7 +3101,7 @@ const VPSignalsBoardView: React.FC<{
           <select 
             value={filterSeverity} 
             onChange={(e) => setFilterSeverity(e.target.value)}
-            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-650 dark:text-zinc-350 outline-none cursor-pointer"
+            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
           >
             <option value="All">All Severities</option>
             <option value="critical">🔴 Critical</option>
@@ -3142,35 +3142,35 @@ const VPSignalsBoardView: React.FC<{
         <div className="glass-card bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-4 rounded-sm shadow-sm flex flex-col justify-between h-28 hover:bg-black/[0.01] dark:hover:bg-white/[0.01] transition-all">
           <p className="text-[8px] font-bold uppercase tracking-widest text-zinc-400">Competitor Alerts</p>
           <h4 className="text-2xl font-display font-extrabold text-[#6d28d9] dark:text-[#a78bfa] leading-none">{competitorAlertsCount}</h4>
-          <p className="text-[9px] text-zinc-450 dark:text-zinc-550 font-semibold uppercase font-bold text-[#6d28d9] dark:text-[#a78bfa]">Active Campaigns</p>
+          <p className="text-[9px] text-zinc-500 dark:text-zinc-600 font-semibold uppercase font-bold text-[#6d28d9] dark:text-[#a78bfa]">Active Campaigns</p>
         </div>
 
         {/* KPI 2: Opportunity Signals */}
         <div className="glass-card bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-4 rounded-sm shadow-sm flex flex-col justify-between h-28 hover:bg-black/[0.01] dark:hover:bg-white/[0.01] transition-all">
           <p className="text-[8px] font-bold uppercase tracking-widest text-zinc-400">Opportunities</p>
           <h4 className="text-2xl font-display font-extrabold text-emerald-500 leading-none">{activeOpportunityCount}</h4>
-          <p className="text-[9px] text-zinc-450 dark:text-zinc-550 font-semibold uppercase">Growth drivers</p>
+          <p className="text-[9px] text-zinc-500 dark:text-zinc-600 font-semibold uppercase">Growth drivers</p>
         </div>
 
         {/* KPI 3: Risk Exposure */}
         <div className="glass-card bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-4 rounded-sm shadow-sm flex flex-col justify-between h-28 hover:bg-black/[0.01] dark:hover:bg-white/[0.01] transition-all">
           <p className="text-[8px] font-bold uppercase tracking-widest text-zinc-400">Risk Exposure</p>
           <h4 className="text-2xl font-display font-extrabold text-orange-500 leading-none">${finalRiskExposure.toFixed(1)}M</h4>
-          <p className="text-[9px] text-zinc-450 dark:text-zinc-550 font-semibold uppercase">Revenue at risk</p>
+          <p className="text-[9px] text-zinc-500 dark:text-zinc-600 font-semibold uppercase">Revenue at risk</p>
         </div>
 
         {/* KPI 4: AI Risk Predictions */}
         <div className="glass-card bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-4 rounded-sm shadow-sm flex flex-col justify-between h-28 hover:bg-black/[0.01] dark:hover:bg-white/[0.01] transition-all">
           <p className="text-[8px] font-bold uppercase tracking-widest text-zinc-400">AI Risk Predictions</p>
           <h4 className="text-2xl font-display font-extrabold text-[#6d28d9] dark:text-[#a78bfa] leading-none">12</h4>
-          <p className="text-[9px] text-zinc-450 dark:text-zinc-550 font-semibold uppercase">Emergent concerns</p>
+          <p className="text-[9px] text-zinc-500 dark:text-zinc-600 font-semibold uppercase">Emergent concerns</p>
         </div>
 
         {/* KPI 5: Regions Under Alert */}
         <div className="glass-card bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-4 rounded-sm shadow-sm flex flex-col justify-between h-28 hover:bg-black/[0.01] dark:hover:bg-white/[0.01] transition-all">
           <p className="text-[8px] font-bold uppercase tracking-widest text-zinc-400">Regions Alerted</p>
           <h4 className="text-2xl font-display font-extrabold text-blue-500 leading-none">{alertRegions.length}</h4>
-          <p className="text-[9px] text-zinc-450 dark:text-zinc-550 font-semibold uppercase">
+          <p className="text-[9px] text-zinc-500 dark:text-zinc-600 font-semibold uppercase">
             {alertRegions.length > 0 ? alertRegions.join(', ') : 'None'}
           </p>
         </div>
@@ -3179,7 +3179,7 @@ const VPSignalsBoardView: React.FC<{
         <div className="glass-card bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-4 rounded-sm shadow-sm flex flex-col justify-between h-28 hover:bg-black/[0.01] dark:hover:bg-white/[0.01] transition-all">
           <p className="text-[8px] font-bold uppercase tracking-widest text-zinc-400">Resolution Rate</p>
           <h4 className="text-2xl font-display font-extrabold text-zinc-800 dark:text-zinc-200 leading-none">{resolutionRate}%</h4>
-          <p className="text-[9px] text-zinc-450 dark:text-zinc-550 font-semibold uppercase">Action efficiency</p>
+          <p className="text-[9px] text-zinc-500 dark:text-zinc-600 font-semibold uppercase">Action efficiency</p>
         </div>
 
       </div>
@@ -3206,7 +3206,7 @@ const VPSignalsBoardView: React.FC<{
                   <div key={sig.id} className={`p-3.5 border-l-2 ${borderCol} rounded-r-sm bg-zinc-50/50 dark:bg-white/5 space-y-3 ${sig.ack ? 'opacity-40' : ''}`}>
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <h4 className="text-[11.5px] font-bold text-zinc-805 dark:text-zinc-155 flex items-center gap-2 flex-wrap">
+                        <h4 className="text-[11.5px] font-bold text-zinc-800 dark:text-zinc-200 flex items-center gap-2 flex-wrap">
                           {sig.title}
                           <span className="text-[8px] font-extrabold px-1.5 py-0.5 bg-black/5 dark:bg-white/10 rounded-sm opacity-55">
                             {sig.type}
@@ -3221,7 +3221,7 @@ const VPSignalsBoardView: React.FC<{
                             {sig.trigger}
                           </p>
                           <p className="text-zinc-600 dark:text-zinc-400">
-                            <strong className="text-emerald-650 dark:text-emerald-400 uppercase tracking-wider text-[8px] mr-1.5">Solution:</strong>
+                            <strong className="text-emerald-700 dark:text-emerald-400 uppercase tracking-wider text-[8px] mr-1.5">Solution:</strong>
                             {sig.rectification}
                           </p>
                         </div>
@@ -3372,7 +3372,7 @@ const VPSignalsBoardView: React.FC<{
               className="p-3 border border-black/5 dark:border-white/10 rounded-sm bg-zinc-50/50 dark:bg-white/5 cursor-pointer hover:border-purple-500/35 hover:bg-black/[0.08] dark:hover:bg-white/[0.08] transition-all"
             >
               <div>
-                <div className="flex justify-between items-center text-[9px] font-bold uppercase text-zinc-450 dark:text-zinc-550">
+                <div className="flex justify-between items-center text-[9px] font-bold uppercase text-zinc-500 dark:text-zinc-600">
                   <span>Launch Supply Shortage</span>
                   <span className="text-red-500">92% Prob.</span>
                 </div>
@@ -3392,7 +3392,7 @@ const VPSignalsBoardView: React.FC<{
               className="p-3 border border-black/5 dark:border-white/10 rounded-sm bg-zinc-50/50 dark:bg-white/5 cursor-pointer hover:border-purple-500/35 hover:bg-black/[0.08] dark:hover:bg-white/[0.08] transition-all"
             >
               <div>
-                <div className="flex justify-between items-center text-[9px] font-bold uppercase text-zinc-450 dark:text-zinc-550">
+                <div className="flex justify-between items-center text-[9px] font-bold uppercase text-zinc-500 dark:text-zinc-600">
                   <span>Counter-Launch Price War</span>
                   <span className="text-amber-500">74% Impact</span>
                 </div>
@@ -3412,7 +3412,7 @@ const VPSignalsBoardView: React.FC<{
               className="p-3 border border-black/5 dark:border-white/10 rounded-sm bg-zinc-50/50 dark:bg-white/5 cursor-pointer hover:border-purple-500/35 hover:bg-black/[0.08] dark:hover:bg-white/[0.08] transition-all"
             >
               <div>
-                <div className="flex justify-between items-center text-[9px] font-bold uppercase text-zinc-450 dark:text-zinc-550">
+                <div className="flex justify-between items-center text-[9px] font-bold uppercase text-zinc-500 dark:text-zinc-600">
                   <span>Launch Cost Overrun</span>
                   <span className="text-red-500">81% Prob.</span>
                 </div>
@@ -3432,7 +3432,7 @@ const VPSignalsBoardView: React.FC<{
               className="p-3 border border-black/5 dark:border-white/10 rounded-sm bg-zinc-50/50 dark:bg-white/5 cursor-pointer hover:border-purple-500/35 hover:bg-black/[0.08] dark:hover:bg-white/[0.08] transition-all"
             >
               <div>
-                <div className="flex justify-between items-center text-[9px] font-bold uppercase text-zinc-450 dark:text-zinc-550">
+                <div className="flex justify-between items-center text-[9px] font-bold uppercase text-zinc-500 dark:text-zinc-600">
                   <span>Pilot Production Delay</span>
                   <span className="text-indigo-500">88% Prob.</span>
                 </div>
@@ -3491,7 +3491,7 @@ const VPSignalsBoardView: React.FC<{
                     <AlertTriangle size={15} />
                   </div>
                   <div className="min-w-0">
-                    <h5 className="text-[11.5px] font-bold text-zinc-805 dark:text-zinc-155 leading-none">Price sensitivity rising</h5>
+                    <h5 className="text-[11.5px] font-bold text-zinc-800 dark:text-zinc-200 leading-none">Price sensitivity rising</h5>
                     <p className="text-[9.5px] text-zinc-500 dark:text-zinc-400 mt-1 leading-tight">Consumer trade-down accelerating in Q2</p>
                   </div>
                 </div>
@@ -3502,7 +3502,7 @@ const VPSignalsBoardView: React.FC<{
                     <TrendingUp size={15} />
                   </div>
                   <div className="min-w-0">
-                    <h5 className="text-[11.5px] font-bold text-zinc-805 dark:text-zinc-155 leading-none">Health segment up</h5>
+                    <h5 className="text-[11.5px] font-bold text-zinc-800 dark:text-zinc-200 leading-none">Health segment up</h5>
                     <p className="text-[9.5px] text-zinc-500 dark:text-zinc-400 mt-1 leading-tight">+19% YoY, outpacing core</p>
                   </div>
                 </div>
@@ -3513,7 +3513,7 @@ const VPSignalsBoardView: React.FC<{
                     <Users size={15} />
                   </div>
                   <div className="min-w-0">
-                    <h5 className="text-[11.5px] font-bold text-zinc-805 dark:text-zinc-155 leading-none">New entrants: 4</h5>
+                    <h5 className="text-[11.5px] font-bold text-zinc-800 dark:text-zinc-200 leading-none">New entrants: 4</h5>
                     <p className="text-[9.5px] text-zinc-500 dark:text-zinc-400 mt-1 leading-tight">2 direct, 2 adjacent SKUs launched</p>
                   </div>
                 </div>
@@ -3524,7 +3524,7 @@ const VPSignalsBoardView: React.FC<{
                     <Inbox size={15} />
                   </div>
                   <div className="min-w-0">
-                    <h5 className="text-[11.5px] font-bold text-zinc-805 dark:text-zinc-155 leading-none">Supply constraints</h5>
+                    <h5 className="text-[11.5px] font-bold text-zinc-800 dark:text-zinc-200 leading-none">Supply constraints</h5>
                     <p className="text-[9.5px] text-zinc-500 dark:text-zinc-400 mt-1 leading-tight">Raw material lead times +3 wks</p>
                   </div>
                 </div>
@@ -3535,7 +3535,7 @@ const VPSignalsBoardView: React.FC<{
                     <Globe size={15} />
                   </div>
                   <div className="min-w-0">
-                    <h5 className="text-[11.5px] font-bold text-zinc-805 dark:text-zinc-155 leading-none">Export opportunity</h5>
+                    <h5 className="text-[11.5px] font-bold text-zinc-800 dark:text-zinc-200 leading-none">Export opportunity</h5>
                     <p className="text-[9.5px] text-zinc-500 dark:text-zinc-400 mt-1 leading-tight">APAC demand signal strong</p>
                   </div>
                 </div>
@@ -3546,7 +3546,7 @@ const VPSignalsBoardView: React.FC<{
                     <Sparkles size={15} />
                   </div>
                   <div className="min-w-0">
-                    <h5 className="text-[11.5px] font-bold text-zinc-805 dark:text-zinc-155 leading-none">Online channel growth</h5>
+                    <h5 className="text-[11.5px] font-bold text-zinc-800 dark:text-zinc-200 leading-none">Online channel growth</h5>
                     <p className="text-[9.5px] text-zinc-500 dark:text-zinc-400 mt-1 leading-tight">D2C grocery sales +24%</p>
                   </div>
                 </div>
@@ -3627,7 +3627,7 @@ const VPSignalsBoardView: React.FC<{
               setShowExplorePage(true);
               addToast('Opening Explore Page', 'Opening dedicated VP-ready signals board.', '#3b82f6');
             }}
-            className="w-full mt-4 py-2 border border-black/10 dark:border-white/15 hover:bg-black/5 dark:hover:bg-white/5 rounded text-[10px] font-bold text-zinc-700 dark:text-zinc-350 transition-all flex items-center justify-center gap-1.5 cursor-pointer bg-transparent"
+            className="w-full mt-4 py-2 border border-black/10 dark:border-white/15 hover:bg-black/5 dark:hover:bg-white/5 rounded text-[10px] font-bold text-zinc-700 dark:text-zinc-400 transition-all flex items-center justify-center gap-1.5 cursor-pointer bg-transparent"
           >
             <span>Explore</span>
             <ArrowUpRight size={13} className="shrink-0" />
@@ -3764,9 +3764,9 @@ const VPSignalsBoardView: React.FC<{
               </div>
               <div className="space-y-0.5">
                 <span className="text-xl font-display font-extrabold text-red-500 block leading-none">0.68</span>
-                <span className="text-[10px] font-bold text-zinc-550 dark:text-zinc-400 block">Beverages overlap ratio</span>
+                <span className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 block">Beverages overlap ratio</span>
               </div>
-              <span className="px-2.5 py-0.5 rounded-full text-[8.5px] font-bold uppercase tracking-wider bg-red-500/10 text-red-650 dark:text-red-400 border border-red-500/20">
+              <span className="px-2.5 py-0.5 rounded-full text-[8.5px] font-bold uppercase tracking-wider bg-red-500/10 text-red-700 dark:text-red-400 border border-red-500/20">
                 High cannibalization
               </span>
             </div>
@@ -3799,10 +3799,10 @@ const VPSignalsBoardView: React.FC<{
                 </svg>
               </div>
               <div className="space-y-0.5">
-                <span className="text-xl font-display font-extrabold text-emerald-555 dark:text-emerald-500 block leading-none">34%</span>
-                <span className="text-[10px] font-bold text-zinc-555 dark:text-zinc-400 block">Innovation volume share</span>
+                <span className="text-xl font-display font-extrabold text-emerald-600 dark:text-emerald-500 block leading-none">34%</span>
+                <span className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 block">Innovation volume share</span>
               </div>
-              <span className="px-2.5 py-0.5 rounded-full text-[8.5px] font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-650 dark:text-emerald-400 border border-emerald-500/20">
+              <span className="px-2.5 py-0.5 rounded-full text-[8.5px] font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20">
                 Target &gt; 30%
               </span>
             </div>
@@ -3836,7 +3836,7 @@ const VPSignalsBoardView: React.FC<{
               </div>
               <div className="space-y-0.5">
                 <span className="text-xl font-display font-extrabold text-amber-500 block leading-none">0.44</span>
-                <span className="text-[10px] font-bold text-zinc-555 dark:text-zinc-400 block">Portfolio health risk index</span>
+                <span className="text-[10px] font-bold text-zinc-600 dark:text-zinc-400 block">Portfolio health risk index</span>
               </div>
               <span className="px-2.5 py-0.5 rounded-full text-[8.5px] font-bold uppercase tracking-wider bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
                 Moderate risk

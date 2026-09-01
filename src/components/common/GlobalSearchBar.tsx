@@ -49,7 +49,7 @@ export const GlobalSearchBar: React.FC<GlobalSearchBarProps> = ({
           onFocus={() => setIsSearchFocused(true)}
           onKeyDown={handleKeyDownInput}
           placeholder="Search metrics or SKUs..."
-          className="w-full bg-black/5 dark:bg-white/5 border border-black/15 dark:border-zinc-700/80 rounded-full px-3 py-1 pl-8.5 pr-24 text-[10px] font-semibold text-zinc-800 dark:text-zinc-150 placeholder-zinc-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/20 transition-all animate-fadeIn"
+          className="w-full bg-black/5 dark:bg-white/5 border border-black/15 dark:border-zinc-700/80 rounded-full px-3 py-1 pl-8.5 pr-24 text-[10px] font-semibold text-zinc-800 dark:text-zinc-200 placeholder-zinc-400 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/20 transition-all animate-fadeIn"
         />
         <div className="absolute inset-y-0 right-0 pr-2.5 flex items-center gap-1 pointer-events-none select-none">
           <kbd className="text-[7.5px] font-extrabold bg-black/10 dark:bg-white/10 border border-black/10 dark:border-white/15 px-1.5 py-0.5 rounded text-zinc-500 dark:text-zinc-400 font-mono">
@@ -73,7 +73,7 @@ export const GlobalSearchBar: React.FC<GlobalSearchBarProps> = ({
             className="absolute top-full right-0 mt-2 w-full sm:w-[300px] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl border border-black/15 dark:border-zinc-800/80 rounded-xl shadow-2xl z-50 overflow-hidden divide-y divide-black/5 dark:divide-zinc-900"
           >
             {Object.keys(groupedSearchResults).length === 0 ? (
-              <div className="p-4 text-center text-zinc-550 dark:text-zinc-400 text-[10px] font-bold">
+              <div className="p-4 text-center text-zinc-600 dark:text-zinc-400 text-[10px] font-bold">
                 No results found for <span className="font-extrabold text-acies-yellow">"{searchQuery}"</span>
               </div>
             ) : (
@@ -114,7 +114,7 @@ export const GlobalSearchBar: React.FC<GlobalSearchBarProps> = ({
                             </p>
                             {item.subtitle && (
                               <p className={`text-[9px] mt-0.5 truncate font-medium ${
-                                isHighlighted ? 'text-zinc-300' : 'text-zinc-450 dark:text-zinc-400'
+                                isHighlighted ? 'text-zinc-300' : 'text-zinc-500 dark:text-zinc-400'
                               }`}>
                                 {item.subtitle}
                               </p>

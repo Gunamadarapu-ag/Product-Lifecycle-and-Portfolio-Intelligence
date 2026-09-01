@@ -82,7 +82,7 @@ export const LaunchEvaluator: React.FC<LaunchEvaluatorProps> = ({ onStageAction 
           <div className="p-3 bg-black/5 dark:bg-zinc-800/40 border border-black/5 dark:border-white/5 rounded-sm space-y-2 text-[9px] font-sans">
             <div className="flex justify-between font-bold">
               <span className="text-zinc-400">Launch SKU:</span>
-              <span className="text-zinc-855 dark:text-zinc-200">Mango Fizz 750ml</span>
+              <span className="text-zinc-900 dark:text-zinc-200">Mango Fizz 750ml</span>
             </div>
             <div className="flex justify-between font-bold">
               <span className="text-zinc-400">Development Budget:</span>
@@ -205,7 +205,7 @@ export const LaunchEvaluator: React.FC<LaunchEvaluatorProps> = ({ onStageAction 
 
               {/* Net Profit Gain */}
               <div className="flex justify-between items-center py-2.5 px-3 bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5 rounded-sm border-l-2 border-l-purple-500">
-                <span className="font-bold text-zinc-700 dark:text-zinc-350">Net Margin Profit Lift</span>
+                <span className="font-bold text-zinc-700 dark:text-zinc-400">Net Margin Profit Lift</span>
                 <span className="font-bold font-mono text-purple-500">
                   +${netMarginProfitLift.toFixed(2)} M
                 </span>

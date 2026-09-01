@@ -69,7 +69,7 @@ export const SegmentFilters: React.FC<SegmentFiltersProps> = ({
                 </div>
               </div>
               
-              <div className="border-t border-black/5 dark:border-white/5 pt-2 text-[8px] font-medium text-zinc-450 dark:text-zinc-500 tracking-wide leading-relaxed truncate w-full">
+              <div className="border-t border-black/5 dark:border-white/5 pt-2 text-[8px] font-medium text-zinc-500 dark:text-zinc-500 tracking-wide leading-relaxed truncate w-full">
                 {list.slice(0, 2).map(s => s.name.split(' ').slice(0, 2).join(' ')).join(' · ')}
                 {list.length > 2 && <span className="opacity-55 font-semibold">{` +${list.length - 2} items`}</span>}
               </div>

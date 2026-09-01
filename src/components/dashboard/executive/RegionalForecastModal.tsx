@@ -216,8 +216,8 @@ Executive Director`
         <div className="flex justify-between items-start border-b border-black/10 dark:border-white/10 pb-3">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <Globe size={16} className="text-zinc-550 dark:text-zinc-400" />
-              <h2 className="text-sm font-display font-extrabold text-zinc-900 dark:text-zinc-55">
+              <Globe size={16} className="text-zinc-600 dark:text-zinc-400" />
+              <h2 className="text-sm font-display font-extrabold text-zinc-900 dark:text-zinc-50">
                 Regional Performance: {region.region}
               </h2>
               <span className={`text-[8.5px] uppercase font-extrabold px-2 py-0.5 rounded border ${statusColor}`}>
@@ -230,7 +230,7 @@ Executive Director`
           </div>
           <button 
             onClick={onClose}
-            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-650 cursor-pointer border-none bg-transparent"
+            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 cursor-pointer border-none bg-transparent"
           >
             <X size={16} />
           </button>
@@ -315,7 +315,7 @@ Executive Director`
           <p className="font-bold text-[9px] uppercase tracking-widest text-zinc-400">AI Performance Diagnostics</p>
           <div className="bg-zinc-50 dark:bg-white/5 p-3 rounded border border-black/5 dark:border-white/10 space-y-1.5">
             {insights.map((ins, idx) => (
-              <div key={idx} className="flex gap-2 text-zinc-650 dark:text-zinc-350 leading-relaxed font-normal">
+              <div key={idx} className="flex gap-2 text-zinc-700 dark:text-zinc-400 leading-relaxed font-normal">
                 <span className="text-zinc-400 font-bold shrink-0 mt-0.5">•</span>
                 <p>{ins}</p>
               </div>

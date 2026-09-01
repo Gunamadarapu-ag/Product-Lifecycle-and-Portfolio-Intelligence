@@ -87,7 +87,7 @@ const AccordionSection: React.FC<{
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
-          className="text-zinc-400 hover:text-zinc-650 dark:text-zinc-500 dark:hover:text-zinc-300"
+          className="text-zinc-400 hover:text-zinc-700 dark:text-zinc-500 dark:hover:text-zinc-300"
         >
           <ChevronDown size={14} />
         </motion.div>
@@ -100,7 +100,7 @@ const AccordionSection: React.FC<{
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25, ease: 'easeInOut' }}
           >
-            <div className="pb-5 pt-1 px-1 text-xs text-zinc-550 dark:text-zinc-400 leading-relaxed space-y-4">
+            <div className="pb-5 pt-1 px-1 text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed space-y-4">
               {children}
             </div>
           </motion.div>
@@ -256,12 +256,12 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
                   </div>
 
                   <div className="flex items-center justify-between flex-wrap gap-4 pt-1">
-                    <span className="text-[9.5px] font-mono text-zinc-450 dark:text-zinc-500">Document Version: 1.0 • June 2026</span>
+                    <span className="text-[9.5px] font-mono text-zinc-500 dark:text-zinc-500">Document Version: 1.0 • June 2026</span>
                     
                     <a 
                       href="/portfolio_health_guide.pdf" 
                       download="portfolio_health_guide.pdf"
-                      className="flex items-center gap-1.5 px-3 py-1 bg-purple-600 hover:bg-purple-750 dark:bg-purple-600 dark:hover:bg-purple-550 text-white text-[9.5px] font-bold uppercase tracking-wider transition-all cursor-pointer rounded shadow-sm border border-purple-500/20 active:scale-97 decoration-none"
+                      className="flex items-center gap-1.5 px-3 py-1 bg-purple-600 hover:bg-purple-800 dark:bg-purple-600 dark:hover:bg-purple-600 text-white text-[9.5px] font-bold uppercase tracking-wider transition-all cursor-pointer rounded shadow-sm border border-purple-500/20 active:scale-97 decoration-none"
                     >
                       <Download size={11} />
                       Download PDF Guide
@@ -273,7 +273,7 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
                 <div className="flex-1 p-8 space-y-6 overflow-y-auto">
                   
                   <div className="bg-gradient-to-r from-purple-50/50 to-indigo-50/50 dark:from-purple-950/20 dark:to-indigo-950/20 border border-purple-500/20 rounded-xl p-4 shadow-md relative overflow-hidden">
-                    <p className="text-xs text-zinc-650 dark:text-zinc-350 leading-relaxed font-semibold">
+                    <p className="text-xs text-zinc-700 dark:text-zinc-400 leading-relaxed font-semibold">
                       This briefing compiles critical cross-tab insights and ranked recommendations. Instead of reviewing each separate module, use this bulleted summary to capture the most important portfolio actions immediately.
                     </p>
                   </div>
@@ -285,9 +285,9 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
                         <Activity size={13} />
                         1. Portfolio Health & Strategic Summary
                       </h4>
-                      <ul className="space-y-2.5 pl-4 list-disc text-[11.5px] leading-relaxed text-zinc-650 dark:text-zinc-300">
+                      <ul className="space-y-2.5 pl-4 list-disc text-[11.5px] leading-relaxed text-zinc-700 dark:text-zinc-300">
                         <li className="marker:text-purple-500"><strong>Moderate Portfolio Health:</strong> Overall score is at <span className="font-bold text-purple-600 dark:text-purple-400">74%</span>. Stable revenue growth is currently offset by packaging supply bottlenecks and promotional margin erosion in snacks.</li>
-                        <li className="marker:text-purple-500"><strong>India Leads Growth:</strong> Best-performing region with <span className="font-bold text-green-650 dark:text-green-400">$320 M (+15% YoY)</span>.</li>
+                        <li className="marker:text-purple-500"><strong>India Leads Growth:</strong> Best-performing region with <span className="font-bold text-green-700 dark:text-green-400">$320 M (+15% YoY)</span>.</li>
                         <li className="marker:text-purple-500"><strong>Americas Underperforms:</strong> Worst-performing region with <span className="font-bold text-red-500">$180 M (−6.4% YoY)</span>.</li>
                         <li className="marker:text-purple-500"><strong>APAC Expansion:</strong> Holds the highest growth potential, driven by the Eco-Pack program.</li>
                       </ul>
@@ -295,11 +295,11 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
 
                     {/* Bullet section 2 */}
                     <div className="bg-red-500/5 border border-red-500/15 rounded-xl p-4.5 space-y-3 shadow-sm">
-                      <h4 className="text-xs font-black uppercase tracking-wider text-red-650 dark:text-red-400 flex items-center gap-1.5 border-b border-red-500/10 pb-2">
+                      <h4 className="text-xs font-black uppercase tracking-wider text-red-700 dark:text-red-400 flex items-center gap-1.5 border-b border-red-500/10 pb-2">
                         <AlertTriangle size={13} />
                         2. Key Portfolio & Launch Risks
                       </h4>
-                      <ul className="space-y-2.5 pl-4 list-disc text-[11.5px] leading-relaxed text-zinc-650 dark:text-zinc-300">
+                      <ul className="space-y-2.5 pl-4 list-disc text-[11.5px] leading-relaxed text-zinc-700 dark:text-zinc-300">
                         <li className="marker:text-red-500"><strong>BrandF Launch At Risk:</strong> Eco-pack rollout is delayed and the pre-launch gate is blocked due to supplier capacity constraints.</li>
                         <li className="marker:text-red-500"><strong>Supply Chain Bottlenecks:</strong> Fabric Softener lead time surged to 35 days, causing 7 stockouts in APAC.</li>
                         <li className="marker:text-red-500"><strong>Margin Erosion:</strong> Choco Wafers suffers from a high 72% promo dependency, diluting gross margin to 34%.</li>
@@ -308,11 +308,11 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
 
                     {/* Bullet section 3 */}
                     <div className="bg-green-500/5 border border-green-500/15 rounded-xl p-4.5 space-y-3 shadow-sm">
-                      <h4 className="text-xs font-black uppercase tracking-wider text-green-650 dark:text-green-450 flex items-center gap-1.5 border-b border-green-500/10 pb-2">
+                      <h4 className="text-xs font-black uppercase tracking-wider text-green-700 dark:text-green-500 flex items-center gap-1.5 border-b border-green-500/10 pb-2">
                         <TrendingUp size={13} />
                         3. Growth & SKU Insights
                       </h4>
-                      <ul className="space-y-2.5 pl-4 list-disc text-[11.5px] leading-relaxed text-zinc-650 dark:text-zinc-300">
+                      <ul className="space-y-2.5 pl-4 list-disc text-[11.5px] leading-relaxed text-zinc-700 dark:text-zinc-300">
                         <li className="marker:text-green-500"><strong>Herbal Shampoo Scaling:</strong> High-growth opportunity in India, growing at 28% YoY with a 47% gross margin.</li>
                         <li className="marker:text-green-500"><strong>Premiumization Shift:</strong> Transitioning volume from low-margin soaps to foaming face washes to improve aggregate margins.</li>
                         <li className="marker:text-green-500"><strong>Tail SKU Sunsetting:</strong> Pruning the bottom 10% underperforming SKUs will free locked-up safety stock capital.</li>
@@ -322,11 +322,11 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
 
                     {/* Bullet section 4 */}
                     <div className="bg-indigo-500/5 border border-indigo-500/15 rounded-xl p-4.5 space-y-3 shadow-sm">
-                      <h4 className="text-xs font-black uppercase tracking-wider text-indigo-650 dark:text-indigo-400 flex items-center gap-1.5 border-b border-indigo-500/10 pb-2">
+                      <h4 className="text-xs font-black uppercase tracking-wider text-indigo-700 dark:text-indigo-400 flex items-center gap-1.5 border-b border-indigo-500/10 pb-2">
                         <CheckCircle size={13} />
                         4. Ranked Recommended Actions
                       </h4>
-                      <ul className="space-y-2.5 pl-4 list-disc text-[11.5px] leading-relaxed text-zinc-650 dark:text-zinc-300">
+                      <ul className="space-y-2.5 pl-4 list-disc text-[11.5px] leading-relaxed text-zinc-700 dark:text-zinc-300">
                         <li className="marker:text-indigo-500"><strong>1. Capacity Re-allocation (Critical):</strong> Re-allocate 15% manufacturing capacity to India/APAC to secure BrandF Water Eco-Pack launch.</li>
                         <li className="marker:text-indigo-500"><strong>2. Choco Wafers Margin Audit (High):</strong> Adjust price index (+3.5%) and cap promo discounts to halt margin dilution.</li>
                         <li className="marker:text-indigo-500"><strong>3. SKU Sunset Program (High):</strong> Sunset 35 "Avoid" SKUs starting with Floor Cleaner to release working capital.</li>
@@ -369,10 +369,10 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
                       const trend = getMetricTrend(content.title);
                       const isAlert = content.title.toLowerCase().includes('alert') || content.title.toLowerCase().includes('signal');
                       const colorClass = isAlert 
-                        ? 'text-red-650 bg-red-500/10 border-red-500/20 dark:text-red-400' 
+                        ? 'text-red-700 bg-red-500/10 border-red-500/20 dark:text-red-400' 
                         : trend.isUp 
-                          ? 'text-green-650 bg-green-500/10 border-green-500/20 dark:text-green-400' 
-                          : 'text-amber-650 bg-amber-500/10 border-amber-500/20 dark:text-amber-400';
+                          ? 'text-green-700 bg-green-500/10 border-green-500/20 dark:text-green-400' 
+                          : 'text-amber-700 bg-amber-500/10 border-amber-500/20 dark:text-amber-400';
                       return (
                         <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded flex items-center gap-1 border ${colorClass}`}>
                           {trend.isUp ? <TrendingUp size={10} /> : <TrendingUp size={10} className="rotate-180" />}
@@ -387,8 +387,8 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
                       return (
                         <span className={`text-[8.5px] font-bold px-2 py-0.5 rounded border uppercase tracking-wider ${
                           status.isRisk 
-                            ? 'text-red-650 bg-red-500/10 border-red-500/20 dark:text-red-400' 
-                            : 'text-indigo-650 bg-indigo-500/10 border-indigo-500/20 dark:text-indigo-400'
+                            ? 'text-red-700 bg-red-500/10 border-red-500/20 dark:text-red-400' 
+                            : 'text-indigo-700 bg-indigo-500/10 border-indigo-500/20 dark:text-indigo-400'
                         }`}>
                           {status.label}
                         </span>
@@ -412,7 +412,7 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
                         FORMULA VERIFIED
                       </div>
                     </div>
-                    <p className="text-xs text-zinc-650 dark:text-zinc-300 leading-relaxed font-medium">
+                    <p className="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed font-medium">
                       {content.formulaDescription}
                     </p>
                   </div>
@@ -445,7 +445,7 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
                                   className={`px-2 py-0.5 rounded text-[9px] font-bold transition-all border cursor-pointer ${
                                     selectedCategory === cat
                                       ? 'bg-purple-600 text-white border-purple-600'
-                                      : 'bg-transparent text-zinc-650 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-200 border-zinc-200 dark:border-zinc-800'
+                                      : 'bg-transparent text-zinc-700 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-200 border-zinc-200 dark:border-zinc-800'
                                   }`}
                                 >
                                   {cat} ({cat === 'All' ? SKUS.length : SKUS.filter(s => s.cat === cat).length})
@@ -470,7 +470,7 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
                                         {catSkus.map(sku => (
                                           <div 
                                             key={sku.name} 
-                                            className="p-2.5 border border-zinc-150 dark:border-zinc-900 bg-white/50 dark:bg-zinc-900/50 rounded-lg flex flex-col gap-1 hover:border-purple-500/40 transition-colors shadow-sm"
+                                            className="p-2.5 border border-zinc-200 dark:border-zinc-900 bg-white/50 dark:bg-zinc-900/50 rounded-lg flex flex-col gap-1 hover:border-purple-500/40 transition-colors shadow-sm"
                                           >
                                             <span className="font-bold text-[10px] text-zinc-800 dark:text-zinc-200 leading-tight">{sku.name}</span>
                                             <div className="flex items-center gap-2 text-[8.5px] text-zinc-500 dark:text-zinc-400 font-mono">
@@ -521,7 +521,7 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
                         <div className="overflow-x-auto border border-zinc-200 dark:border-zinc-900 rounded bg-zinc-50/40 dark:bg-zinc-950/40">
                           <table className="w-full text-left text-[10px] border-collapse">
                             <thead>
-                              <tr className="bg-zinc-100/50 dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-900 font-bold uppercase tracking-wider text-zinc-650 dark:text-zinc-300">
+                              <tr className="bg-zinc-100/50 dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-900 font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
                                 {content.trendHeaders.map((header, idx) => (
                                   <th key={idx} className="p-2.5">{header}</th>
                                 ))}
@@ -551,7 +551,7 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
                       icon={<BookOpen size={14} />}
                     >
                       <div className="space-y-3">
-                        <div className="bg-zinc-550 dark:bg-zinc-900/60 p-4 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center shadow-inner rounded-md">
+                        <div className="bg-zinc-600 dark:bg-zinc-900/60 p-4 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center shadow-inner rounded-md">
                           <code className="font-mono text-xs text-zinc-800 dark:text-zinc-100 font-bold select-all text-center leading-relaxed">{content.formula}</code>
                         </div>
                         <p className="text-[11px] text-zinc-500 dark:text-zinc-400 italic leading-relaxed">{content.formulaDescription}</p>
@@ -566,7 +566,7 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
                       icon={<Database size={14} />}
                     >
                       <div className="space-y-2.5">
-                        <p className="text-[10px] text-zinc-550 dark:text-zinc-400 font-medium">
+                        <p className="text-[10px] text-zinc-600 dark:text-zinc-400 font-medium">
                           Raw dataset variables audited from primary commercial schemas:
                         </p>
                         <div className="border border-zinc-200 dark:border-zinc-900 rounded divide-y divide-zinc-200 dark:divide-zinc-900 bg-zinc-100/10 dark:bg-zinc-900/10 overflow-hidden">
@@ -574,9 +574,9 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
                             <div key={idx} className="p-3.5 hover:bg-black/[0.01] dark:hover:bg-white/[0.01] transition-colors">
                               <div className="flex justify-between items-baseline mb-1">
                                 <span className="font-mono text-xs text-amber-600 dark:text-amber-400 font-bold">{col.name}</span>
-                                <span className="text-[8px] bg-zinc-200 dark:bg-zinc-900 text-zinc-650 dark:text-zinc-400 px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">{col.type}</span>
+                                <span className="text-[8px] bg-zinc-200 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-400 px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">{col.type}</span>
                               </div>
-                              <p className="text-[10px] opacity-70 leading-normal text-zinc-650 dark:text-zinc-400">{col.desc}</p>
+                              <p className="text-[10px] opacity-70 leading-normal text-zinc-700 dark:text-zinc-400">{col.desc}</p>
                             </div>
                           ))}
                         </div>
@@ -588,7 +588,7 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
             )}
 
             {/* Sticky Footer */}
-            <div className="px-8 py-4 border-t border-zinc-200 dark:border-zinc-900 bg-white/80 dark:bg-zinc-950/80 text-center text-[8.5px] opacity-40 uppercase font-bold tracking-widest text-zinc-550 dark:text-zinc-400 mt-auto">
+            <div className="px-8 py-4 border-t border-zinc-200 dark:border-zinc-900 bg-white/80 dark:bg-zinc-950/80 text-center text-[8.5px] opacity-40 uppercase font-bold tracking-widest text-zinc-600 dark:text-zinc-400 mt-auto">
               Acies Virtual Labs • Verifiable Data Trace
             </div>
           </motion.aside>

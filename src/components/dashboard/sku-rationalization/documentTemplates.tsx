@@ -45,12 +45,12 @@ export const getDocumentTemplates = ({
             <strong>[1] ANALYSIS STATUS:</strong> <span className="text-emerald-500 font-extrabold">COMPLETED</span>
           </div>
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
-          <div className="grid grid-cols-3 gap-2 text-[9px] font-bold text-center border-b pb-1.5 border-black/5 dark:border-white/5 text-zinc-450">
+          <div className="grid grid-cols-3 gap-2 text-[9px] font-bold text-center border-b pb-1.5 border-black/5 dark:border-white/5 text-zinc-500">
             <div>Metric</div>
-            <div className="text-purple-650 dark:text-purple-400">{skuA ? skuA.split(' ')[0] : ''}</div>
+            <div className="text-purple-700 dark:text-purple-400">{skuA ? skuA.split(' ')[0] : ''}</div>
             <div className="text-emerald-500">{skuB ? skuB.split(' ')[0] : ''}</div>
           </div>
-          <div className="grid grid-cols-3 gap-2 text-[9px] font-semibold text-center divide-y divide-black/[0.02] dark:divide-white/[0.02] text-zinc-550 dark:text-zinc-400">
+          <div className="grid grid-cols-3 gap-2 text-[9px] font-semibold text-center divide-y divide-black/[0.02] dark:divide-white/[0.02] text-zinc-600 dark:text-zinc-400">
             <div className="text-left font-bold text-[8px] uppercase">Base Retail Price</div>
             <div>$90</div>
             <div>$80</div>
@@ -70,7 +70,7 @@ export const getDocumentTemplates = ({
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="flex justify-between items-end pt-4">
             <div>
-              <span className="text-zinc-455 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
+              <span className="text-zinc-500 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
               <span className="font-serif italic text-sm font-extrabold text-zinc-900 dark:text-zinc-100">David Miller</span>
               <span className="block text-[8px] text-zinc-400 font-sans">Category Financial Controller</span>
             </div>
@@ -99,10 +99,10 @@ export const getDocumentTemplates = ({
           </div>
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="space-y-1">
-            <span className="text-zinc-450 block uppercase tracking-wider text-[8px] font-bold font-sans">Promotional Calendar Slots</span>
+            <span className="text-zinc-500 block uppercase tracking-wider text-[8px] font-bold font-sans">Promotional Calendar Slots</span>
             <div className="grid grid-cols-6 gap-1.5 text-[8px] text-center font-bold">
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(w => (
-                <div key={w} className={`p-1 rounded border bg-black/5 dark:bg-white/5 border-transparent text-zinc-450`}>
+                <div key={w} className={`p-1 rounded border bg-black/5 dark:bg-white/5 border-transparent text-zinc-500`}>
                   Wk {w} {w === 4 || w === 8 ? '✅' : ''}
                 </div>
               ))}
@@ -111,7 +111,7 @@ export const getDocumentTemplates = ({
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="flex justify-between items-end pt-4">
             <div>
-              <span className="text-zinc-455 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
+              <span className="text-zinc-500 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
               <span className="font-serif italic text-sm font-extrabold text-zinc-900 dark:text-zinc-100">Clara Higgins</span>
               <span className="block text-[8px] text-zinc-400 font-sans">Brand Promotion Director</span>
             </div>
@@ -129,7 +129,7 @@ export const getDocumentTemplates = ({
       content: (
         <div className="space-y-4 text-[9.5px]">
           <div>
-            <strong>[1] ESCALATION STATUS:</strong> <span className="text-purple-650 dark:text-purple-400 font-extrabold">SUBMITTED TO BOARD</span>
+            <strong>[1] ESCALATION STATUS:</strong> <span className="text-purple-700 dark:text-purple-400 font-extrabold">SUBMITTED TO BOARD</span>
           </div>
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="space-y-1">
@@ -149,7 +149,7 @@ export const getDocumentTemplates = ({
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="flex justify-between items-end pt-4">
             <div>
-              <span className="text-zinc-455 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
+              <span className="text-zinc-500 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
               <span className="font-serif italic text-sm font-extrabold text-zinc-900 dark:text-zinc-100">Vikash Sharma</span>
               <span className="block text-[8px] text-zinc-400 font-sans">Portfolio Review Secretariat</span>
             </div>
@@ -186,7 +186,7 @@ export const getDocumentTemplates = ({
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="flex justify-between items-end pt-4">
             <div>
-              <span className="text-zinc-455 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
+              <span className="text-zinc-500 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
               <span className="font-serif italic text-sm font-extrabold text-zinc-900 dark:text-zinc-100">Linda Carter</span>
               <span className="block text-[8px] text-zinc-400 font-sans">Category Portfolio Director</span>
             </div>
@@ -222,7 +222,7 @@ export const getDocumentTemplates = ({
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="flex justify-between items-end pt-4">
             <div>
-              <span className="text-zinc-455 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
+              <span className="text-zinc-500 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
               <span className="font-serif italic text-sm font-extrabold text-zinc-900 dark:text-zinc-100">David Reynolds</span>
               <span className="block text-[8px] text-zinc-400 font-sans">Director of Material Requirements Planning</span>
             </div>
@@ -269,10 +269,10 @@ export const getDocumentTemplates = ({
             <p>· Line changeovers will be reduced from 3 to 1 per week, recovering 8 hours of active runtime.</p>
             <p>· Operations recommends extending shift hours by 4 hours/week during transition peaks.</p>
           </div>
-          <hr className="border-dashed border-zinc-200 dark:border-zinc-850" />
+          <hr className="border-dashed border-zinc-200 dark:border-zinc-900" />
           <div className="flex justify-between items-end pt-4">
             <div>
-              <span className="text-zinc-455 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
+              <span className="text-zinc-500 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
               <span className="font-serif italic text-sm font-extrabold text-zinc-900 dark:text-zinc-100">Rajesh Nair</span>
               <span className="block text-[8px] text-zinc-400 font-sans">Director of Manufacturing Operations</span>
             </div>
@@ -290,7 +290,7 @@ export const getDocumentTemplates = ({
       content: (
         <div className="space-y-4 text-[9.5px]">
           <div>
-            <strong>[1] DIRECTION STATUS:</strong> <span className="text-purple-650 dark:text-purple-400 font-extrabold">PHASE-OUT AUTHORIZED</span>
+            <strong>[1] DIRECTION STATUS:</strong> <span className="text-purple-700 dark:text-purple-400 font-extrabold">PHASE-OUT AUTHORIZED</span>
           </div>
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="grid grid-cols-2 gap-4 font-semibold">
@@ -321,7 +321,7 @@ export const getDocumentTemplates = ({
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="flex justify-between items-end pt-4">
             <div>
-              <span className="text-zinc-455 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
+              <span className="text-zinc-500 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
               <span className="font-serif italic text-sm font-extrabold text-zinc-900 dark:text-zinc-100">Sarah Jenkins</span>
               <span className="block text-[8px] text-zinc-400 font-sans">VP Category Management & Brand Planning</span>
             </div>
@@ -359,7 +359,7 @@ export const getDocumentTemplates = ({
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="flex justify-between items-end pt-4">
             <div>
-              <span className="text-zinc-455 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
+              <span className="text-zinc-500 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
               <span className="font-serif italic text-sm font-extrabold text-zinc-900 dark:text-zinc-100">Marcus Brody</span>
               <span className="block text-[8px] text-zinc-400 font-sans">Supply Chain & Logistics Operations Manager</span>
             </div>
@@ -408,7 +408,7 @@ export const getDocumentTemplates = ({
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="flex justify-between items-end pt-4">
             <div>
-              <span className="text-zinc-455 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
+              <span className="text-zinc-500 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
               <span className="font-serif italic text-sm font-extrabold text-zinc-900 dark:text-zinc-100">Ananya Roy</span>
               <span className="block text-[8px] text-zinc-400 font-sans">Lead Pricing & FP&A Analyst</span>
             </div>
@@ -445,7 +445,7 @@ export const getDocumentTemplates = ({
           <hr className="border-dashed border-zinc-200 dark:border-zinc-800" />
           <div className="flex justify-between items-end pt-4">
             <div>
-              <span className="text-zinc-455 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
+              <span className="text-zinc-500 block uppercase tracking-wider text-[7px] font-bold font-sans">AUTHORIZED SIGNATURE</span>
               <span className="font-serif italic text-sm font-extrabold text-zinc-900 dark:text-zinc-100">Vikram Rathore</span>
               <span className="block text-[8px] text-zinc-400 font-sans">DC Warehouse Director</span>
             </div>

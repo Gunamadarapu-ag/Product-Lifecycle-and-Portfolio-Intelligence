@@ -127,7 +127,7 @@ export const SkuFocusDrawer: React.FC<SkuFocusDrawerProps> = ({ sku, onClose, on
                   </div>
                 ))}
                 <div className="border-t border-black/10 dark:border-white/10 pt-2.5 flex justify-between">
-                  <span className="text-[8.5px] font-black text-zinc-750 dark:text-zinc-400">Total Hidden Supply Chain Cost</span>
+                  <span className="text-[8.5px] font-black text-zinc-800 dark:text-zinc-400">Total Hidden Supply Chain Cost</span>
                   <span className="text-[10px] font-black text-amber-500">${sku.totalHiddenCost}L</span>
                 </div>
               </div>

@@ -61,7 +61,7 @@ export const SkuToolbar: React.FC<SkuToolbarProps> = ({
                   className={`px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all cursor-pointer text-center outline-none border ${
                     activeView === id
                       ? 'bg-[#5850ec] text-white border-[#5850ec] shadow-sm shadow-[#5850ec]/20 font-extrabold'
-                      : 'bg-transparent border-black/15 dark:border-white/15 text-zinc-555 dark:text-zinc-400 hover:border-black/25 dark:hover:border-white/25 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-black/5 dark:hover:bg-white/5'
+                      : 'bg-transparent border-black/15 dark:border-white/15 text-zinc-600 dark:text-zinc-400 hover:border-black/25 dark:hover:border-white/25 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-black/5 dark:hover:bg-white/5'
                   }`}
                 >
                   {id === 'simulator' ? 'Portfolio Simulator' : id === 'analyst' ? 'Cannibalisation Simulator' : 'Simplify to Grow'}
@@ -75,7 +75,7 @@ export const SkuToolbar: React.FC<SkuToolbarProps> = ({
             <div className={`flex items-center gap-1.5 bg-transparent border rounded-lg px-2.5 py-1 transition-colors duration-200 ${
               isDarkMode ? 'border-zinc-700 text-zinc-300' : 'border-zinc-300 text-zinc-700'
             }`}>
-              <MapPin size={11} className={isDarkMode ? 'text-zinc-450' : 'text-zinc-500'} />
+              <MapPin size={11} className={isDarkMode ? 'text-zinc-500' : 'text-zinc-500'} />
               <select
                 value={selectedLocation}
                 onChange={e => setSelectedLocation(e.target.value)}
@@ -150,7 +150,7 @@ export const SkuToolbar: React.FC<SkuToolbarProps> = ({
             className={`flex-1 py-1.5 text-[8.5px] font-bold uppercase tracking-wider rounded-sm transition-all border-none cursor-pointer text-center outline-none ${
               activeView === tab.id
                 ? 'bg-acies-yellow text-white dark:text-acies-gray font-extrabold shadow-sm shadow-black/10'
-                : 'bg-transparent text-zinc-555 dark:text-zinc-400 hover:text-zinc-850 dark:hover:text-white'
+                : 'bg-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
             }`}
           >
             {tab.label}

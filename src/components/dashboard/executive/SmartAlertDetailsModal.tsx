@@ -457,7 +457,7 @@ export const SmartAlertDetailsModal: React.FC<SmartAlertDetailsModalProps> = ({
           <button 
             type="button"
             onClick={onClose}
-            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-650 cursor-pointer border-none bg-transparent outline-none"
+            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 cursor-pointer border-none bg-transparent outline-none"
           >
             <X size={16} />
           </button>
@@ -487,7 +487,7 @@ export const SmartAlertDetailsModal: React.FC<SmartAlertDetailsModalProps> = ({
           {data.metrics.map(metric => (
             <div key={metric.label} className="border border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02] p-3 rounded flex flex-col justify-between">
               <span className="text-[8.5px] font-semibold uppercase tracking-wider text-zinc-400 leading-normal">{metric.label}</span>
-              <span className="text-sm font-display font-extrabold text-zinc-800 dark:text-zinc-250 mt-1">{metric.value}</span>
+              <span className="text-sm font-display font-extrabold text-zinc-800 dark:text-zinc-300 mt-1">{metric.value}</span>
             </div>
           ))}
         </div>
@@ -508,7 +508,7 @@ export const SmartAlertDetailsModal: React.FC<SmartAlertDetailsModalProps> = ({
           <h3 className="font-extrabold text-[10px] uppercase tracking-widest text-zinc-400">Recommended Action Plan</h3>
           <ul className="space-y-2 pr-1">
             {data.recommendations.map((rec, index) => (
-              <li key={index} className="flex gap-2 items-start text-zinc-650 dark:text-zinc-300 leading-relaxed font-medium">
+              <li key={index} className="flex gap-2 items-start text-zinc-700 dark:text-zinc-300 leading-relaxed font-medium">
                 <span className="text-blue-500 shrink-0 font-bold font-mono">0{index + 1}.</span>
                 <span>{rec}</span>
               </li>
@@ -536,7 +536,7 @@ export const SmartAlertDetailsModal: React.FC<SmartAlertDetailsModalProps> = ({
             </button>
 
             {isTraceExpanded && (
-              <div className="p-4 border-t border-purple-500/10 space-y-3 leading-relaxed text-zinc-650 dark:text-zinc-350">
+              <div className="p-4 border-t border-purple-500/10 space-y-3 leading-relaxed text-zinc-700 dark:text-zinc-400">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="space-y-1">
                     <span className="text-[8px] font-mono uppercase text-zinc-400 font-bold flex items-center gap-1">

@@ -72,12 +72,12 @@ export const FlywheelHero: React.FC<FlywheelHeroProps> = ({ pillars, overallScor
               <div className="text-zinc-700 dark:text-zinc-300 mt-1 font-mono text-[9.5px]">
                 (Consumer + Retailer + Value Chain + E2E + Momentum) / 5
                 <div className="mt-0.5 text-zinc-600 dark:text-zinc-400">
-                  = ({pillars[0].score} + {pillars[1].score} + {pillars[2].score} + {pillars[3].score} + {pillars[4].score}) / 5 = <span className="text-emerald-600 dark:text-emerald-450 font-extrabold">{overallScore}</span>
+                  = ({pillars[0].score} + {pillars[1].score} + {pillars[2].score} + {pillars[3].score} + {pillars[4].score}) / 5 = <span className="text-emerald-600 dark:text-emerald-500 font-extrabold">{overallScore}</span>
                 </div>
               </div>
             </div>
             <div className="text-left sm:text-right shrink-0">
-              <div className="text-[14px] font-black text-emerald-600 dark:text-emerald-450">{overallScore}/100</div>
+              <div className="text-[14px] font-black text-emerald-600 dark:text-emerald-500">{overallScore}/100</div>
               <div className="text-[7px] text-zinc-600 dark:text-zinc-500 uppercase font-black tracking-widest">Balanced Health Index</div>
             </div>
           </div>

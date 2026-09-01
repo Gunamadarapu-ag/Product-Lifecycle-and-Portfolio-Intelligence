@@ -167,7 +167,7 @@ export const ResolveSignalModal: React.FC<ResolveSignalModalProps> = ({
         {/* Root Cause Context */}
         <div>
           <p className="font-bold text-[9px] uppercase tracking-widest text-zinc-400 mb-1">Signal context</p>
-          <p className="text-zinc-600 dark:text-zinc-350 leading-relaxed font-normal">
+          <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed font-normal">
             To resolve this active signal, a cross-functional alignment session is recommended with the departments owning the execution risks, category promotions, or supply operations.
           </p>
         </div>
@@ -178,7 +178,7 @@ export const ResolveSignalModal: React.FC<ResolveSignalModalProps> = ({
           {options.map((s, idx) => (
             <div 
               key={idx} 
-              className="p-3 bg-white dark:bg-zinc-805 border border-black/5 dark:border-white/10 rounded-sm hover:border-black/15 dark:hover:border-white/20 transition-all flex flex-col gap-1.5 shadow-sm"
+              className="p-3 bg-white dark:bg-zinc-800 border border-black/5 dark:border-white/10 rounded-sm hover:border-black/15 dark:hover:border-white/20 transition-all flex flex-col gap-1.5 shadow-sm"
             >
               <div className="flex items-start gap-1.5">
                 <span className="text-[11px] font-bold text-blue-500 shrink-0 mt-0.5">0{idx + 1}</span>

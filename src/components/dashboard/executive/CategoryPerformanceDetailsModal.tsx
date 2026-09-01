@@ -1170,7 +1170,7 @@ const SkuRootCauseDeepDiveModal: React.FC<SkuRootCauseDeepDiveModalProps> = ({
           </div>
           <button 
             onClick={onClose}
-            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-655 cursor-pointer border-none bg-transparent"
+            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 cursor-pointer border-none bg-transparent"
           >
             <X size={14} />
           </button>
@@ -1184,21 +1184,21 @@ const SkuRootCauseDeepDiveModal: React.FC<SkuRootCauseDeepDiveModalProps> = ({
         <div className="space-y-4">
           <div className="space-y-1">
             <span className="text-[7.5px] font-bold text-purple-500 uppercase tracking-widest block">Supply Chain & Inventory Logistics</span>
-            <p className="text-zinc-655 dark:text-zinc-350 leading-relaxed font-normal">
+            <p className="text-zinc-700 dark:text-zinc-400 leading-relaxed font-normal">
               {deepDive.supplyChain}
             </p>
           </div>
 
           <div className="space-y-1 border-t border-black/[0.04] dark:border-white/[0.04] pt-3">
             <span className="text-[7.5px] font-bold text-purple-500 uppercase tracking-widest block">Consumer Behavior & Cohort Insights</span>
-            <p className="text-zinc-655 dark:text-zinc-350 leading-relaxed font-normal">
+            <p className="text-zinc-700 dark:text-zinc-400 leading-relaxed font-normal">
               {deepDive.consumerInsights}
             </p>
           </div>
 
           <div className="space-y-1 border-t border-black/[0.04] dark:border-white/[0.04] pt-3">
             <span className="text-[7.5px] font-bold text-purple-500 uppercase tracking-widest block">Financial Performance & Promotional Elasticity</span>
-            <p className="text-zinc-655 dark:text-zinc-350 leading-relaxed font-normal">
+            <p className="text-zinc-700 dark:text-zinc-400 leading-relaxed font-normal">
               {deepDive.financialPricing}
             </p>
           </div>
@@ -1207,7 +1207,7 @@ const SkuRootCauseDeepDiveModal: React.FC<SkuRootCauseDeepDiveModalProps> = ({
         <div className="flex justify-end border-t border-black/15 dark:border-white/15 pt-3">
           <button 
             onClick={onClose}
-            className="px-4 py-2 bg-purple-650 hover:bg-purple-700 text-white rounded-sm font-bold uppercase tracking-wider transition-colors cursor-pointer border-none"
+            className="px-4 py-2 bg-purple-700 hover:bg-purple-700 text-white rounded-sm font-bold uppercase tracking-wider transition-colors cursor-pointer border-none"
           >
             Go Back
           </button>
@@ -1289,7 +1289,7 @@ const RecommendationDetailModal: React.FC<RecommendationDetailModalProps> = ({
           </div>
           <button 
             onClick={onClose}
-            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-655 cursor-pointer border-none bg-transparent"
+            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 cursor-pointer border-none bg-transparent"
           >
             <X size={14} />
           </button>
@@ -1304,7 +1304,7 @@ const RecommendationDetailModal: React.FC<RecommendationDetailModalProps> = ({
         {/* Detailed Analysis */}
         <div>
           <p className="font-bold text-[9px] uppercase tracking-widest text-zinc-400 mb-1">Detailed Analysis & Objective</p>
-          <p className="text-zinc-655 dark:text-zinc-350 leading-relaxed font-normal">
+          <p className="text-zinc-700 dark:text-zinc-400 leading-relaxed font-normal">
             {rec.moreInfo}
           </p>
         </div>
@@ -1315,7 +1315,7 @@ const RecommendationDetailModal: React.FC<RecommendationDetailModalProps> = ({
           {options.map((opt, idx) => (
             <div 
               key={idx} 
-              className="p-3 bg-white dark:bg-zinc-850 border border-black/5 dark:border-white/10 rounded-sm hover:border-black/15 dark:hover:border-white/20 transition-all flex flex-col gap-1.5 shadow-sm"
+              className="p-3 bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/10 rounded-sm hover:border-black/15 dark:hover:border-white/20 transition-all flex flex-col gap-1.5 shadow-sm"
             >
               <div className="flex items-start gap-1.5">
                 <span className="text-[11px] font-bold text-purple-500 shrink-0 mt-0.5">0{idx + 1}</span>
@@ -1433,14 +1433,14 @@ const SkuAnalysisModal: React.FC<SkuAnalysisModalProps> = ({
                 {sku.name}
               </h2>
             </div>
-            <p className="text-[10px] text-zinc-550 uppercase tracking-wider font-semibold">
+            <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold">
               Category: <span className="text-zinc-700 dark:text-zinc-200 font-extrabold">{categoryName}</span>
             </p>
           </div>
           <button 
             type="button"
             onClick={handleClose}
-            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-650 cursor-pointer border-none bg-transparent outline-none"
+            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 cursor-pointer border-none bg-transparent outline-none"
           >
             <X size={16} />
           </button>
@@ -1470,7 +1470,7 @@ const SkuAnalysisModal: React.FC<SkuAnalysisModalProps> = ({
           <p className="font-bold text-[9px] uppercase tracking-widest text-zinc-400 font-display">Why It's Performing (Root Cause Analysis)</p>
           <div 
             onClick={() => role === 'Product Manager' && setIsDeepDiveOpen(true)}
-            className={`bg-zinc-50 dark:bg-white/5 border border-black/5 dark:border-white/10 p-3.5 rounded leading-relaxed text-zinc-750 dark:text-zinc-200 transition-all ${
+            className={`bg-zinc-50 dark:bg-white/5 border border-black/5 dark:border-white/10 p-3.5 rounded leading-relaxed text-zinc-800 dark:text-zinc-200 transition-all ${
               role === 'Product Manager' 
                 ? 'cursor-pointer hover:border-purple-500/30 hover:bg-purple-500/[0.02] group shadow-sm' 
                 : ''
@@ -1639,14 +1639,14 @@ export const CategoryPerformanceDetailsModal: React.FC<CategoryPerformanceDetail
                 Share: {data.marketShare}
               </span>
             </div>
-            <p className="text-[10px] text-zinc-550 uppercase tracking-wider font-semibold">
+            <p className="text-[10px] text-zinc-600 uppercase tracking-wider font-semibold">
               Category Total Revenue: <span className="text-zinc-700 dark:text-zinc-200 font-extrabold">{data.totalRev}</span>
             </p>
           </div>
           <button 
             type="button"
             onClick={onClose}
-            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-655 cursor-pointer border-none bg-transparent outline-none"
+            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 cursor-pointer border-none bg-transparent outline-none"
           >
             <X size={16} />
           </button>
@@ -1666,7 +1666,7 @@ export const CategoryPerformanceDetailsModal: React.FC<CategoryPerformanceDetail
                 <span className="font-extrabold text-[9.5px] uppercase tracking-wider">Top Performer (Good)</span>
               </div>
               <div>
-                <h3 className="font-bold text-[11px] text-zinc-800 dark:text-zinc-150 leading-snug">{data.topPerformer.name}</h3>
+                <h3 className="font-bold text-[11px] text-zinc-800 dark:text-zinc-200 leading-snug">{data.topPerformer.name}</h3>
                 <div className="flex items-center gap-1.5 mt-1.5">
                   <span className="font-extrabold text-sm text-emerald-600 dark:text-emerald-400">{data.topPerformer.rev}</span>
                   <span className="text-[8.5px] font-extrabold text-emerald-500 flex items-center gap-0.5">
@@ -1675,13 +1675,13 @@ export const CategoryPerformanceDetailsModal: React.FC<CategoryPerformanceDetail
                   </span>
                 </div>
               </div>
-              <p className="text-zinc-550 dark:text-zinc-400 leading-relaxed font-medium">
+              <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed font-medium">
                 {data.topPerformer.rationale}
               </p>
             </div>
-            <div className="border-t border-emerald-500/10 pt-2.5 flex justify-between items-center text-[9px] font-semibold text-zinc-500 dark:text-zinc-450 uppercase">
+            <div className="border-t border-emerald-500/10 pt-2.5 flex justify-between items-center text-[9px] font-semibold text-zinc-500 dark:text-zinc-500 uppercase">
               <span>{data.topPerformer.metricLabel}:</span>
-              <span className="font-bold text-zinc-700 dark:text-zinc-250">{data.topPerformer.metricValue}</span>
+              <span className="font-bold text-zinc-700 dark:text-zinc-300">{data.topPerformer.metricValue}</span>
             </div>
           </div>
 
@@ -1696,7 +1696,7 @@ export const CategoryPerformanceDetailsModal: React.FC<CategoryPerformanceDetail
                 <span className="font-extrabold text-[9.5px] uppercase tracking-wider">Underperformer (Poor)</span>
               </div>
               <div>
-                <h3 className="font-bold text-[11px] text-zinc-800 dark:text-zinc-150 leading-snug">{data.underperformer.name}</h3>
+                <h3 className="font-bold text-[11px] text-zinc-800 dark:text-zinc-200 leading-snug">{data.underperformer.name}</h3>
                 <div className="flex items-center gap-1.5 mt-1.5">
                   <span className="font-extrabold text-sm text-rose-600 dark:text-rose-400">{data.underperformer.rev}</span>
                   <span className="text-[8.5px] font-extrabold text-rose-500 flex items-center gap-0.5">
@@ -1705,13 +1705,13 @@ export const CategoryPerformanceDetailsModal: React.FC<CategoryPerformanceDetail
                   </span>
                 </div>
               </div>
-              <p className="text-zinc-550 dark:text-zinc-400 leading-relaxed font-medium">
+              <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed font-medium">
                 {data.underperformer.rationale}
               </p>
             </div>
-            <div className="border-t border-rose-500/10 pt-2.5 flex justify-between items-center text-[9px] font-semibold text-zinc-500 dark:text-zinc-450 uppercase">
+            <div className="border-t border-rose-500/10 pt-2.5 flex justify-between items-center text-[9px] font-semibold text-zinc-500 dark:text-zinc-500 uppercase">
               <span>{data.underperformer.metricLabel}:</span>
-              <span className="font-bold text-zinc-700 dark:text-zinc-250">{data.underperformer.metricValue}</span>
+              <span className="font-bold text-zinc-700 dark:text-zinc-300">{data.underperformer.metricValue}</span>
             </div>
           </div>
 
@@ -1726,7 +1726,7 @@ export const CategoryPerformanceDetailsModal: React.FC<CategoryPerformanceDetail
                 <span className="font-extrabold text-[9.5px] uppercase tracking-wider">Booming (Market)</span>
               </div>
               <div>
-                <h3 className="font-bold text-[11px] text-zinc-800 dark:text-zinc-150 leading-snug">{data.boomingSku.name}</h3>
+                <h3 className="font-bold text-[11px] text-zinc-800 dark:text-zinc-200 leading-snug">{data.boomingSku.name}</h3>
                 <div className="flex items-center gap-1.5 mt-1.5">
                   <span className="font-extrabold text-sm text-purple-600 dark:text-purple-400">{data.boomingSku.rev}</span>
                   <span className="text-[8.5px] font-extrabold text-purple-500 flex items-center gap-0.5">
@@ -1735,13 +1735,13 @@ export const CategoryPerformanceDetailsModal: React.FC<CategoryPerformanceDetail
                   </span>
                 </div>
               </div>
-              <p className="text-zinc-550 dark:text-zinc-400 leading-relaxed font-medium">
+              <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed font-medium">
                 {data.boomingSku.rationale}
               </p>
             </div>
-            <div className="border-t border-purple-500/10 pt-2.5 flex justify-between items-center text-[9px] font-semibold text-zinc-500 dark:text-zinc-450 uppercase">
+            <div className="border-t border-purple-500/10 pt-2.5 flex justify-between items-center text-[9px] font-semibold text-zinc-500 dark:text-zinc-500 uppercase">
               <span>{data.boomingSku.metricLabel}:</span>
-              <span className="font-bold text-zinc-700 dark:text-zinc-250">{data.boomingSku.metricValue}</span>
+              <span className="font-bold text-zinc-700 dark:text-zinc-300">{data.boomingSku.metricValue}</span>
             </div>
           </div>
         </div>
@@ -1753,7 +1753,7 @@ export const CategoryPerformanceDetailsModal: React.FC<CategoryPerformanceDetail
               <Sparkles size={13} className="text-blue-500" />
               <p className="font-bold text-[9.5px] uppercase tracking-widest text-blue-500">VP Strategic Briefing & Direction</p>
             </div>
-            <div className="bg-blue-500/5 border border-blue-500/15 rounded p-3 leading-relaxed text-zinc-750 dark:text-zinc-200">
+            <div className="bg-blue-500/5 border border-blue-500/15 rounded p-3 leading-relaxed text-zinc-800 dark:text-zinc-200">
               {data.vpBriefing}
             </div>
           </div>

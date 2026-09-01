@@ -133,7 +133,7 @@ export const ProductMixClustering: React.FC<ProductMixClusteringProps> = ({ isDa
         <div className="flex justify-between items-center mb-4 border-b border-black/5 dark:border-white/5 pb-2">
           <div className="flex items-center gap-2">
             <Sparkles size={13} className="text-[#6d28d9] dark:text-[#a78bfa]" />
-            <h4 className="text-xs uppercase font-extrabold tracking-wider text-zinc-750 dark:text-zinc-200 font-sans">Product Mix Optimization Simulator</h4>
+            <h4 className="text-xs uppercase font-extrabold tracking-wider text-zinc-800 dark:text-zinc-200 font-sans">Product Mix Optimization Simulator</h4>
           </div>
           <span className="text-[8px] uppercase font-bold text-zinc-400">Current vs Optimized Mix Share (%)</span>
         </div>
@@ -187,7 +187,7 @@ export const ProductMixClustering: React.FC<ProductMixClusteringProps> = ({ isDa
               className={`w-full py-2 rounded text-[8px] font-extrabold uppercase tracking-widest text-center transition-all border-none outline-none ${
                 mixIntensity > 0 
                   ? 'bg-purple-600 text-white hover:brightness-105 active:scale-95 cursor-pointer shadow-md shadow-purple-600/10' 
-                  : 'bg-zinc-200 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-650 cursor-not-allowed'
+                  : 'bg-zinc-200 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-700 cursor-not-allowed'
               }`}
             >
               Stage Mix Optimization Plan
@@ -227,7 +227,7 @@ export const ProductMixClustering: React.FC<ProductMixClusteringProps> = ({ isDa
             <div className="flex justify-between items-center mb-4 border-b border-black/5 dark:border-white/5 pb-2">
               <div className="flex items-center gap-2">
                 <Grid size={13} className="text-[#6d28d9] dark:text-[#a78bfa]" />
-                <h4 className="text-xs uppercase font-extrabold tracking-wider text-zinc-750 dark:text-zinc-200">Store Clustering Matrix</h4>
+                <h4 className="text-xs uppercase font-extrabold tracking-wider text-zinc-800 dark:text-zinc-200">Store Clustering Matrix</h4>
               </div>
               <span className="text-[8px] uppercase font-bold text-zinc-400">Stores mapped by Sales Density & Premium Share</span>
             </div>
@@ -322,10 +322,10 @@ export const ProductMixClustering: React.FC<ProductMixClusteringProps> = ({ isDa
                   </div>
                   
                   <div className="space-y-1">
-                    <p className="text-zinc-650 dark:text-zinc-300 font-medium">
+                    <p className="text-zinc-700 dark:text-zinc-300 font-medium">
                       <strong>Directive:</strong> {rec.recs}
                     </p>
-                    <p className="text-zinc-450 italic">
+                    <p className="text-zinc-500 italic">
                       <strong>Rationale:</strong> {rec.justification}
                     </p>
                   </div>

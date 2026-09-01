@@ -12,7 +12,7 @@ export const AGENT_THOUGHTS_DATA: Record<string, AgentThoughts> = {
   '1': {
     agent: 'Portfolio Agent',
     role: 'Portfolio Complexity & Mix Monitor',
-    colorClass: 'text-purple-550 dark:text-purple-400 border-purple-500/30 bg-purple-500/5',
+    colorClass: 'text-purple-600 dark:text-purple-400 border-purple-500/30 bg-purple-500/5',
     dotColor: 'bg-purple-500',
     borderColor: 'border-purple-500/25',
     bgColor: 'bg-purple-500/5',
@@ -25,7 +25,7 @@ export const AGENT_THOUGHTS_DATA: Record<string, AgentThoughts> = {
   '2': {
     agent: 'Supply Chain Agent',
     role: 'Logistics, Lead Times & Sourcing Planner',
-    colorClass: 'text-orange-550 dark:text-orange-400 border-orange-500/30 bg-orange-500/5',
+    colorClass: 'text-orange-600 dark:text-orange-400 border-orange-500/30 bg-orange-500/5',
     dotColor: 'bg-orange-500',
     borderColor: 'border-orange-500/25',
     bgColor: 'bg-orange-500/5',
@@ -38,7 +38,7 @@ export const AGENT_THOUGHTS_DATA: Record<string, AgentThoughts> = {
   '3': {
     agent: 'FP&A Agent',
     role: 'Financial Analyst & Cash Flow Forecaster',
-    colorClass: 'text-purple-550 dark:text-purple-400 border-purple-500/30 bg-purple-500/5',
+    colorClass: 'text-purple-600 dark:text-purple-400 border-purple-500/30 bg-purple-500/5',
     dotColor: 'bg-purple-500',
     borderColor: 'border-purple-500/25',
     bgColor: 'bg-purple-500/5',
@@ -51,7 +51,7 @@ export const AGENT_THOUGHTS_DATA: Record<string, AgentThoughts> = {
   '4': {
     agent: 'Merchandiser Agent',
     role: 'Category Assortment & Inventory Optimizer',
-    colorClass: 'text-emerald-550 dark:text-emerald-400 border-emerald-500/30 bg-emerald-500/5',
+    colorClass: 'text-emerald-600 dark:text-emerald-400 border-emerald-500/30 bg-emerald-500/5',
     dotColor: 'bg-emerald-500',
     borderColor: 'border-emerald-500/25',
     bgColor: 'bg-emerald-500/5',
@@ -64,7 +64,7 @@ export const AGENT_THOUGHTS_DATA: Record<string, AgentThoughts> = {
   '4-simplify': {
     agent: 'Simplification Agent',
     role: 'Bain Simplify to Grow Flywheel Analyst',
-    colorClass: 'text-indigo-550 dark:text-indigo-400 border-indigo-500/30 bg-indigo-500/5',
+    colorClass: 'text-indigo-600 dark:text-indigo-400 border-indigo-500/30 bg-indigo-500/5',
     dotColor: 'bg-indigo-500',
     borderColor: 'border-indigo-500/25',
     bgColor: 'bg-indigo-500/5',
@@ -77,7 +77,7 @@ export const AGENT_THOUGHTS_DATA: Record<string, AgentThoughts> = {
   '5': {
     agent: 'Controller Agent',
     role: 'Real-time Ledger & Governance Auditor',
-    colorClass: 'text-blue-550 dark:text-blue-400 border-blue-500/30 bg-blue-500/5',
+    colorClass: 'text-blue-600 dark:text-blue-400 border-blue-500/30 bg-blue-500/5',
     dotColor: 'bg-blue-500',
     borderColor: 'border-blue-500/25',
     bgColor: 'bg-blue-500/5',
@@ -90,7 +90,7 @@ export const AGENT_THOUGHTS_DATA: Record<string, AgentThoughts> = {
   '6': {
     agent: 'Scenario Agent',
     role: 'Macro Simulation & Multi-Variable Optimizer',
-    colorClass: 'text-amber-550 dark:text-amber-400 border-amber-500/30 bg-amber-500/5',
+    colorClass: 'text-amber-600 dark:text-amber-400 border-amber-500/30 bg-amber-500/5',
     dotColor: 'bg-amber-500',
     borderColor: 'border-amber-500/25',
     bgColor: 'bg-amber-500/5',
@@ -103,7 +103,7 @@ export const AGENT_THOUGHTS_DATA: Record<string, AgentThoughts> = {
   '8': {
     agent: 'Assortment Agent',
     role: 'Category Assortment & Regional Mix Optimizer',
-    colorClass: 'text-rose-550 dark:text-rose-400 border-rose-500/30 bg-rose-500/5',
+    colorClass: 'text-rose-600 dark:text-rose-400 border-rose-500/30 bg-rose-500/5',
     dotColor: 'bg-rose-500',
     borderColor: 'border-rose-500/25',
     bgColor: 'bg-rose-500/5',

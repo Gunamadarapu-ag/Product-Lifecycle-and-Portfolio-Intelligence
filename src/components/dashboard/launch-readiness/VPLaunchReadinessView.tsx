@@ -809,7 +809,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
             const el = document.getElementById('launch-kpis');
             if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }}
-          className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-350 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
+          className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-400 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
         >
           📊 Launch KPIs
         </button>
@@ -819,7 +819,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
             const el = document.getElementById('launch-stage-gates');
             if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }}
-          className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-350 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
+          className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-400 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
         >
           ⚡ Stage Gate Status
         </button>
@@ -856,7 +856,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
           <select 
             value={filterRegion} 
             onChange={(e) => setFilterRegion(e.target.value)}
-            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-650 dark:text-zinc-350 outline-none cursor-pointer"
+            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
           >
             <option value="All">All Regions</option>
             <option value="APAC">APAC</option>
@@ -868,7 +868,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
           <select 
             value={filterCategory} 
             onChange={(e) => setFilterCategory(e.target.value)}
-            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-650 dark:text-zinc-350 outline-none cursor-pointer"
+            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
           >
             <option value="All">All Categories</option>
             <option value="Beverages">Beverages</option>
@@ -882,7 +882,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
           <select 
             value={filterRisk} 
             onChange={(e) => setFilterRisk(e.target.value)}
-            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-650 dark:text-zinc-350 outline-none cursor-pointer"
+            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
           >
             <option value="All">All Risk Levels</option>
             <option value="Low">Low Risk</option>
@@ -893,7 +893,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
           <select 
             value={filterQuarter} 
             onChange={(e) => setFilterQuarter(e.target.value)}
-            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-650 dark:text-zinc-350 outline-none cursor-pointer"
+            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
           >
             <option value="All">All Quarters</option>
             <option value="Q2 2026">Q2 2026</option>
@@ -977,7 +977,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
             <div className="flex-1 flex items-center justify-center">
               <h4 className="text-3xl font-display font-extrabold text-emerald-500 leading-none">{onTrackCount}</h4>
             </div>
-            <p className="text-[8.5px] text-zinc-450 dark:text-zinc-550 font-semibold uppercase">Status: Optimal</p>
+            <p className="text-[8.5px] text-zinc-500 dark:text-zinc-600 font-semibold uppercase">Status: Optimal</p>
           </div>
 
           <div 
@@ -994,7 +994,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
             <div className="flex-1 flex items-center justify-center">
               <h4 className="text-3xl font-display font-extrabold text-red-500 leading-none">{delayedCount}</h4>
             </div>
-            <p className="text-[8.5px] text-zinc-450 dark:text-zinc-550 font-semibold uppercase">Needs Focus</p>
+            <p className="text-[8.5px] text-zinc-500 dark:text-zinc-600 font-semibold uppercase">Needs Focus</p>
           </div>
 
           <div 
@@ -1011,7 +1011,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
             <div className="flex-1 flex items-center justify-center">
               <h4 className="text-3xl font-display font-extrabold text-amber-500 leading-none">{atRiskCount}</h4>
             </div>
-            <p className="text-[8.5px] text-zinc-450 dark:text-zinc-550 font-semibold uppercase">Watching</p>
+            <p className="text-[8.5px] text-zinc-500 dark:text-zinc-600 font-semibold uppercase">Watching</p>
           </div>
 
           <div 
@@ -1030,7 +1030,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                 {filteredProducts.filter(p => p.stage !== 'Launch' && p.stage !== 'Ideation').length}
               </h4>
             </div>
-            <p className="text-[8.5px] text-zinc-450 dark:text-zinc-550 font-semibold uppercase">Readying</p>
+            <p className="text-[8.5px] text-zinc-500 dark:text-zinc-600 font-semibold uppercase">Readying</p>
           </div>
 
           <div 
@@ -1049,7 +1049,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                 ${revenueExposure.toFixed(1)}M
               </h4>
             </div>
-            <p className="text-[8.5px] text-zinc-450 dark:text-zinc-550 font-semibold uppercase">At-Risk/Delayed</p>
+            <p className="text-[8.5px] text-zinc-500 dark:text-zinc-600 font-semibold uppercase">At-Risk/Delayed</p>
           </div>
 
           <div 
@@ -1068,7 +1068,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                 {marketCoverage}%
               </h4>
             </div>
-            <p className="text-[8.5px] text-zinc-450 dark:text-zinc-550 font-semibold uppercase">Geo Readiness</p>
+            <p className="text-[8.5px] text-zinc-500 dark:text-zinc-600 font-semibold uppercase">Geo Readiness</p>
           </div>
         </div>
 
@@ -1147,7 +1147,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                   setSelectedProductId(e.target.value);
                   setSelectedStageName('Concept');
                 }}
-                className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-650 dark:text-zinc-350 outline-none cursor-pointer"
+                className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
               >
                 {stageGates
                   .filter(sg => sg.category === trackerSelectedCategory)
@@ -1166,7 +1166,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
             {[0, 1, 2, 3].map(idx => (
               <div 
                 key={idx}
-                className="absolute text-zinc-550 dark:text-zinc-400"
+                className="absolute text-zinc-600 dark:text-zinc-400"
                 style={{ 
                   left: `${20 + idx * 20}%`, 
                   transform: 'translateX(-50%)', 
@@ -1236,7 +1236,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                       </div>
                     </div>
                     
-                    <span className="text-[11px] font-bold tracking-wide text-zinc-900 dark:text-zinc-150 font-display">
+                    <span className="text-[11px] font-bold tracking-wide text-zinc-900 dark:text-zinc-200 font-display">
                       {gate.stageName === 'Launch Ready' ? 'Launch ready' : gate.stageName}
                     </span>
                     <span className="text-[10px] text-zinc-500 mt-0.5 font-medium">
@@ -1310,14 +1310,14 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
 
             {/* Completion Rate */}
             <div className="bg-black/5 dark:bg-white/5 rounded-sm p-2.5 border border-black/5 dark:border-white/5 flex flex-col justify-between">
-              <span className="text-[7.5px] text-zinc-400 dark:text-zinc-555 font-bold uppercase tracking-wider block">
+              <span className="text-[7.5px] text-zinc-400 dark:text-zinc-600 font-bold uppercase tracking-wider block">
                 Completion Rate
               </span>
               <div className="flex items-baseline gap-1 mt-0.5">
                 <span className="text-sm font-display font-extrabold text-[#6d28d9] dark:text-[#a78bfa]">
                   {completionPct}%
                 </span>
-                <span className="text-[8px] text-zinc-555 uppercase font-bold">Rate</span>
+                <span className="text-[8px] text-zinc-600 uppercase font-bold">Rate</span>
               </div>
             </div>
           </div>
@@ -1359,15 +1359,15 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                           {alert.status}
                         </span>
                       </div>
-                      <p className="text-[8px] text-zinc-450 dark:text-zinc-555 font-medium">
-                        <strong className="text-zinc-555">Impact:</strong> {alert.impact}
+                      <p className="text-[8px] text-zinc-500 dark:text-zinc-600 font-medium">
+                        <strong className="text-zinc-600">Impact:</strong> {alert.impact}
                       </p>
                     </div>
                     <div className="text-right">
                       <span className="text-[8px] font-bold text-zinc-500 block">
                         Gate: {alert.stageName}
                       </span>
-                      <span className="text-[7px] text-zinc-450 block">
+                      <span className="text-[7px] text-zinc-500 block">
                         {alert.owner.split(' ')[0]} • {alert.date}
                       </span>
                     </div>
@@ -1436,7 +1436,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
               className="bg-zinc-100/80 dark:bg-zinc-900/60 border border-black/5 dark:border-white/5 p-2.5 px-3 rounded-sm hover:bg-blue-500/5 hover:border-blue-500/30 dark:hover:bg-blue-500/5 dark:hover:border-blue-500/30 cursor-pointer transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <p className="text-[9px] font-bold text-zinc-400">Active pipeline SKUs</p>
-              <h4 className="text-xl font-display font-extrabold text-zinc-850 dark:text-white mt-1 leading-none">{activePipelineSKUs}</h4>
+              <h4 className="text-xl font-display font-extrabold text-zinc-900 dark:text-white mt-1 leading-none">{activePipelineSKUs}</h4>
             </div>
 
             <div 
@@ -1450,7 +1450,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
               className="bg-zinc-100/80 dark:bg-zinc-900/60 border border-black/5 dark:border-white/5 p-2.5 px-3 rounded-sm hover:bg-blue-500/5 hover:border-blue-500/30 dark:hover:bg-blue-500/5 dark:hover:border-blue-500/30 cursor-pointer transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <p className="text-[9px] font-bold text-zinc-400">In development+</p>
-              <h4 className="text-xl font-display font-extrabold text-zinc-850 dark:text-white mt-1 leading-none">{inDevelopmentPlus}</h4>
+              <h4 className="text-xl font-display font-extrabold text-zinc-900 dark:text-white mt-1 leading-none">{inDevelopmentPlus}</h4>
             </div>
 
             <div 
@@ -1464,7 +1464,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
               className="bg-zinc-100/80 dark:bg-zinc-900/60 border border-black/5 dark:border-white/5 p-2.5 px-3 rounded-sm hover:bg-blue-500/5 hover:border-blue-500/30 dark:hover:bg-blue-500/5 dark:hover:border-blue-500/30 cursor-pointer transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <p className="text-[9px] font-bold text-zinc-400">Near launch</p>
-              <h4 className="text-xl font-display font-extrabold text-zinc-850 dark:text-white mt-1 leading-none">{nearLaunchCount}</h4>
+              <h4 className="text-xl font-display font-extrabold text-zinc-900 dark:text-white mt-1 leading-none">{nearLaunchCount}</h4>
             </div>
 
             <div 
@@ -1478,7 +1478,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
               className="bg-zinc-100/80 dark:bg-zinc-900/60 border border-black/5 dark:border-white/5 p-2.5 px-3 rounded-sm hover:bg-blue-500/5 hover:border-blue-500/30 dark:hover:bg-blue-500/5 dark:hover:border-blue-500/30 cursor-pointer transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <p className="text-[9px] font-bold text-zinc-400">Launched</p>
-              <h4 className="text-xl font-display font-extrabold text-zinc-850 dark:text-white mt-1 leading-none">{launchedCount}</h4>
+              <h4 className="text-xl font-display font-extrabold text-zinc-900 dark:text-white mt-1 leading-none">{launchedCount}</h4>
             </div>
           </div>
 
@@ -1502,14 +1502,14 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
               </div>
 
               {/* Legend */}
-              <div className="flex flex-wrap items-center gap-4 text-[10px] text-zinc-550 dark:text-zinc-400 mt-3 pl-4">
+              <div className="flex flex-wrap items-center gap-4 text-[10px] text-zinc-600 dark:text-zinc-400 mt-3 pl-4">
                 <div className="flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-sm bg-[#634bf6]" />
-                  <span className="font-semibold text-zinc-650 dark:text-zinc-300">Early stage (Ideation - Testing)</span>
+                  <span className="font-semibold text-zinc-700 dark:text-zinc-300">Early stage (Ideation - Testing)</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-sm bg-[#2563eb]" />
-                  <span className="font-semibold text-zinc-650 dark:text-zinc-300">Late stage (Pre-market - Launch)</span>
+                  <span className="font-semibold text-zinc-700 dark:text-zinc-300">Late stage (Pre-market - Launch)</span>
                 </div>
               </div>
             </>
@@ -1538,7 +1538,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute flex flex-col items-center justify-center text-center">
-                  <span className="text-3xl font-display font-extrabold text-zinc-850 dark:text-white leading-none">
+                  <span className="text-3xl font-display font-extrabold text-zinc-900 dark:text-white leading-none">
                     {activePipelineSKUs}
                   </span>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mt-1">
@@ -1553,7 +1553,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                   <div key={entry.name} className="flex items-center justify-between text-[10px]">
                     <div className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-sm shrink-0" style={{ backgroundColor: entry.fill }} />
-                      <span className="font-semibold text-zinc-650 dark:text-zinc-350">{entry.name}</span>
+                      <span className="font-semibold text-zinc-700 dark:text-zinc-400">{entry.name}</span>
                     </div>
                     <span className="font-mono font-bold text-zinc-800 dark:text-zinc-200">{entry.count}</span>
                   </div>
@@ -1611,18 +1611,18 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
             {financialView === 'bar' ? (
               <div className="flex flex-col h-full justify-start">
                 {/* Custom HTML Legend */}
-                <div className="flex flex-wrap items-center gap-4 text-[10px] text-zinc-550 dark:text-zinc-400 mb-2 pl-1">
+                <div className="flex flex-wrap items-center gap-4 text-[10px] text-zinc-600 dark:text-zinc-400 mb-2 pl-1">
                   <div className="flex items-center gap-1.5">
                     <span className="w-2.5 h-2.5 rounded-sm bg-[#3b82f6]" />
-                    <span className="font-semibold text-zinc-650 dark:text-zinc-300">Revenue at risk</span>
+                    <span className="font-semibold text-zinc-700 dark:text-zinc-300">Revenue at risk</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className="w-2.5 h-2.5 rounded-sm bg-[#8b5cf6]" />
-                    <span className="font-semibold text-zinc-650 dark:text-zinc-300">Mitigation cost</span>
+                    <span className="font-semibold text-zinc-700 dark:text-zinc-300">Mitigation cost</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className="w-2.5 h-2.5 rounded-sm bg-[#10b981]" />
-                    <span className="font-semibold text-zinc-650 dark:text-zinc-300">Projected savings</span>
+                    <span className="font-semibold text-zinc-700 dark:text-zinc-300">Projected savings</span>
                   </div>
                 </div>
                 <div className="flex-1 min-h-0">
@@ -1757,7 +1757,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-3 border-b border-black/5 dark:border-white/5">
           <div>
             <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400">AI-Powered Launch Readiness Simulator</h3>
-            <p className="text-[10px] text-zinc-550 uppercase mt-1">
+            <p className="text-[10px] text-zinc-600 uppercase mt-1">
               Select a product and simulate readiness improvements across 8 key dimensions to achieve optimal market entry validation.
             </p>
           </div>
@@ -1839,7 +1839,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
               <span className="text-[9px] font-bold uppercase tracking-wider text-zinc-400 block">
                 Simulated Launch Financials
               </span>
-              <div className="grid grid-cols-3 gap-2 bg-zinc-150/70 dark:bg-zinc-900/60 p-3.5 border border-black/5 dark:border-white/5 rounded-xl">
+              <div className="grid grid-cols-3 gap-2 bg-zinc-200/70 dark:bg-zinc-900/60 p-3.5 border border-black/5 dark:border-white/5 rounded-xl">
                 <div>
                   <span className="text-[8px] text-zinc-500 uppercase block">Base Spent</span>
                   <span className="text-xs font-mono font-extrabold text-zinc-800 dark:text-white mt-1 block">
@@ -1848,7 +1848,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                 </div>
                 <div>
                   <span className="text-[8px] text-zinc-500 uppercase block">Simulated Spent</span>
-                  <span className="text-xs font-mono font-extrabold text-zinc-850 dark:text-zinc-100 mt-1 block">
+                  <span className="text-xs font-mono font-extrabold text-zinc-900 dark:text-zinc-100 mt-1 block">
                     ${simulatedSpent.toFixed(2)}M
                   </span>
                 </div>
@@ -1957,7 +1957,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
             </div>
 
             {/* AI Optimization Recommendations Grid */}
-            <div className="bg-zinc-150/70 dark:bg-zinc-900/60 border border-black/5 dark:border-white/5 p-4 rounded-xl space-y-3">
+            <div className="bg-zinc-200/70 dark:bg-zinc-900/60 border border-black/5 dark:border-white/5 p-4 rounded-xl space-y-3">
               <span className="text-[9px] font-bold uppercase tracking-wider text-zinc-400 block">
                 AI Optimization Recommendations
               </span>
@@ -2011,7 +2011,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                       
                       <div className="flex justify-between items-center text-[8px] mt-2 pt-2 border-t border-dashed border-black/5 dark:border-white/5">
                         <span className="text-[#6d28d9] dark:text-[#a78bfa] font-mono">{rec.impactText}</span>
-                        <span className="text-zinc-550 dark:text-zinc-400 font-mono">Cost: ${(rec.cost * 1000).toFixed(0)}K</span>
+                        <span className="text-zinc-600 dark:text-zinc-400 font-mono">Cost: ${(rec.cost * 1000).toFixed(0)}K</span>
                       </div>
                     </div>
                   );
@@ -2070,7 +2070,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
               >
                 <div>
                   <p className="font-bold text-zinc-800 dark:text-zinc-200 text-[10px] leading-tight">⚠️ Sourcing Delay (EMEA)</p>
-                  <p className="text-[9px] text-zinc-550 dark:text-zinc-400 mt-1 line-clamp-2">BrandC Snacks packaging material shortage for launch.</p>
+                  <p className="text-[9px] text-zinc-600 dark:text-zinc-400 mt-1 line-clamp-2">BrandC Snacks packaging material shortage for launch.</p>
                 </div>
                 <div className="flex items-center justify-between mt-2 pt-1 border-t border-black/5 dark:border-white/5">
                   <span className="text-[8px] font-semibold text-purple-600 dark:text-purple-400 bg-purple-500/10 px-1.5 py-0.5 rounded-sm">78% Risk</span>
@@ -2085,7 +2085,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
               >
                 <div>
                   <p className="font-bold text-zinc-800 dark:text-zinc-200 text-[10px] leading-tight">🚨 Launch Supply Shortage (APAC)</p>
-                  <p className="text-[9px] text-zinc-550 dark:text-zinc-400 mt-1 line-clamp-2">BrandA Energy safety buffer below threshold for launch.</p>
+                  <p className="text-[9px] text-zinc-600 dark:text-zinc-400 mt-1 line-clamp-2">BrandA Energy safety buffer below threshold for launch.</p>
                 </div>
                 <div className="flex items-center justify-between mt-2 pt-1 border-t border-black/5 dark:border-white/5">
                   <span className="text-[8px] font-semibold text-red-600 dark:red-400 bg-red-500/10 px-1.5 py-0.5 rounded-sm">92% Risk</span>
@@ -2100,7 +2100,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
               >
                 <div>
                   <p className="font-bold text-zinc-800 dark:text-zinc-200 text-[10px] leading-tight">📉 Launch Cost Overrun</p>
-                  <p className="text-[9px] text-zinc-550 dark:text-zinc-400 mt-1 line-clamp-2">BrandC Biscuits setup and marketing over budget.</p>
+                  <p className="text-[9px] text-zinc-600 dark:text-zinc-400 mt-1 line-clamp-2">BrandC Biscuits setup and marketing over budget.</p>
                 </div>
                 <div className="flex items-center justify-between mt-2 pt-1 border-t border-black/5 dark:border-white/5">
                   <span className="text-[8px] font-semibold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded-sm">81% Risk</span>
@@ -2115,7 +2115,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
               >
                 <div>
                   <p className="font-bold text-zinc-800 dark:text-zinc-200 text-[10px] leading-tight">⚡ Pilot Production Delay (APAC)</p>
-                  <p className="text-[9px] text-zinc-550 dark:text-zinc-400 mt-1 line-clamp-2">BrandF Eco Water manufacturing certification bottleneck.</p>
+                  <p className="text-[9px] text-zinc-600 dark:text-zinc-400 mt-1 line-clamp-2">BrandF Eco Water manufacturing certification bottleneck.</p>
                 </div>
                 <div className="flex items-center justify-between mt-2 pt-1 border-t border-black/5 dark:border-white/5">
                   <span className="text-[8px] font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-500/10 px-1.5 py-0.5 rounded-sm">88% Risk</span>
@@ -2139,7 +2139,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                     className="hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer transition-colors group"
                   >
                     <td className="py-1.5 pr-2 font-medium">
-                      <span className="text-zinc-850 dark:text-zinc-150 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors font-bold">⚠️ Sourcing Delay (EMEA)</span>
+                      <span className="text-zinc-900 dark:text-zinc-200 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors font-bold">⚠️ Sourcing Delay (EMEA)</span>
                       <p className="text-[8px] text-zinc-400 font-normal mt-0.5">BrandC Snacks packaging bottleneck</p>
                     </td>
                     <td className="py-1.5 text-center">
@@ -2152,7 +2152,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                     className="hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer transition-colors group"
                   >
                     <td className="py-1.5 pr-2 font-medium">
-                      <span className="text-zinc-850 dark:text-zinc-150 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors font-bold">🚨 Launch Supply Shortage (APAC)</span>
+                      <span className="text-zinc-900 dark:text-zinc-200 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors font-bold">🚨 Launch Supply Shortage (APAC)</span>
                       <p className="text-[8px] text-zinc-400 font-normal mt-0.5">BrandA Energy launch inventory deficit</p>
                     </td>
                     <td className="py-1.5 text-center">
@@ -2165,7 +2165,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                     className="hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer transition-colors group"
                   >
                     <td className="py-1.5 pr-2 font-medium">
-                      <span className="text-zinc-850 dark:text-zinc-150 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors font-bold">📉 Launch Cost Overrun</span>
+                      <span className="text-zinc-900 dark:text-zinc-200 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors font-bold">📉 Launch Cost Overrun</span>
                       <p className="text-[8px] text-zinc-400 font-normal mt-0.5">BrandC Biscuits setup cost overrun</p>
                     </td>
                     <td className="py-1.5 text-center">
@@ -2178,7 +2178,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                     className="hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer transition-colors group"
                   >
                     <td className="py-1.5 pr-2 font-medium">
-                      <span className="text-zinc-850 dark:text-zinc-150 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors font-bold">⚡ Pilot Production Delay (APAC)</span>
+                      <span className="text-zinc-900 dark:text-zinc-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors font-bold">⚡ Pilot Production Delay (APAC)</span>
                       <p className="text-[8px] text-zinc-400 font-normal mt-0.5">BrandF Eco Water certification backlog</p>
                     </td>
                     <td className="py-1.5 text-center">
@@ -2295,7 +2295,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
             {/* Header */}
             <div className="p-4 border-b border-black/5 dark:border-white/5 flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-display font-extrabold text-zinc-850 dark:text-zinc-100">
+                <h3 className="text-sm font-display font-extrabold text-zinc-900 dark:text-zinc-100">
                   {selectedStageSKUs.title} ({selectedStageSKUs.skus.length})
                 </h3>
                 <p className="text-[9px] text-zinc-400 uppercase tracking-wider mt-0.5 font-bold">
@@ -2304,7 +2304,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
               </div>
               <button 
                 onClick={() => setSelectedStageSKUs(null)}
-                className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded-full text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-200 cursor-pointer transition-colors"
+                className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded-full text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 cursor-pointer transition-colors"
               >
                 <X size={16} />
               </button>
@@ -2321,7 +2321,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                         <span>ℹ️</span>
                         <span>KPI Definition</span>
                       </div>
-                      <p className="text-[10px] text-zinc-650 dark:text-zinc-350 leading-relaxed font-sans">
+                      <p className="text-[10px] text-zinc-700 dark:text-zinc-400 leading-relaxed font-sans">
                         {selectedStageSKUs.meaning}
                       </p>
                     </div>
@@ -2333,7 +2333,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                         <span>🧮</span>
                         <span>Formula / Calculation</span>
                       </div>
-                      <p className="text-[10px] text-zinc-650 dark:text-zinc-350 leading-relaxed font-mono bg-black/5 dark:bg-white/5 p-1.5 rounded-sm overflow-x-auto">
+                      <p className="text-[10px] text-zinc-700 dark:text-zinc-400 leading-relaxed font-mono bg-black/5 dark:bg-white/5 p-1.5 rounded-sm overflow-x-auto">
                         {selectedStageSKUs.formula}
                       </p>
                     </div>
@@ -2367,7 +2367,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                 <div className="border border-black/5 dark:border-white/10 rounded-sm overflow-hidden bg-zinc-50/30 dark:bg-white/5">
                   <table className="w-full text-left border-collapse text-[10px]">
                     <thead>
-                      <tr className="border-b border-black/5 dark:border-white/10 bg-black/[0.02] dark:bg-white/5 text-[9px] uppercase tracking-wider text-zinc-450 dark:text-zinc-350 font-extrabold">
+                      <tr className="border-b border-black/5 dark:border-white/10 bg-black/[0.02] dark:bg-white/5 text-[9px] uppercase tracking-wider text-zinc-500 dark:text-zinc-400 font-extrabold">
                         <th className="p-3">SKU Name</th>
                         <th className="p-3">Category</th>
                         <th className="p-3">Region</th>
@@ -2384,7 +2384,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                           key={sku.id}
                           className="hover:bg-black/[0.01] dark:hover:bg-white/[0.01] transition-colors"
                         >
-                          <td className="p-3 font-extrabold text-zinc-850 dark:text-zinc-200">
+                          <td className="p-3 font-extrabold text-zinc-900 dark:text-zinc-200">
                             {sku.name}
                             <span className="block text-[8px] text-zinc-400 font-bold uppercase mt-0.5">{sku.brand}</span>
                           </td>
@@ -2423,10 +2423,10 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                               {sku.risk}
                             </span>
                           </td>
-                          <td className="p-3 font-mono font-bold text-zinc-750 dark:text-zinc-350">
+                          <td className="p-3 font-mono font-bold text-zinc-800 dark:text-zinc-400">
                             ${sku.revExposure.toFixed(1)}M
                           </td>
-                          <td className="p-3 text-zinc-550 dark:text-zinc-450 font-bold">{sku.owner}</td>
+                          <td className="p-3 text-zinc-600 dark:text-zinc-500 font-bold">{sku.owner}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -2434,7 +2434,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                 </div>
               ) : (
                 <div className="text-center py-10">
-                  <p className="text-xs text-zinc-450">No SKUs in this status currently</p>
+                  <p className="text-xs text-zinc-500">No SKUs in this status currently</p>
                 </div>
               )}
             </div>
@@ -2469,13 +2469,13 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                 <span className="text-[8px] font-bold uppercase tracking-widest text-blue-500">
                   {selectedProductGates.productId} • {selectedProductGates.productName}
                 </span>
-                <h3 className="text-xs font-display font-black text-zinc-850 dark:text-zinc-100">
+                <h3 className="text-xs font-display font-black text-zinc-900 dark:text-zinc-100">
                   {selectedStage.gateName}
                 </h3>
               </div>
               <button
                 onClick={() => setIsDrawerOpen(false)}
-                className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded-full text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-205 cursor-pointer transition-colors border-none bg-transparent"
+                className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded-full text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 cursor-pointer transition-colors border-none bg-transparent"
               >
                 <X size={16} />
               </button>
@@ -2486,9 +2486,9 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
               {/* Gate metadata cards */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-black/5 dark:bg-white/5 p-2.5 rounded-sm">
-                  <span className="text-[7px] font-bold uppercase text-zinc-450 block mb-1">Gate Owner</span>
+                  <span className="text-[7px] font-bold uppercase text-zinc-500 block mb-1">Gate Owner</span>
                   <div className="flex items-center gap-1.5">
-                    <User size={11} className="text-zinc-550 dark:text-zinc-450" />
+                    <User size={11} className="text-zinc-600 dark:text-zinc-500" />
                     <span className="text-[9px] font-extrabold text-zinc-700 dark:text-zinc-300">
                       {selectedStage.reviewer}
                     </span>
@@ -2496,9 +2496,9 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                 </div>
 
                 <div className="bg-black/5 dark:bg-white/5 p-2.5 rounded-sm">
-                  <span className="text-[7px] font-bold uppercase text-zinc-450 block mb-1">Review Date</span>
+                  <span className="text-[7px] font-bold uppercase text-zinc-500 block mb-1">Review Date</span>
                   <div className="flex items-center gap-1.5">
-                    <Calendar size={11} className="text-zinc-550 dark:text-zinc-455" />
+                    <Calendar size={11} className="text-zinc-600 dark:text-zinc-500" />
                     <span className="text-[9px] font-extrabold text-zinc-700 dark:text-zinc-300">
                       {selectedStage.reviewDate}
                     </span>
@@ -2509,7 +2509,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
               {/* Status and Risk Rating */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-black/5 dark:bg-white/5 p-2.5 rounded-sm">
-                  <span className="text-[7px] font-bold uppercase text-zinc-450 block mb-1">Gate Status</span>
+                  <span className="text-[7px] font-bold uppercase text-zinc-500 block mb-1">Gate Status</span>
                   <span className={`inline-flex items-center gap-1 text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ${
                     selectedStage.status === 'Passed' ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' :
                     selectedStage.status === 'Failed' ? 'bg-red-500/10 text-red-500 border border-red-500/20' :
@@ -2525,7 +2525,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                 </div>
 
                 <div className="bg-black/5 dark:bg-white/5 p-2.5 rounded-sm">
-                  <span className="text-[7px] font-bold uppercase text-zinc-450 block mb-1">Risk Assessment</span>
+                  <span className="text-[7px] font-bold uppercase text-zinc-500 block mb-1">Risk Assessment</span>
                   <span className={`inline-flex items-center gap-1 text-[9px] font-extrabold px-2 py-0.5 rounded-full ${
                     selectedStage.riskRating === 'No Risk' ? 'bg-emerald-500/10 text-emerald-500' :
                     selectedStage.riskRating === 'High Risk' ? 'bg-red-500/10 text-red-500' :
@@ -2539,23 +2539,23 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
 
               {/* Approval Notes */}
               <div className="space-y-1">
-                <span className="text-[8px] font-bold uppercase text-zinc-450">Approval / Review Notes</span>
-                <div className="p-3 bg-black/5 dark:bg-white/5 rounded-sm border border-black/5 dark:border-white/5 text-[9px] text-zinc-700 dark:text-zinc-350 leading-relaxed">
+                <span className="text-[8px] font-bold uppercase text-zinc-500">Approval / Review Notes</span>
+                <div className="p-3 bg-black/5 dark:bg-white/5 rounded-sm border border-black/5 dark:border-white/5 text-[9px] text-zinc-700 dark:text-zinc-400 leading-relaxed">
                   {selectedStage.approvalNotes}
                 </div>
               </div>
 
               {/* Supporting Documents */}
               <div className="space-y-1.5">
-                <span className="text-[8px] font-bold uppercase text-zinc-450">Supporting Documents</span>
+                <span className="text-[8px] font-bold uppercase text-zinc-500">Supporting Documents</span>
                 <div className="space-y-1">
                   {selectedStage.supportingDocs.map((doc, idx) => (
                     <div 
                       key={idx}
-                      className="flex items-center justify-between p-2 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 rounded-sm text-[8px] text-zinc-650 dark:text-zinc-350 font-bold transition-all cursor-pointer"
+                      className="flex items-center justify-between p-2 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 rounded-sm text-[8px] text-zinc-700 dark:text-zinc-400 font-bold transition-all cursor-pointer"
                     >
                       <div className="flex items-center gap-1.5">
-                        <FileText size={11} className="text-zinc-450 dark:text-zinc-550" />
+                        <FileText size={11} className="text-zinc-500 dark:text-zinc-600" />
                         <span>{doc}</span>
                       </div>
                       <span className="text-blue-500 hover:underline">Download</span>
@@ -2566,7 +2566,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
 
               {/* Audit Trail */}
               <div className="space-y-1.5">
-                <span className="text-[8px] font-bold uppercase text-zinc-450">Audit Trail</span>
+                <span className="text-[8px] font-bold uppercase text-zinc-500">Audit Trail</span>
                 <div className="border border-black/5 dark:border-white/5 rounded-sm overflow-hidden bg-zinc-50/20 dark:bg-white/5">
                   <div className="p-2 bg-black/[0.02] dark:bg-white/5 text-[7px] font-bold uppercase tracking-wider text-zinc-400 border-b border-black/5 dark:border-white/5 grid grid-cols-3">
                     <div>Timestamp</div>
@@ -2618,11 +2618,11 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                     placeholder="Append comment or escalation directive to this gate..."
                     value={vpCommentText}
                     onChange={(e) => setVpCommentText(e.target.value)}
-                    className="w-full h-12 p-2 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm text-[9px] text-zinc-750 dark:text-zinc-200 outline-none focus:border-blue-500/50 resize-none font-sans"
+                    className="w-full h-12 p-2 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm text-[9px] text-zinc-800 dark:text-zinc-200 outline-none focus:border-blue-500/50 resize-none font-sans"
                   />
                   <button
                     onClick={() => handleAddComment(selectedProductGates.productId, selectedStage.stageName, vpCommentText)}
-                    className="w-full py-1.5 bg-blue-600 hover:bg-blue-750 text-white font-bold text-[9px] uppercase tracking-wider rounded-sm cursor-pointer border-none transition-all flex items-center justify-center gap-1"
+                    className="w-full py-1.5 bg-blue-600 hover:bg-blue-800 text-white font-bold text-[9px] uppercase tracking-wider rounded-sm cursor-pointer border-none transition-all flex items-center justify-center gap-1"
                   >
                     <Plus size={11} />
                     Post Comment

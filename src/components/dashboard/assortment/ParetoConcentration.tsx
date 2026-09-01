@@ -81,7 +81,7 @@ export const ParetoConcentration: React.FC = () => {
               className={`px-3 py-1 text-[8.5px] font-bold uppercase tracking-wider rounded transition-all cursor-pointer ${
                 filterType === 'all' 
                   ? 'bg-white dark:bg-zinc-800 text-acies-yellow shadow-sm' 
-                  : 'text-zinc-400 hover:text-zinc-655 dark:hover:text-zinc-200'
+                  : 'text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200'
               }`}
             >
               All SKUs
@@ -91,7 +91,7 @@ export const ParetoConcentration: React.FC = () => {
               className={`px-3 py-1 text-[8.5px] font-bold uppercase tracking-wider rounded transition-all cursor-pointer ${
                 filterType === 'heroes' 
                   ? 'bg-white dark:bg-zinc-800 text-acies-yellow shadow-sm' 
-                  : 'text-zinc-400 hover:text-zinc-655 dark:hover:text-zinc-200'
+                  : 'text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200'
               }`}
             >
               Hero Tier (Top {heroThreshold}%)
@@ -101,7 +101,7 @@ export const ParetoConcentration: React.FC = () => {
               className={`px-3 py-1 text-[8.5px] font-bold uppercase tracking-wider rounded transition-all cursor-pointer ${
                 filterType === 'tail' 
                   ? 'bg-white dark:bg-zinc-800 text-acies-yellow shadow-sm' 
-                  : 'text-zinc-400 hover:text-zinc-655 dark:hover:text-zinc-200'
+                  : 'text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200'
               }`}
             >
               Long Tail (Bottom {100 - heroThreshold}%)
@@ -284,7 +284,7 @@ export const ParetoConcentration: React.FC = () => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-l border-black/10 dark:border-white/10 z-[160] overflow-y-auto flex flex-col shadow-2xl text-zinc-800 dark:text-zinc-150 p-6"
+              className="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-l border-black/10 dark:border-white/10 z-[160] overflow-y-auto flex flex-col shadow-2xl text-zinc-800 dark:text-zinc-200 p-6"
             >
               {/* Header */}
               <div className="flex justify-between items-start border-b border-black/5 dark:border-white/5 pb-4 mb-4">
@@ -294,7 +294,7 @@ export const ParetoConcentration: React.FC = () => {
                     <span className="text-[8px] uppercase font-bold tracking-wider text-zinc-400">AI Lifecycle Intelligence</span>
                     <span className="w-1 h-1 rounded-full bg-green-500 animate-pulse ml-1" />
                   </div>
-                  <h3 className="text-sm font-display font-extrabold text-zinc-850 dark:text-zinc-100 leading-tight">
+                  <h3 className="text-sm font-display font-extrabold text-zinc-900 dark:text-zinc-100 leading-tight">
                     {selectedSkuName}
                   </h3>
                   <div className="flex items-center gap-2 mt-1.5">
@@ -312,7 +312,7 @@ export const ParetoConcentration: React.FC = () => {
 
                 <button 
                   onClick={() => setSelectedSkuName(null)}
-                  className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded-full transition-colors text-zinc-400 dark:text-zinc-500 hover:text-zinc-850 dark:hover:text-zinc-200 cursor-pointer border-none bg-transparent outline-none"
+                  className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded-full transition-colors text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200 cursor-pointer border-none bg-transparent outline-none"
                 >
                   <X size={16} />
                 </button>
@@ -327,7 +327,7 @@ export const ParetoConcentration: React.FC = () => {
                       <Coins size={12} className="text-blue-500" />
                       <div>
                         <span className="text-[7px] text-zinc-400 uppercase font-bold block">Annual Net Sales</span>
-                        <span className="font-mono font-bold text-zinc-855 dark:text-zinc-200 text-[10px]">
+                        <span className="font-mono font-bold text-zinc-900 dark:text-zinc-200 text-[10px]">
                           ${skuItem.netSales.toFixed(2)}M
                         </span>
                       </div>
@@ -357,7 +357,7 @@ export const ParetoConcentration: React.FC = () => {
                       <Clock size={12} className="text-amber-500" />
                       <div>
                         <span className="text-[7px] text-zinc-400 uppercase font-bold block">Supplier Lead Time</span>
-                        <span className="font-mono font-bold text-zinc-850 dark:text-zinc-200 text-[10px]">
+                        <span className="font-mono font-bold text-zinc-900 dark:text-zinc-200 text-[10px]">
                           {skuItem.leadTime.toFixed(1)} Days
                         </span>
                       </div>
@@ -389,7 +389,7 @@ export const ParetoConcentration: React.FC = () => {
                         onChange={(e) => setDiscountDepth(parseInt(e.target.value, 10))}
                         className="w-full accent-rose-500 cursor-pointer h-1 bg-zinc-200 dark:bg-zinc-800 rounded-lg appearance-none"
                       />
-                      <div className="flex justify-between text-[6.5px] text-zinc-550 font-bold">
+                      <div className="flex justify-between text-[6.5px] text-zinc-600 font-bold">
                         <span>0% (Full Price)</span>
                         <span>40% (Max Markdown)</span>
                       </div>
@@ -425,14 +425,14 @@ export const ParetoConcentration: React.FC = () => {
 
                       return (
                         <div className="space-y-2 pt-2 border-t border-black/5 dark:border-white/5">
-                          <div className="grid grid-cols-2 gap-2 font-mono text-[8px] font-semibold text-zinc-405 dark:text-zinc-400">
+                          <div className="grid grid-cols-2 gap-2 font-mono text-[8px] font-semibold text-zinc-400 dark:text-zinc-400">
                             <div>
                               <span className="block text-[6.5px] text-zinc-500 uppercase font-bold">Volume Demand Lift</span>
                               <span className="text-emerald-500 font-bold">+{volumeLift.toFixed(1)}% Units</span>
                             </div>
                             <div>
                               <span className="block text-[6.5px] text-zinc-500 uppercase font-bold">New Gross Margin</span>
-                              <span className={`${newMarginPct > 0 ? 'text-zinc-700 dark:text-zinc-350' : 'text-rose-500'} font-bold`}>
+                              <span className={`${newMarginPct > 0 ? 'text-zinc-700 dark:text-zinc-400' : 'text-rose-500'} font-bold`}>
                                 {newMarginPct.toFixed(1)}%
                               </span>
                             </div>
@@ -498,7 +498,7 @@ export const ParetoConcentration: React.FC = () => {
                       {/* Stockout issues */}
                       <div className="flex justify-between items-center py-1">
                         <span>Stockout Events (Annualised)</span>
-                        <span className={`font-bold font-mono ${skuItem.stockouts > 300 ? 'text-rose-500' : 'text-zinc-650'}`}>
+                        <span className={`font-bold font-mono ${skuItem.stockouts > 300 ? 'text-rose-500' : 'text-zinc-700'}`}>
                           {skuItem.stockouts} events
                         </span>
                       </div>
@@ -506,7 +506,7 @@ export const ParetoConcentration: React.FC = () => {
                       {/* Promo dependencies */}
                       <div className="flex justify-between items-center py-1">
                         <span>Trade Promo Revenue Share</span>
-                        <span className="font-bold font-mono text-zinc-650">{skuItem.promoDep}% share</span>
+                        <span className="font-bold font-mono text-zinc-700">{skuItem.promoDep}% share</span>
                       </div>
 
                       {/* Sourcing margins */}

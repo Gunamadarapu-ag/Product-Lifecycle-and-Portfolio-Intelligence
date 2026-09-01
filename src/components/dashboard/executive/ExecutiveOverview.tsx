@@ -561,7 +561,7 @@ const MonthForecastModal: React.FC<{ isOpen: boolean; month: string | null; onCl
           <button
             type="button"
             onClick={onClose}
-            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-650 cursor-pointer border-none bg-transparent outline-none"
+            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 cursor-pointer border-none bg-transparent outline-none"
           >
             <X size={16} />
           </button>
@@ -577,7 +577,7 @@ const MonthForecastModal: React.FC<{ isOpen: boolean; month: string | null; onCl
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-zinc-500 font-medium">This Year Target vs Actual:</span>
-                <span className="font-semibold text-zinc-855 dark:text-white">
+                <span className="font-semibold text-zinc-900 dark:text-white">
                   {data.thisYearTarget} / <span className={isBelowTarget ? "text-amber-500 font-bold" : "text-green-500 font-bold"}>{data.thisYearActual}</span>
                 </span>
               </div>
@@ -600,10 +600,10 @@ const MonthForecastModal: React.FC<{ isOpen: boolean; month: string | null; onCl
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-zinc-500 font-medium">This Year Blended Price:</span>
-                <span className="font-semibold text-zinc-855 dark:text-white">{data.thisYearPriceIndex}</span>
+                <span className="font-semibold text-zinc-900 dark:text-white">{data.thisYearPriceIndex}</span>
               </div>
               <div className="border-t border-black/5 dark:border-white/5 pt-2.5 flex justify-between items-center">
-                <span className="text-indigo-655 dark:text-indigo-400 font-bold">YoY Price Lift:</span>
+                <span className="text-indigo-700 dark:text-indigo-400 font-bold">YoY Price Lift:</span>
                 <span className="text-[10px] font-extrabold text-indigo-600 dark:text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">+4.2% Growth</span>
               </div>
             </div>
@@ -983,7 +983,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
           <button
             type="button"
             onClick={() => onAuditClick('Executive Guide')}
-            className="flex items-center gap-1.5 px-2.5 py-1 bg-purple-600 hover:bg-purple-750 text-white dark:bg-purple-650 dark:hover:bg-purple-550 border border-purple-500/20 text-[8.5px] font-bold uppercase tracking-widest transition-all cursor-pointer rounded-sm shadow-sm active:scale-95"
+            className="flex items-center gap-1.5 px-2.5 py-1 bg-purple-600 hover:bg-purple-800 text-white dark:bg-purple-700 dark:hover:bg-purple-600 border border-purple-500/20 text-[8.5px] font-bold uppercase tracking-widest transition-all cursor-pointer rounded-sm shadow-sm active:scale-95"
           >
             <BookOpen size={9} />
             View Executive Guide
@@ -1076,7 +1076,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
               <p className="text-[8.5px] text-zinc-500 uppercase tracking-widest mt-0.5 leading-normal">
                 Monthly Actual vs Target ($ M) — This Year
                 <br />
-                <span className="text-purple-650 dark:text-purple-400 font-extrabold normal-case">
+                <span className="text-purple-700 dark:text-purple-400 font-extrabold normal-case">
                   Click any month to forecast next year & review price indexes
                 </span>
               </p>
@@ -1189,7 +1189,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
           <div className="mb-2.5 flex justify-between items-start">
             <div>
               <h3 className="text-[11px] font-bold uppercase tracking-widest">Category Performance</h3>
-              <p className="text-[8.5px] text-zinc-550 dark:text-zinc-450 uppercase tracking-widest mt-0.5 leading-normal">
+              <p className="text-[8.5px] text-zinc-600 dark:text-zinc-500 uppercase tracking-widest mt-0.5 leading-normal">
                 Revenue $ M by Category — Current Month
                 <br />
                 <span className="text-blue-500 font-extrabold normal-case">
@@ -1387,7 +1387,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
                       className="w-full text-left space-y-1 block hover:bg-black/5 dark:hover:bg-white/5 py-1.5 px-2.5 rounded transition-all group cursor-pointer border-none bg-transparent outline-none"
                     >
                       <div className="flex justify-between items-center text-[10.5px]">
-                        <span className="font-bold text-zinc-700 dark:text-zinc-350 group-hover:text-acies-yellow dark:group-hover:text-acies-yellow truncate max-w-[220px] transition-colors">
+                        <span className="font-bold text-zinc-700 dark:text-zinc-400 group-hover:text-acies-yellow dark:group-hover:text-acies-yellow truncate max-w-[220px] transition-colors">
                           {s.name}
                         </span>
                         <span className="font-extrabold text-acies-yellow group-hover:underline">${s.rev}M</span>
@@ -1441,7 +1441,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
               {/* Dynamic SKU details label at the bottom of the card */}
               <div className="absolute bottom-1 w-full text-center pointer-events-none px-4">
                 {hoveredSku ? (
-                  <span className="text-[9.5px] font-bold text-zinc-700 dark:text-zinc-350 bg-black/5 dark:bg-white/5 py-0.5 px-2 rounded-sm border border-black/5 dark:border-white/5 inline-block">
+                  <span className="text-[9.5px] font-bold text-zinc-700 dark:text-zinc-400 bg-black/5 dark:bg-white/5 py-0.5 px-2 rounded-sm border border-black/5 dark:border-white/5 inline-block">
                     Hovered: <span className="font-extrabold text-[#6d28d9] dark:text-[#a78bfa]">{hoveredSku.name}</span> (${hoveredSku.rev}M)
                   </span>
                 ) : (
@@ -1460,7 +1460,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
                 onViewAllSkus();
               }
             }}
-            className="w-full mt-2.5 py-1.5 border border-black/10 dark:border-white/15 hover:bg-black/5 dark:hover:bg-white/5 rounded text-[9.5px] font-bold text-zinc-705 dark:text-zinc-350 transition-all flex items-center justify-center gap-1 cursor-pointer bg-transparent shrink-0"
+            className="w-full mt-2.5 py-1.5 border border-black/10 dark:border-white/15 hover:bg-black/5 dark:hover:bg-white/5 rounded text-[9.5px] font-bold text-zinc-700 dark:text-zinc-400 transition-all flex items-center justify-center gap-1 cursor-pointer bg-transparent shrink-0"
             title="View All SKUs in SKU Rationalization Command Desk"
           >
             <span>View All SKUs</span>
@@ -1592,7 +1592,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
                           <td className="py-2.5 px-1 font-bold text-zinc-700 dark:text-zinc-300 truncate max-w-[145px]" title={s.name}>
                             {s.name}
                           </td>
-                          <td className="py-2.5 px-1 text-zinc-455 dark:text-zinc-500 font-semibold">
+                          <td className="py-2.5 px-1 text-zinc-500 dark:text-zinc-500 font-semibold">
                             {s.reason.replace(' decline', '').replace(' drop', '').replace(' risk', '')}
                           </td>
                           <td className={`py-2.5 px-1 font-extrabold ${s.isRed ? 'text-red-500' : 'text-amber-500'}`}>
@@ -1616,7 +1616,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
                   onViewAllSkus();
                 }
               }}
-              className="w-full mt-2.5 py-2 border border-black/10 dark:border-white/15 hover:bg-black/5 dark:hover:bg-white/5 rounded text-[9.5px] font-bold text-zinc-705 dark:text-zinc-350 transition-all flex items-center justify-center gap-1 cursor-pointer bg-transparent shrink-0"
+              className="w-full mt-2.5 py-2 border border-black/10 dark:border-white/15 hover:bg-black/5 dark:hover:bg-white/5 rounded text-[9.5px] font-bold text-zinc-700 dark:text-zinc-400 transition-all flex items-center justify-center gap-1 cursor-pointer bg-transparent shrink-0"
               title="View All Flagged SKUs"
             >
               <span>View all flagged SKUs</span>
@@ -1642,7 +1642,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
                 className={`px-2 py-0.5 text-[8.5px] font-bold uppercase tracking-wider rounded-sm transition-all border border-black/5 dark:border-white/10 cursor-pointer ${
                   activeCustomerCategory === cat
                     ? 'bg-acies-yellow text-acies-gray font-extrabold border-acies-yellow'
-                    : 'bg-black/5 dark:bg-white/5 text-zinc-650 dark:text-zinc-400 hover:bg-black/10 dark:hover:bg-white/10'
+                    : 'bg-black/5 dark:bg-white/5 text-zinc-700 dark:text-zinc-400 hover:bg-black/10 dark:hover:bg-white/10'
                 }`}
               >
                 {cat}
@@ -1653,7 +1653,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
           {/* Customer List */}
           <div className="flex-1 overflow-y-auto pr-1 pb-1 space-y-2 min-h-0 no-scrollbar">
             {(CUSTOMER_INSIGHTS[activeCustomerCategory] || []).map((c) => {
-              const trendCol = c.growthDirection === 'up' ? 'text-green-500' : c.growthDirection === 'down' ? 'text-red-500' : 'text-zinc-550';
+              const trendCol = c.growthDirection === 'up' ? 'text-green-500' : c.growthDirection === 'down' ? 'text-red-500' : 'text-zinc-600';
               return (
                 <div
                   key={c.name}
@@ -1679,8 +1679,8 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
                   </div>
 
                   <div className="space-y-1">
-                    <p className="text-[9px] text-zinc-650 dark:text-zinc-400 leading-normal">
-                      <span className="font-bold text-zinc-850 dark:text-zinc-300">Interest: </span>
+                    <p className="text-[9px] text-zinc-700 dark:text-zinc-400 leading-normal">
+                      <span className="font-bold text-zinc-900 dark:text-zinc-300">Interest: </span>
                       {c.interestTrend}
                     </p>
                     <div className="flex flex-wrap gap-1 items-center">
@@ -1746,13 +1746,13 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
                     className="w-full text-left space-y-1.5 block hover:bg-black/5 dark:hover:bg-white/5 py-1.5 px-2.5 rounded transition-all group cursor-pointer border-none bg-transparent outline-none"
                   >
                     <div className="flex justify-between items-center text-[10.5px]">
-                      <span className="font-bold text-zinc-700 dark:text-zinc-350 group-hover:text-acies-yellow dark:group-hover:text-acies-yellow transition-colors">{f.region}</span>
+                      <span className="font-bold text-zinc-700 dark:text-zinc-400 group-hover:text-acies-yellow dark:group-hover:text-acies-yellow transition-colors">{f.region}</span>
                       <span className={`font-extrabold ${deltaColor} group-hover:underline`}>{f.delta}</span>
                     </div>
                     <div className="w-full h-2 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden">
                       <div className="h-full bg-acies-yellow transition-all group-hover:bg-yellow-400" style={{ width: `${widthPct}%` }} />
                     </div>
-                    <div className="flex justify-between text-[9px] text-zinc-550 dark:text-zinc-450 font-semibold uppercase tracking-wider">
+                    <div className="flex justify-between text-[9px] text-zinc-600 dark:text-zinc-500 font-semibold uppercase tracking-wider">
                       <span>Actual: ${f.actual}M</span>
                       <span>Target: ${f.target}M</span>
                     </div>
@@ -1920,7 +1920,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
                           </div>
                         </div>
                       </div>
-                      <span className="text-[9px] font-semibold text-zinc-400 dark:text-zinc-550 font-mono whitespace-nowrap">{ev.time}</span>
+                      <span className="text-[9px] font-semibold text-zinc-400 dark:text-zinc-600 font-mono whitespace-nowrap">{ev.time}</span>
                     </div>
                   ))}
                 </div>
@@ -2128,7 +2128,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
           >
             <span className="w-2.5 h-2.5 rounded-full shrink-0 mt-1" style={{ backgroundColor: t.color }} />
             <div>
-              <h5 className="text-[11px] font-bold text-zinc-850 dark:text-zinc-150 leading-none">{t.title}</h5>
+              <h5 className="text-[11px] font-bold text-zinc-900 dark:text-zinc-200 leading-none">{t.title}</h5>
               <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 leading-snug">{t.body}</p>
             </div>
           </div>

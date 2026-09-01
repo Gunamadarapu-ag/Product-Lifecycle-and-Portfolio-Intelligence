@@ -79,7 +79,7 @@ export const DrilldownSkuGrid: React.FC<DrilldownSkuGridProps> = ({
               case 'Household': 
                 return 'bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/20';
               default: 
-                return 'bg-zinc-500/10 text-zinc-605 dark:text-zinc-400 border-zinc-500/20';
+                return 'bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border-zinc-500/20';
             }
           };
 
@@ -103,7 +103,7 @@ export const DrilldownSkuGrid: React.FC<DrilldownSkuGridProps> = ({
 
               {/* SKU Name & Status warning indicator */}
               <div className="my-2.5 flex items-start gap-1.5 justify-between">
-                <h4 className="text-[11px] font-bold text-zinc-805 dark:text-zinc-100 tracking-wide line-clamp-2 uppercase font-body">
+                <h4 className="text-[11px] font-bold text-zinc-800 dark:text-zinc-100 tracking-wide line-clamp-2 uppercase font-body">
                   {name}
                 </h4>
                 {!isUp && (
@@ -117,7 +117,7 @@ export const DrilldownSkuGrid: React.FC<DrilldownSkuGridProps> = ({
               <div className="space-y-1.5 w-full pb-2">
                 <div className="flex justify-between text-[7px] font-bold uppercase tracking-wider text-zinc-400">
                   <span>Margin Efficiency</span>
-                  <span className="text-zinc-755 dark:text-zinc-300 font-mono font-black">{item.margin}%</span>
+                  <span className="text-zinc-800 dark:text-zinc-300 font-mono font-black">{item.margin}%</span>
                 </div>
                 <div className="w-full h-1 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden">
                   <div 

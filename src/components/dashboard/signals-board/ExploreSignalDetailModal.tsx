@@ -79,13 +79,13 @@ export const ExploreSignalDetailModal: React.FC<ExploreSignalDetailModalProps> =
   const getBadgeStyle = () => {
     switch (signal.type) {
       case 'Risk':
-        return 'bg-red-500/10 text-red-650 dark:text-red-400 border-red-500/25';
+        return 'bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/25';
       case 'Supply':
-        return 'bg-amber-500/10 text-amber-650 dark:text-amber-400 border-amber-500/25';
+        return 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/25';
       case 'Growth':
-        return 'bg-emerald-500/10 text-emerald-655 dark:text-emerald-400 border-emerald-500/25';
+        return 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/25';
       default:
-        return 'bg-blue-500/10 text-blue-650 dark:text-blue-400 border-blue-500/25';
+        return 'bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/25';
     }
   };
 
@@ -105,14 +105,14 @@ export const ExploreSignalDetailModal: React.FC<ExploreSignalDetailModalProps> =
             </div>
             <div>
               <span className="text-[8.5px] font-extrabold uppercase tracking-widest text-zinc-400 block leading-none">Signal Impact Analysis</span>
-              <h3 className="text-sm font-display font-bold text-zinc-805 dark:text-zinc-105 mt-1 leading-tight">
+              <h3 className="text-sm font-display font-bold text-zinc-800 dark:text-zinc-100 mt-1 leading-tight">
                 {signal.title}
               </h3>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-650 cursor-pointer border-none bg-transparent flex items-center justify-center transition-colors"
+            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 cursor-pointer border-none bg-transparent flex items-center justify-center transition-colors"
           >
             <X size={16} />
           </button>
@@ -132,7 +132,7 @@ export const ExploreSignalDetailModal: React.FC<ExploreSignalDetailModalProps> =
               <span className="font-mono font-bold text-[11px]" style={{ color: colorHex }}>
                 {signal.urgency}%
               </span>
-              <span className="text-zinc-500 dark:text-zinc-450">({signal.urgencyLabel})</span>
+              <span className="text-zinc-500 dark:text-zinc-500">({signal.urgencyLabel})</span>
             </div>
           </div>
         </div>
@@ -165,7 +165,7 @@ export const ExploreSignalDetailModal: React.FC<ExploreSignalDetailModalProps> =
             {outcomes.map((o, idx) => (
               <div 
                 key={idx} 
-                className="p-2.5 bg-white dark:bg-zinc-805 border border-black/5 dark:border-white/10 rounded-sm hover:border-[#6d28d9]/25 transition-all flex flex-col justify-between shadow-sm min-h-[50px]"
+                className="p-2.5 bg-white dark:bg-zinc-800 border border-black/5 dark:border-white/10 rounded-sm hover:border-[#6d28d9]/25 transition-all flex flex-col justify-between shadow-sm min-h-[50px]"
               >
                 <div className="flex items-start justify-between gap-1 leading-none">
                   <span className="font-bold text-zinc-800 dark:text-zinc-200 text-[10px] leading-tight">{o.metric}</span>

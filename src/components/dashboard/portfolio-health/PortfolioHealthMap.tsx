@@ -346,7 +346,7 @@ const LifecycleHealthPanel: React.FC<LifecycleHealthPanelProps> = ({ skusList, i
                   </div>
                   
                   {/* Share comparison */}
-                  <span className="text-[7px] text-zinc-400 dark:text-zinc-650 font-mono mt-0.5">
+                  <span className="text-[7px] text-zinc-400 dark:text-zinc-700 font-mono mt-0.5">
                     ({stage.revPct}% Rev vs {stage.pct}% SKU)
                   </span>
 
@@ -422,9 +422,9 @@ const LifecycleHealthPanel: React.FC<LifecycleHealthPanelProps> = ({ skusList, i
               }
             });
             const textCol = 
-              mostEfficient.key === 'intro' ? 'text-purple-650 dark:text-purple-400' :
-              mostEfficient.key === 'growth' ? 'text-teal-650 dark:text-teal-400' :
-              mostEfficient.key === 'margin' ? 'text-amber-650 dark:text-amber-400' : 'text-red-650 dark:text-red-400';
+              mostEfficient.key === 'intro' ? 'text-purple-700 dark:text-purple-400' :
+              mostEfficient.key === 'growth' ? 'text-teal-700 dark:text-teal-400' :
+              mostEfficient.key === 'margin' ? 'text-amber-700 dark:text-amber-400' : 'text-red-700 dark:text-red-400';
             return (
               <div className="bg-black/5 dark:bg-white/5 rounded-sm p-2.5 border border-black/5 dark:border-white/5 flex flex-col justify-between">
                 <span className="text-[7.5px] text-zinc-400 dark:text-zinc-500 font-bold uppercase tracking-wider block">
@@ -454,9 +454,9 @@ const LifecycleHealthPanel: React.FC<LifecycleHealthPanelProps> = ({ skusList, i
               }
             });
             const textCol = 
-              leastEfficient.key === 'intro' ? 'text-purple-650 dark:text-purple-400' :
-              leastEfficient.key === 'growth' ? 'text-teal-650 dark:text-teal-400' :
-              leastEfficient.key === 'margin' ? 'text-amber-650 dark:text-amber-400' : 'text-red-650 dark:text-red-400';
+              leastEfficient.key === 'intro' ? 'text-purple-700 dark:text-purple-400' :
+              leastEfficient.key === 'growth' ? 'text-teal-700 dark:text-teal-400' :
+              leastEfficient.key === 'margin' ? 'text-amber-700 dark:text-amber-400' : 'text-red-700 dark:text-red-400';
             return (
               <div className="bg-black/5 dark:bg-white/5 rounded-sm p-2.5 border border-black/5 dark:border-white/5 flex flex-col justify-between">
                 <span className="text-[7.5px] text-zinc-400 dark:text-zinc-500 font-bold uppercase tracking-wider block">
@@ -676,7 +676,7 @@ const InvestmentMarginMap: React.FC<InvestmentMarginMapProps> = ({ skusList, isD
       return (
         <div className="bg-white dark:bg-zinc-950 border border-black/15 dark:border-zinc-800/80 p-3 rounded-md shadow-lg text-[10px] space-y-1">
           <p className="font-extrabold text-zinc-900 dark:text-zinc-50">{data.name}</p>
-          <p className="text-zinc-550 dark:text-zinc-400 font-bold uppercase tracking-wider text-[8px]">{data.cat}</p>
+          <p className="text-zinc-600 dark:text-zinc-400 font-bold uppercase tracking-wider text-[8px]">{data.cat}</p>
           <div className="border-t border-black/5 dark:border-white/5 pt-1 mt-1 space-y-0.5 font-medium">
             <div className="flex justify-between gap-4">
               <span className="text-zinc-400">Investment:</span>
@@ -687,8 +687,8 @@ const InvestmentMarginMap: React.FC<InvestmentMarginMapProps> = ({ skusList, isD
               <span className="font-bold text-zinc-800 dark:text-zinc-200">{data.returnMargin}%</span>
             </div>
             <div className="flex justify-between gap-4">
-              <span className="text-zinc-450">SKU Revenue:</span>
-              <span className="font-bold text-emerald-600 dark:text-emerald-450">${data.rev} M</span>
+              <span className="text-zinc-500">SKU Revenue:</span>
+              <span className="font-bold text-emerald-600 dark:text-emerald-500">${data.rev} M</span>
             </div>
           </div>
         </div>
@@ -702,7 +702,7 @@ const InvestmentMarginMap: React.FC<InvestmentMarginMapProps> = ({ skusList, isD
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-2 border-b border-black/5 dark:border-white/5 mb-3 gap-3">
         <div>
           <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Investment vs. Return Margin Map</span>
-          <p className="text-[9px] text-zinc-550 dark:text-zinc-400 uppercase tracking-widest mt-0.5">
+          <p className="text-[9px] text-zinc-600 dark:text-zinc-400 uppercase tracking-widest mt-0.5">
             Optimize fund allocation: High Return & Low Investment (Quick Wins) represent top priority candidates.
           </p>
         </div>
@@ -710,7 +710,7 @@ const InvestmentMarginMap: React.FC<InvestmentMarginMapProps> = ({ skusList, isD
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className="bg-white dark:bg-zinc-800 border border-black/10 dark:border-white/10 text-zinc-750 dark:text-zinc-200 rounded-sm text-[8.5px] font-extrabold uppercase tracking-widest px-2 py-1 cursor-pointer focus:outline-none focus:ring-1 focus:ring-purple-500"
+            className="bg-white dark:bg-zinc-800 border border-black/10 dark:border-white/10 text-zinc-800 dark:text-zinc-200 rounded-sm text-[8.5px] font-extrabold uppercase tracking-widest px-2 py-1 cursor-pointer focus:outline-none focus:ring-1 focus:ring-purple-500"
           >
             <option value="all">All Categories</option>
             <option value="Beverages">Beverages</option>
@@ -736,7 +736,7 @@ const InvestmentMarginMap: React.FC<InvestmentMarginMapProps> = ({ skusList, isD
               {Object.entries(categoryColors).map(([cat, color]) => (
                 <div key={cat} className="flex items-center gap-1.5 animate-fadeIn">
                   <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: color }} />
-                  <span className="text-zinc-650 dark:text-zinc-350">{cat}</span>
+                  <span className="text-zinc-700 dark:text-zinc-400">{cat}</span>
                 </div>
               ))}
             </div>
@@ -832,7 +832,7 @@ const InvestmentMarginMap: React.FC<InvestmentMarginMapProps> = ({ skusList, isD
                   className={`flex-1 py-1.5 text-[8.5px] font-extrabold uppercase tracking-wider text-center rounded-sm transition-all cursor-pointer border-none flex items-center justify-center gap-1 ${
                     activeQuad === t.id
                       ? 'bg-white dark:bg-zinc-800 shadow-sm font-black text-acies-gray dark:text-white'
-                      : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-350 bg-transparent'
+                      : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-400 bg-transparent'
                   }`}
                   style={{ borderTop: activeQuad === t.id ? `2px solid ${t.color}` : 'none' }}
                 >
@@ -860,7 +860,7 @@ const InvestmentMarginMap: React.FC<InvestmentMarginMapProps> = ({ skusList, isD
                   className={`flex-1 py-1.5 text-[8px] font-extrabold uppercase tracking-wider text-center rounded-sm transition-all cursor-pointer border-none flex items-center justify-center gap-0.5 ${
                     activeCat === t.id
                       ? 'bg-white dark:bg-zinc-800 shadow-sm font-black text-acies-gray dark:text-white'
-                      : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-350 bg-transparent'
+                      : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-400 bg-transparent'
                   }`}
                   style={{ borderTop: activeCat === t.id ? `2px solid ${t.color}` : 'none' }}
                 >
@@ -889,10 +889,10 @@ const InvestmentMarginMap: React.FC<InvestmentMarginMapProps> = ({ skusList, isD
                     }}
                     className="cursor-pointer"
                   >
-                    <h4 className="text-[11.5px] font-extrabold text-zinc-850 dark:text-zinc-150 group-hover:text-emerald-500 transition-colors font-display">
+                    <h4 className="text-[11.5px] font-extrabold text-zinc-900 dark:text-zinc-200 group-hover:text-emerald-500 transition-colors font-display">
                       {item.name}
                     </h4>
-                    <p className="text-[8.5px] text-zinc-400 dark:text-zinc-505 uppercase font-bold tracking-wider mt-0.5">
+                    <p className="text-[8.5px] text-zinc-400 dark:text-zinc-500 uppercase font-bold tracking-wider mt-0.5">
                       {item.cat} • Rev: ${item.rev} M • Margin: {item.margin}%
                     </p>
                   </div>
@@ -943,7 +943,7 @@ const InvestmentMarginMap: React.FC<InvestmentMarginMapProps> = ({ skusList, isD
               </div>
             ))}
             {filteredOppData.length === 0 && (
-              <div className="p-8 text-center text-zinc-450 text-[10px] font-bold uppercase tracking-wider">
+              <div className="p-8 text-center text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
                 No SKUs found for this active filter.
               </div>
             )}
@@ -1103,7 +1103,7 @@ const RevenuePerformanceMatrix: React.FC<RevenuePerformanceMatrixProps> = ({ sku
       return (
         <div className="bg-white dark:bg-zinc-950 border border-black/15 dark:border-zinc-800/80 p-3 rounded-md shadow-lg text-[10px] space-y-1">
           <p className="font-extrabold text-zinc-900 dark:text-zinc-50">{data.name}</p>
-          <p className="text-zinc-550 dark:text-zinc-400 font-bold uppercase tracking-wider text-[8px]">{data.cat}</p>
+          <p className="text-zinc-600 dark:text-zinc-400 font-bold uppercase tracking-wider text-[8px]">{data.cat}</p>
           <div className="border-t border-black/5 dark:border-white/5 pt-1 mt-1 space-y-0.5 font-medium">
             <div className="flex justify-between gap-4">
               <span className="text-zinc-400">Revenue:</span>
@@ -1134,7 +1134,7 @@ const RevenuePerformanceMatrix: React.FC<RevenuePerformanceMatrixProps> = ({ sku
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className="bg-white dark:bg-zinc-800 border border-black/10 dark:border-white/10 text-zinc-750 dark:text-zinc-200 rounded-sm text-[8.5px] font-extrabold uppercase tracking-widest px-2 py-1 cursor-pointer focus:outline-none focus:ring-1 focus:ring-purple-500"
+            className="bg-white dark:bg-zinc-800 border border-black/10 dark:border-white/10 text-zinc-800 dark:text-zinc-200 rounded-sm text-[8.5px] font-extrabold uppercase tracking-widest px-2 py-1 cursor-pointer focus:outline-none focus:ring-1 focus:ring-purple-500"
           >
             <option value="all">All Categories</option>
             <option value="Beverages">Beverages</option>
@@ -1160,7 +1160,7 @@ const RevenuePerformanceMatrix: React.FC<RevenuePerformanceMatrixProps> = ({ sku
               {Object.entries(categoryColors).map(([cat, color]) => (
                 <div key={cat} className="flex items-center gap-1.5 animate-fadeIn">
                   <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: color }} />
-                  <span className="text-zinc-650 dark:text-zinc-350">{cat}</span>
+                  <span className="text-zinc-700 dark:text-zinc-400">{cat}</span>
                 </div>
               ))}
             </div>
@@ -1256,7 +1256,7 @@ const RevenuePerformanceMatrix: React.FC<RevenuePerformanceMatrixProps> = ({ sku
                   className={`flex-1 py-1.5 text-[8px] font-extrabold uppercase tracking-wider text-center rounded-sm transition-all cursor-pointer border-none flex items-center justify-center gap-0.5 ${
                     activeQuad === t.id
                       ? 'bg-white dark:bg-zinc-800 shadow-sm font-black text-acies-gray dark:text-white'
-                      : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-350 bg-transparent'
+                      : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-400 bg-transparent'
                   }`}
                   style={{ borderTop: activeQuad === t.id ? `2px solid ${t.color}` : 'none' }}
                 >
@@ -1284,7 +1284,7 @@ const RevenuePerformanceMatrix: React.FC<RevenuePerformanceMatrixProps> = ({ sku
                   className={`flex-1 py-1.5 text-[8px] font-extrabold uppercase tracking-wider text-center rounded-sm transition-all cursor-pointer border-none flex items-center justify-center gap-0.5 ${
                     activeCat === t.id
                       ? 'bg-white dark:bg-zinc-800 shadow-sm font-black text-acies-gray dark:text-white'
-                      : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-350 bg-transparent'
+                      : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-400 bg-transparent'
                   }`}
                   style={{ borderTop: activeCat === t.id ? `2px solid ${t.color}` : 'none' }}
                 >
@@ -1313,10 +1313,10 @@ const RevenuePerformanceMatrix: React.FC<RevenuePerformanceMatrixProps> = ({ sku
                     }}
                     className="cursor-pointer"
                   >
-                    <h4 className="text-[11.5px] font-extrabold text-zinc-850 dark:text-zinc-150 group-hover:text-purple-500 transition-colors font-display">
+                    <h4 className="text-[11.5px] font-extrabold text-zinc-900 dark:text-zinc-200 group-hover:text-purple-500 transition-colors font-display">
                       {item.name}
                     </h4>
-                    <p className="text-[8.5px] text-zinc-400 dark:text-zinc-505 uppercase font-bold tracking-wider mt-0.5">
+                    <p className="text-[8.5px] text-zinc-400 dark:text-zinc-500 uppercase font-bold tracking-wider mt-0.5">
                       {item.cat} • Rev: ${item.rev} M • Perf: {item.performance}%
                     </p>
                   </div>
@@ -1330,7 +1330,7 @@ const RevenuePerformanceMatrix: React.FC<RevenuePerformanceMatrixProps> = ({ sku
                   </div>
                 </div>
 
-                <p className="text-[9.5px] text-zinc-505 dark:text-zinc-400 leading-relaxed font-medium">
+                <p className="text-[9.5px] text-zinc-500 dark:text-zinc-400 leading-relaxed font-medium">
                   {item.rec}
                 </p>
 
@@ -1367,7 +1367,7 @@ const RevenuePerformanceMatrix: React.FC<RevenuePerformanceMatrixProps> = ({ sku
               </div>
             ))}
             {filteredOppData.length === 0 && (
-              <div className="p-8 text-center text-zinc-450 text-[10px] font-bold uppercase tracking-wider">
+              <div className="p-8 text-center text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
                 No SKUs found for this active filter.
               </div>
             )}
@@ -2150,13 +2150,13 @@ const VPCommandCenter: React.FC<{
               <div className="flex justify-between items-start mb-0.5">
                 <div className="min-w-0">
                   <p className="text-[9px] font-bold uppercase tracking-wider text-zinc-400 truncate">{kpi.label}</p>
-                  <h3 className={`text-xl font-display font-extrabold text-zinc-850 dark:text-zinc-150 transition-colors duration-300 ${flashClass}`}>
+                  <h3 className={`text-xl font-display font-extrabold text-zinc-900 dark:text-zinc-200 transition-colors duration-300 ${flashClass}`}>
                     {kpi.prefix}{kpi.val}{kpi.suffix}
                   </h3>
                 </div>
                 <div className="text-right shrink-0">
                   <span className="text-[8px] uppercase font-bold text-zinc-400">Target</span>
-                  <p className="text-[10px] font-bold font-mono text-zinc-550 dark:text-zinc-350 leading-none mt-0.5">{kpi.prefix}{kpi.target}{kpi.suffix}</p>
+                  <p className="text-[10px] font-bold font-mono text-zinc-600 dark:text-zinc-400 leading-none mt-0.5">{kpi.prefix}{kpi.target}{kpi.suffix}</p>
                 </div>
               </div>
 
@@ -2189,14 +2189,14 @@ const VPCommandCenter: React.FC<{
         <span className="text-zinc-400 dark:text-zinc-500 mr-2 uppercase tracking-widest text-[8px]">Quick Jump:</span>
         <button 
           onClick={() => scrollToSection('vp-lifecycle-health')}
-          className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-350 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
+          className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-400 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
         >
           📊 Lifecycle Health
         </button>
         <span className="text-zinc-300 dark:text-zinc-700">|</span>
         <button 
           onClick={() => scrollToSection('vp-action-desk')}
-          className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-350 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
+          className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-400 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
         >
           ⚡ {role === 'VP Product Management' ? 'Executive Action Desk' : 
               role === 'Pricing and Margin Partner' ? 'Pricing & Margin Action Desk' : 
@@ -2236,7 +2236,7 @@ const VPCommandCenter: React.FC<{
           <select 
             value={filterRegion} 
             onChange={(e) => setFilterRegion(e.target.value)}
-            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-650 dark:text-zinc-350 outline-none cursor-pointer"
+            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
           >
             <option value="All">All Regions</option>
             <option value="APAC">APAC</option>
@@ -2248,7 +2248,7 @@ const VPCommandCenter: React.FC<{
           <select 
             value={filterCategory} 
             onChange={(e) => setFilterCategory(e.target.value)}
-            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-650 dark:text-zinc-350 outline-none cursor-pointer"
+            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
           >
             <option value="All">All Categories</option>
             <option value="Beverages">Beverages</option>
@@ -2263,7 +2263,7 @@ const VPCommandCenter: React.FC<{
           <select 
             value={filterRisk} 
             onChange={(e) => setFilterRisk(e.target.value)}
-            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-650 dark:text-zinc-350 outline-none cursor-pointer"
+            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
           >
             <option value="All">All Risk Levels</option>
             <option value="Low">Low Risk</option>
@@ -2274,7 +2274,7 @@ const VPCommandCenter: React.FC<{
           <select 
             value={filterQuarter} 
             onChange={(e) => setFilterQuarter(e.target.value)}
-            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-650 dark:text-zinc-350 outline-none cursor-pointer"
+            className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
           >
             <option value="All">All Quarters</option>
             <option value="Q2 2026">Q2 2026</option>
@@ -2337,8 +2337,8 @@ const VPCommandCenter: React.FC<{
                     {/* Title, Age, and Urgency Badge */}
                     <div className="flex justify-between items-start gap-4">
                       <div className="min-w-0">
-                        <h4 className={`text-[12.5px] font-black tracking-wide leading-tight break-words ${isDarkMode ? 'text-white' : 'text-zinc-850'}`}>{a.title}</h4>
-                        <p className={`text-[10px] font-bold mt-1 uppercase tracking-wider ${isDarkMode ? 'text-[#9d9d9d]' : 'text-zinc-450'}`}>{a.type} · Waiting {a.age}</p>
+                        <h4 className={`text-[12.5px] font-black tracking-wide leading-tight break-words ${isDarkMode ? 'text-white' : 'text-zinc-900'}`}>{a.title}</h4>
+                        <p className={`text-[10px] font-bold mt-1 uppercase tracking-wider ${isDarkMode ? 'text-[#9d9d9d]' : 'text-zinc-500'}`}>{a.type} · Waiting {a.age}</p>
                       </div>
                       <span 
                         className={`text-[10px] font-extrabold uppercase tracking-wide px-3.5 py-0.5 rounded-full shrink-0 ${
@@ -2495,7 +2495,7 @@ const VPCommandCenter: React.FC<{
           >
             <span className="w-2.5 h-2.5 rounded-full shrink-0 mt-1" style={{ backgroundColor: t.color }} />
             <div>
-              <h5 className="text-[11px] font-bold text-zinc-805 dark:text-zinc-105 leading-none">{t.title}</h5>
+              <h5 className="text-[11px] font-bold text-zinc-800 dark:text-zinc-100 leading-none">{t.title}</h5>
               <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 leading-snug">{t.body}</p>
             </div>
           </div>
@@ -3899,7 +3899,7 @@ export const PortfolioHealthMapOld: React.FC<PortfolioHealthMapProps> = ({
           >
             <span className="w-2.5 h-2.5 rounded-full shrink-0 mt-1" style={{ backgroundColor: t.color }} />
             <div>
-              <h5 className="text-[11px] font-bold text-zinc-850 dark:text-zinc-100 leading-none">{t.title}</h5>
+              <h5 className="text-[11px] font-bold text-zinc-900 dark:text-zinc-100 leading-none">{t.title}</h5>
               <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 leading-snug">{t.body}</p>
             </div>
           </div>

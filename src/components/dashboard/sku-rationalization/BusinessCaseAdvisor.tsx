@@ -53,7 +53,7 @@ export const BusinessCaseAdvisor: React.FC<BusinessCaseAdvisorProps> = ({
           <Globe size={11} className="stroke-[2.5]" />
           <span>Category Business Case Advisor</span>
         </h4>
-        <p className="text-[8.5px] font-medium text-zinc-450 dark:text-zinc-500 leading-normal font-sans">
+        <p className="text-[8.5px] font-medium text-zinc-500 dark:text-zinc-500 leading-normal font-sans">
           Continuous simulations evaluating substitutions, obsolescence costs, and retailer notice runways.
         </p>
       </div>
@@ -61,7 +61,7 @@ export const BusinessCaseAdvisor: React.FC<BusinessCaseAdvisorProps> = ({
       {/* Payback Card */}
       <div className="p-4 bg-white dark:bg-[#1a1a24] border border-black/10 dark:border-white/10 rounded-xl space-y-3.5 shadow-sm">
         <div className="flex justify-between items-center">
-          <span className="text-[8.5px] font-black uppercase tracking-wider text-zinc-450">Payback Feasibility</span>
+          <span className="text-[8.5px] font-black uppercase tracking-wider text-zinc-500">Payback Feasibility</span>
           <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest ${
             paybackMonths < 9 
               ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' 
@@ -79,7 +79,7 @@ export const BusinessCaseAdvisor: React.FC<BusinessCaseAdvisorProps> = ({
             <span className="text-base font-black text-zinc-800 dark:text-zinc-100 block">
               ${totalExitCost.toFixed(0)}k
             </span>
-            <span className="text-[7.5px] text-zinc-450 dark:text-zinc-500 block font-bold uppercase">
+            <span className="text-[7.5px] text-zinc-500 dark:text-zinc-500 block font-bold uppercase">
               Write-offs + markdowns
             </span>
           </div>
@@ -88,7 +88,7 @@ export const BusinessCaseAdvisor: React.FC<BusinessCaseAdvisorProps> = ({
             <span className="text-base font-black text-emerald-500 block">
               ${annualSavingsThousands.toFixed(0)}k
             </span>
-            <span className="text-[7.5px] text-zinc-450 dark:text-zinc-500 block font-bold uppercase">
+            <span className="text-[7.5px] text-zinc-500 dark:text-zinc-500 block font-bold uppercase">
               Margin uplift + SC savings
             </span>
           </div>
@@ -96,7 +96,7 @@ export const BusinessCaseAdvisor: React.FC<BusinessCaseAdvisorProps> = ({
 
         {/* Payback speed progress */}
         <div className="pt-2 border-t border-black/5 dark:border-white/5 space-y-1.5">
-          <div className="flex justify-between text-[8px] font-black uppercase text-zinc-450">
+          <div className="flex justify-between text-[8px] font-black uppercase text-zinc-500">
             <span>Exit Payback Speed</span>
             <span className="text-purple-500 font-extrabold">{paybackMonths} Months</span>
           </div>
@@ -108,7 +108,7 @@ export const BusinessCaseAdvisor: React.FC<BusinessCaseAdvisorProps> = ({
               style={{ width: `${Math.min(100, (paybackMonths / 24) * 100)}%` }}
             />
           </div>
-          <p className="text-[8.5px] text-zinc-450 leading-relaxed font-semibold italic mt-1 font-sans">
+          <p className="text-[8.5px] text-zinc-500 leading-relaxed font-semibold italic mt-1 font-sans">
             * Payback calculations automatically factor run-down optimization over {exitDateDays} days.
           </p>
         </div>
@@ -116,7 +116,7 @@ export const BusinessCaseAdvisor: React.FC<BusinessCaseAdvisorProps> = ({
 
       {/* Volume Transference Map */}
       <div className="p-4 bg-white dark:bg-[#1a1a24] border border-black/10 dark:border-white/10 rounded-xl space-y-3 shadow-sm">
-        <span className="text-[8.5px] font-black uppercase tracking-wider text-zinc-450 block">Variant Substitution Rate</span>
+        <span className="text-[8.5px] font-black uppercase tracking-wider text-zinc-500 block">Variant Substitution Rate</span>
         
         <div className="space-y-3.5">
           <div className="space-y-1">
@@ -128,7 +128,7 @@ export const BusinessCaseAdvisor: React.FC<BusinessCaseAdvisorProps> = ({
               <div className="bg-purple-500 h-full" style={{ width: `${transferenceRate}%` }} />
               <div className="bg-red-500/20 h-full" style={{ width: `${100 - transferenceRate}%` }} />
             </div>
-            <div className="flex justify-between text-[7.5px] font-bold text-zinc-450">
+            <div className="flex justify-between text-[7.5px] font-bold text-zinc-500">
               <span>${transferenceVolume} M preserved</span>
               <span>${leakageVolume} M category leak ({100 - transferenceRate}%)</span>
             </div>
@@ -138,7 +138,7 @@ export const BusinessCaseAdvisor: React.FC<BusinessCaseAdvisorProps> = ({
 
       {/* Retailer Delisting Notice Checklist */}
       <div className="p-4 bg-white dark:bg-[#1a1a24] border border-black/10 dark:border-white/10 rounded-xl space-y-3 shadow-sm">
-        <span className="text-[8.5px] font-black uppercase tracking-wider text-zinc-450 block">Global Retailer Alignment</span>
+        <span className="text-[8.5px] font-black uppercase tracking-wider text-zinc-500 block">Global Retailer Alignment</span>
         
         <div className="divide-y divide-black/5 dark:divide-white/5 text-[9px] font-bold">
           <div className="flex justify-between py-2 items-center">
@@ -162,7 +162,7 @@ export const BusinessCaseAdvisor: React.FC<BusinessCaseAdvisorProps> = ({
           <div className="flex justify-between py-2 items-center">
             <span className="text-zinc-600 dark:text-zinc-300">Costco Wholesale Review</span>
             <span className={`px-2 py-0.5 rounded text-[7.5px] font-black uppercase ${
-              costcoStatus === 'In Negotiation' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-zinc-500/10 text-zinc-450 font-black'
+              costcoStatus === 'In Negotiation' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-zinc-500/10 text-zinc-500 font-black'
             }`}>{costcoStatus}</span>
           </div>
         </div>
@@ -170,15 +170,15 @@ export const BusinessCaseAdvisor: React.FC<BusinessCaseAdvisorProps> = ({
 
       {/* Supply Chain Runway */}
       <div className="p-4 bg-white dark:bg-[#1a1a24] border border-black/10 dark:border-white/10 rounded-xl space-y-3 shadow-sm">
-        <span className="text-[8.5px] font-black uppercase tracking-wider text-zinc-455 block">Supply Run-down Runway</span>
-        <div className="bg-black/5 dark:bg-white/5 p-3 rounded-lg text-[9px] font-bold space-y-1.5 text-zinc-450 font-mono">
+        <span className="text-[8.5px] font-black uppercase tracking-wider text-zinc-500 block">Supply Run-down Runway</span>
+        <div className="bg-black/5 dark:bg-white/5 p-3 rounded-lg text-[9px] font-bold space-y-1.5 text-zinc-500 font-mono">
           <div className="flex justify-between">
             <span>Phase-out Period:</span>
-            <span className="text-zinc-850 dark:text-zinc-200">{exitDateDays} Days</span>
+            <span className="text-zinc-900 dark:text-zinc-200">{exitDateDays} Days</span>
           </div>
           <div className="flex justify-between">
             <span>Remaining Packaging Runway:</span>
-            <span className="text-purple-650 dark:text-purple-400">{Math.round(exitDateDays * 0.08)} weeks of supply</span>
+            <span className="text-purple-700 dark:text-purple-400">{Math.round(exitDateDays * 0.08)} weeks of supply</span>
           </div>
           <div className="flex justify-between">
             <span>Supply Transition Risk:</span>
@@ -203,7 +203,7 @@ export const BusinessCaseAdvisor: React.FC<BusinessCaseAdvisorProps> = ({
             </span>
           </div>
 
-          <p className="text-[8.5px] text-zinc-450 dark:text-zinc-500 leading-normal font-sans">
+          <p className="text-[8.5px] text-zinc-500 dark:text-zinc-500 leading-normal font-sans">
             Review the generated verification certificates in the ledger/vault. Once all 10 checklist steps are verified, authorize the sunset directive.
           </p>
 
@@ -225,7 +225,7 @@ export const BusinessCaseAdvisor: React.FC<BusinessCaseAdvisorProps> = ({
                 ? 'bg-emerald-600 text-white cursor-default'
                 : isCaseReady
                   ? 'bg-purple-600 hover:bg-purple-700 text-white'
-                  : 'bg-black/5 dark:bg-white/5 text-zinc-400 dark:text-zinc-650 cursor-not-allowed'
+                  : 'bg-black/5 dark:bg-white/5 text-zinc-400 dark:text-zinc-700 cursor-not-allowed'
             }`}
           >
             {hasVpSignedOff ? (

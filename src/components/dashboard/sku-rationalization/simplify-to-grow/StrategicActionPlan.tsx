@@ -138,7 +138,7 @@ const StepCard: React.FC<{
           onClick={() => onStatusChange(step.id, nextStatus)}
           title={`Status: ${sCfg.label} — click to advance`}
           className={`w-9 h-9 rounded-full border-2 flex items-center justify-center font-black text-[11px] transition-all hover:scale-110 shadow-sm z-10 ${
-            status === 'not-started' ? 'text-zinc-600 dark:text-zinc-450' : 'text-white'
+            status === 'not-started' ? 'text-zinc-600 dark:text-zinc-500' : 'text-white'
           }`}
           style={{
             backgroundColor: status === 'done' ? '#10b981' : status === 'in-progress' ? '#f59e0b' : isDarkMode ? '#27272a' : '#f4f4f5',
@@ -221,7 +221,7 @@ const StepCard: React.FC<{
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="sm:col-span-2">
                 <div className="text-[8px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-1.5">Context & Rationale</div>
-                <p className="text-[8.5px] text-zinc-650 dark:text-zinc-300 leading-relaxed">{step.description}</p>
+                <p className="text-[8.5px] text-zinc-700 dark:text-zinc-300 leading-relaxed">{step.description}</p>
               </div>
               <div className="rounded-xl p-3 border" style={{ backgroundColor: `${step.color}08`, borderColor: `${step.color}20` }}>
                 <div className="text-[7px] font-black uppercase tracking-widest mb-1" style={{ color: step.color }}>Estimated Impact</div>

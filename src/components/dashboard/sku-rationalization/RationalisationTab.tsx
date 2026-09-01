@@ -219,9 +219,9 @@ const FinancialDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
         <div>
           <span className="text-[9px] font-black text-indigo-500 uppercase tracking-widest block">SKU RATIONALIZE / RATIONALE SUMMARY / FINANCIAL REASONS</span>
           <h2 className="text-xl font-display leading-tight text-acies-gray dark:text-white font-bold mt-1">Low Profitability Drill Down</h2>
-          <p className="text-[9.5px] text-zinc-450 dark:text-zinc-500 uppercase font-semibold mt-0.5">Drill down into SKUs impacted due to low profitability</p>
+          <p className="text-[9.5px] text-zinc-500 dark:text-zinc-500 uppercase font-semibold mt-0.5">Drill down into SKUs impacted due to low profitability</p>
         </div>
-        <button onClick={onBack} className="px-3.5 py-1.5 border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-[9.5px] font-bold uppercase tracking-wider rounded flex items-center gap-1.5 cursor-pointer bg-transparent text-zinc-650 dark:text-zinc-300">
+        <button onClick={onBack} className="px-3.5 py-1.5 border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-[9.5px] font-bold uppercase tracking-wider rounded flex items-center gap-1.5 cursor-pointer bg-transparent text-zinc-700 dark:text-zinc-300">
           <ArrowLeft size={12} />
           <span>Back to Summary</span>
         </button>
@@ -238,7 +238,7 @@ const FinancialDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
           <div key={m.label} className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm">
             <span className="text-[8px] font-extrabold tracking-widest text-zinc-400 dark:text-zinc-500 block uppercase">{m.label}</span>
             <h3 className="text-2xl font-display font-black text-zinc-800 dark:text-zinc-100 mt-1">{m.value}</h3>
-            <span className="text-[8.5px] font-bold text-zinc-400 dark:text-zinc-550 block mt-0.5 uppercase">{m.sub}</span>
+            <span className="text-[8.5px] font-bold text-zinc-400 dark:text-zinc-600 block mt-0.5 uppercase">{m.sub}</span>
           </div>
         ))}
       </div>
@@ -246,22 +246,22 @@ const FinancialDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left: Profitability overview + margin distribution */}
         <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm space-y-4">
-          <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-850 dark:text-zinc-200">PROFITABILITY OVERVIEW</h3>
+          <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200">PROFITABILITY OVERVIEW</h3>
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-red-500/5 border border-red-500/10 p-3 rounded text-center">
-              <span className="text-[8px] font-bold text-zinc-450 dark:text-zinc-500 block uppercase">AVG GROSS MARGIN</span>
+              <span className="text-[8px] font-bold text-zinc-500 dark:text-zinc-500 block uppercase">AVG GROSS MARGIN</span>
               <h4 className="text-xl font-display font-black text-red-500 mt-0.5">-3.2%</h4>
-              <span className="text-[7.5px] font-bold text-zinc-400 dark:text-zinc-550 block">Target: +40%</span>
+              <span className="text-[7.5px] font-bold text-zinc-400 dark:text-zinc-600 block">Target: +40%</span>
             </div>
             <div className="bg-red-500/5 border border-red-500/10 p-3 rounded text-center">
-              <span className="text-[8px] font-bold text-zinc-450 dark:text-zinc-500 block uppercase">AVG NET MARGIN</span>
+              <span className="text-[8px] font-bold text-zinc-500 dark:text-zinc-500 block uppercase">AVG NET MARGIN</span>
               <h4 className="text-xl font-display font-black text-red-500 mt-0.5">-5.1%</h4>
-              <span className="text-[7.5px] font-bold text-zinc-400 dark:text-zinc-550 block">Target: +15%</span>
+              <span className="text-[7.5px] font-bold text-zinc-400 dark:text-zinc-600 block">Target: +15%</span>
             </div>
           </div>
 
           <div className="border-t border-black/5 dark:border-white/5 pt-4">
-            <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-850 dark:text-zinc-200 mb-2">MARGIN DISTRIBUTION</h3>
+            <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200 mb-2">MARGIN DISTRIBUTION</h3>
             <div className="h-[180px] relative">
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                 <span className="text-xl font-display font-black">78</span>
@@ -292,8 +292,8 @@ const FinancialDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
         {/* Right: factors horizontal bar */}
         <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm flex flex-col justify-between h-[450px]">
           <div>
-            <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-850 dark:text-zinc-200">KEY FACTORS DRIVING LOW PROFITABILITY</h3>
-            <p className="text-[9px] text-zinc-450 dark:text-zinc-500 uppercase font-semibold mt-0.5">Primary issues resulting in negative margins</p>
+            <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200">KEY FACTORS DRIVING LOW PROFITABILITY</h3>
+            <p className="text-[9px] text-zinc-500 dark:text-zinc-500 uppercase font-semibold mt-0.5">Primary issues resulting in negative margins</p>
           </div>
           <div className="flex-1 min-h-0 mt-4">
             <ResponsiveContainer width="100%" height="95%">
@@ -314,11 +314,11 @@ const FinancialDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
 
       {/* Top Affected SKUs */}
       <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm">
-        <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-850 dark:text-zinc-200 mb-3">TOP AFFECTED SKUs</h3>
+        <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200 mb-3">TOP AFFECTED SKUs</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-[10.5px]">
             <thead>
-              <tr className="border-b border-black/10 dark:border-white/10 text-[8.5px] uppercase tracking-widest text-zinc-450 dark:text-zinc-500 font-extrabold bg-black/[0.01] dark:bg-white/[0.01]">
+              <tr className="border-b border-black/10 dark:border-white/10 text-[8.5px] uppercase tracking-widest text-zinc-500 dark:text-zinc-500 font-extrabold bg-black/[0.01] dark:bg-white/[0.01]">
                 <th className="py-2 px-3">SKU Name</th>
                 <th className="py-2 px-2">Revenue</th>
                 <th className="py-2 px-2">Gross Margin</th>
@@ -327,10 +327,10 @@ const FinancialDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
                 <th className="py-2 px-3 text-right">Recommended Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-black/5 dark:divide-white/5 font-semibold text-zinc-700 dark:text-zinc-350">
+            <tbody className="divide-y divide-black/5 dark:divide-white/5 font-semibold text-zinc-700 dark:text-zinc-400">
               {affectedSkus.map(row => (
                 <tr key={row.name}>
-                  <td className="py-2 px-3 font-extrabold text-zinc-850 dark:text-zinc-200">{row.name}</td>
+                  <td className="py-2 px-3 font-extrabold text-zinc-900 dark:text-zinc-200">{row.name}</td>
                   <td className="py-2 px-2 font-mono">{row.rev}</td>
                   <td className="py-2 px-2 text-red-500 font-mono">{row.gross}</td>
                   <td className="py-2 px-2 text-red-500 font-mono">{row.net}</td>
@@ -349,7 +349,7 @@ const FinancialDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
 
       {/* Recommended Actions */}
       <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm">
-        <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-850 dark:text-zinc-200 mb-3">RECOMMENDED ACTIONS</h3>
+        <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200 mb-3">RECOMMENDED ACTIONS</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             { label: 'DISCONTINUE', count: '45 SKUs', pct: '58% of affected', desc: 'High candidates for portfolio pruning', color: 'border-red-500/20 text-red-500 bg-red-500/5' },
@@ -400,9 +400,9 @@ const PortfolioDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
         <div>
           <span className="text-[9px] font-black text-indigo-500 uppercase tracking-widest block">SKU RATIONALIZE / RATIONALE SUMMARY / PORTFOLIO REASONS</span>
           <h2 className="text-xl font-display leading-tight text-acies-gray dark:text-white font-bold mt-1">Portfolio Reasons Drill Down</h2>
-          <p className="text-[9.5px] text-zinc-450 dark:text-zinc-500 uppercase font-semibold mt-0.5">Drill down into strategic portfolio reasons</p>
+          <p className="text-[9.5px] text-zinc-500 dark:text-zinc-500 uppercase font-semibold mt-0.5">Drill down into strategic portfolio reasons</p>
         </div>
-        <button onClick={onBack} className="px-3.5 py-1.5 border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-[9.5px] font-bold uppercase tracking-wider rounded flex items-center gap-1.5 cursor-pointer bg-transparent text-zinc-650 dark:text-zinc-300">
+        <button onClick={onBack} className="px-3.5 py-1.5 border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-[9.5px] font-bold uppercase tracking-wider rounded flex items-center gap-1.5 cursor-pointer bg-transparent text-zinc-700 dark:text-zinc-300">
           <ArrowLeft size={12} />
           <span>Back to Summary</span>
         </button>
@@ -418,14 +418,14 @@ const PortfolioDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
           <div key={m.label} className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm">
             <span className="text-[8px] font-extrabold tracking-widest text-zinc-400 dark:text-zinc-500 block uppercase">{m.label}</span>
             <h3 className="text-2xl font-display font-black text-zinc-800 dark:text-zinc-100 mt-1">{m.value}</h3>
-            <span className="text-[8.5px] font-bold text-zinc-400 dark:text-zinc-550 block mt-0.5 uppercase">{m.sub}</span>
+            <span className="text-[8.5px] font-bold text-zinc-400 dark:text-zinc-600 block mt-0.5 uppercase">{m.sub}</span>
           </div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm space-y-4">
-          <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-850 dark:text-zinc-200">PORTFOLIO REASONS BREAKDOWN</h3>
+          <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200">PORTFOLIO REASONS BREAKDOWN</h3>
           <div className="h-[200px] relative">
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
               <span className="text-xl font-display font-black">56</span>
@@ -453,7 +453,7 @@ const PortfolioDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
         </div>
 
         <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm space-y-4">
-          <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-850 dark:text-zinc-200">STRATEGIC ISSUES</h3>
+          <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200">STRATEGIC ISSUES</h3>
           <div className="space-y-3">
             {[
               { title: 'High SKU Proliferation', desc: 'Too many active variants in snacks and dairy segments.', count: '42 SKUs' },
@@ -463,8 +463,8 @@ const PortfolioDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
             ].map((issue, idx) => (
               <div key={issue.title} className="flex justify-between items-start border-b border-black/5 dark:border-white/5 pb-2">
                 <div>
-                  <h4 className="text-[10px] font-bold text-zinc-850 dark:text-zinc-200">{issue.title}</h4>
-                  <p className="text-[8.5px] text-zinc-450 dark:text-zinc-500 font-medium leading-relaxed">{issue.desc}</p>
+                  <h4 className="text-[10px] font-bold text-zinc-900 dark:text-zinc-200">{issue.title}</h4>
+                  <p className="text-[8.5px] text-zinc-500 dark:text-zinc-500 font-medium leading-relaxed">{issue.desc}</p>
                 </div>
                 <span className="text-[9px] font-bold text-indigo-500 bg-indigo-500/10 px-1.5 py-0.5 rounded shrink-0">{issue.count}</span>
               </div>
@@ -474,11 +474,11 @@ const PortfolioDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
       </div>
 
       <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm">
-        <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-850 dark:text-zinc-200 mb-3">TOP AFFECTED SKUs</h3>
+        <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200 mb-3">TOP AFFECTED SKUs</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-[10.5px]">
             <thead>
-              <tr className="border-b border-black/10 dark:border-white/10 text-[8.5px] uppercase tracking-widest text-zinc-450 dark:text-zinc-500 font-extrabold bg-black/[0.01] dark:bg-white/[0.01]">
+              <tr className="border-b border-black/10 dark:border-white/10 text-[8.5px] uppercase tracking-widest text-zinc-500 dark:text-zinc-500 font-extrabold bg-black/[0.01] dark:bg-white/[0.01]">
                 <th className="py-2 px-3">SKU Name</th>
                 <th className="py-2 px-2">Revenue</th>
                 <th className="py-2 px-2">Growth Rate</th>
@@ -487,14 +487,14 @@ const PortfolioDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
                 <th className="py-2 px-3 text-right">Recommended Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-black/5 dark:divide-white/5 font-semibold text-zinc-700 dark:text-zinc-350">
+            <tbody className="divide-y divide-black/5 dark:divide-white/5 font-semibold text-zinc-700 dark:text-zinc-400">
               {affectedSkus.map(row => (
                 <tr key={row.name}>
-                  <td className="py-2 px-3 font-extrabold text-zinc-855 dark:text-zinc-200">{row.name}</td>
+                  <td className="py-2 px-3 font-extrabold text-zinc-900 dark:text-zinc-200">{row.name}</td>
                   <td className="py-2 px-2 font-mono">{row.rev}</td>
                   <td className="py-2 px-2 text-zinc-500 font-mono">{row.growth}</td>
                   <td className="py-2 px-2 text-red-500 font-mono">{row.overlap}</td>
-                  <td className="py-2 px-2 text-zinc-450 font-bold">{row.target}</td>
+                  <td className="py-2 px-2 text-zinc-500 font-bold">{row.target}</td>
                   <td className="py-2 px-3 text-right">
                     <span className="px-2 py-0.5 rounded text-[8px] font-extrabold uppercase bg-amber-500/10 text-amber-500 border border-amber-500/10">
                       {row.action}
@@ -535,9 +535,9 @@ const SupplyChainDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
         <div>
           <span className="text-[9px] font-black text-indigo-500 uppercase tracking-widest block">SKU RATIONALIZE / RATIONALE SUMMARY / SUPPLY CHAIN REASONS</span>
           <h2 className="text-xl font-display leading-tight text-acies-gray dark:text-white font-bold mt-1">Supply Chain Reasons Drill Down</h2>
-          <p className="text-[9.5px] text-zinc-450 dark:text-zinc-500 uppercase font-semibold mt-0.5">Drill down into supply chain related issues</p>
+          <p className="text-[9.5px] text-zinc-500 dark:text-zinc-500 uppercase font-semibold mt-0.5">Drill down into supply chain related issues</p>
         </div>
-        <button onClick={onBack} className="px-3.5 py-1.5 border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-[9.5px] font-bold uppercase tracking-wider rounded flex items-center gap-1.5 cursor-pointer bg-transparent text-zinc-650 dark:text-zinc-300">
+        <button onClick={onBack} className="px-3.5 py-1.5 border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-[9.5px] font-bold uppercase tracking-wider rounded flex items-center gap-1.5 cursor-pointer bg-transparent text-zinc-700 dark:text-zinc-300">
           <ArrowLeft size={12} />
           <span>Back to Summary</span>
         </button>
@@ -553,14 +553,14 @@ const SupplyChainDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
           <div key={m.label} className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm">
             <span className="text-[8px] font-extrabold tracking-widest text-zinc-400 dark:text-zinc-500 block uppercase">{m.label}</span>
             <h3 className="text-2xl font-display font-black text-zinc-800 dark:text-zinc-100 mt-1">{m.value}</h3>
-            <span className="text-[8.5px] font-bold text-zinc-400 dark:text-zinc-550 block mt-0.5 uppercase">{m.sub}</span>
+            <span className="text-[8.5px] font-bold text-zinc-400 dark:text-zinc-600 block mt-0.5 uppercase">{m.sub}</span>
           </div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm space-y-4">
-          <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-850 dark:text-zinc-200">SUPPLY CHAIN REASONS BREAKDOWN</h3>
+          <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200">SUPPLY CHAIN REASONS BREAKDOWN</h3>
           <div className="h-[200px] relative">
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
               <span className="text-xl font-display font-black">42</span>
@@ -588,7 +588,7 @@ const SupplyChainDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
         </div>
 
         <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm space-y-4">
-          <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-850 dark:text-zinc-200">KEY SUPPLY CHAIN ISSUES</h3>
+          <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200">KEY SUPPLY CHAIN ISSUES</h3>
           <div className="space-y-3">
             {[
               { title: 'Inventory Inefficiencies', desc: 'Slow inventory turns resulting in elevated carrying costs.', count: '40 SKUs' },
@@ -598,8 +598,8 @@ const SupplyChainDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
             ].map((issue) => (
               <div key={issue.title} className="flex justify-between items-start border-b border-black/5 dark:border-white/5 pb-2">
                 <div>
-                  <h4 className="text-[10px] font-bold text-zinc-850 dark:text-zinc-200">{issue.title}</h4>
-                  <p className="text-[8.5px] text-zinc-450 dark:text-zinc-500 font-medium leading-relaxed">{issue.desc}</p>
+                  <h4 className="text-[10px] font-bold text-zinc-900 dark:text-zinc-200">{issue.title}</h4>
+                  <p className="text-[8.5px] text-zinc-500 dark:text-zinc-500 font-medium leading-relaxed">{issue.desc}</p>
                 </div>
                 <span className="text-[9px] font-bold text-indigo-500 bg-indigo-500/10 px-1.5 py-0.5 rounded shrink-0">{issue.count}</span>
               </div>
@@ -609,11 +609,11 @@ const SupplyChainDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
       </div>
 
       <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm">
-        <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-850 dark:text-zinc-200 mb-3">TOP AFFECTED SKUs</h3>
+        <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200 mb-3">TOP AFFECTED SKUs</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-[10.5px]">
             <thead>
-              <tr className="border-b border-black/10 dark:border-white/10 text-[8.5px] uppercase tracking-widest text-zinc-450 dark:text-zinc-500 font-extrabold bg-black/[0.01] dark:bg-white/[0.01]">
+              <tr className="border-b border-black/10 dark:border-white/10 text-[8.5px] uppercase tracking-widest text-zinc-500 dark:text-zinc-500 font-extrabold bg-black/[0.01] dark:bg-white/[0.01]">
                 <th className="py-2 px-3">SKU Name</th>
                 <th className="py-2 px-2">Revenue</th>
                 <th className="py-2 px-2">Stockout Frequency</th>
@@ -622,14 +622,14 @@ const SupplyChainDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
                 <th className="py-2 px-3 text-right">Recommended Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-black/5 dark:divide-white/5 font-semibold text-zinc-700 dark:text-zinc-350">
+            <tbody className="divide-y divide-black/5 dark:divide-white/5 font-semibold text-zinc-700 dark:text-zinc-400">
               {affectedSkus.map(row => (
                 <tr key={row.name}>
-                  <td className="py-2 px-3 font-extrabold text-zinc-855 dark:text-zinc-200">{row.name}</td>
+                  <td className="py-2 px-3 font-extrabold text-zinc-900 dark:text-zinc-200">{row.name}</td>
                   <td className="py-2 px-2 font-mono">{row.rev}</td>
                   <td className="py-2 px-2 text-red-500 font-mono">{row.stockout}</td>
                   <td className="py-2 px-2 text-zinc-500 font-mono">{row.cost}</td>
-                  <td className="py-2 px-2 text-zinc-450 font-bold">{row.lead}</td>
+                  <td className="py-2 px-2 text-zinc-500 font-bold">{row.lead}</td>
                   <td className="py-2 px-3 text-right">
                     <span className="px-2 py-0.5 rounded text-[8px] font-extrabold uppercase bg-blue-500/10 text-blue-500 border border-blue-500/10">
                       {row.action}
@@ -670,9 +670,9 @@ const CustomerMarketDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
         <div>
           <span className="text-[9px] font-black text-indigo-500 uppercase tracking-widest block">SKU RATIONALIZE / RATIONALE SUMMARY / CUSTOMER & MARKET REASONS</span>
           <h2 className="text-xl font-display leading-tight text-acies-gray dark:text-white font-bold mt-1">Customer & Market Reasons Drill Down</h2>
-          <p className="text-[9.5px] text-zinc-450 dark:text-zinc-500 uppercase font-semibold mt-0.5">Drill down into customer and market related issues</p>
+          <p className="text-[9.5px] text-zinc-500 dark:text-zinc-500 uppercase font-semibold mt-0.5">Drill down into customer and market related issues</p>
         </div>
-        <button onClick={onBack} className="px-3.5 py-1.5 border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-[9.5px] font-bold uppercase tracking-wider rounded flex items-center gap-1.5 cursor-pointer bg-transparent text-zinc-650 dark:text-zinc-300">
+        <button onClick={onBack} className="px-3.5 py-1.5 border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-[9.5px] font-bold uppercase tracking-wider rounded flex items-center gap-1.5 cursor-pointer bg-transparent text-zinc-700 dark:text-zinc-300">
           <ArrowLeft size={12} />
           <span>Back to Summary</span>
         </button>
@@ -688,14 +688,14 @@ const CustomerMarketDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
           <div key={m.label} className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm">
             <span className="text-[8px] font-extrabold tracking-widest text-zinc-400 dark:text-zinc-500 block uppercase">{m.label}</span>
             <h3 className="text-2xl font-display font-black text-zinc-800 dark:text-zinc-100 mt-1">{m.value}</h3>
-            <span className="text-[8.5px] font-bold text-zinc-400 dark:text-zinc-550 block mt-0.5 uppercase">{m.sub}</span>
+            <span className="text-[8.5px] font-bold text-zinc-400 dark:text-zinc-600 block mt-0.5 uppercase">{m.sub}</span>
           </div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm space-y-4">
-          <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-850 dark:text-zinc-200">MARKET REASONS BREAKDOWN</h3>
+          <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200">MARKET REASONS BREAKDOWN</h3>
           <div className="h-[200px] relative">
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
               <span className="text-xl font-display font-black">38</span>
@@ -723,7 +723,7 @@ const CustomerMarketDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
         </div>
 
         <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm space-y-4">
-          <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-850 dark:text-zinc-200">MARKET ISSUES</h3>
+          <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200">MARKET ISSUES</h3>
           <div className="space-y-3">
             {[
               { title: 'Competitive Disadvantage', desc: 'Underperforming key rival offerings in value and placement.', count: '22 SKUs' },
@@ -733,8 +733,8 @@ const CustomerMarketDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
             ].map((issue) => (
               <div key={issue.title} className="flex justify-between items-start border-b border-black/5 dark:border-white/5 pb-2">
                 <div>
-                  <h4 className="text-[10px] font-bold text-zinc-850 dark:text-zinc-200">{issue.title}</h4>
-                  <p className="text-[8.5px] text-zinc-450 dark:text-zinc-500 font-medium leading-relaxed">{issue.desc}</p>
+                  <h4 className="text-[10px] font-bold text-zinc-900 dark:text-zinc-200">{issue.title}</h4>
+                  <p className="text-[8.5px] text-zinc-500 dark:text-zinc-500 font-medium leading-relaxed">{issue.desc}</p>
                 </div>
                 <span className="text-[9px] font-bold text-indigo-500 bg-indigo-500/10 px-1.5 py-0.5 rounded shrink-0">{issue.count}</span>
               </div>
@@ -744,11 +744,11 @@ const CustomerMarketDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
       </div>
 
       <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm">
-        <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-850 dark:text-zinc-200 mb-3">TOP AFFECTED SKUs</h3>
+        <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200 mb-3">TOP AFFECTED SKUs</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-[10.5px]">
             <thead>
-              <tr className="border-b border-black/10 dark:border-white/10 text-[8.5px] uppercase tracking-widest text-zinc-450 dark:text-zinc-500 font-extrabold bg-black/[0.01] dark:bg-white/[0.01]">
+              <tr className="border-b border-black/10 dark:border-white/10 text-[8.5px] uppercase tracking-widest text-zinc-500 dark:text-zinc-500 font-extrabold bg-black/[0.01] dark:bg-white/[0.01]">
                 <th className="py-2 px-3">SKU Name</th>
                 <th className="py-2 px-2">Revenue</th>
                 <th className="py-2 px-2">Growth Rate</th>
@@ -757,14 +757,14 @@ const CustomerMarketDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
                 <th className="py-2 px-3 text-right">Recommended Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-black/5 dark:divide-white/5 font-semibold text-zinc-700 dark:text-zinc-350">
+            <tbody className="divide-y divide-black/5 dark:divide-white/5 font-semibold text-zinc-700 dark:text-zinc-400">
               {affectedSkus.map(row => (
                 <tr key={row.name}>
-                  <td className="py-2 px-3 font-extrabold text-zinc-855 dark:text-zinc-200">{row.name}</td>
+                  <td className="py-2 px-3 font-extrabold text-zinc-900 dark:text-zinc-200">{row.name}</td>
                   <td className="py-2 px-2 font-mono">{row.rev}</td>
                   <td className="py-2 px-2 text-zinc-500 font-mono">{row.growth}</td>
                   <td className="py-2 px-2 text-red-500 font-mono">{row.promoter}</td>
-                  <td className="py-2 px-2 text-zinc-450 font-bold">{row.share}</td>
+                  <td className="py-2 px-2 text-zinc-500 font-bold">{row.share}</td>
                   <td className="py-2 px-3 text-right">
                     <span className="px-2 py-0.5 rounded text-[8px] font-extrabold uppercase bg-amber-500/10 text-amber-500 border border-amber-500/10">
                       {row.action}
@@ -804,9 +804,9 @@ const RegulatoryDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
         <div>
           <span className="text-[9px] font-black text-indigo-500 uppercase tracking-widest block">SKU RATIONALIZE / RATIONALE SUMMARY / REGULATORY & RISK REASONS</span>
           <h2 className="text-xl font-display leading-tight text-acies-gray dark:text-white font-bold mt-1">Regulatory & Risk Reasons Drill Down</h2>
-          <p className="text-[9.5px] text-zinc-450 dark:text-zinc-500 uppercase font-semibold mt-0.5">Drill down into regulatory and risk related issues</p>
+          <p className="text-[9.5px] text-zinc-500 dark:text-zinc-500 uppercase font-semibold mt-0.5">Drill down into regulatory and risk related issues</p>
         </div>
-        <button onClick={onBack} className="px-3.5 py-1.5 border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-[9.5px] font-bold uppercase tracking-wider rounded flex items-center gap-1.5 cursor-pointer bg-transparent text-zinc-650 dark:text-zinc-300">
+        <button onClick={onBack} className="px-3.5 py-1.5 border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-[9.5px] font-bold uppercase tracking-wider rounded flex items-center gap-1.5 cursor-pointer bg-transparent text-zinc-700 dark:text-zinc-300">
           <ArrowLeft size={12} />
           <span>Back to Summary</span>
         </button>
@@ -821,15 +821,15 @@ const RegulatoryDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
         ].map(m => (
           <div key={m.label} className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm">
             <span className="text-[8px] font-extrabold tracking-widest text-zinc-400 dark:text-zinc-500 block uppercase">{m.label}</span>
-            <h3 className="text-2xl font-display font-black text-zinc-850 dark:text-zinc-100 mt-1">{m.value}</h3>
-            <span className="text-[8.5px] font-bold text-zinc-400 dark:text-zinc-550 block mt-0.5 uppercase">{m.sub}</span>
+            <h3 className="text-2xl font-display font-black text-zinc-900 dark:text-zinc-100 mt-1">{m.value}</h3>
+            <span className="text-[8.5px] font-bold text-zinc-400 dark:text-zinc-600 block mt-0.5 uppercase">{m.sub}</span>
           </div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm space-y-4">
-          <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-850 dark:text-zinc-200">RISK REASONS BREAKDOWN</h3>
+          <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200">RISK REASONS BREAKDOWN</h3>
           <div className="h-[200px] relative">
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
               <span className="text-xl font-display font-black">24</span>
@@ -857,7 +857,7 @@ const RegulatoryDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
         </div>
 
         <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm space-y-4">
-          <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-850 dark:text-zinc-200">RISK FACTORS</h3>
+          <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200">RISK FACTORS</h3>
           <div className="space-y-3">
             {[
               { title: 'Regulatory Changes', desc: 'Failure to comply with upcoming regional carbon/plastic use taxes.', count: '12 SKUs' },
@@ -866,8 +866,8 @@ const RegulatoryDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
             ].map((issue) => (
               <div key={issue.title} className="flex justify-between items-start border-b border-black/5 dark:border-white/5 pb-2">
                 <div>
-                  <h4 className="text-[10px] font-bold text-zinc-855 dark:text-zinc-200">{issue.title}</h4>
-                  <p className="text-[8.5px] text-zinc-450 dark:text-zinc-500 font-medium leading-relaxed">{issue.desc}</p>
+                  <h4 className="text-[10px] font-bold text-zinc-900 dark:text-zinc-200">{issue.title}</h4>
+                  <p className="text-[8.5px] text-zinc-500 dark:text-zinc-500 font-medium leading-relaxed">{issue.desc}</p>
                 </div>
                 <span className="text-[9px] font-bold text-indigo-500 bg-indigo-500/10 px-1.5 py-0.5 rounded shrink-0">{issue.count}</span>
               </div>
@@ -877,11 +877,11 @@ const RegulatoryDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
       </div>
 
       <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm">
-        <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-855 dark:text-zinc-200 mb-3">TOP AFFECTED SKUs</h3>
+        <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200 mb-3">TOP AFFECTED SKUs</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-[10.5px]">
             <thead>
-              <tr className="border-b border-black/10 dark:border-white/10 text-[8.5px] uppercase tracking-widest text-zinc-450 dark:text-zinc-500 font-extrabold bg-black/[0.01] dark:bg-white/[0.01]">
+              <tr className="border-b border-black/10 dark:border-white/10 text-[8.5px] uppercase tracking-widest text-zinc-500 dark:text-zinc-500 font-extrabold bg-black/[0.01] dark:bg-white/[0.01]">
                 <th className="py-2 px-3">SKU Name</th>
                 <th className="py-2 px-2">Revenue</th>
                 <th className="py-2 px-2">Regulation Gap</th>
@@ -890,14 +890,14 @@ const RegulatoryDrillDown: React.FC<SubPageProps> = ({ onBack }) => {
                 <th className="py-2 px-3 text-right">Recommended Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-black/5 dark:divide-white/5 font-semibold text-zinc-700 dark:text-zinc-350">
+            <tbody className="divide-y divide-black/5 dark:divide-white/5 font-semibold text-zinc-700 dark:text-zinc-400">
               {affectedSkus.map(row => (
                 <tr key={row.name}>
-                  <td className="py-2 px-3 font-extrabold text-zinc-855 dark:text-zinc-200">{row.name}</td>
+                  <td className="py-2 px-3 font-extrabold text-zinc-900 dark:text-zinc-200">{row.name}</td>
                   <td className="py-2 px-2 font-mono">{row.rev}</td>
-                  <td className="py-2 px-2 text-zinc-550 font-bold">{row.gap}</td>
+                  <td className="py-2 px-2 text-zinc-600 font-bold">{row.gap}</td>
                   <td className="py-2 px-2 text-red-500 font-mono">{row.risk}</td>
-                  <td className="py-2 px-2 text-zinc-450 font-bold">{row.cost}</td>
+                  <td className="py-2 px-2 text-zinc-500 font-bold">{row.cost}</td>
                   <td className="py-2 px-3 text-right">
                     <span className="px-2 py-0.5 rounded text-[8px] font-extrabold uppercase bg-red-500/10 text-red-500 border border-red-500/10">
                       {row.action}
@@ -939,9 +939,9 @@ const SummaryDashboardPage: React.FC<SubPageProps> = ({ onBack }) => {
         <div>
           <span className="text-[9px] font-black text-indigo-500 uppercase tracking-widest block">SKU RATIONALIZE / RATIONALE SUMMARY / SUMMARY DASHBOARD</span>
           <h2 className="text-xl font-display leading-tight text-acies-gray dark:text-white font-bold mt-1">Rationale Summary Dashboard</h2>
-          <p className="text-[9.5px] text-zinc-450 dark:text-zinc-500 uppercase font-semibold mt-0.5">Overview of all rationale categories</p>
+          <p className="text-[9.5px] text-zinc-500 dark:text-zinc-500 uppercase font-semibold mt-0.5">Overview of all rationale categories</p>
         </div>
-        <button onClick={onBack} className="px-3.5 py-1.5 border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-[9.5px] font-bold uppercase tracking-wider rounded flex items-center gap-1.5 cursor-pointer bg-transparent text-zinc-650 dark:text-zinc-300">
+        <button onClick={onBack} className="px-3.5 py-1.5 border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 text-[9.5px] font-bold uppercase tracking-wider rounded flex items-center gap-1.5 cursor-pointer bg-transparent text-zinc-700 dark:text-zinc-300">
           <ArrowLeft size={12} />
           <span>Back to Summary</span>
         </button>
@@ -957,7 +957,7 @@ const SummaryDashboardPage: React.FC<SubPageProps> = ({ onBack }) => {
           <div key={m.label} className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm">
             <span className="text-[8px] font-extrabold tracking-widest text-zinc-400 dark:text-zinc-500 block uppercase">{m.label}</span>
             <h3 className="text-2xl font-display font-black text-zinc-800 dark:text-zinc-100 mt-1">{m.value}</h3>
-            <span className="text-[8.5px] font-bold text-zinc-400 dark:text-zinc-550 block mt-0.5 uppercase">{m.sub}</span>
+            <span className="text-[8.5px] font-bold text-zinc-400 dark:text-zinc-600 block mt-0.5 uppercase">{m.sub}</span>
           </div>
         ))}
       </div>
@@ -965,11 +965,11 @@ const SummaryDashboardPage: React.FC<SubPageProps> = ({ onBack }) => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left: Category Overview table (2 cols) */}
         <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm lg:col-span-2 space-y-3">
-          <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-850 dark:text-zinc-200">RATIONALE CATEGORY OVERVIEW</h3>
+          <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200">RATIONALE CATEGORY OVERVIEW</h3>
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-[10.5px]">
               <thead>
-                <tr className="border-b border-black/10 dark:border-white/10 text-[8.5px] uppercase tracking-widest text-zinc-450 dark:text-zinc-500 font-extrabold bg-black/[0.01] dark:bg-white/[0.01]">
+                <tr className="border-b border-black/10 dark:border-white/10 text-[8.5px] uppercase tracking-widest text-zinc-500 dark:text-zinc-500 font-extrabold bg-black/[0.01] dark:bg-white/[0.01]">
                   <th className="py-2 px-3">Category</th>
                   <th className="py-2 px-2">SKUs</th>
                   <th className="py-2 px-2">% of Portfolio</th>
@@ -978,10 +978,10 @@ const SummaryDashboardPage: React.FC<SubPageProps> = ({ onBack }) => {
                   <th className="py-2 px-3 text-right">Risk Level</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-black/5 dark:divide-white/5 font-semibold text-zinc-700 dark:text-zinc-350">
+              <tbody className="divide-y divide-black/5 dark:divide-white/5 font-semibold text-zinc-700 dark:text-zinc-400">
                 {categoriesOverview.map(row => (
                   <tr key={row.cat}>
-                    <td className="py-2.5 px-3 font-extrabold text-zinc-855 dark:text-zinc-200">{row.cat}</td>
+                    <td className="py-2.5 px-3 font-extrabold text-zinc-900 dark:text-zinc-200">{row.cat}</td>
                     <td className="py-2.5 px-2 font-mono">{row.skus}</td>
                     <td className="py-2.5 px-2 font-mono">{row.pct}</td>
                     <td className="py-2.5 px-2 text-red-500 font-mono">{row.impact}</td>
@@ -1003,7 +1003,7 @@ const SummaryDashboardPage: React.FC<SubPageProps> = ({ onBack }) => {
         {/* Right: Pie chart (1 col) */}
         <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm flex flex-col justify-between h-[300px]">
           <div>
-            <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-850 dark:text-zinc-200">IMPACT BY CATEGORY</h3>
+            <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200">IMPACT BY CATEGORY</h3>
           </div>
           <div className="flex-1 min-h-0 relative">
             <ResponsiveContainer width="100%" height="100%">
@@ -1030,7 +1030,7 @@ const SummaryDashboardPage: React.FC<SubPageProps> = ({ onBack }) => {
 
       {/* Recommended Next Steps */}
       <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm">
-        <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-850 dark:text-zinc-200 mb-3">RECOMMENDED NEXT STEPS</h3>
+        <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200 mb-3">RECOMMENDED NEXT STEPS</h3>
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
           {[
             { label: 'Discontinue', value: '78 SKUs', color: 'border-red-500/10 text-red-500 bg-red-500/5' },
@@ -1346,7 +1346,7 @@ const getRcaDetails = (sku: string, factor: string) => {
 const MarginWaterfallChart: React.FC = () => {
   return (
     <div className="bg-black/10 dark:bg-white/5 border border-black/5 dark:border-white/5 p-4 rounded-sm">
-      <h5 className="text-[9.5px] font-black uppercase tracking-widest text-zinc-450 dark:text-zinc-500 mb-4">Margin Bridge (% of Revenue)</h5>
+      <h5 className="text-[9.5px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-500 mb-4">Margin Bridge (% of Revenue)</h5>
       <div className="relative w-full h-[180px] font-semibold text-[8px] sm:text-[9px] text-zinc-400">
         <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-20 border-b border-zinc-500">
           <div className="w-full border-t border-zinc-500" />
@@ -1358,7 +1358,7 @@ const MarginWaterfallChart: React.FC = () => {
         <div className="absolute inset-0 flex justify-between px-2 pt-2">
           <div className="flex flex-col items-center justify-end h-full w-[15%]">
             <div className="w-full bg-zinc-500 dark:bg-zinc-600 rounded-t-xs h-[90%] flex items-center justify-center text-white font-bold text-[9px]">20.0%</div>
-            <span className="mt-2 text-[7.5px] text-center uppercase tracking-wider font-extrabold truncate w-full text-zinc-450">Target Margin</span>
+            <span className="mt-2 text-[7.5px] text-center uppercase tracking-wider font-extrabold truncate w-full text-zinc-500">Target Margin</span>
           </div>
           <div className="flex flex-col items-center justify-end h-full w-[18%]">
             <div className="w-full h-full relative">
@@ -1366,7 +1366,7 @@ const MarginWaterfallChart: React.FC = () => {
                 -2.0%
               </div>
             </div>
-            <span className="mt-2 text-[7.5px] text-center uppercase tracking-wider font-extrabold truncate w-full text-zinc-450">Material Cost</span>
+            <span className="mt-2 text-[7.5px] text-center uppercase tracking-wider font-extrabold truncate w-full text-zinc-500">Material Cost</span>
           </div>
           <div className="flex flex-col items-center justify-end h-full w-[18%]">
             <div className="w-full h-full relative">
@@ -1374,7 +1374,7 @@ const MarginWaterfallChart: React.FC = () => {
                 -2.4%
               </div>
             </div>
-            <span className="mt-2 text-[7.5px] text-center uppercase tracking-wider font-extrabold truncate w-full text-zinc-450">Promo Dilution</span>
+            <span className="mt-2 text-[7.5px] text-center uppercase tracking-wider font-extrabold truncate w-full text-zinc-500">Promo Dilution</span>
           </div>
           <div className="flex flex-col items-center justify-end h-full w-[18%]">
             <div className="w-full h-full relative">
@@ -1382,15 +1382,15 @@ const MarginWaterfallChart: React.FC = () => {
                 -1.0%
               </div>
             </div>
-            <span className="mt-2 text-[7.5px] text-center uppercase tracking-wider font-extrabold truncate w-full text-zinc-450">Mfg Overhead</span>
+            <span className="mt-2 text-[7.5px] text-center uppercase tracking-wider font-extrabold truncate w-full text-zinc-500">Mfg Overhead</span>
           </div>
           <div className="flex flex-col items-center justify-end h-full w-[15%]">
             <div className="w-full bg-blue-500 dark:bg-blue-600 rounded-t-xs h-[65.7%] flex items-center justify-center text-white font-bold text-[9px]">14.6%</div>
-            <span className="mt-2 text-[7.5px] text-center uppercase tracking-wider font-extrabold truncate w-full text-zinc-450">Actual Margin</span>
+            <span className="mt-2 text-[7.5px] text-center uppercase tracking-wider font-extrabold truncate w-full text-zinc-500">Actual Margin</span>
           </div>
         </div>
       </div>
-      <div className="flex justify-center gap-6 mt-4 border-t border-black/5 dark:border-white/5 pt-2 text-[8px] font-black uppercase tracking-wider text-zinc-450">
+      <div className="flex justify-center gap-6 mt-4 border-t border-black/5 dark:border-white/5 pt-2 text-[8px] font-black uppercase tracking-wider text-zinc-500">
         <div className="flex items-center gap-1.5">
           <span className="w-2.5 h-2.5 bg-zinc-500 dark:bg-zinc-600 rounded-xs" />
           <span>Baseline</span>
@@ -1411,7 +1411,7 @@ const MarginWaterfallChart: React.FC = () => {
 const SkuCategoryBenchmarks: React.FC<{ skuName: string, category: string }> = ({ skuName, category }) => {
   return (
     <div className="bg-black/10 dark:bg-white/5 border border-black/5 dark:border-white/5 p-4 rounded-sm space-y-4 text-left">
-      <h5 className="text-[9.5px] font-black uppercase tracking-widest text-zinc-450 dark:text-zinc-500 leading-tight">
+      <h5 className="text-[9.5px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-500 leading-tight">
         {skuName} vs. {category.toLowerCase()} category
       </h5>
       <div className="space-y-4">
@@ -1424,7 +1424,7 @@ const SkuCategoryBenchmarks: React.FC<{ skuName: string, category: string }> = (
             <div className="absolute top-0 left-0 h-full bg-red-500 rounded-full" style={{ width: '72.5%' }} />
             <div className="absolute top-[-4px] h-4 w-[2px] bg-white border border-black/40 dark:border-white/60" style={{ left: '49%' }} />
           </div>
-          <div className="flex justify-between text-[8px] font-bold text-zinc-450 uppercase">
+          <div className="flex justify-between text-[8px] font-bold text-zinc-500 uppercase">
             <span>this SKU: 14.5%</span>
             <span>category avg: 9.8%</span>
           </div>
@@ -1438,7 +1438,7 @@ const SkuCategoryBenchmarks: React.FC<{ skuName: string, category: string }> = (
             <div className="absolute top-0 left-0 h-full bg-red-500 rounded-full" style={{ width: '15%' }} />
             <div className="absolute top-[-4px] h-4 w-[2px] bg-white border border-black/40 dark:border-white/60" style={{ left: '50%' }} />
           </div>
-          <div className="flex justify-between text-[8px] font-bold text-zinc-450 uppercase">
+          <div className="flex justify-between text-[8px] font-bold text-zinc-500 uppercase">
             <span>this SKU: 1.12x</span>
             <span>category median: 1.70x</span>
           </div>
@@ -1653,7 +1653,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
             const el = document.getElementById('rat-factors');
             if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }}
-          className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-350 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
+          className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-400 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
         >
           📊 Rationale Factors
         </button>
@@ -1663,7 +1663,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
             const el = document.getElementById('rat-roadmap');
             if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }}
-          className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-350 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
+          className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-400 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
         >
           ⚡ Phased Rollout Roadmap
         </button>
@@ -1692,8 +1692,8 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
       {/* Rationale Summary by Category (Interactive Deep Dive List) */}
       <div id="rat-factors" className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-3 rounded-sm flex flex-col gap-2.5">
         <div>
-          <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-855 dark:text-zinc-200">RATIONALE FACTORS</h3>
-          <p className="text-[8px] text-zinc-455 dark:text-zinc-500 uppercase font-semibold tracking-wider mt-0.5">Overview of key rationalization factors with Deep Dive controls</p>
+          <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200">RATIONALE FACTORS</h3>
+          <p className="text-[8px] text-zinc-500 dark:text-zinc-500 uppercase font-semibold tracking-wider mt-0.5">Overview of key rationalization factors with Deep Dive controls</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 border-t border-black/5 dark:border-white/5 pt-3">
           {/* Financial Reasons KPI Card */}
@@ -1706,19 +1706,19 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
               <span className="text-[7.5px] font-extrabold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
                 Financial Reasons
               </span>
-              <span className="p-1 rounded bg-emerald-500/10 text-emerald-500 dark:text-emerald-450">
+              <span className="p-1 rounded bg-emerald-500/10 text-emerald-500 dark:text-emerald-500">
                 <Percent size={14} />
               </span>
             </div>
             <div className="my-1">
-              <h4 className="text-[22px] font-display font-black text-zinc-855 dark:text-zinc-100 leading-none">
+              <h4 className="text-[22px] font-display font-black text-zinc-900 dark:text-zinc-100 leading-none">
                 4
               </h4>
               <p className="text-[7.5px] font-semibold text-zinc-400 dark:text-zinc-500 mt-0.5 uppercase tracking-wider">
                 Identified Factors
               </p>
             </div>
-            <div className="pt-1.5 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[7.5px] font-black uppercase text-emerald-600 dark:text-emerald-450 tracking-wider">
+            <div className="pt-1.5 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[7.5px] font-black uppercase text-emerald-600 dark:text-emerald-500 tracking-wider">
               <span>Deep Dive</span>
               <ChevronRight size={8} className="transform group-hover:translate-x-0.5 transition-transform" />
             </div>
@@ -1734,19 +1734,19 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
               <span className="text-[7.5px] font-extrabold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
                 Portfolio Reasons
               </span>
-              <span className="p-1 rounded bg-red-500/10 text-red-500 dark:text-red-450">
+              <span className="p-1 rounded bg-red-500/10 text-red-500 dark:text-red-500">
                 <LayoutGrid size={14} />
               </span>
             </div>
             <div className="my-1">
-              <h4 className="text-[22px] font-display font-black text-zinc-855 dark:text-zinc-100 leading-none">
+              <h4 className="text-[22px] font-display font-black text-zinc-900 dark:text-zinc-100 leading-none">
                 4
               </h4>
               <p className="text-[7.5px] font-semibold text-zinc-400 dark:text-zinc-500 mt-0.5 uppercase tracking-wider">
                 Identified Factors
               </p>
             </div>
-            <div className="pt-1.5 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[7.5px] font-black uppercase text-red-600 dark:text-red-450 tracking-wider">
+            <div className="pt-1.5 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[7.5px] font-black uppercase text-red-600 dark:text-red-500 tracking-wider">
               <span>Deep Dive</span>
               <ChevronRight size={8} className="transform group-hover:translate-x-0.5 transition-transform" />
             </div>
@@ -1762,19 +1762,19 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
               <span className="text-[7.5px] font-extrabold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
                 Supply Chain
               </span>
-              <span className="p-1 rounded bg-blue-500/10 text-blue-500 dark:text-blue-450">
+              <span className="p-1 rounded bg-blue-500/10 text-blue-500 dark:text-blue-500">
                 <Box size={14} />
               </span>
             </div>
             <div className="my-1">
-              <h4 className="text-[22px] font-display font-black text-zinc-855 dark:text-zinc-100 leading-none">
+              <h4 className="text-[22px] font-display font-black text-zinc-900 dark:text-zinc-100 leading-none">
                 3
               </h4>
               <p className="text-[7.5px] font-semibold text-zinc-400 dark:text-zinc-500 mt-0.5 uppercase tracking-wider">
                 Identified Factors
               </p>
             </div>
-            <div className="pt-1.5 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[7.5px] font-black uppercase text-blue-600 dark:text-blue-450 tracking-wider">
+            <div className="pt-1.5 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[7.5px] font-black uppercase text-blue-600 dark:text-blue-500 tracking-wider">
               <span>Deep Dive</span>
               <ChevronRight size={8} className="transform group-hover:translate-x-0.5 transition-transform" />
             </div>
@@ -1790,19 +1790,19 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
               <span className="text-[7.5px] font-extrabold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
                 Customer/Market
               </span>
-              <span className="p-1 rounded bg-amber-500/10 text-amber-500 dark:text-amber-450">
+              <span className="p-1 rounded bg-amber-500/10 text-amber-500 dark:text-amber-500">
                 <Compass size={14} />
               </span>
             </div>
             <div className="my-1">
-              <h4 className="text-[22px] font-display font-black text-zinc-855 dark:text-zinc-100 leading-none">
+              <h4 className="text-[22px] font-display font-black text-zinc-900 dark:text-zinc-100 leading-none">
                 5
               </h4>
               <p className="text-[7.5px] font-semibold text-zinc-400 dark:text-zinc-500 mt-0.5 uppercase tracking-wider">
                 Identified Factors
               </p>
             </div>
-            <div className="pt-1.5 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[7.5px] font-black uppercase text-amber-600 dark:text-amber-450 tracking-wider">
+            <div className="pt-1.5 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[7.5px] font-black uppercase text-amber-600 dark:text-amber-500 tracking-wider">
               <span>Deep Dive</span>
               <ChevronRight size={8} className="transform group-hover:translate-x-0.5 transition-transform" />
             </div>
@@ -1818,19 +1818,19 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
               <span className="text-[7.5px] font-extrabold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
                 Regulatory/Risk
               </span>
-              <span className="p-1 rounded bg-purple-500/10 text-purple-500 dark:text-purple-450">
+              <span className="p-1 rounded bg-purple-500/10 text-purple-500 dark:text-purple-500">
                 <Shield size={14} />
               </span>
             </div>
             <div className="my-1">
-              <h4 className="text-[22px] font-display font-black text-zinc-855 dark:text-zinc-100 leading-none">
+              <h4 className="text-[22px] font-display font-black text-zinc-900 dark:text-zinc-100 leading-none">
                 3
               </h4>
               <p className="text-[7.5px] font-semibold text-zinc-400 dark:text-zinc-500 mt-0.5 uppercase tracking-wider">
                 Identified Factors
               </p>
             </div>
-            <div className="pt-1.5 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[7.5px] font-black uppercase text-purple-600 dark:text-purple-450 tracking-wider">
+            <div className="pt-1.5 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[7.5px] font-black uppercase text-purple-600 dark:text-purple-500 tracking-wider">
               <span>Deep Dive</span>
               <ChevronRight size={8} className="transform group-hover:translate-x-0.5 transition-transform" />
             </div>
@@ -1844,7 +1844,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
         <div className="flex items-start gap-2 border-l-2 border-indigo-600 pl-3 text-left">
           <div>
             <h3 className="text-[10px] font-black text-zinc-900 dark:text-white font-display uppercase tracking-wider">Phased Rollout Roadmap</h3>
-            <p className="text-[8px] text-zinc-455 dark:text-zinc-500 mt-0.5 uppercase tracking-wide font-bold">A realistic sequencing of the recommended actions — what to execute first, second, third, and fourth</p>
+            <p className="text-[8px] text-zinc-500 dark:text-zinc-500 mt-0.5 uppercase tracking-wide font-bold">A realistic sequencing of the recommended actions — what to execute first, second, third, and fourth</p>
           </div>
         </div>
 
@@ -1902,7 +1902,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
               <h4 className="text-[11.5px] font-extrabold text-[#ef4444]">Discontinue / Consolidate</h4>
               <span className="text-[9px] font-semibold text-zinc-400 uppercase">78 SKUs · $23.4M revenue involved</span>
             </div>
-            <div className="bg-black/2 dark:bg-white/2 p-3 rounded text-[10px] text-zinc-555 dark:text-zinc-450 leading-relaxed font-medium">
+            <div className="bg-black/2 dark:bg-white/2 p-3 rounded text-[10px] text-zinc-600 dark:text-zinc-500 leading-relaxed font-medium">
               Fastest to execute and lowest risk to start with — stop the bleeding on low-profitability SKUs before investing effort elsewhere.
             </div>
           </div>
@@ -1919,7 +1919,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
               <h4 className="text-[11.5px] font-extrabold text-[#f59e0b]">Reformulate / Margin Improvement</h4>
               <span className="text-[9px] font-semibold text-zinc-400 uppercase">56 SKUs · $16.8M revenue involved</span>
             </div>
-            <div className="bg-black/2 dark:bg-white/2 p-3 rounded text-[10px] text-zinc-555 dark:text-zinc-450 leading-relaxed font-medium">
+            <div className="bg-black/2 dark:bg-white/2 p-3 rounded text-[10px] text-zinc-600 dark:text-zinc-500 leading-relaxed font-medium">
               High margin leakage but reformulating recipes or renegotiating contracts takes 3-6 months. Plan early, execute in phase 2.
             </div>
           </div>
@@ -1936,7 +1936,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
               <h4 className="text-[11.5px] font-extrabold text-[#3b82f6]">Renegotiate / Price Adjust</h4>
               <span className="text-[9px] font-semibold text-zinc-400 uppercase">72 SKUs · $21.6M revenue involved</span>
             </div>
-            <div className="bg-black/2 dark:bg-white/2 p-3 rounded text-[10px] text-zinc-555 dark:text-zinc-450 leading-relaxed font-medium">
+            <div className="bg-black/2 dark:bg-white/2 p-3 rounded text-[10px] text-zinc-600 dark:text-zinc-500 leading-relaxed font-medium">
               Requires careful negotiation or customer communication; execute once baseline margin improvement is secured.
             </div>
           </div>
@@ -1951,9 +1951,9 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
             </span>
             <div className="space-y-0.5">
               <h4 className="text-[11.5px] font-extrabold text-[#10b981]">Invest / Expand</h4>
-              <span className="text-[9px] font-semibold text-zinc-450 dark:text-zinc-500 uppercase">42 SKUs · $12.8M revenue involved</span>
+              <span className="text-[9px] font-semibold text-zinc-500 dark:text-zinc-500 uppercase">42 SKUs · $12.8M revenue involved</span>
             </div>
-            <div className="bg-black/2 dark:bg-white/2 p-3 rounded text-[10px] text-zinc-555 dark:text-zinc-450 leading-relaxed font-medium">
+            <div className="bg-black/2 dark:bg-white/2 p-3 rounded text-[10px] text-zinc-600 dark:text-zinc-500 leading-relaxed font-medium">
               Scale up once capacity, budget, and attention freed from the earlier phases can be redirected to winners.
             </div>
           </div>
@@ -1973,7 +1973,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                   <div className="flex items-center gap-1.5">
                     <h3 className="text-[10px] font-black text-zinc-900 dark:text-white font-display uppercase tracking-wider">AI Recommendations</h3>
                   </div>
-                  <p className="text-[7.5px] text-zinc-450 dark:text-zinc-500 uppercase font-semibold">Immediate operational intervention</p>
+                  <p className="text-[7.5px] text-zinc-500 dark:text-zinc-500 uppercase font-semibold">Immediate operational intervention</p>
                 </div>
               </div>
               
@@ -1984,8 +1984,8 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                     onClick={() => setRiskViewMode('line')}
                     className={`p-1 rounded transition-all cursor-pointer border-none flex items-center justify-center ${
                       riskViewMode === 'line'
-                        ? 'bg-white dark:bg-acies-gray shadow-sm text-zinc-855 dark:text-white font-bold'
-                        : 'text-zinc-450 hover:text-zinc-655 dark:hover:text-zinc-350 bg-transparent'
+                        ? 'bg-white dark:bg-acies-gray shadow-sm text-zinc-900 dark:text-white font-bold'
+                        : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-400 bg-transparent'
                     }`}
                     title="Line View"
                   >
@@ -1995,8 +1995,8 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                     onClick={() => setRiskViewMode('grid')}
                     className={`p-1 rounded transition-all cursor-pointer border-none flex items-center justify-center ${
                       riskViewMode === 'grid'
-                        ? 'bg-white dark:bg-acies-gray shadow-sm text-zinc-855 dark:text-white font-bold'
-                        : 'text-zinc-450 hover:text-zinc-655 dark:hover:text-zinc-350 bg-transparent'
+                        ? 'bg-white dark:bg-acies-gray shadow-sm text-zinc-900 dark:text-white font-bold'
+                        : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-400 bg-transparent'
                     }`}
                     title="Grid View"
                   >
@@ -2028,10 +2028,10 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                         {alert.factor}
                       </span>
                     </div>
-                    <h4 className="text-[9.5px] font-extrabold text-zinc-850 dark:text-zinc-200 truncate" title={alert.sku}>
+                    <h4 className="text-[9.5px] font-extrabold text-zinc-900 dark:text-zinc-200 truncate" title={alert.sku}>
                       {alert.sku}
                     </h4>
-                    <p className="text-[8.5px] text-zinc-450 dark:text-zinc-500 leading-normal mt-0.5 font-medium line-clamp-2" title={alert.desc}>
+                    <p className="text-[8.5px] text-zinc-500 dark:text-zinc-500 leading-normal mt-0.5 font-medium line-clamp-2" title={alert.desc}>
                       {alert.desc}
                     </p>
                   </div>
@@ -2059,10 +2059,10 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
         <div id="rat-breakdown" className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm flex flex-col justify-between h-[480px] lg:col-span-1">
           <div className="flex justify-between items-center pb-3 border-b border-black/5 dark:border-white/5">
             <div>
-              <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-855 dark:text-zinc-200">
+              <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200">
                 {impactViewMode === 'bar' ? 'RATIONALE IMPACT ANALYSIS' : 'RATIONALE BREAKDOWN'}
               </h3>
-              <p className="text-[9px] text-zinc-450 dark:text-zinc-500 uppercase font-semibold tracking-wider mt-0.5">
+              <p className="text-[9px] text-zinc-500 dark:text-zinc-500 uppercase font-semibold tracking-wider mt-0.5">
                 {impactViewMode === 'bar' 
                   ? 'Distribution of SKUs by primary rationalization reason' 
                   : 'Distribution across primary rationale fields'}
@@ -2073,8 +2073,8 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                 onClick={() => setImpactViewMode('bar')}
                 className={`p-2 rounded-lg transition-all cursor-pointer border-none flex items-center justify-center ${
                   impactViewMode === 'bar'
-                    ? 'bg-white dark:bg-acies-gray shadow-sm text-zinc-855 dark:text-white font-bold'
-                    : 'text-zinc-450 hover:text-zinc-655 dark:hover:text-zinc-350 bg-transparent'
+                    ? 'bg-white dark:bg-acies-gray shadow-sm text-zinc-900 dark:text-white font-bold'
+                    : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-400 bg-transparent'
                 }`}
                 title="Bar Chart"
               >
@@ -2084,8 +2084,8 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                 onClick={() => setImpactViewMode('donut')}
                 className={`p-2 rounded-lg transition-all cursor-pointer border-none flex items-center justify-center ${
                   impactViewMode === 'donut'
-                    ? 'bg-white dark:bg-acies-gray shadow-sm text-zinc-855 dark:text-white font-bold'
-                    : 'text-zinc-450 hover:text-zinc-655 dark:hover:text-zinc-350 bg-transparent'
+                    ? 'bg-white dark:bg-acies-gray shadow-sm text-zinc-900 dark:text-white font-bold'
+                    : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-400 bg-transparent'
                 }`}
                 title="Donut Chart"
               >
@@ -2095,8 +2095,8 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                 onClick={() => setImpactViewMode('spider')}
                 className={`p-2 rounded-lg transition-all cursor-pointer border-none flex items-center justify-center ${
                   impactViewMode === 'spider'
-                    ? 'bg-white dark:bg-acies-gray shadow-sm text-zinc-855 dark:text-white font-bold'
-                    : 'text-zinc-450 hover:text-zinc-655 dark:hover:text-zinc-350 bg-transparent'
+                    ? 'bg-white dark:bg-acies-gray shadow-sm text-zinc-900 dark:text-white font-bold'
+                    : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-400 bg-transparent'
                 }`}
                 title="Radar Chart"
               >
@@ -2196,7 +2196,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                       <div key={d.name} className="flex items-center justify-between gap-4 text-[9px] font-semibold">
                         <div className="flex items-center gap-1.5 w-[110px] truncate" title={d.name}>
                           <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: d.color }} />
-                          <span className="text-zinc-700 dark:text-zinc-350 truncate">{d.name}</span>
+                          <span className="text-zinc-700 dark:text-zinc-400 truncate">{d.name}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           {/* Progress Bar */}
@@ -2264,13 +2264,13 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
         const maxStageCount = Math.max(...details.stages.map(s => s.count));
 
         return (
-          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 md:p-6 animate-fadeIn text-zinc-800 dark:text-zinc-150">
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 md:p-6 animate-fadeIn text-zinc-800 dark:text-zinc-200">
             <div className="bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-sm max-w-4xl w-full overflow-hidden shadow-2xl relative flex flex-col max-h-[90vh] animate-slideIn">
               
               {/* Header */}
               <div className="p-5 border-b border-black/5 dark:border-white/5 flex justify-between items-start">
                 <div className="text-left">
-                  <span className="text-[9px] text-indigo-650 dark:text-indigo-400 uppercase tracking-widest font-black block mb-1">
+                  <span className="text-[9px] text-indigo-700 dark:text-indigo-400 uppercase tracking-widest font-black block mb-1">
                     {details.step} · Phased Rollout breakdown
                   </span>
                   <h3 className="text-base font-display font-extrabold text-zinc-900 dark:text-white leading-tight">
@@ -2285,14 +2285,14 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                     setSelectedRoadmapPhase(null);
                     setRoadmapSearchQuery('');
                   }}
-                  className="text-zinc-400 hover:text-zinc-655 dark:hover:text-zinc-200 cursor-pointer p-1 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors border-none"
+                  className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 cursor-pointer p-1 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors border-none"
                 >
                   <X size={16} />
                 </button>
               </div>
 
               {/* Scrollable Content */}
-              <div className="p-6 overflow-y-auto space-y-6 text-xs text-zinc-650 dark:text-zinc-350">
+              <div className="p-6 overflow-y-auto space-y-6 text-xs text-zinc-700 dark:text-zinc-400">
                 
                 {/* Breakdowns section */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -2304,7 +2304,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                       <div className="bg-black/5 dark:bg-white/5 p-4 rounded-sm space-y-3">
                         {details.categories.map(cat => (
                           <div key={cat.name} className="flex items-center justify-between gap-3">
-                            <span className="w-1/3 truncate text-[10px] font-bold text-zinc-700 dark:text-zinc-350 text-left">{cat.name}</span>
+                            <span className="w-1/3 truncate text-[10px] font-bold text-zinc-700 dark:text-zinc-400 text-left">{cat.name}</span>
                             <div className="flex-1 h-2 bg-black/10 dark:bg-white/10 rounded-full overflow-hidden relative">
                               <div className={`h-full ${cat.color} rounded-full`} style={{ width: `${(cat.count / maxCatCount) * 100}%` }} />
                             </div>
@@ -2320,7 +2320,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                       <div className="bg-black/5 dark:bg-white/5 p-4 rounded-sm space-y-3">
                         {details.regions.map(reg => (
                           <div key={reg.name} className="flex items-center justify-between gap-3">
-                            <span className="w-1/3 truncate text-[10px] font-bold text-zinc-700 dark:text-zinc-350 text-left">{reg.name}</span>
+                            <span className="w-1/3 truncate text-[10px] font-bold text-zinc-700 dark:text-zinc-400 text-left">{reg.name}</span>
                             <div className="flex-1 h-2 bg-black/10 dark:bg-white/10 rounded-full overflow-hidden relative">
                               <div className={`h-full ${reg.color} rounded-full`} style={{ width: `${(reg.count / maxRegionCount) * 100}%` }} />
                             </div>
@@ -2339,7 +2339,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                       <div className="bg-black/5 dark:bg-white/5 p-4 rounded-sm space-y-3">
                         {details.stages.map(stg => (
                           <div key={stg.name} className="flex items-center justify-between gap-3">
-                            <span className="w-1/3 truncate text-[10px] font-bold text-zinc-700 dark:text-zinc-350 text-left">{stg.name}</span>
+                            <span className="w-1/3 truncate text-[10px] font-bold text-zinc-700 dark:text-zinc-400 text-left">{stg.name}</span>
                             <div className="flex-1 h-2 bg-black/10 dark:bg-white/10 rounded-full overflow-hidden relative">
                               <div className={`h-full ${stg.color} rounded-full`} style={{ width: `${(stg.count / maxStageCount) * 100}%` }} />
                             </div>
@@ -2367,11 +2367,11 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                 {/* SKUs — Explore & Sort Table section */}
                 <div className="space-y-3 pt-2">
                   <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
-                    <h4 className="text-[9px] font-black uppercase tracking-widest text-zinc-450 dark:text-zinc-500 text-left">SKUs — Explore & Sort</h4>
+                    <h4 className="text-[9px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-500 text-left">SKUs — Explore & Sort</h4>
                     
                     {/* Modal Search Bar */}
                     <div className="relative max-w-xs w-full">
-                      <Search size={11} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-450 dark:text-zinc-500" />
+                      <Search size={11} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-500" />
                       <input 
                         type="text" 
                         placeholder="Search these SKUs by name, code, or category..."
@@ -2423,7 +2423,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                         ))}
                         {modalFilteredSkus.length === 0 && (
                           <tr>
-                            <td colSpan={8} className="py-8 text-center text-zinc-450 dark:text-zinc-500">
+                            <td colSpan={8} className="py-8 text-center text-zinc-500 dark:text-zinc-500">
                               No SKUs matched your search term.
                             </td>
                           </tr>
@@ -2442,7 +2442,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                     setSelectedRoadmapPhase(null);
                     setRoadmapSearchQuery('');
                   }}
-                  className="px-4 py-2 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-zinc-650 dark:text-zinc-400 rounded text-[9.5px] font-bold uppercase tracking-wider hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer"
+                  className="px-4 py-2 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-zinc-700 dark:text-zinc-400 rounded text-[9.5px] font-bold uppercase tracking-wider hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer"
                 >
                   Close Roadmap Phase
                 </button>
@@ -2455,13 +2455,13 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
       {selectedRiskForAnalysis && (() => {
         const rca = getRcaDetails(selectedRiskForAnalysis.sku, selectedRiskForAnalysis.factor);
         return (
-          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 md:p-6 animate-fadeIn text-zinc-800 dark:text-zinc-150">
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 md:p-6 animate-fadeIn text-zinc-800 dark:text-zinc-200">
             <div className="bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-sm max-w-3xl w-full overflow-hidden shadow-2xl relative flex flex-col max-h-[85vh] animate-slideIn">
               
               {/* Header */}
               <div className="p-5 border-b border-black/5 dark:border-white/5 flex justify-between items-start">
                 <div className="text-left">
-                  <span className="text-[9px] text-red-650 dark:text-red-400 uppercase tracking-widest font-black block mb-1">
+                  <span className="text-[9px] text-red-700 dark:text-red-400 uppercase tracking-widest font-black block mb-1">
                     AI Risk Diagnosis
                   </span>
                   <h3 className="text-base font-display font-extrabold text-zinc-900 dark:text-white leading-tight">
@@ -2473,34 +2473,34 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                 </div>
                 <button 
                   onClick={() => setSelectedRiskForAnalysis(null)}
-                  className="text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-200 cursor-pointer p-1 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors border-none"
+                  className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 cursor-pointer p-1 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors border-none"
                 >
                   <X size={16} />
                 </button>
               </div>
 
               {/* Scrollable Content */}
-              <div className="p-6 overflow-y-auto space-y-6 text-xs text-zinc-650 dark:text-zinc-350">
+              <div className="p-6 overflow-y-auto space-y-6 text-xs text-zinc-700 dark:text-zinc-400">
                 
                 {/* AI Recommended Solution panel */}
                 <div className="bg-emerald-500/10 border border-emerald-500/25 p-4 rounded-sm text-left space-y-3">
                   <div>
                     <span className="text-[9.5px] font-black text-emerald-600 dark:text-emerald-500 block uppercase tracking-widest mb-1.5">AI Recommended Solution</span>
-                    <p className="text-[11.5px] leading-relaxed text-zinc-705 dark:text-zinc-200 font-extrabold">{rca.recommendations}</p>
+                    <p className="text-[11.5px] leading-relaxed text-zinc-700 dark:text-zinc-200 font-extrabold">{rca.recommendations}</p>
                   </div>
                   
                   {/* Quantitative Comparison Table */}
                   <div className="border border-emerald-500/20 rounded overflow-hidden mt-3 bg-white/40 dark:bg-black/10">
                     <table className="w-full text-left border-collapse text-[9.5px]">
                       <thead>
-                        <tr className="bg-emerald-500/15 border-b border-emerald-500/25 text-[8.5px] uppercase font-black text-emerald-800 dark:text-emerald-450 tracking-wider">
+                        <tr className="bg-emerald-500/15 border-b border-emerald-500/25 text-[8.5px] uppercase font-black text-emerald-800 dark:text-emerald-500 tracking-wider">
                           <th className="py-2 px-3">Quantitative Perks & Comparison</th>
                           <th className="py-2 px-2 text-right">Current</th>
                           <th className="py-2 px-2 text-right">Future (Simulated)</th>
                           <th className="py-2 px-3 text-right">Delta / Benefit</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-emerald-500/10 font-bold text-zinc-700 dark:text-zinc-350">
+                      <tbody className="divide-y divide-emerald-500/10 font-bold text-zinc-700 dark:text-zinc-400">
                         {rca.perks && rca.perks.map((perk: any, idx: number) => (
                           <tr key={idx} className="hover:bg-emerald-500/5 transition-colors">
                             <td className="py-2 px-3 font-semibold text-zinc-800 dark:text-zinc-200">{perk.metric}</td>
@@ -2520,19 +2520,19 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
 
                 {/* Primary Root Causes */}
                 <div className="space-y-2">
-                  <h4 className="text-[9.5px] font-black uppercase tracking-widest text-zinc-450 dark:text-zinc-500 text-left">Primary Root Causes</h4>
+                  <h4 className="text-[9.5px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-500 text-left">Primary Root Causes</h4>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                     {rca.rootCauses.map((cause, index) => (
                       <div key={cause.title} className="bg-black/2 dark:bg-white/2 border border-black/5 dark:border-white/5 p-2.5 rounded-sm relative flex flex-col gap-2 text-left hover:border-indigo-500/30 transition-all">
                         <div className="flex justify-between items-center">
-                          <span className="w-4 h-4 rounded-full bg-indigo-100 dark:bg-indigo-950/40 text-indigo-650 dark:text-indigo-350 flex items-center justify-center font-bold text-[8.5px] shrink-0">
+                          <span className="w-4 h-4 rounded-full bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-400 flex items-center justify-center font-bold text-[8.5px] shrink-0">
                             {index + 1}
                           </span>
                           <span className="text-[7px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-widest bg-indigo-600/10 px-1.5 py-0.5 rounded">FACTOR</span>
                         </div>
                         <div className="space-y-0.5">
                           <span className="font-extrabold text-zinc-800 dark:text-zinc-200 block text-[10.5px] leading-tight">{cause.title}</span>
-                          <p className="text-zinc-555 dark:text-zinc-400 text-[9px] leading-normal">{cause.desc}</p>
+                          <p className="text-zinc-600 dark:text-zinc-400 text-[9px] leading-normal">{cause.desc}</p>
                         </div>
                       </div>
                     ))}
@@ -2541,7 +2541,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
 
                 {/* Diagnostic Charts */}
                 <div className="space-y-4">
-                  <h4 className="text-[9.5px] font-black uppercase tracking-widest text-zinc-450 dark:text-zinc-500 text-left">Diagnostic Analytics</h4>
+                  <h4 className="text-[9.5px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-500 text-left">Diagnostic Analytics</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <MarginWaterfallChart />
                     <SkuCategoryBenchmarks skuName={selectedRiskForAnalysis.sku} category={selectedRiskForAnalysis.productCat} />
@@ -2579,7 +2579,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                 </button>
                 <button 
                   onClick={() => setSelectedRiskForAnalysis(null)}
-                  className="px-4 py-2 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-zinc-650 dark:text-zinc-400 rounded text-[9.5px] font-bold uppercase tracking-wider hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer"
+                  className="px-4 py-2 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-zinc-700 dark:text-zinc-400 rounded text-[9.5px] font-bold uppercase tracking-wider hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer"
                 >
                   Close Analysis
                 </button>

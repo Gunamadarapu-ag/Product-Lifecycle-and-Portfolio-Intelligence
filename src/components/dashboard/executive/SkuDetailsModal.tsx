@@ -243,7 +243,7 @@ Executive Director`;
         <div className="flex justify-between items-start border-b border-black/10 dark:border-white/10 pb-3">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-display font-extrabold text-zinc-900 dark:text-zinc-55">
+              <h2 className="text-sm font-display font-extrabold text-zinc-900 dark:text-zinc-50">
                 {sku.name}
               </h2>
               <span className={`text-[8.5px] uppercase font-extrabold px-2 py-0.5 rounded border ${segmentColor}`}>
@@ -256,7 +256,7 @@ Executive Director`;
           </div>
           <button 
             onClick={onClose}
-            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-650 cursor-pointer border-none bg-transparent"
+            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 cursor-pointer border-none bg-transparent"
           >
             <X size={16} />
           </button>
@@ -296,8 +296,8 @@ Executive Director`;
             {/* Commercial Value Index */}
             <div className="space-y-1">
               <div className="flex justify-between items-center text-[10px]">
-                <span className="font-medium text-zinc-550 dark:text-zinc-400 flex items-center gap-1">
-                  <Activity size={10} className="text-zinc-450" />
+                <span className="font-medium text-zinc-600 dark:text-zinc-400 flex items-center gap-1">
+                  <Activity size={10} className="text-zinc-500" />
                   Commercial Value Score
                 </span>
                 <span className="font-bold text-zinc-800 dark:text-zinc-200">{sku.val.toFixed(2)}</span>
@@ -310,8 +310,8 @@ Executive Director`;
             {/* Complexity Index */}
             <div className="space-y-1">
               <div className="flex justify-between items-center text-[10px]">
-                <span className="font-medium text-zinc-550 dark:text-zinc-400 flex items-center gap-1">
-                  <Zap size={10} className="text-zinc-450" />
+                <span className="font-medium text-zinc-600 dark:text-zinc-400 flex items-center gap-1">
+                  <Zap size={10} className="text-zinc-500" />
                   Complexity Index
                 </span>
                 <span className={`font-bold ${isHighComplexity ? 'text-amber-500' : 'text-zinc-800 dark:text-zinc-200'}`}>
@@ -329,7 +329,7 @@ Executive Director`;
                 <Clock size={11} className="text-zinc-400" />
                 Supplier Lead Time
               </span>
-              <span className="font-bold text-zinc-850 dark:text-zinc-100 flex items-center gap-1.5">
+              <span className="font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
                 {sku.lead} Days
                 {sku.lead > 25 && <AlertTriangle size={11} className="text-amber-500" />}
               </span>
@@ -341,7 +341,7 @@ Executive Director`;
                 <ShieldAlert size={11} className="text-zinc-400" />
                 Quarterly Stockouts
               </span>
-              <span className={`font-bold ${isHighStockout ? 'text-red-500' : 'text-zinc-850 dark:text-zinc-100'}`}>
+              <span className={`font-bold ${isHighStockout ? 'text-red-500' : 'text-zinc-900 dark:text-zinc-100'}`}>
                 {sku.stockouts} Events
               </span>
             </div>
@@ -352,7 +352,7 @@ Executive Director`;
                 <Info size={11} className="text-zinc-400" />
                 Promotional Sales Dependency
               </span>
-              <span className={`font-bold ${isHighPromo ? 'text-red-500' : 'text-zinc-850 dark:text-zinc-100'}`}>
+              <span className={`font-bold ${isHighPromo ? 'text-red-500' : 'text-zinc-900 dark:text-zinc-100'}`}>
                 {Math.round(sku.promo * 100)}% of sales
               </span>
             </div>

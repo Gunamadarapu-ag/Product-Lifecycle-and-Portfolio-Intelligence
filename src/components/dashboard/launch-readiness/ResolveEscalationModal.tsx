@@ -122,7 +122,7 @@ export const ResolveEscalationModal: React.FC<ResolveEscalationModalProps> = ({
           </div>
           <button 
             onClick={onClose}
-            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-650 cursor-pointer border-none bg-transparent"
+            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 cursor-pointer border-none bg-transparent"
           >
             <X size={14} />
           </button>
@@ -142,7 +142,7 @@ export const ResolveEscalationModal: React.FC<ResolveEscalationModalProps> = ({
         {/* Root Cause Context */}
         <div>
           <p className="font-bold text-[9px] uppercase tracking-widest text-zinc-400 mb-1">Escalation context</p>
-          <p className="text-zinc-600 dark:text-zinc-350 leading-relaxed font-normal">
+          <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed font-normal">
             To resolve the active delay on <span className="font-semibold">{escalation.sub}</span> ({escalation.impact}), please schedule an alignment meeting with the responsible execution leads below.
           </p>
         </div>
@@ -153,7 +153,7 @@ export const ResolveEscalationModal: React.FC<ResolveEscalationModalProps> = ({
           {options.map((s, idx) => (
             <div 
               key={idx} 
-              className="p-3 bg-white dark:bg-zinc-805 border border-black/5 dark:border-white/10 rounded-sm hover:border-black/15 dark:hover:border-white/20 transition-all flex flex-col gap-1.5 shadow-sm"
+              className="p-3 bg-white dark:bg-zinc-800 border border-black/5 dark:border-white/10 rounded-sm hover:border-black/15 dark:hover:border-white/20 transition-all flex flex-col gap-1.5 shadow-sm"
             >
               <div className="flex items-start gap-1.5">
                 <span className="text-[11px] font-bold text-[#6d28d9] dark:text-[#a78bfa] shrink-0 mt-0.5">0{idx + 1}</span>

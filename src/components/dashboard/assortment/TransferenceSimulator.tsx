@@ -23,13 +23,13 @@ const CATEGORY_ITEMS: Record<string, CategoryVariant[]> = {
   ],
   Dairy: [
     { name: 'BrandD Cheese', revenue: 11.20, margin: 39.5, growth: 6.1, lead: 5.2, reason: 'Core regional cheese listing; stable demand.', segment: 'Keep', gradient: 'from-yellow-300 via-amber-400 to-yellow-600', unitText: 'Block 250g' },
-    { name: 'BrandE Yogurt (Straw)', revenue: 3.5, margin: 21, growth: -14, lead: 19, reason: 'Negative growth, severe margin leakage.', segment: 'Rationalize', gradient: 'from-pink-300 via-rose-450 to-pink-600', unitText: 'Tub 150g' },
-    { name: 'BrandB Yogurt 1kg', revenue: 4.2, margin: 24, growth: -8, lead: 18, reason: 'High stockout frequency, low margin yield.', segment: 'Rationalize', gradient: 'from-indigo-400 via-indigo-650 to-purple-800', unitText: 'Bucket 1kg' },
+    { name: 'BrandE Yogurt (Straw)', revenue: 3.5, margin: 21, growth: -14, lead: 19, reason: 'Negative growth, severe margin leakage.', segment: 'Rationalize', gradient: 'from-pink-300 via-rose-500 to-pink-600', unitText: 'Tub 150g' },
+    { name: 'BrandB Yogurt 1kg', revenue: 4.2, margin: 24, growth: -8, lead: 18, reason: 'High stockout frequency, low margin yield.', segment: 'Rationalize', gradient: 'from-indigo-400 via-indigo-700 to-purple-800', unitText: 'Bucket 1kg' },
     { name: 'BrandB Yogurt 500g', revenue: 7.2, margin: 35, growth: 2, lead: 14, reason: 'Below category average gross margin (39%).', segment: 'Consolidate', gradient: 'from-violet-400 via-purple-500 to-indigo-600', unitText: 'Tub 500g' }
   ],
   Snacks: [
-    { name: 'BrandB Chips', revenue: 13.03, margin: 39.8, growth: 5.4, lead: 5.3, reason: 'High-performing snack hero; stable volume.', segment: 'Keep', gradient: 'from-red-400 via-red-650 to-amber-700', unitText: 'Bag 150g' },
-    { name: 'Choco Wafers', revenue: 4.4, margin: 22, growth: -12, lead: 28, reason: 'Long lead time, heavy promotional dependency.', segment: 'Rationalize', gradient: 'from-amber-600 via-yellow-850 to-amber-950', unitText: 'Box 200g' },
+    { name: 'BrandB Chips', revenue: 13.03, margin: 39.8, growth: 5.4, lead: 5.3, reason: 'High-performing snack hero; stable volume.', segment: 'Keep', gradient: 'from-red-400 via-red-700 to-amber-700', unitText: 'Bag 150g' },
+    { name: 'Choco Wafers', revenue: 4.4, margin: 22, growth: -12, lead: 28, reason: 'Long lead time, heavy promotional dependency.', segment: 'Rationalize', gradient: 'from-amber-600 via-yellow-900 to-amber-950', unitText: 'Box 200g' },
     { name: 'BrandD Chocolate 250g', revenue: 5.2, margin: 31, growth: -2, lead: 19, reason: 'High demand volatility, seasonal fluctuations.', segment: 'Rationalize', gradient: 'from-amber-800 via-amber-900 to-zinc-900', unitText: 'Bar 250g' },
     { name: 'Masala Puffs', revenue: 8.8, margin: 38, growth: 11, lead: 14, reason: 'High promotional margin erosion (14.88).', segment: 'Grow', gradient: 'from-orange-400 via-amber-500 to-yellow-600', unitText: 'Pouch 80g' }
   ]
@@ -128,7 +128,7 @@ export const TransferenceSimulator: React.FC<TransferenceSimulatorProps> = ({ on
               className={`px-3 py-1 text-[8.5px] font-bold uppercase tracking-wider rounded transition-all cursor-pointer ${
                 selectedCategory === cat
                   ? 'bg-white dark:bg-zinc-800 text-acies-yellow shadow-sm'
-                  : 'text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-200'
+                  : 'text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200'
               }`}
             >
               {cat} Shelf
@@ -201,7 +201,7 @@ export const TransferenceSimulator: React.FC<TransferenceSimulatorProps> = ({ on
 
                     {/* Product Footer on shelf */}
                     <div className="mt-2">
-                      <p className="text-[8.5px] font-bold text-zinc-700 dark:text-zinc-350 truncate max-w-[100px]">
+                      <p className="text-[8.5px] font-bold text-zinc-700 dark:text-zinc-400 truncate max-w-[100px]">
                         {item.name}
                       </p>
                       <p className="text-[7.5px] font-bold font-mono text-zinc-400">

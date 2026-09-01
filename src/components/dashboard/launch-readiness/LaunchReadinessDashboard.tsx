@@ -156,7 +156,7 @@ export const LaunchReadinessDashboard: React.FC<LaunchReadinessDashboardProps> =
             const el = document.getElementById('brief-form');
             if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }}
-          className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-350 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
+          className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-400 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
         >
           📦 New SKU Brief
         </button>
@@ -168,7 +168,7 @@ export const LaunchReadinessDashboard: React.FC<LaunchReadinessDashboardProps> =
                 const el = document.getElementById('verdict-results');
                 if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }}
-              className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-350 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
+              className="px-2.5 py-1 hover:bg-black/5 dark:hover:bg-white/10 text-zinc-700 dark:text-zinc-400 rounded-sm cursor-pointer border-none bg-transparent font-bold outline-none"
             >
               ⚡ Readiness Verdict
             </button>
@@ -451,7 +451,7 @@ export const LaunchReadinessDashboard: React.FC<LaunchReadinessDashboardProps> =
 
                       <div className="p-3.5 bg-black/5 dark:bg-white/5 rounded-sm space-y-1">
                         <div className="flex justify-between text-[9px] font-bold">
-                          <span className="text-zinc-550 dark:text-zinc-400">Spent-to-Budget Ratio</span>
+                          <span className="text-zinc-600 dark:text-zinc-400">Spent-to-Budget Ratio</span>
                           <span className={spent > budget ? 'text-red-500' : 'text-emerald-500'}>
                             {((spent / (budget || 1)) * 100).toFixed(0)}%
                           </span>
@@ -480,7 +480,7 @@ export const LaunchReadinessDashboard: React.FC<LaunchReadinessDashboardProps> =
                       </div>
                       
                       <div className="text-[9px] space-y-1.5">
-                        <p className="font-bold text-zinc-650 dark:text-zinc-350">Key Risk Drivers:</p>
+                        <p className="font-bold text-zinc-700 dark:text-zinc-400">Key Risk Drivers:</p>
                         <ul className="list-disc pl-4 space-y-1 text-zinc-500">
                           {leadTime > 15 && <li>Lead Time of {leadTime} days exceeds 15-day supply chain threshold.</li>}
                           {suppliers < 2 && <li>Single supplier risk detected. Sourcing vulnerability flag.</li>}
@@ -498,7 +498,7 @@ export const LaunchReadinessDashboard: React.FC<LaunchReadinessDashboardProps> =
                   <div className="flex justify-between items-center pb-2 border-b border-black/5 dark:border-white/5">
                     <div>
                       <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400">SKU Risk Mitigation & Cost Simulator</h3>
-                      <p className="text-[9px] text-zinc-550 uppercase mt-0.5">Activate mitigation policies to balance risk reduction and cost slippage.</p>
+                      <p className="text-[9px] text-zinc-600 uppercase mt-0.5">Activate mitigation policies to balance risk reduction and cost slippage.</p>
                     </div>
                     <button
                       onClick={() => setIsMitigated(!isMitigated)}
@@ -518,24 +518,24 @@ export const LaunchReadinessDashboard: React.FC<LaunchReadinessDashboardProps> =
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div className="lg:col-span-5 space-y-3 text-[9px]">
                       <div className="p-3 bg-black/5 dark:bg-white/5 rounded-sm">
-                        <span className="text-zinc-555 dark:text-zinc-400 block font-bold">Spent Cost Impact</span>
-                        <span className="font-bold font-mono text-zinc-750 dark:text-zinc-200">
+                        <span className="text-zinc-600 dark:text-zinc-400 block font-bold">Spent Cost Impact</span>
+                        <span className="font-bold font-mono text-zinc-800 dark:text-zinc-200">
                           ${spent.toFixed(2)} M 
                           {isMitigated && <span className="text-amber-500 font-bold ml-1">→ ${simSpent.toFixed(2)} M (+15% premium)</span>}
                         </span>
                       </div>
                       
                       <div className="p-3 bg-black/5 dark:bg-white/5 rounded-sm">
-                        <span className="text-zinc-555 dark:text-zinc-400 block font-bold">Overall Launch Readiness</span>
-                        <span className="font-bold font-mono text-zinc-750 dark:text-zinc-200">
+                        <span className="text-zinc-600 dark:text-zinc-400 block font-bold">Overall Launch Readiness</span>
+                        <span className="font-bold font-mono text-zinc-800 dark:text-zinc-200">
                           {Math.round((baseMarketFit + baseSupplyReadiness + baseMarginHealth + baseChannelCoverage + baseRiskProfile) / 5)}%
                           {isMitigated && <span className="text-emerald-500 font-bold ml-1">→ {Math.round(currentAvg)}% (+15 points)</span>}
                         </span>
                       </div>
 
                       <div className="p-3 bg-black/5 dark:bg-white/5 rounded-sm">
-                        <span className="text-zinc-555 dark:text-zinc-400 block font-bold">Risk Level Verdict</span>
-                        <span className="font-bold text-zinc-750 dark:text-zinc-200">
+                        <span className="text-zinc-600 dark:text-zinc-400 block font-bold">Risk Level Verdict</span>
+                        <span className="font-bold text-zinc-800 dark:text-zinc-200">
                           {Math.round((baseMarketFit + baseSupplyReadiness + baseMarginHealth + baseChannelCoverage + baseRiskProfile) / 5) >= 75 ? 'Low' : Math.round((baseMarketFit + baseSupplyReadiness + baseMarginHealth + baseChannelCoverage + baseRiskProfile) / 5) >= 50 ? 'Medium' : 'High'}
                           {isMitigated && <span className="text-emerald-500 font-bold ml-1">→ {currentAvg >= 75 ? 'Low' : currentAvg >= 50 ? 'Medium' : 'High'}</span>}
                         </span>
@@ -561,7 +561,7 @@ export const LaunchReadinessDashboard: React.FC<LaunchReadinessDashboardProps> =
                         </div>
                       </div>
 
-                      <div className="p-3 bg-purple-500/5 border border-purple-500/15 rounded-sm text-[9px] leading-relaxed text-zinc-555 dark:text-zinc-300 font-sans">
+                      <div className="p-3 bg-purple-500/5 border border-purple-500/15 rounded-sm text-[9px] leading-relaxed text-zinc-600 dark:text-zinc-300 font-sans">
                         {isMitigated ? (
                           <p className="flex items-start gap-1">
                             <Check size={11} className="text-emerald-500 shrink-0 mt-0.5" />

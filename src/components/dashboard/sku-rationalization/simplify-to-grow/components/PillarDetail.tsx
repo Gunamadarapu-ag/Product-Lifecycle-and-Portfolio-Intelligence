@@ -27,7 +27,7 @@ export const PillarDetail: React.FC<PillarDetailProps> = ({ pillar, skus, onNavi
           <div className="text-xs font-black text-acies-gray dark:text-white">
             {pillar.kpiLabel}: <span style={{ color: pillar.color }}>{pillar.kpiValue}</span>
           </div>
-          <p className="text-[8px] text-zinc-550 dark:text-zinc-400 mt-1 max-w-lg leading-relaxed">{pillar.insight}</p>
+          <p className="text-[8px] text-zinc-600 dark:text-zinc-400 mt-1 max-w-lg leading-relaxed">{pillar.insight}</p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
           <button onClick={() => onNavigate(pillar.routeTab, pillar.extraParams)}

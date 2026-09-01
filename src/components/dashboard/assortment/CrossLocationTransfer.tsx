@@ -150,7 +150,7 @@ export const CrossLocationTransfer: React.FC<CrossLocationTransferProps> = ({ on
   // Route Risk Classification
   const getRiskLevel = () => {
     if (distance === 0) return { label: 'Invalid Route', class: 'text-zinc-400 bg-zinc-400/10 border-zinc-400/20' };
-    if (feasibilityScore >= 75) return { label: 'Low Risk / High Feasibility', class: 'text-emerald-500 bg-emerald-500/10 border-emerald-555/20' };
+    if (feasibilityScore >= 75) return { label: 'Low Risk / High Feasibility', class: 'text-emerald-500 bg-emerald-500/10 border-emerald-600/20' };
     if (feasibilityScore >= 45) return { label: 'Medium Risk / Feasible', class: 'text-amber-500 bg-amber-500/10 border-amber-500/20' };
     return { label: 'High Risk / Severe Friction', class: 'text-rose-500 bg-rose-500/10 border-rose-500/20' };
   };
@@ -236,7 +236,7 @@ export const CrossLocationTransfer: React.FC<CrossLocationTransferProps> = ({ on
               onClick={() => setActiveSelectionSlot('source')}
               className={`group/slot relative p-2.5 rounded border transition-all cursor-pointer flex flex-col justify-between h-[55px] ${
                 activeSelectionSlot === 'source'
-                  ? 'bg-rose-500/10 border-rose-550/50 shadow-[0_0_8px_rgba(239,68,68,0.25)]'
+                  ? 'bg-rose-500/10 border-rose-600/50 shadow-[0_0_8px_rgba(239,68,68,0.25)]'
                   : 'bg-black/5 dark:bg-zinc-800/40 border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20'
               }`}
             >
@@ -278,7 +278,7 @@ export const CrossLocationTransfer: React.FC<CrossLocationTransferProps> = ({ on
               onClick={() => setActiveSelectionSlot('target')}
               className={`group/slot relative p-2.5 rounded border transition-all cursor-pointer flex flex-col justify-between h-[55px] ${
                 activeSelectionSlot === 'target'
-                  ? 'bg-emerald-500/10 border-emerald-550/50 shadow-[0_0_8px_rgba(16,185,129,0.25)]'
+                  ? 'bg-emerald-500/10 border-emerald-600/50 shadow-[0_0_8px_rgba(16,185,129,0.25)]'
                   : 'bg-black/5 dark:bg-zinc-800/40 border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20'
               }`}
             >
@@ -367,7 +367,7 @@ export const CrossLocationTransfer: React.FC<CrossLocationTransferProps> = ({ on
               
               {/* Distance & CO2 labels (visible if active route) */}
               {sourceCountry !== targetCountry && (
-                <div className="absolute top-2 right-2 bg-black/60 text-[6.5px] font-mono px-1.5 py-0.5 rounded text-zinc-450 flex gap-2">
+                <div className="absolute top-2 right-2 bg-black/60 text-[6.5px] font-mono px-1.5 py-0.5 rounded text-zinc-500 flex gap-2">
                   <span>Dist: {Math.round(distance * 320)} km</span>
                   <span>CO₂: {(distance * 0.14).toFixed(2)} kg/u</span>
                 </div>
@@ -552,12 +552,12 @@ export const CrossLocationTransfer: React.FC<CrossLocationTransferProps> = ({ on
                 {/* Source/Target Margin detail row */}
                 <div className="flex justify-between items-center text-[8.5px] px-3 py-1.5 bg-black/[0.01] dark:bg-white/[0.01] border border-black/5 dark:border-white/5 rounded-sm font-mono font-bold font-sans">
                   <div>
-                    <span className="text-zinc-455 block text-[6.5px] font-sans">Source ({sourceCountry.substring(0,3).toUpperCase()})</span>
+                    <span className="text-zinc-500 block text-[6.5px] font-sans">Source ({sourceCountry.substring(0,3).toUpperCase()})</span>
                     <span className="text-rose-500">{sourceSkuMargin.toFixed(2)}% margin</span>
                   </div>
                   <ArrowRight size={10} className="text-zinc-400" />
                   <div className="text-right">
-                    <span className="text-zinc-455 block text-[6.5px] font-sans">Target ({targetCountry.substring(0,3).toUpperCase()})</span>
+                    <span className="text-zinc-500 block text-[6.5px] font-sans">Target ({targetCountry.substring(0,3).toUpperCase()})</span>
                     <span className="text-emerald-500">{targetSkuMargin.toFixed(2)}% margin</span>
                   </div>
                 </div>
@@ -588,7 +588,7 @@ export const CrossLocationTransfer: React.FC<CrossLocationTransferProps> = ({ on
               </>
             ) : (
               <div className="p-3.5 bg-black/[0.01] dark:bg-white/[0.01] border border-dashed border-black/10 dark:border-white/10 rounded-sm text-center text-[8.5px] text-zinc-500 font-semibold leading-relaxed">
-                <AlertTriangle size={12} className="inline mr-1 text-rose-550 animate-bounce" />
+                <AlertTriangle size={12} className="inline mr-1 text-rose-600 animate-bounce" />
                 Click and drag between warehouse nodes (dots) or click two different nodes to configure route.
               </div>
             )}
@@ -623,7 +623,7 @@ export const CrossLocationTransfer: React.FC<CrossLocationTransferProps> = ({ on
 
                 {/* Net Profit Gain */}
                 <div className="flex justify-between items-center text-[10px] py-1.5 px-3 bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5 rounded-sm border-l-2 border-l-blue-500">
-                  <span className="font-bold text-zinc-700 dark:text-zinc-350">Net Margin Differential Lift</span>
+                  <span className="font-bold text-zinc-700 dark:text-zinc-400">Net Margin Differential Lift</span>
                   <span className={`font-bold font-mono text-xs ${netMarginLift >= 0 ? 'text-emerald-500 animate-pulse' : 'text-rose-500'}`}>
                     {netMarginLift >= 0 ? `+${netMarginLift}%` : `${netMarginLift}%`}
                   </span>

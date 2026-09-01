@@ -400,7 +400,7 @@ export const AIPredictionModal: React.FC<AIPredictionModalProps> = ({ isOpen, on
             </div>
             <button 
               onClick={onClose}
-              className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-200 cursor-pointer border-none bg-transparent"
+              className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 cursor-pointer border-none bg-transparent"
             >
               <X size={16} />
             </button>
@@ -412,11 +412,11 @@ export const AIPredictionModal: React.FC<AIPredictionModalProps> = ({ isOpen, on
               <span className={`text-[8px] font-extrabold uppercase px-1.5 py-0.5 rounded-sm ${rec.bg}`}>
                 {rec.urgency}
               </span>
-              <h4 className="text-sm font-bold text-zinc-800 dark:text-zinc-150">
+              <h4 className="text-sm font-bold text-zinc-800 dark:text-zinc-200">
                 {rec.title}
               </h4>
             </div>
-            <div className="space-y-1.5 text-zinc-650 dark:text-zinc-400">
+            <div className="space-y-1.5 text-zinc-700 dark:text-zinc-400">
               <p className="text-[11px] leading-snug">
                 <strong>Objective:</strong> {rec.desc}
               </p>
@@ -435,7 +435,7 @@ export const AIPredictionModal: React.FC<AIPredictionModalProps> = ({ isOpen, on
               </span>
               <ul className="space-y-2 list-none pl-0">
                 {rec.detailed.checklist.map((step, sIdx) => (
-                  <li key={sIdx} className="flex gap-2.5 text-[11px] text-zinc-650 dark:text-zinc-300 leading-relaxed bg-zinc-50/40 dark:bg-white/2 p-2.5 rounded border border-black/2 dark:border-white/2 hover:border-black/5 dark:hover:border-white/5 transition-all">
+                  <li key={sIdx} className="flex gap-2.5 text-[11px] text-zinc-700 dark:text-zinc-300 leading-relaxed bg-zinc-50/40 dark:bg-white/2 p-2.5 rounded border border-black/2 dark:border-white/2 hover:border-black/5 dark:hover:border-white/5 transition-all">
                     <CheckCircle2 size={14} className="text-emerald-500 shrink-0 mt-0.5" />
                     <span>{step}</span>
                   </li>
@@ -450,7 +450,7 @@ export const AIPredictionModal: React.FC<AIPredictionModalProps> = ({ isOpen, on
               </span>
               <div className="space-y-3.5 bg-zinc-50 dark:bg-zinc-900/50 p-3.5 rounded border border-black/5 dark:border-white/5">
                 <div className="space-y-1">
-                  <span className="text-[8.5px] font-bold uppercase tracking-wider text-zinc-450 dark:text-zinc-500 flex items-center gap-1">
+                  <span className="text-[8.5px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-500 flex items-center gap-1">
                     <User size={12} className="text-zinc-400" /> Assigned Owner
                   </span>
                   <p className="text-[11px] font-bold text-zinc-700 dark:text-zinc-200">
@@ -459,7 +459,7 @@ export const AIPredictionModal: React.FC<AIPredictionModalProps> = ({ isOpen, on
                 </div>
                 
                 <div className="space-y-1 border-t border-black/5 dark:border-white/5 pt-2.5">
-                  <span className="text-[8.5px] font-bold uppercase tracking-wider text-zinc-450 dark:text-zinc-500 flex items-center gap-1">
+                  <span className="text-[8.5px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-500 flex items-center gap-1">
                     <Clock size={12} className="text-zinc-400" /> Lead Time / Timeline
                   </span>
                   <p className="text-[11px] font-bold text-[#6d28d9] dark:text-[#a78bfa] font-mono">
@@ -468,10 +468,10 @@ export const AIPredictionModal: React.FC<AIPredictionModalProps> = ({ isOpen, on
                 </div>
 
                 <div className="space-y-1 border-t border-black/5 dark:border-white/5 pt-2.5">
-                  <span className="text-[8.5px] font-bold uppercase tracking-wider text-zinc-450 dark:text-zinc-500 flex items-center gap-1">
+                  <span className="text-[8.5px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-500 flex items-center gap-1">
                     <TrendingUp size={12} className="text-zinc-400" /> Expected Outcome
                   </span>
-                  <p className="text-[10.5px] font-bold text-emerald-600 dark:text-emerald-450 leading-normal font-mono">
+                  <p className="text-[10.5px] font-bold text-emerald-600 dark:text-emerald-500 leading-normal font-mono">
                     {rec.detailed.impact}
                   </p>
                 </div>
@@ -480,7 +480,7 @@ export const AIPredictionModal: React.FC<AIPredictionModalProps> = ({ isOpen, on
               {/* AI Engine Status */}
               <div className="p-2.5 bg-indigo-50/30 dark:bg-indigo-950/10 rounded border border-[#5850ec]/10 flex items-center gap-2">
                 <Zap size={12} className="text-[#5850ec] dark:text-indigo-400 animate-pulse" />
-                <span className="text-[8.5px] font-mono text-indigo-700 dark:text-indigo-350">
+                <span className="text-[8.5px] font-mono text-indigo-700 dark:text-indigo-400">
                   AI Sourcing Engine Qualified
                 </span>
               </div>
@@ -499,7 +499,7 @@ export const AIPredictionModal: React.FC<AIPredictionModalProps> = ({ isOpen, on
           <div className="flex justify-between items-center border-t border-black/15 dark:border-white/15 pt-3.5">
             <button 
               onClick={() => setSelectedRecIdx(null)}
-              className="px-3.5 py-2 bg-transparent hover:bg-black/5 dark:hover:bg-white/5 text-zinc-650 dark:text-zinc-300 text-[9px] font-extrabold uppercase tracking-widest rounded-sm border border-zinc-250 dark:border-zinc-700 transition-all cursor-pointer"
+              className="px-3.5 py-2 bg-transparent hover:bg-black/5 dark:hover:bg-white/5 text-zinc-700 dark:text-zinc-300 text-[9px] font-extrabold uppercase tracking-widest rounded-sm border border-zinc-300 dark:border-zinc-700 transition-all cursor-pointer"
             >
               ← Back to Explainer
             </button>
@@ -535,7 +535,7 @@ export const AIPredictionModal: React.FC<AIPredictionModalProps> = ({ isOpen, on
           </div>
           <button 
             onClick={onClose}
-            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-200 cursor-pointer border-none bg-transparent"
+            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 cursor-pointer border-none bg-transparent"
           >
             <X size={16} />
           </button>
@@ -545,7 +545,7 @@ export const AIPredictionModal: React.FC<AIPredictionModalProps> = ({ isOpen, on
         <div className={`p-4 rounded border flex justify-between items-center ${content.categoryColor}`}>
           <div>
             <span className="text-[8px] font-bold uppercase tracking-widest opacity-75">Target Object</span>
-            <h4 className="text-sm font-bold text-zinc-850 dark:text-white">
+            <h4 className="text-sm font-bold text-zinc-900 dark:text-white">
               {content.targetName}
             </h4>
             <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5 leading-snug">
@@ -569,7 +569,7 @@ export const AIPredictionModal: React.FC<AIPredictionModalProps> = ({ isOpen, on
               <AlertTriangle size={14} className="text-orange-500" />
               <h5 className="font-bold uppercase tracking-wider text-[10px]">Why was this predicted?</h5>
             </div>
-            <ul className="space-y-2 text-zinc-650 dark:text-zinc-300 list-none pl-0">
+            <ul className="space-y-2 text-zinc-700 dark:text-zinc-300 list-none pl-0">
               {content.whyDrivers.map((driver, idx) => (
                 <li key={idx} className="flex gap-2">
                   <span className="text-[#6d28d9] dark:text-[#a78bfa] font-bold">•</span>
@@ -585,7 +585,7 @@ export const AIPredictionModal: React.FC<AIPredictionModalProps> = ({ isOpen, on
               <Activity size={14} className="text-[#6d28d9] dark:text-[#a78bfa]" />
               <h5 className="font-bold uppercase tracking-wider text-[10px]">How was it calculated?</h5>
             </div>
-            <div className="space-y-2 text-zinc-650 dark:text-zinc-350">
+            <div className="space-y-2 text-zinc-700 dark:text-zinc-400">
               <p>
                 <strong>Algorithm Model:</strong> {content.howMethodology.model}
               </p>
@@ -603,19 +603,19 @@ export const AIPredictionModal: React.FC<AIPredictionModalProps> = ({ isOpen, on
 
         {/* Recommendations block */}
         <div className="space-y-3 p-4 rounded bg-[#5850ec]/5 border border-[#5850ec]/15">
-          <div className="flex items-center gap-1.5 text-zinc-850 dark:text-zinc-100">
+          <div className="flex items-center gap-1.5 text-zinc-900 dark:text-zinc-100">
             <Sparkles size={14} className="text-[#5850ec] dark:text-indigo-400 animate-pulse" />
             <h5 className="font-bold uppercase tracking-wider text-[10.5px]">Recommendations: How to make it better?</h5>
             <span className="text-[9px] text-[#5850ec]/65 dark:text-indigo-400/60 font-mono ml-auto">Click a solution to view steps</span>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-zinc-650 dark:text-zinc-300">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-zinc-700 dark:text-zinc-300">
             {content.recommendations.map((rec, idx) => {
               return (
                 <div 
                   key={idx} 
                   onClick={() => setSelectedRecIdx(idx)}
-                  className="p-3 bg-white dark:bg-zinc-850 rounded border cursor-pointer select-none transition-all duration-200 hover:scale-[1.01] border-black/5 dark:border-white/5 hover:border-[#5850ec]/30 dark:hover:border-indigo-400/30 hover:shadow-md space-y-1"
+                  className="p-3 bg-white dark:bg-zinc-900 rounded border cursor-pointer select-none transition-all duration-200 hover:scale-[1.01] border-black/5 dark:border-white/5 hover:border-[#5850ec]/30 dark:hover:border-indigo-400/30 hover:shadow-md space-y-1"
                 >
                   <span className={`text-[8px] font-extrabold uppercase px-1.5 py-0.5 rounded-sm ${rec.bg}`}>
                     {rec.urgency}

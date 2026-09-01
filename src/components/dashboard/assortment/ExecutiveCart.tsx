@@ -122,7 +122,7 @@ export const ExecutiveCart: React.FC<ExecutiveCartProps> = ({ stagedActions, onR
                   >
                     <CheckCircle size={32} className="text-emerald-500 animate-pulse" />
                   </motion.div>
-                  <h4 className="text-sm uppercase font-extrabold tracking-widest text-zinc-800 dark:text-zinc-150 mb-1">
+                  <h4 className="text-sm uppercase font-extrabold tracking-widest text-zinc-800 dark:text-zinc-200 mb-1">
                     Assortment Plan Committed!
                   </h4>
                   <p className="text-[10px] text-zinc-500 leading-relaxed max-w-sm">
@@ -139,7 +139,7 @@ export const ExecutiveCart: React.FC<ExecutiveCartProps> = ({ stagedActions, onR
                     </div>
                     <button
                       onClick={() => setIsOpen(false)}
-                      className="text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-200 bg-transparent border-none cursor-pointer outline-none p-1"
+                      className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 bg-transparent border-none cursor-pointer outline-none p-1"
                     >
                       <X size={16} />
                     </button>
@@ -167,7 +167,7 @@ export const ExecutiveCart: React.FC<ExecutiveCartProps> = ({ stagedActions, onR
                           <p className="text-[8.5px] text-zinc-500 leading-normal font-medium">{action.details}</p>
                           
                           {/* Item level metrics breakdown */}
-                          <div className="flex gap-3 text-[7.5px] font-bold text-zinc-450 pt-1 font-mono">
+                          <div className="flex gap-3 text-[7.5px] font-bold text-zinc-500 pt-1 font-mono">
                             <span className={action.revenueImpact >= 0 ? 'text-emerald-500' : 'text-rose-500'}>
                               Rev: {action.revenueImpact >= 0 ? '+' : ''}${action.revenueImpact.toFixed(2)}M
                             </span>
@@ -201,26 +201,26 @@ export const ExecutiveCart: React.FC<ExecutiveCartProps> = ({ stagedActions, onR
                   <div className="border-t border-black/5 dark:border-white/5 pt-4 mt-4 space-y-3 bg-black/[0.01] dark:bg-white/[0.01] p-3 rounded">
                     <span className="text-[8px] uppercase font-extrabold tracking-widest text-zinc-400 block mb-1">Staged Net Plan Totals:</span>
                     <div className="grid grid-cols-2 gap-3 text-[9px] font-bold">
-                      <div className="p-2 border border-black/5 dark:border-white/5 rounded bg-white dark:bg-zinc-850 flex items-center justify-between">
+                      <div className="p-2 border border-black/5 dark:border-white/5 rounded bg-white dark:bg-zinc-900 flex items-center justify-between">
                         <span className="text-zinc-500">Net Sales Impact</span>
                         <span className={totalRevenue >= 0 ? 'text-emerald-500' : 'text-rose-500'}>
                           {totalRevenue >= 0 ? '+' : ''}${totalRevenue.toFixed(2)} M
                         </span>
                       </div>
                       
-                      <div className="p-2 border border-black/5 dark:border-white/5 rounded bg-white dark:bg-zinc-850 flex items-center justify-between">
+                      <div className="p-2 border border-black/5 dark:border-white/5 rounded bg-white dark:bg-zinc-900 flex items-center justify-between">
                         <span className="text-zinc-500">Net Profit Lift</span>
                         <span className={totalMargin >= 0 ? 'text-emerald-500 font-extrabold' : 'text-rose-500'}>
                           {totalMargin >= 0 ? '+' : ''}${totalMargin.toFixed(2)} M
                         </span>
                       </div>
 
-                      <div className="p-2 border border-black/5 dark:border-white/5 rounded bg-white dark:bg-zinc-850 flex items-center justify-between">
+                      <div className="p-2 border border-black/5 dark:border-white/5 rounded bg-white dark:bg-zinc-900 flex items-center justify-between">
                         <span className="text-zinc-500">Complexity Saved</span>
                         <span className="text-blue-500">-{totalComplexity.toFixed(1)} Points</span>
                       </div>
 
-                      <div className="p-2 border border-black/5 dark:border-white/5 rounded bg-white dark:bg-zinc-850 flex items-center justify-between">
+                      <div className="p-2 border border-black/5 dark:border-white/5 rounded bg-white dark:bg-zinc-900 flex items-center justify-between">
                         <span className="text-zinc-500">Warehouse Space</span>
                         <span className="text-purple-500">+{totalSpace.toFixed(0)} Pallets</span>
                       </div>

@@ -65,7 +65,7 @@ export const ProductDirectory: React.FC<ProductDirectoryProps> = ({
               onChange={(e) => setDirSearch(e.target.value)}
               className="w-full bg-black/5 dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-lg py-2 px-3 pl-8 text-xs font-semibold text-acies-gray dark:text-white outline-none focus:border-acies-yellow"
             />
-            <span className="absolute left-2.5 top-2 text-zinc-450 dark:text-zinc-500 text-xs">🔍</span>
+            <span className="absolute left-2.5 top-2 text-zinc-500 dark:text-zinc-500 text-xs">🔍</span>
           </div>
           <select 
             value={dirCatFilter}
@@ -116,7 +116,7 @@ export const ProductDirectory: React.FC<ProductDirectoryProps> = ({
                       {isFrozen && <span title="Replenishment frozen" className="text-[9px]">❄️</span>}
                     </div>
                   </div>
-                  <div className="text-[8px] text-zinc-450 dark:text-zinc-500 font-bold uppercase mt-0.5">{sku.cat} · ${sku.rev}M · {getSkuLocation(sku.name)}</div>
+                  <div className="text-[8px] text-zinc-500 dark:text-zinc-500 font-bold uppercase mt-0.5">{sku.cat} · ${sku.rev}M · {getSkuLocation(sku.name)}</div>
                 </div>
                 <div className="flex justify-between items-center mt-2 font-sans">
                   <div className="flex items-center gap-1 flex-wrap">

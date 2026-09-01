@@ -443,7 +443,7 @@ export default function App() {
                                   className={`w-full flex items-center gap-1.5 py-1 px-1.5 rounded transition-all border-none cursor-pointer text-left ${
                                     isSubActive
                                       ? 'bg-[#1e3a8a]/20 dark:bg-[#1e3a8a]/40 text-[#2563eb] dark:text-[#38bdf8] font-bold'
-                                      : 'bg-transparent text-zinc-500 dark:text-zinc-450 hover:text-zinc-800 dark:hover:text-zinc-200'
+                                      : 'bg-transparent text-zinc-500 dark:text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200'
                                   }`}
                                 >
                                   <span className="text-[10px]">•</span>

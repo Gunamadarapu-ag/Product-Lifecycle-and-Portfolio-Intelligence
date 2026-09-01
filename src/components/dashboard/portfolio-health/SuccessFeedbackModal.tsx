@@ -60,21 +60,21 @@ export const SuccessFeedbackModal: React.FC<SuccessFeedbackModalProps> = ({
               <h3 className="text-[13px] font-bold font-display text-zinc-900 dark:text-white leading-tight">
                 {recipientName}
               </h3>
-              <p className="text-[10px] text-zinc-500 dark:text-zinc-450 font-medium">
+              <p className="text-[10px] text-zinc-500 dark:text-zinc-500 font-medium">
                 {recipientTitle}
               </p>
             </div>
           </div>
           <button 
             onClick={onClose}
-            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-650 cursor-pointer border-none bg-transparent outline-none"
+            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 cursor-pointer border-none bg-transparent outline-none"
           >
             <X size={15} />
           </button>
         </div>
 
         {/* Informative Context Box */}
-        <div className="p-3 bg-purple-50/50 dark:bg-purple-950/10 border-l-4 border-purple-500 dark:border-purple-400 rounded-r-lg text-[10.5px] leading-relaxed text-zinc-655 dark:text-zinc-350 font-medium">
+        <div className="p-3 bg-purple-50/50 dark:bg-purple-950/10 border-l-4 border-purple-500 dark:border-purple-400 rounded-r-lg text-[10.5px] leading-relaxed text-zinc-700 dark:text-zinc-400 font-medium">
           {descriptionText}
         </div>
 
@@ -84,7 +84,7 @@ export const SuccessFeedbackModal: React.FC<SuccessFeedbackModalProps> = ({
             className={`flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg font-bold text-[10.5px] transition-all ${
               channel === 'email'
                 ? 'bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-100 shadow-sm'
-                : 'text-zinc-450 dark:text-zinc-500 font-medium'
+                : 'text-zinc-500 dark:text-zinc-500 font-medium'
             }`}
           >
             <Mail size={11} className={channel === 'email' ? 'text-blue-500' : ''} />
@@ -94,7 +94,7 @@ export const SuccessFeedbackModal: React.FC<SuccessFeedbackModalProps> = ({
             className={`flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg font-bold text-[10.5px] transition-all ${
               channel === 'message'
                 ? 'bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-100 shadow-sm'
-                : 'text-zinc-450 dark:text-zinc-500 font-medium'
+                : 'text-zinc-500 dark:text-zinc-500 font-medium'
             }`}
           >
             <MessageSquare size={11} className={channel === 'message' ? 'text-emerald-500' : ''} />
@@ -109,7 +109,7 @@ export const SuccessFeedbackModal: React.FC<SuccessFeedbackModalProps> = ({
             <Check size={22} className="stroke-[3.5]" />
           </div>
           <h4 className="text-xs font-bold text-emerald-600 dark:text-emerald-400">Request Sent!</h4>
-          <p className="text-[10px] text-zinc-500 dark:text-zinc-450 leading-relaxed max-w-[260px] mx-auto font-medium">
+          <p className="text-[10px] text-zinc-500 dark:text-zinc-500 leading-relaxed max-w-[260px] mx-auto font-medium">
             Your {channel === 'email' ? 'email' : 'message'} to {recipientName} has been delivered. They'll see it in their Signals Board inbox when they log in.
           </p>
         </div>
@@ -117,7 +117,7 @@ export const SuccessFeedbackModal: React.FC<SuccessFeedbackModalProps> = ({
         {/* Action Button */}
         <button
           onClick={onClose}
-          className="w-full py-2.5 border border-zinc-200 dark:border-zinc-850 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-xl font-bold uppercase tracking-wider text-zinc-650 dark:text-zinc-300 text-[9px] transition-all cursor-pointer bg-transparent outline-none"
+          className="w-full py-2.5 border border-zinc-200 dark:border-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-xl font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 text-[9px] transition-all cursor-pointer bg-transparent outline-none"
         >
           Close
         </button>

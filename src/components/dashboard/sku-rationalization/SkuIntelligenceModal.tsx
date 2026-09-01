@@ -61,7 +61,7 @@ export const SkuIntelligenceModal: React.FC<SkuIntelligenceModalProps> = ({
             </span>
             <button 
               onClick={onClose}
-              className="w-7 h-7 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 flex items-center justify-center text-zinc-555 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-all cursor-pointer border-none outline-none"
+              className="w-7 h-7 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 flex items-center justify-center text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-all cursor-pointer border-none outline-none"
             >
               ✕
             </button>
@@ -73,13 +73,13 @@ export const SkuIntelligenceModal: React.FC<SkuIntelligenceModalProps> = ({
           <div className="bg-black/5 dark:bg-white/5 p-3 rounded-xl border border-black/5 dark:border-white/5">
             <span className="text-[8px] font-bold uppercase tracking-widest text-zinc-400 block">Annual Sales</span>
             <span className="text-base font-black text-acies-gray dark:text-white mt-1 block">${sku.rev} M</span>
-            <span className="text-[7.5px] font-bold text-zinc-450 dark:text-zinc-555 uppercase">Category sales impact</span>
+            <span className="text-[7.5px] font-bold text-zinc-500 dark:text-zinc-600 uppercase">Category sales impact</span>
           </div>
           
           <div className="bg-black/5 dark:bg-white/5 p-3 rounded-xl border border-black/5 dark:border-white/5">
             <span className="text-[8px] font-bold uppercase tracking-widest text-zinc-400 block">Gross Profit Margin</span>
             <span className="text-base font-black text-emerald-500 mt-1 block">{sku.margin}%</span>
-            <span className="text-[7.5px] font-bold text-zinc-450 dark:text-zinc-555 uppercase">Benchmark: 40% target</span>
+            <span className="text-[7.5px] font-bold text-zinc-500 dark:text-zinc-600 uppercase">Benchmark: 40% target</span>
           </div>
 
           <div className="bg-black/5 dark:bg-white/5 p-3 rounded-xl border border-black/5 dark:border-white/5">
@@ -87,25 +87,25 @@ export const SkuIntelligenceModal: React.FC<SkuIntelligenceModalProps> = ({
             <span className={`text-base font-black mt-1 block ${sku.growth >= 0 ? 'text-emerald-500' : 'text-red-500'}`}>
               {sku.growth >= 0 ? '+' : ''}{(sku.growth * 100).toFixed(0)}%
             </span>
-            <span className="text-[7.5px] font-bold text-zinc-450 dark:text-zinc-555 uppercase">Volume shift rate</span>
+            <span className="text-[7.5px] font-bold text-zinc-500 dark:text-zinc-600 uppercase">Volume shift rate</span>
           </div>
 
           <div className="bg-black/5 dark:bg-white/5 p-3 rounded-xl border border-black/5 dark:border-white/5">
             <span className="text-[8px] font-bold uppercase tracking-widest text-zinc-400 block">Complexity Index</span>
             <span className="text-base font-black mt-1 block text-acies-yellow">{sku.cx.toFixed(2)}</span>
-            <span className="text-[7.5px] font-bold text-zinc-450 dark:text-zinc-555 uppercase">Supply chain friction</span>
+            <span className="text-[7.5px] font-bold text-zinc-500 dark:text-zinc-600 uppercase">Supply chain friction</span>
           </div>
 
           <div className="bg-black/5 dark:bg-white/5 p-3 rounded-xl border border-black/5 dark:border-white/5">
             <span className="text-[8px] font-bold uppercase tracking-widest text-zinc-400 block">Promo Dependency</span>
             <span className="text-base font-black mt-1 block text-[#8b5cf6] dark:text-purple-300">{(sku.promo * 100).toFixed(0)}%</span>
-            <span className="text-[7.5px] font-bold text-zinc-450 dark:text-zinc-555 uppercase">Discount sales load</span>
+            <span className="text-[7.5px] font-bold text-zinc-500 dark:text-zinc-600 uppercase">Discount sales load</span>
           </div>
 
           <div className="bg-black/5 dark:bg-white/5 p-3 rounded-xl border border-black/5 dark:border-white/5">
             <span className="text-[8px] font-bold uppercase tracking-widest text-zinc-400 block">Fulfillment lead time</span>
             <span className="text-base font-black mt-1 block text-blue-500">{sku.lead} days</span>
-            <span className="text-[7.5px] font-bold text-zinc-450 dark:text-zinc-550 uppercase">Vendor cycle duration</span>
+            <span className="text-[7.5px] font-bold text-zinc-500 dark:text-zinc-600 uppercase">Vendor cycle duration</span>
           </div>
         </div>
 
@@ -115,7 +115,7 @@ export const SkuIntelligenceModal: React.FC<SkuIntelligenceModalProps> = ({
             <Cpu size={10} />
             <span>AI Recommendation Rationale</span>
           </span>
-          <p className="text-[10.5px] leading-relaxed text-zinc-650 dark:text-zinc-350 font-semibold">
+          <p className="text-[10.5px] leading-relaxed text-zinc-700 dark:text-zinc-400 font-semibold">
             {sku.name} has been classified under the <strong>{cfg.label}</strong> segment because it has a commercial value score of <strong>{(sku.val * 100).toFixed(0)}/100</strong> and an operational complexity score of <strong>{(sku.cx * 100).toFixed(0)}/100</strong>.
             {currentClass === 'sunset' && ` Discontinuing this SKU will eliminate ${sku.stockouts} annual stockout events and reduce lead times across other ${sku.cat} variants, freeing up vital logistics capacity.`}
             {currentClass === 'grow' && ` With an impressive YoY growth rate of +${(sku.growth * 100).toFixed(0)}% and a healthy profit margin of ${sku.margin}%, we recommend increasing vendor capacity, supporting the distributor channels, and expanding marketing to capitalize on demand momentum.`}
@@ -136,7 +136,7 @@ export const SkuIntelligenceModal: React.FC<SkuIntelligenceModalProps> = ({
               {skuLogs.map((log) => (
                 <div key={log.id} className="pt-2.5 first:pt-0 text-[9px] font-medium leading-relaxed">
                   <div className="flex justify-between items-start text-zinc-400 font-semibold">
-                    <span className="font-mono font-bold text-zinc-450">{log.id} · {log.timestamp}</span>
+                    <span className="font-mono font-bold text-zinc-500">{log.id} · {log.timestamp}</span>
                     <span className="text-[7px] font-black bg-emerald-500/10 text-emerald-500 px-1.5 py-0.5 rounded uppercase flex items-center gap-0.5">
                       <CheckCircle2 size={8} />
                       <span>Approved</span>
@@ -145,7 +145,7 @@ export const SkuIntelligenceModal: React.FC<SkuIntelligenceModalProps> = ({
                   <p className="text-acies-gray dark:text-zinc-200 mt-1 font-black uppercase text-[8px]">
                     {log.team === 'pricing' ? 'Pricing' : log.team === 'product' ? 'Product' : 'Supply'} Ops — {log.actionLabel}
                   </p>
-                  <p className="text-zinc-550 dark:text-zinc-500 text-[8.5px] mt-0.5 leading-normal">
+                  <p className="text-zinc-600 dark:text-zinc-500 text-[8.5px] mt-0.5 leading-normal">
                     {log.rationale}
                   </p>
                 </div>

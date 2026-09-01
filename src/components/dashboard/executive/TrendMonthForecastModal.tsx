@@ -256,7 +256,7 @@ export const TrendMonthForecastModal: React.FC<TrendMonthForecastModalProps> = (
           <button 
             type="button"
             onClick={onClose}
-            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-655 cursor-pointer border-none bg-transparent outline-none"
+            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 cursor-pointer border-none bg-transparent outline-none"
           >
             <X size={16} />
           </button>
@@ -275,7 +275,7 @@ export const TrendMonthForecastModal: React.FC<TrendMonthForecastModalProps> = (
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-zinc-500 font-medium">This Year Target vs Actual:</span>
-                <span className="font-semibold text-zinc-850 dark:text-white">
+                <span className="font-semibold text-zinc-900 dark:text-white">
                   {data.thisYearTarget} / <span className={isUnderperforming ? 'text-amber-500 font-bold' : 'text-green-500 font-bold'}>{data.thisYearActual}</span>
                 </span>
               </div>
@@ -299,10 +299,10 @@ export const TrendMonthForecastModal: React.FC<TrendMonthForecastModalProps> = (
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-zinc-500 font-medium">This Year Blended Price:</span>
-                <span className="font-semibold text-zinc-850 dark:text-white">{data.thisYearPriceIndex}</span>
+                <span className="font-semibold text-zinc-900 dark:text-white">{data.thisYearPriceIndex}</span>
               </div>
               <div className="border-t border-black/5 dark:border-white/5 pt-2.5 flex justify-between items-center">
-                <span className="text-indigo-650 dark:text-indigo-400 font-bold">YoY Price Lift:</span>
+                <span className="text-indigo-700 dark:text-indigo-400 font-bold">YoY Price Lift:</span>
                 <span className="text-[10px] font-extrabold text-indigo-600 dark:text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
                   +4.2% Growth
                 </span>

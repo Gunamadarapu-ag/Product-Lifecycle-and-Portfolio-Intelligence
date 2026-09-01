@@ -113,7 +113,7 @@ export const ForecastAccuracySimulator: React.FC<ForecastAccuracySimulatorProps>
           <div className="space-y-6">
             <div>
               <h3 className="text-xs font-bold text-zinc-900 dark:text-white mb-1">Adjust your parameters to model the impact</h3>
-              <p className="text-[10px] text-zinc-555 dark:text-zinc-500 font-medium">Drag the sliders to see simulated margin recovery in real-time</p>
+              <p className="text-[10px] text-zinc-600 dark:text-zinc-500 font-medium">Drag the sliders to see simulated margin recovery in real-time</p>
             </div>
 
             {/* Sliders Container */}
@@ -192,7 +192,7 @@ export const ForecastAccuracySimulator: React.FC<ForecastAccuracySimulatorProps>
             
             {/* Accuracy Gain */}
             <div className="p-3 bg-zinc-50 dark:bg-white/[0.02] border border-black/10 dark:border-white/5 rounded-lg flex flex-col justify-between h-20 shadow">
-              <span className="text-[7.5px] font-bold uppercase tracking-widest text-zinc-550 dark:text-zinc-500">ACCURACY GAIN</span>
+              <span className="text-[7.5px] font-bold uppercase tracking-widest text-zinc-600 dark:text-zinc-500">ACCURACY GAIN</span>
               <p className="text-base font-display font-black text-emerald-600 dark:text-emerald-400 font-mono mt-1">
                 +{accuracyGain}pp
               </p>
@@ -200,15 +200,15 @@ export const ForecastAccuracySimulator: React.FC<ForecastAccuracySimulatorProps>
 
             {/* Overstock Reduction */}
             <div className="p-3 bg-zinc-50 dark:bg-white/[0.02] border border-black/10 dark:border-white/5 rounded-lg flex flex-col justify-between h-20 shadow">
-              <span className="text-[7.5px] font-bold uppercase tracking-widest text-zinc-555 dark:text-zinc-500">OVERSTOCK REDUCTION</span>
-              <p className="text-base font-display font-black text-teal-655 dark:text-teal-400 font-mono mt-1">
+              <span className="text-[7.5px] font-bold uppercase tracking-widest text-zinc-600 dark:text-zinc-500">OVERSTOCK REDUCTION</span>
+              <p className="text-base font-display font-black text-teal-700 dark:text-teal-400 font-mono mt-1">
                 {overstockReduction}%
               </p>
             </div>
 
             {/* Margin Recovery */}
             <div className="p-3 bg-zinc-50 dark:bg-white/[0.02] border border-black/10 dark:border-white/5 rounded-lg flex flex-col justify-between h-20 shadow">
-              <span className="text-[7.5px] font-bold uppercase tracking-widest text-zinc-555 dark:text-zinc-500">MARGIN RECOVERY</span>
+              <span className="text-[7.5px] font-bold uppercase tracking-widest text-zinc-600 dark:text-zinc-500">MARGIN RECOVERY</span>
               <p className="text-base font-display font-black text-emerald-600 dark:text-emerald-400 font-mono mt-1">
                 ${marginRecovery.toFixed(2)}M
               </p>
@@ -233,15 +233,15 @@ export const ForecastAccuracySimulator: React.FC<ForecastAccuracySimulatorProps>
             <div className="flex items-center gap-4 text-[10px] font-bold">
               <div className="flex items-center gap-1.5">
                 <div className="w-2.5 h-0.5 bg-blue-500" />
-                <span className="text-zinc-550 dark:text-zinc-400">Current model</span>
+                <span className="text-zinc-600 dark:text-zinc-400">Current model</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-2.5 h-0.5 bg-emerald-500" />
-                <span className="text-zinc-550 dark:text-zinc-400">AI model</span>
+                <span className="text-zinc-600 dark:text-zinc-400">AI model</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-3.5 h-2.5 bg-emerald-500/10 dark:bg-emerald-500/10 border border-dashed border-emerald-500/20 rounded-sm" />
-                <span className="text-zinc-555 dark:text-zinc-450">Savings zone</span>
+                <span className="text-zinc-600 dark:text-zinc-500">Savings zone</span>
               </div>
             </div>
           </div>
@@ -308,7 +308,7 @@ export const ForecastAccuracySimulator: React.FC<ForecastAccuracySimulatorProps>
 
           <div className="mt-4 p-3 bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5 rounded-lg flex items-start gap-2.5">
             <Info size={14} className="text-[#8b5cf6] dark:text-[#a78bfa] shrink-0 mt-0.5" />
-            <p className="text-[9.5px] text-zinc-550 dark:text-zinc-500 font-medium leading-relaxed">
+            <p className="text-[9.5px] text-zinc-600 dark:text-zinc-500 font-medium leading-relaxed">
               <strong>Savings Zone:</strong> The shaded area represents the overstock inventory units saved annually. Smoother scheduling and advanced demand sensing reduce peak safety stock targets and raw materials buffering by aligning supply with actual forecast velocity.
             </p>
           </div>

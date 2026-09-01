@@ -243,7 +243,7 @@ export const AgentOrchestrator: React.FC<AgentOrchestratorProps> = ({ isDarkMode
                       )}
                       <div>
                         <div className="flex justify-between items-start">
-                          <span className={`text-[10px] font-display font-extrabold text-zinc-850 dark:text-white leading-tight ${agent.color}`}>
+                          <span className={`text-[10px] font-display font-extrabold text-zinc-900 dark:text-white leading-tight ${agent.color}`}>
                             {agent.name}
                           </span>
                           <span className="flex items-center gap-1.5">
@@ -262,7 +262,7 @@ export const AgentOrchestrator: React.FC<AgentOrchestratorProps> = ({ isDarkMode
                         <p className="text-[7px] uppercase font-bold text-zinc-400 tracking-wider">Key Functional Focus:</p>
                         <div className="flex flex-wrap gap-1">
                           {agent.tasks.slice(0, 2).map((t, idx) => (
-                            <span key={idx} className="text-[6.5px] bg-black/5 dark:bg-white/5 text-zinc-500 dark:text-zinc-350 px-1.5 py-0.5 rounded font-medium">
+                            <span key={idx} className="text-[6.5px] bg-black/5 dark:bg-white/5 text-zinc-500 dark:text-zinc-400 px-1.5 py-0.5 rounded font-medium">
                               {t}
                             </span>
                           ))}
@@ -290,7 +290,7 @@ export const AgentOrchestrator: React.FC<AgentOrchestratorProps> = ({ isDarkMode
                   {selectedAgent.tasks.map((task, idx) => (
                     <div key={idx} className="p-3 bg-black/5 dark:bg-white/5 rounded border border-black/5 dark:border-white/5 flex flex-col justify-between min-h-[90px]">
                       <span className="text-[8px] uppercase font-bold text-zinc-400">Ability {idx + 1}</span>
-                      <p className="text-[10px] font-bold text-zinc-705 dark:text-white leading-tight mt-1">{task}</p>
+                      <p className="text-[10px] font-bold text-zinc-700 dark:text-white leading-tight mt-1">{task}</p>
                       <span className="text-[7px] text-acies-yellow uppercase tracking-widest font-semibold mt-2.5 flex items-center gap-1">
                         <CheckCircle2 size={8} /> Production Ready
                       </span>
@@ -301,7 +301,7 @@ export const AgentOrchestrator: React.FC<AgentOrchestratorProps> = ({ isDarkMode
                   <AlertCircle size={14} className="text-acies-yellow shrink-0 mt-0.5" />
                   <div className="space-y-0.5">
                     <h5 className="text-[9px] font-bold uppercase text-acies-yellow">Collaborative Enterprise Planning Protocol</h5>
-                    <p className="text-[8.5px] leading-relaxed text-zinc-500 dark:text-zinc-450">
+                    <p className="text-[8.5px] leading-relaxed text-zinc-500 dark:text-zinc-500">
                       The Orchestrator natively synchronizes variables across agents. For example, if the <strong>Supply Chain Agent</strong> predicts capacity deficits, it automatically prompts the <strong>FP&A Agent</strong> to re-model cost of goods and trigger secondary transport budgeting, bypassing manual request delays.
                     </p>
                   </div>
@@ -513,7 +513,7 @@ export const AgentOrchestrator: React.FC<AgentOrchestratorProps> = ({ isDarkMode
                   { label: 'Material Ledger Schema', status: 'Online' }
                 ].map((schema, idx) => (
                   <div key={idx} className="flex justify-between items-center text-[8px] bg-black/5 dark:bg-white/5 p-2 rounded">
-                    <span className="font-bold text-zinc-705 dark:text-white">{schema.label}</span>
+                    <span className="font-bold text-zinc-700 dark:text-white">{schema.label}</span>
                     <span className="text-green-500 font-bold uppercase tracking-widest text-[7px]">{schema.status}</span>
                   </div>
                 ))}
@@ -542,7 +542,7 @@ export const AgentOrchestrator: React.FC<AgentOrchestratorProps> = ({ isDarkMode
                   { name: 'Snowflake External Functions', type: 'SQL' }
                 ].map((api, idx) => (
                   <div key={idx} className="flex justify-between items-center text-[8px] bg-black/5 dark:bg-white/5 p-2 rounded">
-                    <span className="font-bold text-zinc-705 dark:text-white">{api.name}</span>
+                    <span className="font-bold text-zinc-700 dark:text-white">{api.name}</span>
                     <span className="text-zinc-400 font-mono text-[7px] uppercase font-bold">{api.type}</span>
                   </div>
                 ))}
@@ -571,7 +571,7 @@ export const AgentOrchestrator: React.FC<AgentOrchestratorProps> = ({ isDarkMode
                   { spec: '256-bit Row-Level Security', status: 'Enforced' }
                 ].map((spec, idx) => (
                   <div key={idx} className="flex justify-between items-center text-[8px] bg-black/5 dark:bg-white/5 p-2 rounded border border-black/5 dark:border-white/5">
-                    <span className="font-bold text-zinc-705 dark:text-white">{spec.spec}</span>
+                    <span className="font-bold text-zinc-700 dark:text-white">{spec.spec}</span>
                     <span className="text-acies-yellow font-bold uppercase tracking-widest text-[7.5px]">{spec.status}</span>
                   </div>
                 ))}

@@ -224,7 +224,7 @@ const getRcaDetails = (sku: string, factor: string) => {
 const MarginWaterfallChart: React.FC = () => {
   return (
     <div className="bg-black/10 dark:bg-white/5 border border-black/5 dark:border-white/5 p-4 rounded-sm">
-      <h5 className="text-[9.5px] font-black uppercase tracking-widest text-zinc-450 dark:text-zinc-500 mb-4">Margin Bridge (% of Revenue)</h5>
+      <h5 className="text-[9.5px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-500 mb-4">Margin Bridge (% of Revenue)</h5>
       <div className="relative w-full h-[180px] font-semibold text-[8px] sm:text-[9px] text-zinc-400">
         {/* Draw a grid of horizontal helper lines: 0%, 5%, 10%, 15%, 20%, 22% */}
         <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-20 border-b border-zinc-500">
@@ -240,7 +240,7 @@ const MarginWaterfallChart: React.FC = () => {
           {/* Column 1: Target margin (0% to 20%) */}
           <div className="flex flex-col items-center justify-end h-full w-[15%]">
             <div className="w-full bg-zinc-500 dark:bg-zinc-600 rounded-t-xs h-[90%] flex items-center justify-center text-white font-bold text-[9px]">20.0%</div>
-            <span className="mt-2 text-[7.5px] text-center uppercase tracking-wider font-extrabold truncate w-full text-zinc-450">Target Margin</span>
+            <span className="mt-2 text-[7.5px] text-center uppercase tracking-wider font-extrabold truncate w-full text-zinc-500">Target Margin</span>
           </div>
 
           {/* Column 2: Material cost inflation (-2.0%, from 20% down to 18%) */}
@@ -251,7 +251,7 @@ const MarginWaterfallChart: React.FC = () => {
                 -2.0%
               </div>
             </div>
-            <span className="mt-2 text-[7.5px] text-center uppercase tracking-wider font-extrabold truncate w-full text-zinc-450">Material Cost</span>
+            <span className="mt-2 text-[7.5px] text-center uppercase tracking-wider font-extrabold truncate w-full text-zinc-500">Material Cost</span>
           </div>
 
           {/* Column 3: Promotional dilution (-2.4%, from 18% down to 15.6%) */}
@@ -262,7 +262,7 @@ const MarginWaterfallChart: React.FC = () => {
                 -2.4%
               </div>
             </div>
-            <span className="mt-2 text-[7.5px] text-center uppercase tracking-wider font-extrabold truncate w-full text-zinc-450">Promo Dilution</span>
+            <span className="mt-2 text-[7.5px] text-center uppercase tracking-wider font-extrabold truncate w-full text-zinc-500">Promo Dilution</span>
           </div>
 
           {/* Column 4: Manufacturing overhead (-1.0%, from 15.6% down to 14.6%) */}
@@ -273,19 +273,19 @@ const MarginWaterfallChart: React.FC = () => {
                 -1.0%
               </div>
             </div>
-            <span className="mt-2 text-[7.5px] text-center uppercase tracking-wider font-extrabold truncate w-full text-zinc-450">Mfg Overhead</span>
+            <span className="mt-2 text-[7.5px] text-center uppercase tracking-wider font-extrabold truncate w-full text-zinc-500">Mfg Overhead</span>
           </div>
 
           {/* Column 5: Actual margin (0% to 14.6%) */}
           <div className="flex flex-col items-center justify-end h-full w-[15%]">
             <div className="w-full bg-blue-500 dark:bg-blue-600 rounded-t-xs h-[65.7%] flex items-center justify-center text-white font-bold text-[9px]">14.6%</div>
-            <span className="mt-2 text-[7.5px] text-center uppercase tracking-wider font-extrabold truncate w-full text-zinc-450">Actual Margin</span>
+            <span className="mt-2 text-[7.5px] text-center uppercase tracking-wider font-extrabold truncate w-full text-zinc-500">Actual Margin</span>
           </div>
         </div>
       </div>
       
       {/* Legend */}
-      <div className="flex justify-center gap-6 mt-4 border-t border-black/5 dark:border-white/5 pt-2 text-[8px] font-black uppercase tracking-wider text-zinc-450">
+      <div className="flex justify-center gap-6 mt-4 border-t border-black/5 dark:border-white/5 pt-2 text-[8px] font-black uppercase tracking-wider text-zinc-500">
         <div className="flex items-center gap-1.5">
           <span className="w-2.5 h-2.5 bg-zinc-500 dark:bg-zinc-600 rounded-xs" />
           <span>Baseline</span>
@@ -306,7 +306,7 @@ const MarginWaterfallChart: React.FC = () => {
 const SkuCategoryBenchmarks: React.FC<{ skuName: string, category: string }> = ({ skuName, category }) => {
   return (
     <div className="bg-black/10 dark:bg-white/5 border border-black/5 dark:border-white/5 p-4 rounded-sm space-y-4 text-left">
-      <h5 className="text-[9.5px] font-black uppercase tracking-widest text-zinc-450 dark:text-zinc-500 leading-tight">
+      <h5 className="text-[9.5px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-500 leading-tight">
         {skuName} vs. {category.toLowerCase()} category
       </h5>
       
@@ -322,7 +322,7 @@ const SkuCategoryBenchmarks: React.FC<{ skuName: string, category: string }> = (
             <div className="absolute top-0 left-0 h-full bg-red-500 rounded-full" style={{ width: '72.5%' }} />
             <div className="absolute top-[-4px] h-4 w-[2px] bg-white border border-black/40 dark:border-white/60" style={{ left: '49%' }} />
           </div>
-          <div className="flex justify-between text-[8px] font-bold text-zinc-450 uppercase">
+          <div className="flex justify-between text-[8px] font-bold text-zinc-500 uppercase">
             <span>this SKU: 14.5%</span>
             <span>category avg: 9.8%</span>
           </div>
@@ -339,7 +339,7 @@ const SkuCategoryBenchmarks: React.FC<{ skuName: string, category: string }> = (
             <div className="absolute top-0 left-0 h-full bg-red-500 rounded-full" style={{ width: '15%' }} />
             <div className="absolute top-[-4px] h-4 w-[2px] bg-white border border-black/40 dark:border-white/60" style={{ left: '50%' }} />
           </div>
-          <div className="flex justify-between text-[8px] font-bold text-zinc-450 uppercase">
+          <div className="flex justify-between text-[8px] font-bold text-zinc-500 uppercase">
             <span>this SKU: 1.12x</span>
             <span>category median: 1.70x</span>
           </div>
@@ -356,7 +356,7 @@ const SkuCategoryBenchmarks: React.FC<{ skuName: string, category: string }> = (
             <div className="absolute top-0 left-0 h-full bg-amber-500 rounded-full" style={{ width: '68%' }} />
             <div className="absolute top-[-4px] h-4 w-[2px] bg-white border border-black/40 dark:border-white/60" style={{ left: '58%' }} />
           </div>
-          <div className="flex justify-between text-[8px] font-bold text-zinc-450 uppercase">
+          <div className="flex justify-between text-[8px] font-bold text-zinc-500 uppercase">
             <span>this SKU: 8.2%</span>
             <span>category avg: 7.0%</span>
           </div>
@@ -585,8 +585,8 @@ export const DemoTab: React.FC<DemoTabProps> = ({
       <div className="glass-card bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-sm flex flex-col gap-4">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
           <div>
-            <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-855 dark:text-zinc-200">DETAILED RATIONALE EXPLORER</h3>
-            <p className="text-[9px] text-zinc-450 dark:text-zinc-500 uppercase font-semibold tracking-wider mt-0.5">Drill down into specific rationale factors</p>
+            <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-200">DETAILED RATIONALE EXPLORER</h3>
+            <p className="text-[9px] text-zinc-500 dark:text-zinc-500 uppercase font-semibold tracking-wider mt-0.5">Drill down into specific rationale factors</p>
           </div>
         </div>
 
@@ -606,7 +606,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
             <select
               value={productCategoryFilter}
               onChange={(e) => setProductCategoryFilter(e.target.value)}
-              className="bg-white dark:bg-acies-gray border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9.5px] font-bold text-zinc-650 dark:text-zinc-400 outline-none cursor-pointer"
+              className="bg-white dark:bg-acies-gray border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9.5px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
             >
               <option value="All">All Categories</option>
               <option value="Beverages">Beverages</option>
@@ -618,7 +618,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
             <select
               value={regionFilter}
               onChange={(e) => setRegionFilter(e.target.value)}
-              className="bg-white dark:bg-acies-gray border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9.5px] font-bold text-zinc-650 dark:text-zinc-400 outline-none cursor-pointer"
+              className="bg-white dark:bg-acies-gray border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9.5px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
             >
               <option value="All">All Regions</option>
               <option value="LATAM">LATAM</option>
@@ -630,7 +630,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="bg-white dark:bg-acies-gray border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9.5px] font-bold text-zinc-650 dark:text-zinc-400 outline-none cursor-pointer"
+              className="bg-white dark:bg-acies-gray border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9.5px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
             >
               <option value="All">All Rationale Factors</option>
               <option value="Financial Reasons">Financial Reasons</option>
@@ -643,7 +643,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
             <select
               value={impactFilter}
               onChange={(e) => setImpactFilter(e.target.value)}
-              className="bg-white dark:bg-acies-gray border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9.5px] font-bold text-zinc-650 dark:text-zinc-400 outline-none cursor-pointer"
+              className="bg-white dark:bg-acies-gray border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9.5px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
             >
               <option value="All">All Impact Levels</option>
               <option value="High">High</option>
@@ -654,7 +654,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
             <select
               value={actionFilter}
               onChange={(e) => setActionFilter(e.target.value)}
-              className="bg-white dark:bg-acies-gray border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9.5px] font-bold text-zinc-650 dark:text-zinc-400 outline-none cursor-pointer"
+              className="bg-white dark:bg-acies-gray border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9.5px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
             >
               <option value="All">All Actions</option>
               <option value="Discontinue">Discontinue / Consolidate</option>
@@ -678,7 +678,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
         <div className="overflow-x-auto min-h-[250px]">
           <table className="w-full text-left border-collapse text-[10.5px]">
             <thead>
-              <tr className="border-b border-black/10 dark:border-white/10 text-[8.5px] uppercase tracking-widest text-zinc-450 dark:text-zinc-500 font-extrabold bg-black/[0.01] dark:bg-white/[0.01]">
+              <tr className="border-b border-black/10 dark:border-white/10 text-[8.5px] uppercase tracking-widest text-zinc-500 dark:text-zinc-500 font-extrabold bg-black/[0.01] dark:bg-white/[0.01]">
                 <th className="py-2.5 px-3">SKU</th>
                 <th className="py-2.5 px-2">Category</th>
                 <th className="py-2.5 px-2">Region</th>
@@ -690,14 +690,14 @@ export const DemoTab: React.FC<DemoTabProps> = ({
                 <th className="py-2.5 px-3 text-right">Investigate</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-black/5 dark:divide-white/5 font-semibold text-zinc-700 dark:text-zinc-350">
+            <tbody className="divide-y divide-black/5 dark:divide-white/5 font-semibold text-zinc-700 dark:text-zinc-400">
               {paginatedRows.map(row => (
                 <tr key={row.sku} className="hover:bg-black/[0.01] dark:hover:bg-white/[0.01] transition-all">
-                  <td className="py-2.5 px-3 font-extrabold text-zinc-855 dark:text-zinc-100">{row.sku}</td>
-                  <td className="py-2.5 px-2 font-bold text-zinc-805 dark:text-zinc-200">{row.productCat}</td>
-                  <td className="py-2.5 px-2 font-bold text-zinc-805 dark:text-zinc-200">{row.region}</td>
-                  <td className="py-2.5 px-2 font-bold text-zinc-805 dark:text-zinc-200">{row.factor}</td>
-                  <td className="py-2.5 px-2 text-[9px] uppercase tracking-wider text-zinc-550 dark:text-zinc-550">{row.cat}</td>
+                  <td className="py-2.5 px-3 font-extrabold text-zinc-900 dark:text-zinc-100">{row.sku}</td>
+                  <td className="py-2.5 px-2 font-bold text-zinc-800 dark:text-zinc-200">{row.productCat}</td>
+                  <td className="py-2.5 px-2 font-bold text-zinc-800 dark:text-zinc-200">{row.region}</td>
+                  <td className="py-2.5 px-2 font-bold text-zinc-800 dark:text-zinc-200">{row.factor}</td>
+                  <td className="py-2.5 px-2 text-[9px] uppercase tracking-wider text-zinc-600 dark:text-zinc-600">{row.cat}</td>
                   <td className="py-2.5 px-2 text-zinc-500 dark:text-zinc-400 font-normal">{row.desc}</td>
                   <td className="py-2.5 px-2">
                     <span className={`px-2 py-0.5 rounded text-[8px] font-extrabold uppercase ${
@@ -707,16 +707,16 @@ export const DemoTab: React.FC<DemoTabProps> = ({
                           ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/10'
                           : row.impact === 'Low impact'
                             ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/10'
-                            : 'bg-zinc-500/10 text-zinc-550 dark:text-zinc-400 border border-zinc-500/10'
+                            : 'bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border border-zinc-500/10'
                     }`}>
                       {row.impact}
                     </span>
                   </td>
-                  <td className="py-2.5 px-2 font-extrabold text-zinc-855 dark:text-zinc-300">{row.action}</td>
+                  <td className="py-2.5 px-2 font-extrabold text-zinc-900 dark:text-zinc-300">{row.action}</td>
                   <td className="py-2.5 px-3 text-right">
                     <button
                       onClick={() => setSelectedSkuForRca(row)}
-                      className="p-1 px-2.5 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-650 dark:text-indigo-300 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-500 dark:hover:text-white border border-indigo-200 dark:border-indigo-800/40 rounded text-[8.5px] font-black uppercase tracking-wider cursor-pointer inline-flex items-center gap-1 transition-all shadow-sm"
+                      className="p-1 px-2.5 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-500 dark:hover:text-white border border-indigo-200 dark:border-indigo-800/40 rounded text-[8.5px] font-black uppercase tracking-wider cursor-pointer inline-flex items-center gap-1 transition-all shadow-sm"
                       title="View Detailed Root Cause Analysis"
                     >
                       <Activity size={10} className="stroke-[2.5]" />
@@ -727,7 +727,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
               ))}
               {filteredRows.length === 0 && (
                 <tr>
-                  <td colSpan={9} className="py-10 text-center text-zinc-450 dark:text-zinc-500">
+                  <td colSpan={9} className="py-10 text-center text-zinc-500 dark:text-zinc-500">
                     No SKUs match your active filter criteria. Try resetting your search or filter pills.
                   </td>
                 </tr>
@@ -744,7 +744,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
               <button
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                className="px-2.5 py-1 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded hover:bg-black/10 dark:hover:bg-white/10 disabled:opacity-40 disabled:hover:bg-black/5 cursor-pointer text-[9px] uppercase font-bold text-zinc-650 dark:text-zinc-400"
+                className="px-2.5 py-1 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded hover:bg-black/10 dark:hover:bg-white/10 disabled:opacity-40 disabled:hover:bg-black/5 cursor-pointer text-[9px] uppercase font-bold text-zinc-700 dark:text-zinc-400"
               >
                 Previous
               </button>
@@ -752,7 +752,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
               <button
                 disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                className="px-2.5 py-1 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded hover:bg-black/10 dark:hover:bg-white/10 disabled:opacity-40 disabled:hover:bg-black/5 cursor-pointer text-[9px] uppercase font-bold text-zinc-650 dark:text-zinc-400"
+                className="px-2.5 py-1 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded hover:bg-black/10 dark:hover:bg-white/10 disabled:opacity-40 disabled:hover:bg-black/5 cursor-pointer text-[9px] uppercase font-bold text-zinc-700 dark:text-zinc-400"
               >
                 Next
               </button>
@@ -785,25 +785,25 @@ export const DemoTab: React.FC<DemoTabProps> = ({
               </div>
  
               {/* Scrollable Content */}
-              <div className="p-6 overflow-y-auto space-y-6 text-xs text-zinc-650 dark:text-zinc-350">
+              <div className="p-6 overflow-y-auto space-y-6 text-xs text-zinc-700 dark:text-zinc-400">
                 
 
 
                 {/* Key Findings */}
                 <div className="space-y-2">
-                  <h4 className="text-[9.5px] font-black uppercase tracking-widest text-zinc-450 dark:text-zinc-500">Primary Root Causes</h4>
+                  <h4 className="text-[9.5px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-500">Primary Root Causes</h4>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                     {rca.rootCauses.map((cause, index) => (
                       <div key={cause.title} className="bg-black/2 dark:bg-white/2 border border-black/5 dark:border-white/5 p-2.5 rounded-sm relative flex flex-col gap-2 text-left hover:border-indigo-500/30 transition-all hover:shadow-xs">
                         <div className="flex justify-between items-center">
-                          <span className="w-4 h-4 rounded-full bg-indigo-100 dark:bg-indigo-950/40 text-indigo-650 dark:text-indigo-350 flex items-center justify-center font-bold text-[8.5px] shrink-0">
+                          <span className="w-4 h-4 rounded-full bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-400 flex items-center justify-center font-bold text-[8.5px] shrink-0">
                             {index + 1}
                           </span>
                           <span className="text-[7px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-widest bg-indigo-600/10 px-1.5 py-0.5 rounded">FACTOR</span>
                         </div>
                         <div className="space-y-0.5">
                           <span className="font-extrabold text-zinc-800 dark:text-zinc-200 block text-[10.5px] leading-tight">{cause.title}</span>
-                          <p className="text-zinc-555 dark:text-zinc-400 text-[9px] leading-normal">{cause.desc}</p>
+                          <p className="text-zinc-600 dark:text-zinc-400 text-[9px] leading-normal">{cause.desc}</p>
                         </div>
                       </div>
                     ))}
@@ -812,20 +812,20 @@ export const DemoTab: React.FC<DemoTabProps> = ({
 
                 {/* Margin Analysis Section */}
                 <div className="space-y-4">
-                  <h4 className="text-[9.5px] font-black uppercase tracking-widest text-zinc-450 dark:text-zinc-500">Margin Performance Diagnostics</h4>
+                  <h4 className="text-[9.5px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-500">Margin Performance Diagnostics</h4>
                   
                   {/* Margin KPI Tiles */}
                   <div className="grid grid-cols-3 gap-4">
                     <div className="bg-black/10 dark:bg-white/5 border border-black/5 dark:border-white/5 p-4 rounded-sm text-left">
-                      <span className="text-[10px] font-bold text-zinc-450 dark:text-zinc-500 block mb-2 lowercase">target margin</span>
+                      <span className="text-[10px] font-bold text-zinc-500 dark:text-zinc-500 block mb-2 lowercase">target margin</span>
                       <h4 className="text-2xl font-display font-black text-zinc-800 dark:text-white leading-none">20.0%</h4>
                     </div>
                     <div className="bg-black/10 dark:bg-white/5 border border-black/5 dark:border-white/5 p-4 rounded-sm text-left">
-                      <span className="text-[10px] font-bold text-zinc-450 dark:text-zinc-500 block mb-2 lowercase">actual margin</span>
+                      <span className="text-[10px] font-bold text-zinc-500 dark:text-zinc-500 block mb-2 lowercase">actual margin</span>
                       <h4 className="text-2xl font-display font-black text-zinc-800 dark:text-white leading-none">14.6%</h4>
                     </div>
                     <div className="bg-black/10 dark:bg-white/5 border border-black/5 dark:border-white/5 p-4 rounded-sm text-left">
-                      <span className="text-[10px] font-bold text-zinc-450 dark:text-zinc-500 block mb-2 lowercase">total gap</span>
+                      <span className="text-[10px] font-bold text-zinc-500 dark:text-zinc-500 block mb-2 lowercase">total gap</span>
                       <h4 className="text-2xl font-display font-black text-red-500 dark:text-red-400 leading-none">-5.4pt</h4>
                     </div>
                   </div>
@@ -844,13 +844,13 @@ export const DemoTab: React.FC<DemoTabProps> = ({
                   onClick={() => {
                     handleSimulate(selectedSkuForRca.sku);
                   }}
-                  className="px-3.5 py-1.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-750 hover:to-indigo-750 text-white rounded-sm text-[9.5px] font-bold uppercase tracking-wider cursor-pointer border-none shadow-md hover:shadow-lg hover:brightness-110 active:scale-95 transition-all duration-150"
+                  className="px-3.5 py-1.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-800 hover:to-indigo-800 text-white rounded-sm text-[9.5px] font-bold uppercase tracking-wider cursor-pointer border-none shadow-md hover:shadow-lg hover:brightness-110 active:scale-95 transition-all duration-150"
                 >
                   Simulate Rationalisation
                 </button>
                 <button 
                   onClick={() => setSelectedSkuForRca(null)}
-                  className="px-4 py-2 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-zinc-650 dark:text-zinc-400 rounded text-[9.5px] font-bold uppercase tracking-wider hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer"
+                  className="px-4 py-2 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-zinc-700 dark:text-zinc-400 rounded text-[9.5px] font-bold uppercase tracking-wider hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer"
                 >
                   Close Analysis
                 </button>
@@ -884,7 +884,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
             </div>
 
             {/* Content */}
-            <div className="p-4 overflow-y-auto space-y-3 text-[10px] text-zinc-650 dark:text-zinc-350">
+            <div className="p-4 overflow-y-auto space-y-3 text-[10px] text-zinc-700 dark:text-zinc-400">
               {simulationProgress < 100 ? (
                 <div className="space-y-3 py-6 text-center">
                   <div className="w-8 h-8 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto" />
@@ -913,7 +913,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
                           <th className="py-2 px-3 text-right">Delta</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-black/5 dark:divide-white/5 font-semibold text-zinc-700 dark:text-zinc-350">
+                      <tbody className="divide-y divide-black/5 dark:divide-white/5 font-semibold text-zinc-700 dark:text-zinc-400">
                         <tr>
                           <td className="py-2 px-3 font-bold text-zinc-800 dark:text-zinc-200">Revenue Impact</td>
                           <td className="py-2 px-2 text-right font-mono font-medium">$4.20M</td>
@@ -950,7 +950,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
 
                   <div className="bg-amber-500/5 border border-amber-500/10 p-3 rounded-sm text-left">
                     <span className="text-[8.5px] font-black text-amber-600 dark:text-amber-500 block uppercase tracking-widest mb-1">Descriptive Rationalisation Justification</span>
-                    <p className="text-[10px] leading-relaxed text-zinc-650 dark:text-zinc-350 font-semibold">{getRationalisationReason(selectedSkuForRca?.factor || '')}</p>
+                    <p className="text-[10px] leading-relaxed text-zinc-700 dark:text-zinc-400 font-semibold">{getRationalisationReason(selectedSkuForRca?.factor || '')}</p>
                   </div>
 
                   <div className="space-y-1.5">
@@ -959,7 +959,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
                       {/* Verify Profitability Card */}
                       <div className="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800/80 rounded-md p-3.5 relative text-left flex flex-col justify-between min-h-[72px] shadow-sm">
                         <div>
-                          <span className="text-[9.5px] text-zinc-500 dark:text-zinc-450 font-semibold block leading-none">Verify profitability</span>
+                          <span className="text-[9.5px] text-zinc-500 dark:text-zinc-500 font-semibold block leading-none">Verify profitability</span>
                           <span className="text-xl font-bold text-zinc-900 dark:text-white block mt-1.5 leading-none">21.4%</span>
                         </div>
                         <span className="text-[9px] text-emerald-600 dark:text-emerald-500 font-semibold mt-2 block leading-none">+3.6pt vs 20.0% floor</span>
@@ -969,7 +969,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
                       {/* Customer Impact Card */}
                       <div className="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800/80 rounded-md p-3.5 relative text-left flex flex-col justify-between min-h-[72px] shadow-sm">
                         <div>
-                          <span className="text-[9.5px] text-zinc-500 dark:text-zinc-450 font-semibold block leading-none">Customer impact</span>
+                          <span className="text-[9.5px] text-zinc-500 dark:text-zinc-500 font-semibold block leading-none">Customer impact</span>
                           <span className="text-xl font-bold text-zinc-900 dark:text-white block mt-1.5 leading-none">96.2%</span>
                         </div>
                         <span className="text-[9px] text-emerald-600 dark:text-emerald-500 font-semibold mt-2 block leading-none">low transition friction</span>
@@ -979,7 +979,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
                       {/* Market Trends Card */}
                       <div className="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800/80 rounded-md p-3.5 relative text-left flex flex-col justify-between min-h-[72px] shadow-sm">
                         <div>
-                          <span className="text-[9.5px] text-zinc-500 dark:text-zinc-450 font-semibold block leading-none">Market trends</span>
+                          <span className="text-[9.5px] text-zinc-500 dark:text-zinc-500 font-semibold block leading-none">Market trends</span>
                           <span className="text-xl font-bold text-zinc-900 dark:text-white block mt-1.5 leading-none">strong</span>
                         </div>
                         <span className="text-[9px] text-emerald-600 dark:text-emerald-500 font-semibold mt-2 block leading-none">matches larger-sizing demand shift</span>
@@ -989,7 +989,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
                       {/* Strategic Fit Card */}
                       <div className="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800/80 rounded-md p-3.5 relative text-left flex flex-col justify-between min-h-[72px] shadow-sm">
                         <div>
-                          <span className="text-[9.5px] text-zinc-500 dark:text-zinc-450 font-semibold block leading-none">Strategic fit</span>
+                          <span className="text-[9.5px] text-zinc-500 dark:text-zinc-500 font-semibold block leading-none">Strategic fit</span>
                           <span className="text-xl font-bold text-zinc-900 dark:text-white block mt-1.5 leading-none">-2</span>
                         </div>
                         <span className="text-[9px] text-emerald-600 dark:text-emerald-500 font-semibold mt-2 block leading-none">6 → 4 active warehouses</span>
@@ -1031,11 +1031,11 @@ export const DemoTab: React.FC<DemoTabProps> = ({
                       <div className="flex flex-col gap-3">
                         <div className="bg-indigo-500/5 border border-indigo-500/10 p-3 rounded-sm text-left">
                           <span className="text-[8.5px] font-black text-indigo-500 dark:text-indigo-400 block uppercase tracking-widest mb-1">{strategy.title}</span>
-                          <p className="text-[10px] leading-relaxed text-zinc-650 dark:text-zinc-350 font-semibold">{strategy.recommendation}</p>
+                          <p className="text-[10px] leading-relaxed text-zinc-700 dark:text-zinc-400 font-semibold">{strategy.recommendation}</p>
                         </div>
                         
                         <div className="p-3 bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/5 rounded-sm text-left">
-                          <span className="text-[8.5px] font-black text-zinc-450 dark:text-zinc-550 block uppercase tracking-widest mb-2">Auto-Task Assignment Preview</span>
+                          <span className="text-[8.5px] font-black text-zinc-500 dark:text-zinc-600 block uppercase tracking-widest mb-2">Auto-Task Assignment Preview</span>
                           <div className="flex flex-wrap gap-1.5">
                             {depts.map((d) => (
                               <span 
@@ -1065,7 +1065,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
                   setSimulatingSkuName(null);
                   setSimulationResult(null);
                 }}
-                className="px-4 py-2 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-zinc-650 dark:text-zinc-400 rounded text-[9.5px] font-bold uppercase tracking-wider hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer"
+                className="px-4 py-2 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-zinc-700 dark:text-zinc-400 rounded text-[9.5px] font-bold uppercase tracking-wider hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer"
               >
                 Close Simulator
               </button>
@@ -1131,8 +1131,8 @@ export const DemoTab: React.FC<DemoTabProps> = ({
             </div>
 
             {/* Content */}
-            <div className="p-4 overflow-y-auto space-y-4 text-[10px] text-zinc-650 dark:text-zinc-350">
-              <div className="bg-indigo-50 dark:bg-indigo-950/20 border border-indigo-150 dark:border-indigo-900/40 p-3 rounded-sm text-left">
+            <div className="p-4 overflow-y-auto space-y-4 text-[10px] text-zinc-700 dark:text-zinc-400">
+              <div className="bg-indigo-50 dark:bg-indigo-950/20 border border-indigo-200 dark:border-indigo-900/40 p-3 rounded-sm text-left">
                 <span className="text-[9px] font-black text-indigo-600 dark:text-indigo-400 block uppercase tracking-widest mb-1">Execution Objective</span>
                 <p className="text-[10px] leading-relaxed text-zinc-700 dark:text-zinc-300 font-medium">
                   To successfully coordinate the rationalisation of <span className="font-bold text-zinc-900 dark:text-white">{executionSkuName}</span>, the Product Manager must dispatch and align the following communication streams across sales, supply chain, retail channels, and catalogs.

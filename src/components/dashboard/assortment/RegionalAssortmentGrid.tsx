@@ -234,13 +234,13 @@ export const RegionalAssortmentGrid: React.FC<RegionalAssortmentGridProps> = ({ 
                         <div className="space-y-1.5 font-mono text-[9.5px] text-zinc-500">
                           <div className="flex justify-between">
                             <span>Footprint:</span>
-                            <span className="font-bold text-zinc-750 dark:text-zinc-300">
+                            <span className="font-bold text-zinc-800 dark:text-zinc-300">
                               {isSelected && skusDelisted > 0 ? `${baseSKUs - skusDelisted} SKUs` : `${row.skuCount} SKUs`}
                             </span>
                           </div>
                           <div className="flex justify-between">
                             <span>Net Sales:</span>
-                            <span className="font-bold text-zinc-750 dark:text-zinc-300">${row.netSalesM.toFixed(1)}M</span>
+                            <span className="font-bold text-zinc-800 dark:text-zinc-300">${row.netSalesM.toFixed(1)}M</span>
                           </div>
                           <div className="flex justify-between border-t border-black/5 dark:border-white/5 pt-1.5 mt-1">
                             <span className="font-sans font-bold">Gross Margin:</span>
@@ -323,12 +323,12 @@ export const RegionalAssortmentGrid: React.FC<RegionalAssortmentGridProps> = ({ 
                           </div>
                         </div>
 
-                        <div className="mt-2 border-t border-black/5 dark:border-white/5 pt-1.5 flex justify-between items-center text-[7.5px] font-bold text-zinc-555 dark:text-zinc-450 font-mono">
+                        <div className="mt-2 border-t border-black/5 dark:border-white/5 pt-1.5 flex justify-between items-center text-[7.5px] font-bold text-zinc-600 dark:text-zinc-500 font-mono">
                           <span>Comp Index: {row.country === 'Netherlands' ? '104.2' : row.country === 'Austria' ? '98.5' : '100.8'}</span>
                           {onStageAction ? (
                             <button
                               onClick={(e) => handleStagePricing(row.country, e)}
-                              className="text-[7px] bg-purple-600 hover:bg-purple-755 text-white px-2 py-0.5 rounded uppercase font-extrabold tracking-wider cursor-pointer border-none outline-none z-20"
+                              className="text-[7px] bg-purple-600 hover:bg-purple-800 text-white px-2 py-0.5 rounded uppercase font-extrabold tracking-wider cursor-pointer border-none outline-none z-20"
                             >
                               Stage Price Opt
                             </button>

@@ -175,7 +175,7 @@ export const KPICard: React.FC<KPICardProps> = ({ kpi, role, onAuditClick }) => 
             {kpi.label}
             {isHighlighted && <Zap size={8} className="text-acies-yellow fill-acies-yellow shrink-0" />}
           </p>
-          <h3 className="text-xl font-display font-extrabold text-zinc-850 dark:text-zinc-150 mt-0.5">
+          <h3 className="text-xl font-display font-extrabold text-zinc-900 dark:text-zinc-200 mt-0.5">
             {kpi.value}
           </h3>
         </div>
@@ -208,7 +208,7 @@ export const KPICard: React.FC<KPICardProps> = ({ kpi, role, onAuditClick }) => 
               )}
             </div>
           </div>
-          <p className="text-[10px] font-bold font-mono text-zinc-550 dark:text-zinc-350 leading-none mt-0.5">
+          <p className="text-[10px] font-bold font-mono text-zinc-600 dark:text-zinc-400 leading-none mt-0.5">
             {config.target}
           </p>
         </div>

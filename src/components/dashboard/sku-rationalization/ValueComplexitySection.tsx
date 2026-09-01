@@ -49,7 +49,7 @@ export const ValueComplexitySection: React.FC<ValueComplexitySectionProps> = ({
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
             <div>
               <h4 className="text-xs font-bold uppercase tracking-widest text-acies-gray dark:text-white">Commercial Value & Complexity Segment Analysis</h4>
-              <p className="text-[9px] text-zinc-555 font-bold uppercase tracking-wider mt-0.5">Horizontal Grouped Bars · Comparison of segment averages</p>
+              <p className="text-[9px] text-zinc-600 font-bold uppercase tracking-wider mt-0.5">Horizontal Grouped Bars · Comparison of segment averages</p>
             </div>
             {/* Custom Legend */}
             <div className="flex items-center gap-4 text-[9px] font-extrabold uppercase tracking-wider">
@@ -115,7 +115,7 @@ export const ValueComplexitySection: React.FC<ValueComplexitySectionProps> = ({
           <div>
             <div className="mb-4">
               <h4 className="text-xs font-bold uppercase tracking-widest text-acies-gray dark:text-white">Discontinuation & Reposition priorities</h4>
-              <p className="text-[9px] text-zinc-555 font-bold uppercase tracking-wider mt-0.5">Automated queue ranked by AI complexity margin drag</p>
+              <p className="text-[9px] text-zinc-600 font-bold uppercase tracking-wider mt-0.5">Automated queue ranked by AI complexity margin drag</p>
             </div>
 
             <div className="divide-y divide-black/[0.04] dark:divide-white/[0.04] max-h-56 overflow-y-auto pr-1">
@@ -139,7 +139,7 @@ export const ValueComplexitySection: React.FC<ValueComplexitySectionProps> = ({
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="text-acies-gray dark:text-white truncate font-bold text-[10px]">{sku.name}</div>
-                      <div className="text-[7.5px] text-zinc-450 font-bold uppercase tracking-wider">
+                      <div className="text-[7.5px] text-zinc-500 font-bold uppercase tracking-wider">
                         Complexity {sku.cx.toFixed(2)} · Value {sku.val.toFixed(2)} · ${sku.rev}M
                       </div>
                     </div>
@@ -152,7 +152,7 @@ export const ValueComplexitySection: React.FC<ValueComplexitySectionProps> = ({
                           e.stopPropagation();
                           setSelectedSkuDetails(sku);
                         }}
-                        className="w-5 h-5 rounded hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center text-zinc-450 hover:text-[#8b5cf6] transition-all cursor-pointer border-none bg-transparent outline-none shrink-0"
+                        className="w-5 h-5 rounded hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center text-zinc-500 hover:text-[#8b5cf6] transition-all cursor-pointer border-none bg-transparent outline-none shrink-0"
                         title="Open SKU Intelligence Card"
                       >
                         <Sparkles size={10} />

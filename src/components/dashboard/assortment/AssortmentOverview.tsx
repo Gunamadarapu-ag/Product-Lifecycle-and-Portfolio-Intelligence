@@ -165,7 +165,7 @@ export const AssortmentOverview: React.FC<AssortmentOverviewProps> = ({ role, is
       {/* Sub-tab Selection Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 border-b border-black/10 dark:border-white/10 pb-4">
         <div>
-          <h2 className="text-xs uppercase font-extrabold tracking-widest text-zinc-800 dark:text-zinc-150">Assortment Decision Center</h2>
+          <h2 className="text-xs uppercase font-extrabold tracking-widest text-zinc-800 dark:text-zinc-200">Assortment Decision Center</h2>
           <p className="text-[9px] text-zinc-500 font-medium mt-0.5">Model catalog alterations, evaluate launch expansion variants, and commit local reallocations.</p>
         </div>
         
@@ -175,7 +175,7 @@ export const AssortmentOverview: React.FC<AssortmentOverviewProps> = ({ role, is
             className={`px-3 py-1.5 text-[8.5px] font-extrabold uppercase tracking-wider rounded transition-all cursor-pointer border-none outline-none ${
               subTab === 'comprehensive'
                 ? 'bg-white dark:bg-zinc-800 text-acies-yellow shadow-sm shadow-black/5'
-                : 'text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-200 bg-transparent'
+                : 'text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 bg-transparent'
             }`}
           >
             Comprehensive View
@@ -185,7 +185,7 @@ export const AssortmentOverview: React.FC<AssortmentOverviewProps> = ({ role, is
             className={`px-3 py-1.5 text-[8.5px] font-extrabold uppercase tracking-wider rounded transition-all cursor-pointer border-none outline-none ${
               subTab === 'performance'
                 ? 'bg-white dark:bg-zinc-800 text-acies-yellow shadow-sm shadow-black/5'
-                : 'text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-200 bg-transparent'
+                : 'text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 bg-transparent'
             }`}
           >
             Regional & Channel Performance
@@ -195,7 +195,7 @@ export const AssortmentOverview: React.FC<AssortmentOverviewProps> = ({ role, is
             className={`px-3 py-1.5 text-[8.5px] font-extrabold uppercase tracking-wider rounded transition-all cursor-pointer border-none outline-none ${
               subTab === 'mix_clustering'
                 ? 'bg-white dark:bg-zinc-800 text-acies-yellow shadow-sm shadow-black/5'
-                : 'text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-200 bg-transparent'
+                : 'text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 bg-transparent'
             }`}
           >
             Product Mix & Clustering
@@ -205,7 +205,7 @@ export const AssortmentOverview: React.FC<AssortmentOverviewProps> = ({ role, is
             className={`px-3 py-1.5 text-[8.5px] font-extrabold uppercase tracking-wider rounded transition-all cursor-pointer border-none outline-none ${
               subTab === 'guided'
                 ? 'bg-white dark:bg-zinc-800 text-acies-yellow shadow-sm shadow-black/5'
-                : 'text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-200 bg-transparent'
+                : 'text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 bg-transparent'
             }`}
           >
             Decision Flow (Wizard)
@@ -353,7 +353,7 @@ export const AssortmentOverview: React.FC<AssortmentOverviewProps> = ({ role, is
               {stagedActions.length === 0 ? (
                 <div className="p-12 border border-dashed border-black/10 dark:border-white/10 rounded-sm text-center bg-black/[0.01] dark:bg-white/[0.01]">
                   <Briefcase size={32} className="mx-auto text-zinc-400 mb-4 animate-pulse" />
-                  <h4 className="text-xs uppercase font-extrabold tracking-widest text-zinc-655 dark:text-zinc-300">No Staged Actions in Ledger</h4>
+                  <h4 className="text-xs uppercase font-extrabold tracking-widest text-zinc-700 dark:text-zinc-300">No Staged Actions in Ledger</h4>
                   <p className="text-[10px] text-zinc-500 mt-2 max-w-sm mx-auto leading-relaxed">
                     Staged decisions are currently empty. Please go back to Step 1, 2, or 3 to stage category realignments, delistings, price updates, or SKU launches.
                   </p>
@@ -387,7 +387,7 @@ export const AssortmentOverview: React.FC<AssortmentOverviewProps> = ({ role, is
                           <p className="text-[9px] text-zinc-500 leading-normal font-medium">{action.details}</p>
                           
                           {/* Item metrics */}
-                          <div className="flex gap-3 text-[8px] font-bold text-zinc-450 pt-1 font-mono">
+                          <div className="flex gap-3 text-[8px] font-bold text-zinc-500 pt-1 font-mono">
                             <span className={action.revenueImpact >= 0 ? 'text-emerald-500' : 'text-rose-500'}>
                               Rev: {action.revenueImpact >= 0 ? '+' : ''}${action.revenueImpact.toFixed(2)}M
                             </span>
@@ -421,27 +421,27 @@ export const AssortmentOverview: React.FC<AssortmentOverviewProps> = ({ role, is
                   <div className="bg-black/[0.01] dark:bg-white/[0.01] p-4 border border-black/5 dark:border-white/5 rounded">
                     <span className="text-[8.5px] uppercase font-extrabold tracking-widest text-zinc-400 block mb-2.5">Staged Net Plan Totals:</span>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-[10px] font-bold">
-                      <div className="p-3 border border-black/5 dark:border-white/5 rounded bg-white dark:bg-zinc-850 flex flex-col justify-between">
-                        <span className="text-zinc-550 text-[8px] uppercase tracking-wider block mb-1">Net Sales Impact</span>
+                      <div className="p-3 border border-black/5 dark:border-white/5 rounded bg-white dark:bg-zinc-900 flex flex-col justify-between">
+                        <span className="text-zinc-600 text-[8px] uppercase tracking-wider block mb-1">Net Sales Impact</span>
                         <span className={totalRevenue >= 0 ? 'text-emerald-500 text-xs' : 'text-rose-500 text-xs'}>
                           {totalRevenue >= 0 ? '+' : ''}${totalRevenue.toFixed(2)} M
                         </span>
                       </div>
                       
-                      <div className="p-3 border border-black/5 dark:border-white/5 rounded bg-white dark:bg-zinc-850 flex flex-col justify-between">
-                        <span className="text-zinc-555 text-[8px] uppercase tracking-wider block mb-1">Net Profit Lift</span>
+                      <div className="p-3 border border-black/5 dark:border-white/5 rounded bg-white dark:bg-zinc-900 flex flex-col justify-between">
+                        <span className="text-zinc-600 text-[8px] uppercase tracking-wider block mb-1">Net Profit Lift</span>
                         <span className={totalMargin >= 0 ? 'text-emerald-500 text-xs font-extrabold' : 'text-rose-500 text-xs'}>
                           {totalMargin >= 0 ? '+' : ''}${totalMargin.toFixed(2)} M
                         </span>
                       </div>
 
-                      <div className="p-3 border border-black/5 dark:border-white/5 rounded bg-white dark:bg-zinc-850 flex flex-col justify-between">
-                        <span className="text-zinc-555 text-[8px] uppercase tracking-wider block mb-1">Complexity Saved</span>
+                      <div className="p-3 border border-black/5 dark:border-white/5 rounded bg-white dark:bg-zinc-900 flex flex-col justify-between">
+                        <span className="text-zinc-600 text-[8px] uppercase tracking-wider block mb-1">Complexity Saved</span>
                         <span className="text-blue-500 text-xs">-{totalComplexity.toFixed(1)} Points</span>
                       </div>
 
-                      <div className="p-3 border border-black/5 dark:border-white/5 rounded bg-white dark:bg-zinc-850 flex flex-col justify-between">
-                        <span className="text-zinc-555 text-[8px] uppercase tracking-wider block mb-1">Warehouse Space</span>
+                      <div className="p-3 border border-black/5 dark:border-white/5 rounded bg-white dark:bg-zinc-900 flex flex-col justify-between">
+                        <span className="text-zinc-600 text-[8px] uppercase tracking-wider block mb-1">Warehouse Space</span>
                         <span className="text-purple-500 text-xs">+{totalSpace.toFixed(0)} Pallets</span>
                       </div>
                     </div>
@@ -453,7 +453,7 @@ export const AssortmentOverview: React.FC<AssortmentOverviewProps> = ({ role, is
                       <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center mb-3 border border-emerald-500/20">
                         <CheckCircle size={24} className="text-emerald-500 animate-pulse" />
                       </div>
-                      <h4 className="text-xs uppercase font-extrabold tracking-widest text-zinc-800 dark:text-zinc-150 mb-1">
+                      <h4 className="text-xs uppercase font-extrabold tracking-widest text-zinc-800 dark:text-zinc-200 mb-1">
                         Category Plan Dispatched!
                       </h4>
                       <p className="text-[9px] text-zinc-500 max-w-sm">
@@ -482,7 +482,7 @@ export const AssortmentOverview: React.FC<AssortmentOverviewProps> = ({ role, is
               onClick={() => setCurrentStep(prev => Math.max(1, prev - 1))}
               className={`flex items-center gap-1.5 px-4 py-2 text-[9px] font-extrabold uppercase tracking-wider rounded-sm border transition-all ${
                 currentStep === 1
-                  ? 'bg-zinc-100 text-zinc-400 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-650 dark:border-zinc-700 cursor-not-allowed'
+                  ? 'bg-zinc-100 text-zinc-400 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-700 dark:border-zinc-700 cursor-not-allowed'
                   : 'bg-white dark:bg-zinc-800 border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 text-zinc-700 dark:text-zinc-300 cursor-pointer active:scale-95'
               }`}
             >

@@ -460,14 +460,14 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
         breakdown: [
           { label: 'Critical', val: 5, pct: 29, color: 'bg-red-500', text: 'text-red-500' },
           { label: 'High', val: 7, pct: 41, color: 'bg-orange-500', text: 'text-orange-500' },
-          { label: 'Medium', val: 3, pct: 18, color: 'bg-yellow-400', text: 'text-yellow-450' },
+          { label: 'Medium', val: 3, pct: 18, color: 'bg-yellow-400', text: 'text-yellow-500' },
           { label: 'Low', val: 2, pct: 12, color: 'bg-emerald-500', text: 'text-emerald-400' },
         ],
       },
       categories: [
         { label: 'Margin Erosion', val: 6, pct: 35, bg: 'bg-red-500' },
         { label: 'Demand Risk', val: 4, pct: 24, bg: 'bg-orange-500' },
-        { label: 'COGS Inflation', val: 3, pct: 18, bg: 'bg-yellow-450' },
+        { label: 'COGS Inflation', val: 3, pct: 18, bg: 'bg-yellow-500' },
         { label: 'Price & Mix', val: 2, pct: 12, bg: 'bg-emerald-500' },
         { label: 'Policy Drift', val: 2, pct: 12, bg: 'bg-blue-500' },
       ],
@@ -475,7 +475,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
         { name: 'Declining margin in 15 SKUs', desc: 'Margin erosion detected for SKUs in Energy Drink category', sev: 'Critical', sevColor: 'text-red-400 border-red-500/20 bg-red-500/5', impact: '$1.2M', time: '5 min ago', status: 'Open', statusColor: 'text-red-400' },
         { name: 'High complexity risk for 8 SKUs', desc: 'SKU sales volume below threshold limits', sev: 'High', sevColor: 'text-orange-400 border-orange-500/20 bg-orange-500/5', impact: '$780K', time: '15 min ago', status: 'Open', statusColor: 'text-red-400' },
         { name: 'Demand drop in 3 regions', desc: 'Co2 demand decline > 20%', sev: 'High', sevColor: 'text-orange-400 border-orange-500/20 bg-orange-500/5', impact: '$560K', time: '30 min ago', status: 'Open', statusColor: 'text-red-400' },
-        { name: 'Stockout risk in 2 SKUs', desc: 'Projected stockout in next 14 days', sev: 'Medium', sevColor: 'text-yellow-450 border-yellow-500/20 bg-yellow-500/5', impact: '$320K', time: '45 min ago', status: 'Investigating', statusColor: 'text-sky-400' },
+        { name: 'Stockout risk in 2 SKUs', desc: 'Projected stockout in next 14 days', sev: 'Medium', sevColor: 'text-yellow-500 border-yellow-500/20 bg-yellow-500/5', impact: '$320K', time: '45 min ago', status: 'Investigating', statusColor: 'text-sky-400' },
         { name: 'Data quality issue in sales data', desc: 'Missing values in key fields', sev: 'Low', sevColor: 'text-emerald-400 border-emerald-500/20 bg-emerald-500/5', impact: '-', time: '1 hour ago', status: 'Resolved', statusColor: 'text-emerald-400' },
       ],
       impacts: [
@@ -486,8 +486,8 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
       recs: [
         { title: 'Optimize Pricing for 15 SKUs', tag: 'High Impact', tagColor: 'text-red-400 border-red-500/20 bg-red-500/5', desc: 'Increase price by 3-5% to recover margin.', val: '$1.2M', conf: 92 },
         { title: 'Rationalize 8 Low Performing SKUs', tag: 'High Impact', tagColor: 'text-red-400 border-red-500/20 bg-red-500/5', desc: 'Discontinue or consolidate low margin SKUs.', val: '$780K', conf: 88 },
-        { title: 'Consolidate SKUs in 3 Categories', tag: 'Medium Impact', tagColor: 'text-amber-450 border-amber-500/20 bg-amber-500/5', desc: 'Discontinue lowest 10% performance SKUs.', val: '$430K', conf: 75 },
-        { title: 'Improve Forecasting Accuracy', tag: 'Medium Impact', tagColor: 'text-amber-455 border-amber-500/20 bg-amber-500/5', desc: 'Enhance demand forecasting for at-risk regions.', val: '$320K', conf: 70 },
+        { title: 'Consolidate SKUs in 3 Categories', tag: 'Medium Impact', tagColor: 'text-amber-500 border-amber-500/20 bg-amber-500/5', desc: 'Discontinue lowest 10% performance SKUs.', val: '$430K', conf: 75 },
+        { title: 'Improve Forecasting Accuracy', tag: 'Medium Impact', tagColor: 'text-amber-500 border-amber-500/20 bg-amber-500/5', desc: 'Enhance demand forecasting for at-risk regions.', val: '$320K', conf: 70 },
       ],
     },
     root: {
@@ -505,14 +505,14 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
         breakdown: [
           { label: 'Critical', val: 8, pct: 33, color: 'bg-red-500', text: 'text-red-500' },
           { label: 'High', val: 10, pct: 42, color: 'bg-orange-500', text: 'text-orange-500' },
-          { label: 'Medium', val: 4, pct: 17, color: 'bg-yellow-400', text: 'text-yellow-450' },
+          { label: 'Medium', val: 4, pct: 17, color: 'bg-yellow-400', text: 'text-yellow-500' },
           { label: 'Low', val: 2, pct: 8, color: 'bg-emerald-500', text: 'text-emerald-400' },
         ],
       },
       categories: [
         { label: 'Material Cost inflation', val: 10, pct: 42, bg: 'bg-red-500' },
         { label: 'Ingredient Cost Spikes', val: 6, pct: 25, bg: 'bg-orange-500' },
-        { label: 'Promotional Overspend', val: 4, pct: 17, bg: 'bg-yellow-450' },
+        { label: 'Promotional Overspend', val: 4, pct: 17, bg: 'bg-yellow-500' },
         { label: 'Labor shortage', val: 2, pct: 8, bg: 'bg-emerald-500' },
         { label: 'Packaging fees', val: 2, pct: 8, bg: 'bg-blue-500' },
       ],
@@ -528,7 +528,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
       ],
       recs: [
         { title: 'Source alternate cap supplier', tag: 'High Impact', tagColor: 'text-red-400 border-red-500/20 bg-red-500/5', desc: 'Onboard pre-approved vendor B to hedge rates.', val: '$450K', conf: 90 },
-        { title: 'Re-negotiate raw pricing contracts', tag: 'Medium Impact', tagColor: 'text-amber-450 border-amber-500/20 bg-amber-500/5', desc: 'Contract bulk raw materials to lock in Q4 cost.', val: '$800K', conf: 82 },
+        { title: 'Re-negotiate raw pricing contracts', tag: 'Medium Impact', tagColor: 'text-amber-500 border-amber-500/20 bg-amber-500/5', desc: 'Contract bulk raw materials to lock in Q4 cost.', val: '$800K', conf: 82 },
       ],
     },
     impact: {
@@ -546,14 +546,14 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
         breakdown: [
           { label: 'Critical', val: 4, pct: 33, color: 'bg-red-500', text: 'text-red-500' },
           { label: 'High', val: 5, pct: 42, color: 'bg-orange-500', text: 'text-orange-500' },
-          { label: 'Medium', val: 2, pct: 17, color: 'bg-yellow-400', text: 'text-yellow-450' },
+          { label: 'Medium', val: 2, pct: 17, color: 'bg-yellow-400', text: 'text-yellow-500' },
           { label: 'Low', val: 1, pct: 8, color: 'bg-emerald-500', text: 'text-emerald-400' },
         ],
       },
       categories: [
         { label: 'Margin Erosion', val: 5, pct: 42, bg: 'bg-red-500' },
         { label: 'Demand Risk', val: 3, pct: 25, bg: 'bg-orange-500' },
-        { label: 'COGS Variance', val: 2, pct: 17, bg: 'bg-yellow-450' },
+        { label: 'COGS Variance', val: 2, pct: 17, bg: 'bg-yellow-500' },
         { label: 'Price & Mix', val: 1, pct: 8, bg: 'bg-emerald-500' },
         { label: 'Policy Drift', val: 1, pct: 8, bg: 'bg-blue-500' },
       ],
@@ -568,7 +568,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
       ],
       recs: [
         { title: 'Re-align pricing tier levels', tag: 'High Impact', tagColor: 'text-red-400 border-red-500/20 bg-red-500/5', desc: 'Deploy dynamic price adjustment schedules.', val: '$1.2M', conf: 92 },
-        { title: 'Consolidate ingredient orders', tag: 'Medium Impact', tagColor: 'text-amber-450 border-amber-500/20 bg-amber-500/5', desc: 'Utilize bulk contracts to bypass rate surges.', val: '$180K', conf: 76 },
+        { title: 'Consolidate ingredient orders', tag: 'Medium Impact', tagColor: 'text-amber-500 border-amber-500/20 bg-amber-500/5', desc: 'Utilize bulk contracts to bypass rate surges.', val: '$180K', conf: 76 },
       ],
     },
     scenario: {
@@ -586,14 +586,14 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
         breakdown: [
           { label: 'Critical', val: 2, pct: 25, color: 'bg-red-500', text: 'text-red-500' },
           { label: 'High', val: 3, pct: 37, color: 'bg-orange-500', text: 'text-orange-500' },
-          { label: 'Medium', val: 2, pct: 25, color: 'bg-yellow-400', text: 'text-yellow-450' },
+          { label: 'Medium', val: 2, pct: 25, color: 'bg-yellow-400', text: 'text-yellow-500' },
           { label: 'Low', val: 1, pct: 13, color: 'bg-emerald-500', text: 'text-emerald-400' },
         ],
       },
       categories: [
         { label: 'Price Elasticity Shifts', val: 3, pct: 37, bg: 'bg-red-500' },
         { label: 'Ingredient Rate Hikes', val: 2, pct: 25, bg: 'bg-orange-500' },
-        { label: 'Promotion Swings', val: 2, pct: 25, bg: 'bg-yellow-450' },
+        { label: 'Promotion Swings', val: 2, pct: 25, bg: 'bg-yellow-500' },
         { label: 'Packaging Cost Hikes', val: 1, pct: 13, bg: 'bg-emerald-500' },
       ],
       issues: [
@@ -607,7 +607,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
       ],
       recs: [
         { title: 'Proceed with 4% price increase', tag: 'High Impact', tagColor: 'text-emerald-400 border-emerald-500/20 bg-emerald-500/5', desc: 'Increases revenue without significant volume impact.', val: '$1.2M', conf: 92 },
-        { title: 'Hedge container purchase rates', tag: 'Medium Impact', tagColor: 'text-amber-450 border-amber-500/20 bg-amber-500/5', desc: 'Sign long-term glass container supply contracts.', val: '$450K', conf: 85 },
+        { title: 'Hedge container purchase rates', tag: 'Medium Impact', tagColor: 'text-amber-500 border-amber-500/20 bg-amber-500/5', desc: 'Sign long-term glass container supply contracts.', val: '$450K', conf: 85 },
       ],
     },
     alerts: {
@@ -625,14 +625,14 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
         breakdown: [
           { label: 'Critical', val: 5, pct: 29, color: 'bg-red-500', text: 'text-red-500' },
           { label: 'High', val: 7, pct: 41, color: 'bg-orange-500', text: 'text-orange-500' },
-          { label: 'Medium', val: 3, pct: 18, color: 'bg-yellow-400', text: 'text-yellow-450' },
+          { label: 'Medium', val: 3, pct: 18, color: 'bg-yellow-400', text: 'text-yellow-500' },
           { label: 'Low', val: 2, pct: 12, color: 'bg-emerald-500', text: 'text-emerald-400' },
         ],
       },
       categories: [
         { label: 'Margin Variance', val: 6, pct: 35, bg: 'bg-red-500' },
         { label: 'Complexity Outliers', val: 4, pct: 24, bg: 'bg-orange-500' },
-        { label: 'Demand Drops', val: 3, pct: 18, bg: 'bg-yellow-450' },
+        { label: 'Demand Drops', val: 3, pct: 18, bg: 'bg-yellow-500' },
         { label: 'Price deviations', val: 2, pct: 12, bg: 'bg-emerald-500' },
         { label: 'Reasoning Ambiguity', val: 2, pct: 12, bg: 'bg-blue-500' },
       ],
@@ -665,14 +665,14 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
         breakdown: [
           { label: 'Critical', val: 8, pct: 28, color: 'bg-red-500', text: 'text-red-500' },
           { label: 'High', val: 12, pct: 43, color: 'bg-orange-500', text: 'text-orange-500' },
-          { label: 'Medium', val: 5, pct: 18, color: 'bg-yellow-400', text: 'text-yellow-450' },
+          { label: 'Medium', val: 5, pct: 18, color: 'bg-yellow-400', text: 'text-yellow-500' },
           { label: 'Low', val: 3, pct: 11, color: 'bg-emerald-500', text: 'text-emerald-400' },
         ],
       },
       categories: [
         { label: 'Price Optimizations', val: 12, pct: 43, bg: 'bg-red-500' },
         { label: 'SKU rationalizations', val: 8, pct: 28, bg: 'bg-orange-500' },
-        { label: 'Complexity Promos', val: 5, pct: 18, bg: 'bg-yellow-450' },
+        { label: 'Complexity Promos', val: 5, pct: 18, bg: 'bg-yellow-500' },
         { label: 'Forecasting tuning', val: 3, pct: 11, bg: 'bg-emerald-500' },
       ],
       issues: [
@@ -686,7 +686,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
       ],
       recs: [
         { title: 'Confirm overlap pricing change', tag: 'High Impact', tagColor: 'text-red-400 border-red-500/20 bg-red-500/5', desc: 'Submit approved pricing variables to ERP database.', val: '$1.2M', conf: 92 },
-        { title: 'Archive duplicate products', tag: 'Medium Impact', tagColor: 'text-amber-450 border-amber-500/20 bg-amber-500/5', desc: 'Consolidate 3 listings to clean category B.', val: '$220K', conf: 84 },
+        { title: 'Archive duplicate products', tag: 'Medium Impact', tagColor: 'text-amber-500 border-amber-500/20 bg-amber-500/5', desc: 'Consolidate 3 listings to clean category B.', val: '$220K', conf: 84 },
       ],
     },
   };
@@ -749,14 +749,14 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
 
           .light-mode .text-white { color: #111827 !important; }
           .light-mode .text-zinc-200 { color: #1f2937 !important; }
-          .light-mode .text-zinc-350 { color: #4b5563 !important; }
           .light-mode .text-zinc-400 { color: #4b5563 !important; }
-          .light-mode .text-zinc-450 { color: #4b5563 !important; }
-          .light-mode .text-zinc-455 { color: #4b5563 !important; }
+          .light-mode .text-zinc-400 { color: #4b5563 !important; }
+          .light-mode .text-zinc-500 { color: #4b5563 !important; }
+          .light-mode .text-zinc-500 { color: #4b5563 !important; }
           .light-mode .text-zinc-500 { color: #6b7280 !important; }
-          .light-mode .text-zinc-550 { color: #6b7280 !important; }
           .light-mode .text-zinc-600 { color: #6b7280 !important; }
-          .light-mode .text-zinc-650 { color: #6b7280 !important; }
+          .light-mode .text-zinc-600 { color: #6b7280 !important; }
+          .light-mode .text-zinc-700 { color: #6b7280 !important; }
           .light-mode .text-zinc-700 { color: #374151 !important; }
           .light-mode .text-zinc-800 { color: #9ca3af !important; }
           .light-mode .text-zinc-900 { color: #111827 !important; }
@@ -772,7 +772,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
           .light-mode .hover\\:text-zinc-200:hover { color: #1f2937 !important; }
 
           .light-mode .border-zinc-700 { border-color: #d1d5db !important; }
-          .light-mode .border-zinc-750 { border-color: #e5e7eb !important; }
+          .light-mode .border-zinc-800 { border-color: #e5e7eb !important; }
           .light-mode .border-zinc-800 { border-color: #e5e7eb !important; }
           .light-mode .border-zinc-800\\/40 { border-color: rgba(229, 231, 235, 0.4) !important; }
           .light-mode .border-zinc-800\\/80 { border-color: rgba(229, 231, 235, 0.8) !important; }
@@ -792,7 +792,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
 
           .light-mode .hover\\:border-purple-500\\/35:hover { border-color: rgba(168, 85, 247, 0.5) !important; }
           .light-mode .hover\\:border-zinc-700:hover { border-color: #9ca3af !important; }
-          .light-mode .hover\\:border-zinc-750:hover { border-color: #d1d5db !important; }
+          .light-mode .hover\\:border-zinc-800:hover { border-color: #d1d5db !important; }
 
           .light-mode .divide-zinc-900\\/40 > * + * { border-color: rgba(229, 231, 235, 0.5) !important; }
         `}</style>
@@ -1229,7 +1229,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                       <button
                         type="button"
                         onClick={() => setActiveStepIndex(null)}
-                        className="p-1 rounded cursor-pointer border-none bg-transparent outline-none transition-colors hover:bg-zinc-900 text-zinc-650 hover:text-white"
+                        className="p-1 rounded cursor-pointer border-none bg-transparent outline-none transition-colors hover:bg-zinc-900 text-zinc-700 hover:text-white"
                       >
                         <X size={14} />
                       </button>
@@ -1481,7 +1481,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                     {/* Ingestion Footer actions */}
                     <div className="flex items-center justify-between border-t border-zinc-900/60 pt-3 mt-0.5 text-[8.5px]">
                       <div className="flex items-center gap-1.5 text-zinc-500 font-semibold font-mono">
-                        <svg className="w-3.5 h-3.5 text-zinc-650 animate-spin-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <svg className="w-3.5 h-3.5 text-zinc-700 animate-spin-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
                         </svg>
                         <span>Auto Refresh: <span className="text-emerald-400 font-extrabold">ON</span></span>
@@ -1495,7 +1495,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
 
               {/* Step 2 Deep Dive: High Fidelity Analysis & Modeling Swarm Selector & Dashboard */}
               {activeStepIndex === 1 && (
-                <div className="flex flex-col lg:flex-row gap-4 w-full mt-1 animate-fade-in text-zinc-350">
+                <div className="flex flex-col lg:flex-row gap-4 w-full mt-1 animate-fade-in text-zinc-400">
                   
                   {/* Left Column (Compute tab selector Menu) */}
                   <div className="w-full lg:w-[250px] flex-shrink-0 border border-purple-500/10 rounded-2xl p-4.5 bg-[#0a0a0f] flex flex-col justify-between gap-5">
@@ -1642,7 +1642,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                     {/* Bottom Status bar */}
                     <div className="border-t border-zinc-900 pt-3 flex flex-col gap-2">
                       <div className="flex items-center justify-between text-[9px]">
-                        <div className="flex items-center gap-1.5 text-zinc-450">
+                        <div className="flex items-center gap-1.5 text-zinc-500">
                           <svg className="w-3 h-3 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <circle cx="12" cy="12" r="10" />
                             <path d="m9 12 2 2 4-4" />
@@ -1689,7 +1689,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                         <button
                           type="button"
                           onClick={() => setActiveStepIndex(null)}
-                          className="p-1 rounded cursor-pointer border-none bg-transparent outline-none transition-colors hover:bg-zinc-900 text-zinc-650 hover:text-white"
+                          className="p-1 rounded cursor-pointer border-none bg-transparent outline-none transition-colors hover:bg-zinc-900 text-zinc-700 hover:text-white"
                         >
                           <X size={14} />
                         </button>
@@ -1792,7 +1792,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                                 </div>
                                 <div className="flex flex-col gap-0.5 px-1.5">
                                   <span className="text-[9.5px] font-bold text-white leading-tight">{step.step}</span>
-                                  <span className="text-[7.5px] text-zinc-550 leading-tight font-medium mt-0.5">{step.desc}</span>
+                                  <span className="text-[7.5px] text-zinc-600 leading-tight font-medium mt-0.5">{step.desc}</span>
                                 </div>
                                 <span className="bg-purple-950/40 border border-purple-500/20 text-purple-300 text-[7px] font-black uppercase px-2 py-0.5 rounded-full mb-1">
                                   {step.badge}
@@ -1916,7 +1916,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                             <circle cx="300" cy="10" r="3" fill="#a855f7" stroke="none" />
                             <circle cx="200" cy="35" r="3" fill="#a855f7" stroke="none" />
                           </svg>
-                          <div className="flex justify-between text-[7px] text-zinc-650 font-bold tracking-wide mt-1">
+                          <div className="flex justify-between text-[7px] text-zinc-700 font-bold tracking-wide mt-1">
                             <span>May 8</span>
                             <span>May 9</span>
                             <span>May 10</span>
@@ -1931,7 +1931,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                         <div className="grid grid-cols-4 gap-1 pt-1.5 text-center">
                           {currentCompute.kpis.map((kpi, idx) => (
                             <div key={idx} className="flex flex-col border-r border-zinc-900 last:border-none">
-                              <span className="text-[7.5px] text-zinc-550 font-bold truncate">{kpi.label}</span>
+                              <span className="text-[7.5px] text-zinc-600 font-bold truncate">{kpi.label}</span>
                               <span className="text-[10px] font-bold text-white mt-0.5">{kpi.val}</span>
                               <span className="text-[7px] text-emerald-400 font-extrabold mt-0.5">{kpi.change}</span>
                             </div>
@@ -2050,7 +2050,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
 
               {/* Step 3 Deep Dive: High Fidelity Remediation & Action Swarm Selector & Dashboard */}
               {activeStepIndex === 2 && (
-                <div className="flex flex-col lg:flex-row gap-4 w-full mt-1 animate-fade-in text-zinc-350">
+                <div className="flex flex-col lg:flex-row gap-4 w-full mt-1 animate-fade-in text-zinc-400">
                   
                   {/* Left Column (Diagnostics Selector Menu) */}
                   <div className="w-full lg:w-[250px] flex-shrink-0 border border-purple-500/10 rounded-2xl p-4.5 bg-[#0a0a0f] flex flex-col justify-between gap-5">
@@ -2218,7 +2218,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                     {/* Bottom Status bar */}
                     <div className="border-t border-zinc-900 pt-3 flex flex-col gap-2">
                       <div className="flex items-center justify-between text-[9px]">
-                        <div className="flex items-center gap-1.5 text-zinc-455">
+                        <div className="flex items-center gap-1.5 text-zinc-500">
                           <svg className="w-3 h-3 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                           </svg>
@@ -2261,7 +2261,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                         <button
                           type="button"
                           onClick={() => setActiveStepIndex(null)}
-                          className="p-1 rounded cursor-pointer border-none bg-transparent outline-none transition-colors hover:bg-zinc-900 text-zinc-650 hover:text-white"
+                          className="p-1 rounded cursor-pointer border-none bg-transparent outline-none transition-colors hover:bg-zinc-900 text-zinc-700 hover:text-white"
                         >
                           <X size={14} />
                         </button>
@@ -2273,7 +2273,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                       {currentDiagnostic.metrics.map((m, idx) => (
                         <div key={idx} className="bg-[#121217] border border-zinc-900/60 p-3 rounded-xl flex items-center justify-between">
                           <div className="flex flex-col gap-0.5">
-                            <span className="text-[8.5px] text-zinc-550 font-bold truncate max-w-[80px] leading-tight">{m.label}</span>
+                            <span className="text-[8.5px] text-zinc-600 font-bold truncate max-w-[80px] leading-tight">{m.label}</span>
                             <span className="text-[15px] font-bold text-white tracking-tight">{m.val}</span>
                             <span className={`text-[8.5px] font-extrabold ${m.label === 'Issues Detected' ? 'text-red-400' : 'text-emerald-400'}`}>{m.pct}</span>
                           </div>
@@ -2337,7 +2337,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                                 </svg>
                                 <div className="absolute text-center flex flex-col items-center justify-center">
                                   <span className="text-[11px] font-black text-white">{currentDiagnostic.severity.total}</span>
-                                  <span className="text-[5.5px] text-zinc-550 font-extrabold uppercase tracking-wide leading-none">Total Issues</span>
+                                  <span className="text-[5.5px] text-zinc-600 font-extrabold uppercase tracking-wide leading-none">Total Issues</span>
                                 </div>
                               </div>
 
@@ -2384,7 +2384,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                                 {/* Low line (Green) */}
                                 <path d="M 0 90 Q 50 80 100 85 T 200 80 T 300 70" stroke="#10b981" strokeWidth="1.2" fill="none" />
                               </svg>
-                              <div className="flex justify-between text-[7px] text-zinc-650 font-bold tracking-wide mt-1">
+                              <div className="flex justify-between text-[7px] text-zinc-700 font-bold tracking-wide mt-1">
                                 <span>May 8</span>
                                 <span>May 9</span>
                                 <span>May 10</span>
@@ -2423,7 +2423,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                           <div className="lg:col-span-1 bg-[#121217] border border-zinc-900/60 p-4 rounded-xl flex flex-col justify-between gap-3 min-h-[220px]">
                             <div className="flex flex-col pb-0.5">
                               <span className="text-[9.5px] font-bold text-white">Top Issues Detected</span>
-                              <span className="text-[8px] text-zinc-550 mt-0.5">Prioritized active system anomalies</span>
+                              <span className="text-[8px] text-zinc-600 mt-0.5">Prioritized active system anomalies</span>
                             </div>
 
                             <div className="border border-zinc-900 rounded-lg overflow-hidden bg-zinc-950/20">
@@ -2436,7 +2436,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                                     <th className="p-2.5">Status</th>
                                   </tr>
                                 </thead>
-                                <tbody className="divide-y divide-zinc-900/40 text-zinc-350">
+                                <tbody className="divide-y divide-zinc-900/40 text-zinc-400">
                                   {currentDiagnostic.issues.slice(0, 3).map((row, idx) => (
                                     <tr 
                                       key={idx} 
@@ -2445,7 +2445,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                                     >
                                       <td className="p-2.5 flex flex-col gap-0.5 max-w-[100px]">
                                         <span className="font-bold text-white truncate leading-tight text-[9px]">{row.name}</span>
-                                        <span className="text-[7px] text-zinc-550 font-medium truncate leading-normal">{row.desc}</span>
+                                        <span className="text-[7px] text-zinc-600 font-medium truncate leading-normal">{row.desc}</span>
                                       </td>
                                       <td className="p-2.5">
                                         <span className={`text-[6.5px] font-extrabold uppercase px-1.5 py-0.2 rounded border ${row.sevColor}`}>
@@ -2469,7 +2469,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                             <div className="flex justify-between items-center">
                               <div className="flex flex-col">
                                 <span className="text-[9.5px] font-bold text-white uppercase tracking-wider font-mono">Root Cause Snapshot</span>
-                                <span className="text-[8px] text-zinc-550 mt-0.5">Click for deep-dive reasoning trace</span>
+                                <span className="text-[8px] text-zinc-600 mt-0.5">Click for deep-dive reasoning trace</span>
                               </div>
                               <span className="text-[7.5px] text-purple-400 font-bold font-mono border border-purple-500/20 bg-purple-500/10 px-1.5 py-0.2 rounded opacity-0 group-hover:opacity-100 transition-opacity">
                                 VIEW DRILLDOWN
@@ -2489,7 +2489,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                                 <span className="text-red-400 font-black text-[7.5px] flex items-center gap-0.5">
                                   <span>&uarr;</span> Raw Material
                                 </span>
-                                <span className="text-[7px] text-zinc-550 font-medium">Costs (+12%)</span>
+                                <span className="text-[7px] text-zinc-600 font-medium">Costs (+12%)</span>
                               </div>
 
                               {/* Top-Right */}
@@ -2497,7 +2497,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                                 <span className="text-orange-400 font-black text-[7.5px] flex items-center gap-0.5 justify-end">
                                   <span>&darr;</span> Price Real.
                                 </span>
-                                <span className="text-[7px] text-zinc-555 font-medium">(-4%)</span>
+                                <span className="text-[7px] text-zinc-600 font-medium">(-4%)</span>
                               </div>
 
                               {/* Mid-Left */}
@@ -2505,7 +2505,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                                 <span className="text-orange-400 font-black text-[7.5px] flex items-center gap-0.5">
                                   <span>&uarr;</span> Raw Pack.
                                 </span>
-                                <span className="text-[7px] text-zinc-555 font-medium">(+8%)</span>
+                                <span className="text-[7px] text-zinc-600 font-medium">(+8%)</span>
                               </div>
 
                               {/* Mid-Right */}
@@ -2513,7 +2513,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                                 <span className="text-orange-400 font-black text-[7.5px] flex items-center gap-0.5 justify-end">
                                   <span>&darr;</span> Prod Mix
                                 </span>
-                                <span className="text-[7px] text-zinc-555 font-medium">(-5%)</span>
+                                <span className="text-[7px] text-zinc-600 font-medium">(-5%)</span>
                               </div>
 
                               {/* Bottom-Left */}
@@ -2521,7 +2521,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                                 <span className="text-red-400 font-black text-[7.5px] flex items-center gap-0.5">
                                   <span>&uarr;</span> Ingredients
                                 </span>
-                                <span className="text-[7px] text-zinc-555 font-medium">(+7%)</span>
+                                <span className="text-[7px] text-zinc-600 font-medium">(+7%)</span>
                               </div>
 
                               {/* Bottom-Right */}
@@ -2529,7 +2529,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                                 <span className="text-orange-400 font-black text-[7.5px] flex items-center gap-0.5 justify-end">
                                   <span>&uarr;</span> Promo Spend
                                 </span>
-                                <span className="text-[7px] text-zinc-555 font-medium">(-3%)</span>
+                                <span className="text-[7px] text-zinc-600 font-medium">(-3%)</span>
                               </div>
                             </div>
                           </div>
@@ -2538,7 +2538,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                           <div className="lg:col-span-1 bg-[#121217] border border-zinc-900/60 p-4 rounded-xl flex flex-col justify-between gap-3 min-h-[220px]">
                             <div className="flex flex-col">
                               <span className="text-[9.5px] font-bold text-white">Impact Assessment</span>
-                              <span className="text-[8px] text-zinc-550 mt-0.5">Anomaly Detection Agents value quantification</span>
+                              <span className="text-[8px] text-zinc-600 mt-0.5">Anomaly Detection Agents value quantification</span>
                             </div>
 
                             <div className="flex flex-col gap-2">
@@ -2602,7 +2602,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                                     </span>
                                   </div>
                                   <span className="font-bold text-[9.5px] text-white leading-tight">{rec.title}</span>
-                                  <p className="text-[7.5px] text-zinc-550 leading-relaxed font-medium mt-0.5">{rec.desc}</p>
+                                  <p className="text-[7.5px] text-zinc-600 leading-relaxed font-medium mt-0.5">{rec.desc}</p>
                                 </div>
                                 
                                 <div className="border-t border-zinc-900/80 pt-2 flex flex-col gap-1.5 mt-1 text-[8px] text-zinc-400">
@@ -2642,7 +2642,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                         <div className="lg:col-span-2 bg-[#121217] border border-zinc-900/60 p-4.5 rounded-xl flex flex-col gap-3.5">
                           <div className="flex justify-between items-center pb-1">
                             <span className="text-[10px] font-bold text-white uppercase tracking-wider font-mono">Causal Network Reasoning Map</span>
-                            <span className="text-[7.5px] text-zinc-550 italic font-mono font-bold">Click diagram to open interactive detail overlay</span>
+                            <span className="text-[7.5px] text-zinc-600 italic font-mono font-bold">Click diagram to open interactive detail overlay</span>
                           </div>
                           <div 
                             onClick={() => setIsZoomedRootCause(true)}
@@ -2773,7 +2773,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                             ].map((item, idx) => (
                               <div key={idx} className="flex flex-col gap-1 bg-[#0f0e13] border border-zinc-900 p-2.5 rounded-lg">
                                 <div className="flex justify-between text-[9px] font-bold">
-                                  <span className="text-zinc-350">{item.driver}</span>
+                                  <span className="text-zinc-400">{item.driver}</span>
                                   <div className="flex gap-2">
                                     <span className="text-white font-mono">{item.value}</span>
                                     <span className="text-zinc-500">({item.contribution})</span>
@@ -2835,7 +2835,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                               <div key={idx} className="p-2.5 bg-[#0f0e13] border border-zinc-900 rounded-lg flex justify-between items-center gap-3">
                                 <div className="flex flex-col gap-0.5 max-w-[280px]">
                                   <span className="text-[9.5px] font-bold text-white leading-tight">{item.scenario}</span>
-                                  <span className="text-[7.5px] text-zinc-550 leading-relaxed font-medium">{item.desc}</span>
+                                  <span className="text-[7.5px] text-zinc-600 leading-relaxed font-medium">{item.desc}</span>
                                 </div>
                                 <div className="text-right flex flex-col gap-1 flex-shrink-0">
                                   <span className="text-[11.5px] font-mono font-black text-white">{item.roi}</span>
@@ -2892,7 +2892,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                             </div>
                           </div>
 
-                          <div className="text-[7.5px] text-zinc-550 italic leading-relaxed text-center font-medium">
+                          <div className="text-[7.5px] text-zinc-600 italic leading-relaxed text-center font-medium">
                             Monte Carlo simulations run complete. Projected ROI converged at 99.8% stability index across 420 random price elasticity paths.
                           </div>
                         </div>
@@ -2918,19 +2918,19 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                                 <th className="p-2.5">Status</th>
                               </tr>
                             </thead>
-                            <tbody className="divide-y divide-zinc-900/40 text-zinc-350">
+                            <tbody className="divide-y divide-zinc-900/40 text-zinc-400">
                               {[
                                 { id: 'ALT-109 • 12m ago', target: 'Beverage Category (West Division - Segment A)', desc: 'Critical margin slip due to pricing realization lag', sev: 'Critical', sevColor: 'text-red-400 border-red-500/20 bg-red-500/5', leak: '$320k', assignee: 'Wholesale Pricing Agent', status: 'Triaged', statusColor: 'text-emerald-400' },
                                 { id: 'ALT-112 • 24m ago', target: 'Energy segment (National Accounts)', desc: 'Contract volume drop below limits', sev: 'High', sevColor: 'text-orange-400 border-orange-500/20 bg-orange-500/5', leak: '$120k', assignee: 'Commercial Contract Agent', status: 'Investigating', statusColor: 'text-amber-500' },
                                 { id: 'ALT-084 • 1h ago', target: 'Premium Juice Line (Line B packaging)', desc: 'Container surcharge adjustment delay', sev: 'High', sevColor: 'text-orange-400 border-orange-500/20 bg-orange-500/5', leak: '$450k', assignee: 'Procurement Sourcing Agent', status: 'Queued', statusColor: 'text-zinc-500' },
-                                { id: 'ALT-065 • 2h ago', target: 'Syrup formulation (Batch #42)', desc: 'Formulation acidity variance drift', sev: 'Medium', sevColor: 'text-amber-450 border-amber-500/20 bg-amber-500/5', leak: '$180k', assignee: 'Formulation Tuning Agent', status: 'Triaged', statusColor: 'text-emerald-400' },
+                                { id: 'ALT-065 • 2h ago', target: 'Syrup formulation (Batch #42)', desc: 'Formulation acidity variance drift', sev: 'Medium', sevColor: 'text-amber-500 border-amber-500/20 bg-amber-500/5', leak: '$180k', assignee: 'Formulation Tuning Agent', status: 'Triaged', statusColor: 'text-emerald-400' },
                                 { id: 'ALT-055 • 4h ago', target: 'Product Portfolio SKU mapping', desc: 'Low margin product mix cannibalization', sev: 'Critical', sevColor: 'text-red-400 border-red-500/20 bg-red-500/5', leak: '$510k', assignee: 'Portfolio Audit Agent', status: 'Investigating', statusColor: 'text-amber-500' },
-                                { id: 'ALT-022 • 8h ago', target: 'Distributor discount approvals', desc: 'Overlapping trade spends limit overrun', sev: 'Medium', sevColor: 'text-amber-450 border-amber-500/20 bg-amber-500/5', leak: '$320k', assignee: 'Finance Ledger Agent', status: 'Triaged', statusColor: 'text-emerald-400' }
+                                { id: 'ALT-022 • 8h ago', target: 'Distributor discount approvals', desc: 'Overlapping trade spends limit overrun', sev: 'Medium', sevColor: 'text-amber-500 border-amber-500/20 bg-amber-500/5', leak: '$320k', assignee: 'Finance Ledger Agent', status: 'Triaged', statusColor: 'text-emerald-400' }
                               ].map((row, idx) => (
                                 <tr key={idx} className="hover:bg-white/[0.01]">
                                   <td className="p-2.5 flex flex-col gap-0.5">
                                     <span className="font-bold text-white font-mono text-[9px]">{row.id.split(' • ')[0]}</span>
-                                    <span className="text-[7.5px] text-zinc-550 font-bold leading-normal">{row.id.split(' • ')[1]}</span>
+                                    <span className="text-[7.5px] text-zinc-600 font-bold leading-normal">{row.id.split(' • ')[1]}</span>
                                   </td>
                                   <td className="p-2.5">
                                     <div className="flex flex-col gap-0.5">
@@ -2971,7 +2971,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-1">
                             {[
                               { title: 'Source alternate cap supplier', desc: 'Onboard pre-approved vendor B to hedge glass container closure rates.', val: '+$450K EBITDA', conf: 90, tag: 'High Impact', tagColor: 'text-red-400 border-red-500/20 bg-red-500/5' },
-                              { title: 'Re-negotiate raw pricing contracts', desc: 'Contract bulk raw materials to lock in Q4 costing indices.', val: '+$800K EBITDA', conf: 82, tag: 'Medium Impact', tagColor: 'text-amber-450 border-amber-500/20 bg-amber-500/5' },
+                              { title: 'Re-negotiate raw pricing contracts', desc: 'Contract bulk raw materials to lock in Q4 costing indices.', val: '+$800K EBITDA', conf: 82, tag: 'Medium Impact', tagColor: 'text-amber-500 border-amber-500/20 bg-amber-500/5' },
                               { title: 'Trigger overlap SKU consolidation', desc: 'Consolidate 12 duplicate listings in category C to reduce shelf complexity.', val: '+$400K EBITDA', conf: 92, tag: 'High Impact', tagColor: 'text-red-400 border-red-500/20 bg-red-500/5' },
                               { title: 'Adjust wholesale pricing tier levels', desc: 'Deploy automated index-linked pricing adjusts on wholesale accounts.', val: '+$1.2M EBITDA', conf: 95, tag: 'Critical Impact', tagColor: 'text-purple-400 border-purple-500/20 bg-purple-500/5' }
                             ].map((rec, idx) => (
@@ -2981,7 +2981,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                                     {rec.tag}
                                   </span>
                                   <span className="font-bold text-[9.5px] text-white leading-tight mt-0.5">{rec.title}</span>
-                                  <p className="text-[7.5px] text-zinc-550 leading-relaxed font-medium mt-0.5">{rec.desc}</p>
+                                  <p className="text-[7.5px] text-zinc-600 leading-relaxed font-medium mt-0.5">{rec.desc}</p>
                                 </div>
                                 
                                 <div className="border-t border-zinc-900/80 pt-2 flex flex-col gap-1.5 mt-2 text-[8px] text-zinc-400">
@@ -3008,7 +3008,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                         <div className="lg:col-span-1 bg-[#121217] border border-zinc-900/60 p-4.5 rounded-xl flex flex-col gap-3 min-h-[300px] justify-between">
                           <div className="flex flex-col gap-2">
                             <span className="text-[10px] font-bold text-white uppercase tracking-wider font-mono">ERP Commit Console</span>
-                            <span className="text-[7.5px] text-zinc-550 leading-normal">Authorize AI recommendations and write back variables directly to active ledgers</span>
+                            <span className="text-[7.5px] text-zinc-600 leading-normal">Authorize AI recommendations and write back variables directly to active ledgers</span>
                           </div>
 
                           <div className="p-3 rounded-xl bg-zinc-950/40 border border-zinc-900 flex flex-col gap-2.5">
@@ -3027,7 +3027,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                             </button>
                           </div>
 
-                          <div className="flex flex-col gap-1.5 text-[7.5px] text-zinc-650 bg-zinc-950/20 p-2.5 rounded-lg border border-zinc-900/30">
+                          <div className="flex flex-col gap-1.5 text-[7.5px] text-zinc-700 bg-zinc-950/20 p-2.5 rounded-lg border border-zinc-900/30">
                             <span className="font-mono uppercase font-black tracking-widest text-zinc-500 text-[6.5px]">Policy Guardrail Check</span>
                             <div className="flex justify-between">
                               <span>• Pricing elastic limits verified</span>
@@ -3048,8 +3048,8 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
 
                     {/* Footer actions */}
                     <div className="flex items-center justify-between border-t border-zinc-900/60 pt-3 mt-0.5 text-[8.5px]">
-                      <div className="flex items-center gap-1.5 text-zinc-550 font-semibold font-mono">
-                        <svg className="w-3.5 h-3.5 text-zinc-650 animate-spin-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <div className="flex items-center gap-1.5 text-zinc-600 font-semibold font-mono">
+                        <svg className="w-3.5 h-3.5 text-zinc-700 animate-spin-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
                         </svg>
                         <span>Auto Refresh: <span className="text-emerald-400 font-extrabold">ON</span></span>
@@ -3115,7 +3115,7 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
                   <span className="text-[9.5px] font-bold text-zinc-400 uppercase tracking-wider font-mono">
                     Visual Causal Reasoning Map
                   </span>
-                  <span className="text-[8px] text-zinc-550 italic font-mono">
+                  <span className="text-[8px] text-zinc-600 italic font-mono">
                     Hover over nodes or ledger cards to highlight causal relationships
                   </span>
                 </div>

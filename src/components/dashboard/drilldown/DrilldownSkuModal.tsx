@@ -206,7 +206,7 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
         {/* Close Button */}
         <button 
           onClick={onClose}
-          className="absolute top-4 right-4 p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-zinc-400 hover:text-zinc-650 dark:hover:text-zinc-100 cursor-pointer border-none bg-transparent outline-none"
+          className="absolute top-4 right-4 p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-100 cursor-pointer border-none bg-transparent outline-none"
         >
           <X size={16} />
         </button>
@@ -221,8 +221,8 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
                   {rawSku.name}
                 </h3>
               </div>
-              <p className="text-[9px] text-zinc-550 dark:text-zinc-400 uppercase tracking-widest font-extrabold">
-                Category: <span className="text-zinc-750 dark:text-zinc-200">{rawSku.cat}</span> · Plant Site: <span className="text-zinc-750 dark:text-zinc-200">{regionalConfig.plant}</span>
+              <p className="text-[9px] text-zinc-600 dark:text-zinc-400 uppercase tracking-widest font-extrabold">
+                Category: <span className="text-zinc-800 dark:text-zinc-200">{rawSku.cat}</span> · Plant Site: <span className="text-zinc-800 dark:text-zinc-200">{regionalConfig.plant}</span>
               </p>
             </div>
 
@@ -235,24 +235,24 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
           {/* Key Metrics Row */}
           <div className="grid grid-cols-3 gap-4 pt-2">
             <div className="p-3 bg-zinc-50 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded flex flex-col justify-between h-18">
-              <p className="font-bold text-[8px] uppercase tracking-widest text-zinc-450 leading-none">Realized Revenue</p>
+              <p className="font-bold text-[8px] uppercase tracking-widest text-zinc-500 leading-none">Realized Revenue</p>
               <div className="flex items-baseline gap-1 mt-1">
                 <span className="text-lg font-display font-extrabold text-acies-yellow">${skuRev.toFixed(1)}</span>
-                <span className="text-[10px] font-bold text-zinc-450">M</span>
+                <span className="text-[10px] font-bold text-zinc-500">M</span>
               </div>
-              <p className="text-[7px] text-zinc-450 uppercase tracking-wider font-bold">Horizon: {timeHorizon}</p>
+              <p className="text-[7px] text-zinc-500 uppercase tracking-wider font-bold">Horizon: {timeHorizon}</p>
             </div>
             
             <div className="p-3 bg-zinc-50 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded flex flex-col justify-between h-18">
-              <p className="font-bold text-[8px] uppercase tracking-widest text-zinc-450 leading-none">Gross Margin %</p>
-              <span className="text-lg font-display font-extrabold text-zinc-855 dark:text-white mt-1">{skuMargin}%</span>
+              <p className="font-bold text-[8px] uppercase tracking-widest text-zinc-500 leading-none">Gross Margin %</p>
+              <span className="text-lg font-display font-extrabold text-zinc-900 dark:text-white mt-1">{skuMargin}%</span>
               <div className="w-full h-1 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden mt-1">
                 <div className="h-full bg-acies-yellow" style={{ width: `${skuMargin}%` }} />
               </div>
             </div>
 
             <div className="p-3 bg-zinc-50 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded flex flex-col justify-between h-18">
-              <p className="font-bold text-[8px] uppercase tracking-widest text-zinc-450 leading-none">YoY Sales Growth</p>
+              <p className="font-bold text-[8px] uppercase tracking-widest text-zinc-500 leading-none">YoY Sales Growth</p>
               <div className="flex items-center gap-1.5 mt-1">
                 <span className={`text-lg font-display font-extrabold ${skuGrowth >= 0 ? 'text-green-500' : 'text-red-500'}`}>
                   {skuGrowth >= 0 ? '+' : ''}{Math.round(skuGrowth * 100)}%
@@ -263,7 +263,7 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
                   <TrendingDown size={14} className="text-red-500" />
                 )}
               </div>
-              <p className="text-[7px] text-zinc-455 uppercase tracking-wider font-bold">Category Trend</p>
+              <p className="text-[7px] text-zinc-500 uppercase tracking-wider font-bold">Category Trend</p>
             </div>
           </div>
         </div>
@@ -281,7 +281,7 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
                   key={t}
                   onClick={() => setDetailTab(t)}
                   className={`pb-2.5 text-xs font-bold uppercase tracking-wider bg-transparent border-none cursor-pointer outline-none transition-all relative ${
-                    isActive ? 'text-acies-yellow' : 'text-zinc-450 hover:text-zinc-700 dark:hover:text-zinc-250'
+                    isActive ? 'text-acies-yellow' : 'text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
                   }`}
                 >
                   {labels[t]}
@@ -349,7 +349,7 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
                       <div className="grid grid-cols-3 gap-4">
                         {/* Slider 1 */}
                         <div className="space-y-1.5">
-                          <div className="flex justify-between items-baseline text-[7.5px] font-bold uppercase tracking-wider text-zinc-450">
+                          <div className="flex justify-between items-baseline text-[7.5px] font-bold uppercase tracking-wider text-zinc-500">
                             <span>Logistics Opt.</span>
                             <span className="text-[#f59e0b] font-black font-mono text-[8.5px]">{sliderLogistics}%</span>
                           </div>
@@ -359,14 +359,14 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
                             max="50" 
                             value={sliderLogistics} 
                             onChange={(e) => setSliderLogistics(parseInt(e.target.value))} 
-                            className="w-full h-1 bg-zinc-200 dark:bg-zinc-750 rounded-lg appearance-none cursor-pointer accent-[#f59e0b] outline-none"
+                            className="w-full h-1 bg-zinc-200 dark:bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#f59e0b] outline-none"
                           />
                           <p className="text-[6.5px] text-zinc-400 leading-tight">Reduces logistics leak (0-50%)</p>
                         </div>
 
                         {/* Slider 2 */}
                         <div className="space-y-1.5">
-                          <div className="flex justify-between items-baseline text-[7.5px] font-bold uppercase tracking-wider text-zinc-450">
+                          <div className="flex justify-between items-baseline text-[7.5px] font-bold uppercase tracking-wider text-zinc-500">
                             <span>Promo Cap</span>
                             <span className="text-[#f59e0b] font-black font-mono text-[8.5px]">{sliderPromo}%</span>
                           </div>
@@ -376,14 +376,14 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
                             max="60" 
                             value={sliderPromo} 
                             onChange={(e) => setSliderPromo(parseInt(e.target.value))} 
-                            className="w-full h-1 bg-zinc-200 dark:bg-zinc-750 rounded-lg appearance-none cursor-pointer accent-[#f59e0b] outline-none"
+                            className="w-full h-1 bg-zinc-200 dark:bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#f59e0b] outline-none"
                           />
                           <p className="text-[6.5px] text-zinc-400 leading-tight">Limits trade discounts (0-60%)</p>
                         </div>
 
                         {/* Slider 3 */}
                         <div className="space-y-1.5">
-                          <div className="flex justify-between items-baseline text-[7.5px] font-bold uppercase tracking-wider text-zinc-450">
+                          <div className="flex justify-between items-baseline text-[7.5px] font-bold uppercase tracking-wider text-zinc-500">
                             <span>COGS Efficiency</span>
                             <span className="text-[#f59e0b] font-black font-mono text-[8.5px]">{sliderCOGS}%</span>
                           </div>
@@ -393,7 +393,7 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
                             max="30" 
                             value={sliderCOGS} 
                             onChange={(e) => setSliderCOGS(parseInt(e.target.value))} 
-                            className="w-full h-1 bg-zinc-200 dark:bg-zinc-750 rounded-lg appearance-none cursor-pointer accent-[#f59e0b] outline-none"
+                            className="w-full h-1 bg-zinc-200 dark:bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#f59e0b] outline-none"
                           />
                           <p className="text-[6.5px] text-zinc-400 leading-tight">Boosts production yield (0-30%)</p>
                         </div>
@@ -415,7 +415,7 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
                       <tbody className="divide-y divide-black/5 dark:divide-white/10 font-medium">
                         <tr>
                           <td className="py-2 px-2.5 text-zinc-700 dark:text-zinc-300">Gross Sales Revenue</td>
-                          <td className="py-2 px-2 text-right text-zinc-500 dark:text-zinc-450">${wRevenue.toFixed(1)} M</td>
+                          <td className="py-2 px-2 text-right text-zinc-500 dark:text-zinc-500">${wRevenue.toFixed(1)} M</td>
                           <td className="py-2 px-2 text-right text-acies-yellow font-bold">${wRevenue.toFixed(1)} M</td>
                           <td className="py-2 px-2.5 text-right text-zinc-400 font-mono">—</td>
                         </tr>
@@ -424,7 +424,7 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
                             <span className="text-red-500 text-[8px] bg-red-500/10 px-1 rounded font-extrabold leading-none">−</span>
                             Trade Promotions
                           </td>
-                          <td className="py-2 px-2 text-right text-zinc-500 dark:text-zinc-450">-${wTradePromo.toFixed(1)} M</td>
+                          <td className="py-2 px-2 text-right text-zinc-500 dark:text-zinc-500">-${wTradePromo.toFixed(1)} M</td>
                           <td className="py-2 px-2 text-right text-red-500 font-semibold">-${simTradePromo.toFixed(1)} M</td>
                           <td className="py-2 px-2.5 text-right text-green-500 font-bold font-mono">
                             {wTradePromo - simTradePromo > 0 ? `+$${(wTradePromo - simTradePromo).toFixed(1)} M` : '—'}
@@ -435,7 +435,7 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
                             <span className="text-orange-500 text-[8px] bg-orange-500/10 px-1 rounded font-extrabold leading-none">−</span>
                             Manufacturing COGS
                           </td>
-                          <td className="py-2 px-2 text-right text-zinc-500 dark:text-zinc-450">-${wCOGS.toFixed(1)} M</td>
+                          <td className="py-2 px-2 text-right text-zinc-500 dark:text-zinc-500">-${wCOGS.toFixed(1)} M</td>
                           <td className="py-2 px-2 text-right text-orange-500 font-semibold">-${simCOGS.toFixed(1)} M</td>
                           <td className="py-2 px-2.5 text-right text-green-500 font-bold font-mono">
                             {wCOGS - simCOGS > 0 ? `+$${(wCOGS - simCOGS).toFixed(1)} M` : '—'}
@@ -446,17 +446,17 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
                             <span className="text-blue-500 text-[8px] bg-blue-500/10 px-1 rounded font-extrabold leading-none">−</span>
                             Logistics & Dist.
                           </td>
-                          <td className="py-2 px-2 text-right text-zinc-500 dark:text-zinc-450">-${wLogistics.toFixed(1)} M</td>
+                          <td className="py-2 px-2 text-right text-zinc-500 dark:text-zinc-500">-${wLogistics.toFixed(1)} M</td>
                           <td className="py-2 px-2 text-right text-blue-500 font-semibold">-${simLogistics.toFixed(1)} M</td>
                           <td className="py-2 px-2.5 text-right text-green-500 font-bold font-mono">
                             {wLogistics - simLogistics > 0 ? `+$${(wLogistics - simLogistics).toFixed(1)} M` : '—'}
                           </td>
                         </tr>
-                        <tr className="bg-black/[0.02] dark:bg-white/[0.02] font-bold text-zinc-805 dark:text-white border-t border-black/10 dark:border-white/15">
+                        <tr className="bg-black/[0.02] dark:bg-white/[0.02] font-bold text-zinc-800 dark:text-white border-t border-black/10 dark:border-white/15">
                           <td className="py-2.5 px-2.5">Net Oper. Profit</td>
-                          <td className="py-2.5 px-2 text-right text-zinc-450 dark:text-zinc-500 font-medium">
+                          <td className="py-2.5 px-2 text-right text-zinc-500 dark:text-zinc-500 font-medium">
                             ${wNetProfit.toFixed(1)} M
-                            <span className="text-[7.5px] block font-normal text-zinc-450">({((wNetProfit / wRevenue) * 100).toFixed(1)}%)</span>
+                            <span className="text-[7.5px] block font-normal text-zinc-500">({((wNetProfit / wRevenue) * 100).toFixed(1)}%)</span>
                           </td>
                           <td className="py-2.5 px-2 text-right text-emerald-500">
                             ${simNetProfit.toFixed(1)} M
@@ -485,7 +485,7 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
                   {/* Lead Time Gauge */}
                   <div className="p-3 border rounded flex justify-between items-center bg-zinc-50 dark:bg-white/[0.02] border-black/5 dark:border-white/10">
                     <div className="space-y-0.5">
-                      <span className="text-[7.5px] uppercase tracking-wider font-extrabold text-zinc-450 flex items-center gap-1">
+                      <span className="text-[7.5px] uppercase tracking-wider font-extrabold text-zinc-500 flex items-center gap-1">
                         <Clock size={10} /> Sourcing Lead Time
                       </span>
                       <p className="text-base font-display font-extrabold text-zinc-800 dark:text-white leading-none mt-1">
@@ -500,7 +500,7 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
                   {/* Stockouts Gauge */}
                   <div className="p-3 border rounded flex justify-between items-center bg-zinc-50 dark:bg-white/[0.02] border-black/5 dark:border-white/10">
                     <div className="space-y-0.5">
-                      <span className="text-[7.5px] uppercase tracking-wider font-extrabold text-zinc-450 flex items-center gap-1">
+                      <span className="text-[7.5px] uppercase tracking-wider font-extrabold text-zinc-500 flex items-center gap-1">
                         <ShieldAlert size={10} /> Stockout Frequency
                       </span>
                       <p className="text-base font-display font-extrabold text-zinc-800 dark:text-white leading-none mt-1">
@@ -516,9 +516,9 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
                 <div className="p-4 border border-black/5 dark:border-white/10 bg-zinc-50 dark:bg-white/[0.02] rounded space-y-4">
                   {/* Complexity bar */}
                   <div className="space-y-1.5">
-                    <div className="flex justify-between text-[8px] font-bold uppercase text-zinc-450">
+                    <div className="flex justify-between text-[8px] font-bold uppercase text-zinc-500">
                       <span>Manufacturing Complexity</span>
-                      <span className="text-zinc-700 dark:text-zinc-350 font-mono">Index {rawSku.cx.toFixed(2)}</span>
+                      <span className="text-zinc-700 dark:text-zinc-400 font-mono">Index {rawSku.cx.toFixed(2)}</span>
                     </div>
                     <div className="w-full h-1 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden">
                       <div className="h-full bg-acies-yellow" style={{ width: `${rawSku.cx * 100}%` }} />
@@ -528,9 +528,9 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
 
                   {/* Promo Reliance bar */}
                   <div className="space-y-1.5">
-                    <div className="flex justify-between text-[8px] font-bold uppercase text-zinc-450">
+                    <div className="flex justify-between text-[8px] font-bold uppercase text-zinc-500">
                       <span>Promotional discount Reliance</span>
-                      <span className="text-zinc-700 dark:text-zinc-350 font-mono">{Math.round(skuPromo * 100)}% of sales</span>
+                      <span className="text-zinc-700 dark:text-zinc-400 font-mono">{Math.round(skuPromo * 100)}% of sales</span>
                     </div>
                     <div className="w-full h-1 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden">
                       <div className="h-full bg-acies-yellow" style={{ width: `${skuPromo * 100}%` }} />
@@ -561,12 +561,12 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
                           <span className="text-[9.5px] font-bold text-acies-yellow">0{index + 1}</span>
                           <p className="font-bold text-[10px] text-zinc-800 dark:text-zinc-100 leading-snug">{rec.title}</p>
                         </div>
-                        <p className="text-[8px] text-zinc-550 dark:text-zinc-400 leading-relaxed font-normal">{rec.desc}</p>
+                        <p className="text-[8px] text-zinc-600 dark:text-zinc-400 leading-relaxed font-normal">{rec.desc}</p>
                       </div>
 
                       <div className="pt-2 border-t border-black/[0.04] dark:border-white/[0.04] flex items-center justify-between gap-2">
-                        <span className="text-[7.5px] text-zinc-405">
-                          Route: <span className="font-bold text-zinc-555 dark:text-zinc-350">{regionalConfig.manager.split(' ')[0]}</span> ({regionalConfig.role.split(' ').slice(-1)[0]})
+                        <span className="text-[7.5px] text-zinc-400">
+                          Route: <span className="font-bold text-zinc-600 dark:text-zinc-400">{regionalConfig.manager.split(' ')[0]}</span> ({regionalConfig.role.split(' ').slice(-1)[0]})
                         </span>
                         <button
                           onClick={() => {

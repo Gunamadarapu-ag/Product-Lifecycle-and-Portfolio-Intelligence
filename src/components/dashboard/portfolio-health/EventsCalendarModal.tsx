@@ -61,7 +61,7 @@ const CAL_TYPE_CFG = {
   launch:   { color: '#10b981', bg: 'bg-emerald-500/10 dark:bg-emerald-500/20', text: 'text-emerald-600 dark:text-emerald-400 border border-emerald-500/25', label: 'Launch'   },
   review:   { color: '#8b5cf6', bg: 'bg-purple-500/10 dark:bg-purple-500/20', text: 'text-purple-600 dark:text-purple-400 border border-purple-500/25', label: 'Review'   },
   campaign: { color: '#f59e0b', bg: 'bg-amber-500/10 dark:bg-amber-500/20', text: 'text-amber-600 dark:text-amber-400 border border-amber-500/25', label: 'Campaign' },
-  task:     { color: '#6b7280', bg: 'bg-zinc-500/10 dark:bg-zinc-500/20', text: 'text-zinc-650 dark:text-zinc-350 border border-zinc-500/25', label: 'Task'     },
+  task:     { color: '#6b7280', bg: 'bg-zinc-500/10 dark:bg-zinc-500/20', text: 'text-zinc-700 dark:text-zinc-400 border border-zinc-500/25', label: 'Task'     },
   event:    { color: '#ec4899', bg: 'bg-pink-500/10 dark:bg-pink-500/20', text: 'text-pink-600 dark:text-pink-400 border border-pink-500/25', label: 'Event'    },
 };
 
@@ -348,11 +348,11 @@ export const EventsCalendarModal: React.FC<EventsCalendarModalProps> = ({ isOpen
                         >
                           <div className="flex-1 min-w-0">
                             <div className="text-[10.5px] font-bold text-zinc-800 dark:text-zinc-200">{e.title}</div>
-                            <div className="text-[9px] text-zinc-500 dark:text-zinc-450 mt-0.5 font-medium flex items-center gap-1.5">
+                            <div className="text-[9px] text-zinc-500 dark:text-zinc-500 mt-0.5 font-medium flex items-center gap-1.5">
                               <Clock size={9} />
                               {calFmt(e.start)} – {calFmt(e.end)} &nbsp;·&nbsp; Owner: {e.owner}
                             </div>
-                            <div className="text-[9.5px] text-zinc-650 dark:text-zinc-400 mt-1 leading-relaxed">{e.desc}</div>
+                            <div className="text-[9.5px] text-zinc-700 dark:text-zinc-400 mt-1 leading-relaxed">{e.desc}</div>
                           </div>
                           <div className="flex flex-col items-end gap-1 shrink-0">
                             <span className={`text-[8px] font-bold px-2 py-0.5 rounded-sm uppercase tracking-wider ${cfg.text}`}>
@@ -427,7 +427,7 @@ export const EventsCalendarModal: React.FC<EventsCalendarModalProps> = ({ isOpen
                 className={`px-3 py-1 text-[9px] font-bold rounded-sm border-none cursor-pointer ${
                   view === 'month' 
                     ? 'bg-[#6d28d9] dark:bg-[#a78bfa] text-white shadow-sm' 
-                    : 'text-zinc-550 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-100 bg-transparent'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-100 bg-transparent'
                 }`}
               >
                 Month
@@ -437,7 +437,7 @@ export const EventsCalendarModal: React.FC<EventsCalendarModalProps> = ({ isOpen
                 className={`px-3 py-1 text-[9px] font-bold rounded-sm border-none cursor-pointer ${
                   view === 'week' 
                     ? 'bg-[#6d28d9] dark:bg-[#a78bfa] text-white shadow-sm' 
-                    : 'text-zinc-550 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-100 bg-transparent'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-100 bg-transparent'
                 }`}
               >
                 Week
@@ -447,7 +447,7 @@ export const EventsCalendarModal: React.FC<EventsCalendarModalProps> = ({ isOpen
                 className={`px-3 py-1 text-[9px] font-bold rounded-sm border-none cursor-pointer ${
                   view === 'day' 
                     ? 'bg-[#6d28d9] dark:bg-[#a78bfa] text-white shadow-sm' 
-                    : 'text-zinc-550 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-100 bg-transparent'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-100 bg-transparent'
                 }`}
               >
                 Day
@@ -456,7 +456,7 @@ export const EventsCalendarModal: React.FC<EventsCalendarModalProps> = ({ isOpen
 
             <button 
               onClick={onClose}
-              className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-650 cursor-pointer border-none bg-transparent"
+              className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 cursor-pointer border-none bg-transparent"
             >
               <X size={14} />
             </button>
@@ -488,10 +488,10 @@ export const EventsCalendarModal: React.FC<EventsCalendarModalProps> = ({ isOpen
                     const cfg = CAL_TYPE_CFG[e.type];
                     const prioColor = e.prio === 'high' ? 'text-red-500' : e.prio === 'medium' ? 'text-amber-500' : 'text-emerald-500';
                     return (
-                      <div key={e.id} className="flex gap-2.5 p-2 bg-white dark:bg-zinc-850 rounded border border-black/[0.04] dark:border-white/[0.06] shadow-sm items-start">
+                      <div key={e.id} className="flex gap-2.5 p-2 bg-white dark:bg-zinc-900 rounded border border-black/[0.04] dark:border-white/[0.06] shadow-sm items-start">
                         <div className={`w-1.5 self-stretch rounded-full shrink-0`} style={{ backgroundColor: cfg.color }} />
                         <div className="flex-1 min-w-0">
-                          <div className="text-[10px] font-bold text-zinc-850 dark:text-zinc-200">{e.title}</div>
+                          <div className="text-[10px] font-bold text-zinc-900 dark:text-zinc-200">{e.title}</div>
                           <div className="text-[8.5px] text-zinc-400 dark:text-zinc-500 font-medium mt-0.5">
                             {calFmt(e.start)} – {calFmt(e.end)} &nbsp;·&nbsp; {e.owner}
                           </div>
@@ -624,7 +624,7 @@ export const EventsCalendarModal: React.FC<EventsCalendarModalProps> = ({ isOpen
                         <div className="text-[9.5px] font-bold text-zinc-800 dark:text-zinc-200 truncate flex-1">{e.title}</div>
                       </div>
                       <div className="flex items-center justify-between text-[8px] font-medium mt-1 pl-4">
-                        <span className="text-zinc-450 dark:text-zinc-500 font-bold">{calFmtDate(e.start)}</span>
+                        <span className="text-zinc-500 dark:text-zinc-500 font-bold">{calFmtDate(e.start)}</span>
                         {isPast ? (
                           <span className="text-zinc-400 dark:text-zinc-600 line-through">Launched</span>
                         ) : (

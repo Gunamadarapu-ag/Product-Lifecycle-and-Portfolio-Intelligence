@@ -153,7 +153,7 @@ export const DrilldownRegionGrid: React.FC<DrilldownRegionGridProps> = ({
 
               <div className="w-full">
                 <div className="flex justify-between items-start gap-1">
-                  <span className="text-[10px] font-display font-extrabold text-zinc-850 dark:text-white leading-tight group-hover:text-acies-yellow transition-colors">
+                  <span className="text-[10px] font-display font-extrabold text-zinc-900 dark:text-white leading-tight group-hover:text-acies-yellow transition-colors">
                     {config.name} ({key})
                   </span>
                   <span className={`text-[8px] font-mono font-bold leading-none ${activeTrend >= 0 ? 'text-green-500' : 'text-red-500'}`}>
@@ -164,7 +164,7 @@ export const DrilldownRegionGrid: React.FC<DrilldownRegionGridProps> = ({
                   {config.manager} · {config.role}
                 </p>
                 <div className="flex items-baseline gap-1 mt-2.5">
-                  <span className="text-base font-display font-extrabold text-zinc-855 dark:text-white leading-none">
+                  <span className="text-base font-display font-extrabold text-zinc-900 dark:text-white leading-none">
                     {activeM.actual.toFixed(selectedMetric === 'rev' ? 0 : 1)}
                   </span>
                   <span className="text-[8px] font-bold text-zinc-500">{activeM.unit}</span>
@@ -177,7 +177,7 @@ export const DrilldownRegionGrid: React.FC<DrilldownRegionGridProps> = ({
               <div className="w-full space-y-1 mt-2">
                 <div className="w-full h-1 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden">
                   <div
-                    className={`h-full rounded-full transition-all duration-300 ${isSelected ? 'bg-acies-yellow' : 'bg-zinc-400 dark:bg-zinc-550'}`}
+                    className={`h-full rounded-full transition-all duration-300 ${isSelected ? 'bg-acies-yellow' : 'bg-zinc-400 dark:bg-zinc-600'}`}
                     style={{ width: `${selectedMetric === 'rev' ? progress : (progress / activeM.target * 100)}%` }}
                   />
                 </div>

@@ -133,7 +133,7 @@ export const EmailComposerModal: React.FC<EmailComposerModalProps> = ({
           </div>
           <button 
             onClick={onClose}
-            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-655 cursor-pointer border-none bg-transparent"
+            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-700 cursor-pointer border-none bg-transparent"
           >
             <X size={14} />
           </button>
@@ -159,7 +159,7 @@ export const EmailComposerModal: React.FC<EmailComposerModalProps> = ({
             className={`flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg font-bold text-[10.5px] cursor-pointer transition-all border-none outline-none ${
               activeTab === 'message'
                 ? 'bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-100 shadow-sm'
-                : 'text-zinc-400 dark:text-zinc-500 hover:text-zinc-650 bg-transparent'
+                : 'text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 bg-transparent'
             }`}
           >
             <MessageSquare size={11} className={activeTab === 'message' ? 'text-emerald-500' : ''} />

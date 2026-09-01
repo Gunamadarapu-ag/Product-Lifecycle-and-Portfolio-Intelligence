@@ -125,7 +125,7 @@ export const CannibalizationAnalystView: React.FC<CannibalizationAnalystViewProp
           <div className="mb-3 flex items-start justify-between gap-3">
             <div>
               <h3 className="text-xs font-bold uppercase tracking-widest text-acies-gray dark:text-white">Substitution Risk Scatter Map</h3>
-              <p className="text-[9px] text-zinc-555 font-bold uppercase tracking-widest mt-0.5">
+              <p className="text-[9px] text-zinc-600 font-bold uppercase tracking-widest mt-0.5">
                 Bubble size = revenue at risk ($ M) • Click a bubble to load pair in scorer
               </p>
             </div>
@@ -217,7 +217,7 @@ export const CannibalizationAnalystView: React.FC<CannibalizationAnalystViewProp
           <div className="mb-4 flex items-start justify-between gap-3">
             <div>
               <h3 className="text-xs font-bold uppercase tracking-widest text-acies-gray dark:text-white">Promotional Erosion — Top 10 Dependent SKUs</h3>
-              <p className="text-[9px] text-zinc-555 font-bold uppercase tracking-widest mt-0.5">
+              <p className="text-[9px] text-zinc-600 font-bold uppercase tracking-widest mt-0.5">
                 % of sales under promo discount • Click any bar to load SKU into scorer
               </p>
             </div>

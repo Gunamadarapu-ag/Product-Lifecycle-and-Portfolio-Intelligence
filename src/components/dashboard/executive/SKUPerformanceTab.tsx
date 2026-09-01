@@ -228,7 +228,7 @@ export const SKUPerformanceTab: React.FC<SKUPerformanceTabProps> = ({
           )}
           <div>
             <h2 className="text-xl font-display leading-tight text-acies-gray dark:text-white">SKU Performance Ledger</h2>
-            <p className="text-[10px] text-zinc-400 dark:text-zinc-550 font-medium">Portfolio-wide active SKU performance analysis and trends</p>
+            <p className="text-[10px] text-zinc-400 dark:text-zinc-600 font-medium">Portfolio-wide active SKU performance analysis and trends</p>
           </div>
         </div>
       </div>
@@ -237,7 +237,7 @@ export const SKUPerformanceTab: React.FC<SKUPerformanceTabProps> = ({
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {/* Total Active SKUs */}
         <div className="bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-4 shadow-sm flex flex-col justify-between">
-          <span className="text-[8px] text-zinc-400 dark:text-zinc-550 font-bold uppercase tracking-wider block">
+          <span className="text-[8px] text-zinc-400 dark:text-zinc-600 font-bold uppercase tracking-wider block">
             Total Active SKUs
           </span>
           <div className="flex items-baseline gap-1 mt-1">
@@ -250,7 +250,7 @@ export const SKUPerformanceTab: React.FC<SKUPerformanceTabProps> = ({
 
         {/* Avg Margin */}
         <div className="bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-4 shadow-sm flex flex-col justify-between">
-          <span className="text-[8px] text-zinc-400 dark:text-zinc-550 font-bold uppercase tracking-wider block">
+          <span className="text-[8px] text-zinc-400 dark:text-zinc-600 font-bold uppercase tracking-wider block">
             Avg Gross Margin
           </span>
           <div className="flex items-baseline gap-1 mt-1">
@@ -263,7 +263,7 @@ export const SKUPerformanceTab: React.FC<SKUPerformanceTabProps> = ({
 
         {/* Total SKU Revenue */}
         <div className="bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-4 shadow-sm flex flex-col justify-between">
-          <span className="text-[8px] text-zinc-400 dark:text-zinc-550 font-bold uppercase tracking-wider block">
+          <span className="text-[8px] text-zinc-400 dark:text-zinc-600 font-bold uppercase tracking-wider block">
             Total SKU Revenue
           </span>
           <div className="flex items-baseline gap-1 mt-1">
@@ -276,7 +276,7 @@ export const SKUPerformanceTab: React.FC<SKUPerformanceTabProps> = ({
 
         {/* Rationalize Flags */}
         <div className="bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-4 shadow-sm flex flex-col justify-between">
-          <span className="text-[8px] text-zinc-400 dark:text-zinc-550 font-bold uppercase tracking-wider block">
+          <span className="text-[8px] text-zinc-400 dark:text-zinc-600 font-bold uppercase tracking-wider block">
             Rationalization Candidates
           </span>
           <div className="flex items-baseline gap-1 mt-1">
@@ -388,7 +388,7 @@ export const SKUPerformanceTab: React.FC<SKUPerformanceTabProps> = ({
 
         <button 
           onClick={exportCSV}
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:bg-black/10 dark:hover:bg-white/10 text-[9px] font-bold uppercase tracking-wider rounded-sm text-zinc-650 dark:text-zinc-450 cursor-pointer border-none"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:bg-black/10 dark:hover:bg-white/10 text-[9px] font-bold uppercase tracking-wider rounded-sm text-zinc-700 dark:text-zinc-500 cursor-pointer border-none"
         >
           <Download size={11} />
           Export CSV
@@ -399,13 +399,13 @@ export const SKUPerformanceTab: React.FC<SKUPerformanceTabProps> = ({
       <div className="bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm shadow-sm overflow-hidden flex flex-col justify-between">
         <div className="p-4 border-b border-black/5 dark:border-white/5 flex items-center justify-between">
           <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">SKU Ledger List ({filteredSKUs.length} items)</span>
-          <span className="text-[8px] text-zinc-450 dark:text-zinc-550 font-bold uppercase tracking-wider">Click any SKU row to inspect details & mitigate trends</span>
+          <span className="text-[8px] text-zinc-500 dark:text-zinc-600 font-bold uppercase tracking-wider">Click any SKU row to inspect details & mitigate trends</span>
         </div>
 
         <div className="overflow-x-auto w-full">
           <table className="w-full text-left border-collapse text-[10px]">
             <thead>
-              <tr className="border-b border-zinc-250 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50 text-[9px] uppercase tracking-wider text-zinc-400 font-extrabold">
+              <tr className="border-b border-zinc-300 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50 text-[9px] uppercase tracking-wider text-zinc-400 font-extrabold">
                 <th className="p-3 pl-4 cursor-pointer hover:bg-black/5 dark:hover:bg-white/5" onClick={() => handleSort('name')}>
                   SKU Name {sortField === 'name' ? (sortOrder === 'asc' ? '▲' : '▼') : ''}
                 </th>
@@ -450,12 +450,12 @@ export const SKUPerformanceTab: React.FC<SKUPerformanceTabProps> = ({
                     </td>
 
                     {/* Location */}
-                    <td className="p-3 text-zinc-550 dark:text-zinc-455">
+                    <td className="p-3 text-zinc-600 dark:text-zinc-500">
                       {sku.location}
                     </td>
 
                     {/* Revenue */}
-                    <td className="p-3 font-mono font-bold text-zinc-750 dark:text-zinc-350">
+                    <td className="p-3 font-mono font-bold text-zinc-800 dark:text-zinc-400">
                       <div className="flex items-center gap-2">
                         <span className="w-10">${sku.rev}M</span>
                         <div className="w-12 bg-black/5 dark:bg-white/10 h-1.5 rounded-full overflow-hidden hidden sm:block">
@@ -519,7 +519,7 @@ export const SKUPerformanceTab: React.FC<SKUPerformanceTabProps> = ({
                     <td className="p-3 pr-4 text-center">
                       <button 
                         onClick={() => onSelectSku(sku)}
-                        className="px-2 py-1 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:bg-[#6d28d9] hover:text-white rounded-sm text-[8px] font-bold uppercase tracking-wider transition-all cursor-pointer border-none text-zinc-650 dark:text-zinc-350"
+                        className="px-2 py-1 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:bg-[#6d28d9] hover:text-white rounded-sm text-[8px] font-bold uppercase tracking-wider transition-all cursor-pointer border-none text-zinc-700 dark:text-zinc-400"
                       >
                         Inspect
                       </button>

@@ -266,7 +266,7 @@ export const WelcomeGate: React.FC<WelcomeGateProps> = ({ onSelectRole }) => {
                     <h3 className="text-2xl font-display font-extrabold text-white group-hover:text-white transition-colors duration-200">
                       {p.title}
                     </h3>
-                    <p className="text-[10px] uppercase font-bold tracking-widest text-zinc-450">{p.subtitle}</p>
+                    <p className="text-[10px] uppercase font-bold tracking-widest text-zinc-500">{p.subtitle}</p>
                     <p className="text-xs text-zinc-400 leading-relaxed font-normal pt-2">
                       {p.description}
                     </p>
@@ -280,7 +280,7 @@ export const WelcomeGate: React.FC<WelcomeGateProps> = ({ onSelectRole }) => {
                   {/* Features Checklist */}
                   <div className="space-y-2 pt-2">
                     {p.features.map((feat) => (
-                      <div key={feat} className="flex items-center gap-2 text-[11px] font-bold text-zinc-350">
+                      <div key={feat} className="flex items-center gap-2 text-[11px] font-bold text-zinc-400">
                         <div className={`w-3.5 h-3.5 rounded-full flex items-center justify-center ${p.badgeStyle}`}>
                           <Check size={8} className="stroke-[3]" />
                         </div>
