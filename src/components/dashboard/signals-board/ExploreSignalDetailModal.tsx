@@ -1,5 +1,6 @@
 import React from 'react';
 import { X, Sparkles, AlertTriangle, TrendingUp, Users, Inbox, Globe } from 'lucide-react';
+import { ModalShell } from '../../common/Modal';
 
 export interface ExploreSignal {
   id: number;
@@ -94,7 +95,7 @@ export const ExploreSignalDetailModal: React.FC<ExploreSignalDetailModalProps> =
     : (signal.type === 'Growth' ? '#10b981' : '#3b82f6');
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+    <ModalShell isOpen onClose={onClose} layer="panel" blur="sm" className="flex items-center justify-center p-4">
       <div className="w-full max-w-lg bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/15 p-5.5 rounded shadow-2xl flex flex-col gap-4 text-xs max-h-[95vh] overflow-y-hidden">
         
         {/* Header section */}
@@ -190,6 +191,6 @@ export const ExploreSignalDetailModal: React.FC<ExploreSignalDetailModalProps> =
           </button>
         </div>
       </div>
-    </div>
+    </ModalShell>
   );
 };

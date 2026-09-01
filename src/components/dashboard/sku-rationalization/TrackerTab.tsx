@@ -5,6 +5,7 @@ import { Plus, X, Calendar, Bell, AlertCircle, MessageSquare, ChevronDown, Chevr
 // without pulling this component into the initial bundle. Re-exported here to
 // keep existing import sites working.
 import { Task, DEFAULT_TASKS } from './trackerTasks';
+import { ModalShell } from '../../common/Modal';
 export type { Task };
 export { DEFAULT_TASKS };
 
@@ -399,7 +400,7 @@ export const TrackerTab: React.FC<TrackerTabProps> = ({ tasks: propsTasks, setTa
 
       {/* Add Task Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+        <ModalShell isOpen onClose={() => setIsAddModalOpen(false)} layer="base" blur="sm" className="flex items-center justify-center p-4 animate-fadeIn">
           <form 
             onSubmit={handleAddTask} 
             className="bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-sm max-w-sm w-full overflow-hidden shadow-2xl relative flex flex-col animate-slideIn p-5 text-left text-zinc-800 dark:text-zinc-200"
@@ -503,7 +504,7 @@ export const TrackerTab: React.FC<TrackerTabProps> = ({ tasks: propsTasks, setTa
               </button>
             </div>
           </form>
-        </div>
+        </ModalShell>
       )}
 
     </div>

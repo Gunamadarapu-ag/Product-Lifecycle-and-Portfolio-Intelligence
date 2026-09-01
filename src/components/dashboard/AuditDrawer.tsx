@@ -11,6 +11,8 @@ import { AUDIT_DATA } from '../../constants/auditData';
 import { SKUS } from '../../constants/data';
 import { parseTrendData, getConfidenceScore, getMetricStatus, getMetricTrend } from '../../utils/auditHelpers';
 import { getChartTheme } from '../../utils/chartTheme';
+import { LAYER } from '../../constants/layers';
+import { useDialogBehavior } from '../../hooks/useDialogBehavior';
 
 interface AuditDrawerProps {
   activeMetric: string | null;
@@ -111,6 +113,8 @@ const AccordionSection: React.FC<{
 };
 
 export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, isDarkMode }) => {
+  // Escape-to-close, scroll lock and focus restore, shared with ModalShell.
+  useDialogBehavior(!!activeMetric, close);
   // Map Home tab metrics to their respective Audit Drawer data keys
   const getMappedMetric = (metric: string | null): string | null => {
     if (!metric) return null;
@@ -220,16 +224,21 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={close}
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[100]"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm"
+            style={{ zIndex: LAYER.drawer }}
           />
 
           {/* Drawer container */}
           <motion.aside
+            role="dialog"
+            aria-modal="true"
+            aria-label={activeMetric ?? 'Audit trace'}
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed top-0 right-0 h-full w-full md:w-[600px] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl border-l border-zinc-200 dark:border-zinc-900/60 z-[110] overflow-y-auto flex flex-col shadow-2xl text-zinc-800 dark:text-zinc-100"
+            className="fixed top-0 right-0 h-full w-full md:w-[600px] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl border-l border-zinc-200 dark:border-zinc-900/60 overflow-y-auto flex flex-col shadow-2xl text-zinc-800 dark:text-zinc-100"
+            style={{ zIndex: LAYER.nested }}
           >
             {activeMetric === 'Executive Guide' ? (
               <>

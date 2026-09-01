@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Search, Download, Eye, X, AlertTriangle, TrendingDown, HelpCircle, Activity, ArrowRight, CheckCircle2, Users, Building, TrendingUp, Mail, Truck, Store, Globe } from 'lucide-react';
 import { Task } from './TrackerTab';
+import { ModalShell } from '../../common/Modal';
 
 const EXPLORER_ROWS = (() => {
   const getProductCategory = (pName: string): string => {
@@ -765,7 +766,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
       {selectedSkuForRca && (() => {
         const rca = getRcaDetails(selectedSkuForRca.sku, selectedSkuForRca.factor);
         return (
-          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 md:p-6 animate-fadeIn">
+          <ModalShell isOpen onClose={() => setSelectedSkuForRca(null)} layer="base" blur="sm" className="flex items-center justify-center p-4 md:p-6 animate-fadeIn">
             <div className="bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-sm max-w-3xl w-full overflow-hidden shadow-2xl relative flex flex-col max-h-[85vh] animate-slideIn">
               
               {/* Header */}
@@ -857,13 +858,13 @@ export const DemoTab: React.FC<DemoTabProps> = ({
               </div>
 
             </div>
-          </div>
+          </ModalShell>
         );
       })()}
 
       {/* Simulation Modal Popup */}
       {isSimulationModalOpen && simulatingSkuName && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 md:p-6 animate-fadeIn">
+        <ModalShell isOpen onClose={() => setIsSimulationModalOpen(false)} layer="base" blur="sm" className="flex items-center justify-center p-4 md:p-6 animate-fadeIn">
           <div className="bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-sm max-w-2xl w-full overflow-hidden shadow-2xl relative flex flex-col max-h-[85vh] animate-slideIn">
             {/* Header */}
             <div className="p-5 border-b border-b-black/5 dark:border-b-white/5 flex justify-between items-start">
@@ -1103,11 +1104,11 @@ export const DemoTab: React.FC<DemoTabProps> = ({
               )}
             </div>
           </div>
-        </div>
+        </ModalShell>
       )}
       {/* Execution Plan & Communication Modal */}
       {isExecutionModalOpen && executionSkuName && (
-        <div className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 md:p-6 animate-fadeIn">
+        <ModalShell isOpen onClose={() => setIsExecutionModalOpen(false)} layer="panel" blur="sm" className="flex items-center justify-center p-4 md:p-6 animate-fadeIn">
           <div className="bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-sm max-w-2xl w-full overflow-hidden shadow-2xl relative flex flex-col max-h-[85vh] animate-slideIn">
             
             {/* Header */}
@@ -1224,7 +1225,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
             </div>
 
           </div>
-        </div>
+        </ModalShell>
       )}
     </div>
   );

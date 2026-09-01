@@ -8,6 +8,7 @@ import {
   X, AlertTriangle, Info, ShieldAlert, TrendingDown, DollarSign, Activity, 
   FileText, Calendar, Cpu, Database, ChevronDown, ChevronUp 
 } from 'lucide-react';
+import { ModalShell } from '../../common/Modal';
 
 export interface AlertData {
   id: string;
@@ -435,7 +436,7 @@ export const SmartAlertDetailsModal: React.FC<SmartAlertDetailsModalProps> = ({
   const currentSev = sevColors[alert.sev];
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[120] flex items-center justify-center p-4">
+    <ModalShell isOpen onClose={onClose} layer="nested" className="flex items-center justify-center p-4">
       <div className="w-full max-w-2xl bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/15 p-6 rounded shadow-2xl flex flex-col gap-4 text-xs max-h-[90vh] overflow-y-auto">
         
         {/* Header */}
@@ -601,6 +602,6 @@ export const SmartAlertDetailsModal: React.FC<SmartAlertDetailsModalProps> = ({
         </div>
 
       </div>
-    </div>
+    </ModalShell>
   );
 };

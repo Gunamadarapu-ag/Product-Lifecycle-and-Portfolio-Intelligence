@@ -12,6 +12,9 @@ import { ResolveEscalationModal, VPEscalation } from './ResolveEscalationModal';
 import { EmailComposerModal } from '../portfolio-health/EmailComposerModal';
 import { SuccessFeedbackModal } from '../portfolio-health/SuccessFeedbackModal';
 import { AIPredictionModal } from '../signals-board/AIPredictionModal';
+import { ModalShell } from '../../common/Modal';
+import { LAYER } from '../../../constants/layers';
+import { useDialogBehavior } from '../../../hooks/useDialogBehavior';
 
 export interface StageGateRecord {
   stageName: 'Concept' | 'Development' | 'Validation' | 'Launch Ready' | 'Live';
@@ -289,6 +292,8 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
   const [trackerFilterStatus, setTrackerFilterStatus] = useState<string>('All');
   const [trackerFilterOwner, setTrackerFilterOwner] = useState<string>('All');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  // Escape-to-close, scroll lock and focus restore for the gate-review drawer.
+  useDialogBehavior(isDrawerOpen, () => setIsDrawerOpen(false));
   const [vpCommentText, setVpCommentText] = useState('');
 
   const handleForcePass = (productId: string, stageName: string) => {
@@ -2290,7 +2295,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
 
       {/* Stage SKUs List Modal */}
       {selectedStageSKUs && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <ModalShell isOpen onClose={() => setSelectedStageSKUs(null)} layer="drawer" blur="sm" className="flex items-center justify-center p-4">
           <div className="bg-white dark:bg-zinc-950 border border-black/10 dark:border-white/10 rounded-xl shadow-2xl w-full max-w-3xl max-h-[85vh] overflow-hidden flex flex-col animate-scaleIn">
             {/* Header */}
             <div className="p-4 border-b border-black/5 dark:border-white/5 flex items-center justify-between">
@@ -2449,7 +2454,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
               </button>
             </div>
           </div>
-        </div>
+        </ModalShell>
       )}
 
       {/* Slide-out Gate Review Details Drawer */}
@@ -2457,12 +2462,19 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
         <>
           {/* Backdrop */}
           <div 
-            className="fixed inset-0 bg-black/60 backdrop-blur-xs z-[110] transition-opacity duration-300"
+            className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300"
+            style={{ zIndex: LAYER.nested }}
             onClick={() => setIsDrawerOpen(false)}
           />
           
           {/* Drawer container */}
-          <div className="fixed top-0 right-0 bottom-0 w-full max-w-md bg-white dark:bg-zinc-950 border-l border-black/10 dark:border-white/10 shadow-2xl z-[120] flex flex-col animate-slideOver overflow-hidden">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Gate review details"
+            style={{ zIndex: LAYER.detail }}
+            className="fixed top-0 right-0 bottom-0 w-full max-w-md bg-white dark:bg-zinc-950 border-l border-black/10 dark:border-white/10 shadow-2xl flex flex-col animate-slideOver overflow-hidden"
+          >
             {/* Drawer Header */}
             <div className="p-4 border-b border-black/5 dark:border-white/5 flex items-center justify-between bg-black/[0.02] dark:bg-white/[0.02]">
               <div>

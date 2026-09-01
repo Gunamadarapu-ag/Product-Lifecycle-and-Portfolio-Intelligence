@@ -14,6 +14,7 @@ import { SuccessFeedbackModal } from '../portfolio-health/SuccessFeedbackModal';
 import { ResolveSignalModal } from './ResolveSignalModal';
 import { AIPredictionModal } from './AIPredictionModal';
 import { ExploreSignalDetailModal, ExploreSignal } from './ExploreSignalDetailModal';
+import { ModalShell } from '../../common/Modal';
 
 const RECIPIENT_TITLES: Record<string, string> = {
   'ananya.sen@aciesglobal.com': 'VP Finance',
@@ -1760,7 +1761,7 @@ const CompetitiveIntelligenceModal: React.FC<CompetitiveIntelligenceModalProps> 
   const forecast = forecastData[intelIdx] || forecastData[0];
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[60] flex items-center justify-center p-4">
+    <ModalShell isOpen onClose={onClose} layer="panel" className="flex items-center justify-center p-4">
       <div className="w-full max-w-2xl bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/15 p-6 rounded shadow-2xl flex flex-col gap-5 text-xs max-h-[90vh] overflow-y-auto">
         
         {/* Header */}
@@ -1929,7 +1930,7 @@ const CompetitiveIntelligenceModal: React.FC<CompetitiveIntelligenceModalProps> 
         </div>
 
       </div>
-    </div>
+    </ModalShell>
   );
 };
 
@@ -2206,7 +2207,7 @@ const PortfolioDeepDiveModal: React.FC<PortfolioDeepDiveModalProps> = ({
   if (!data) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[60] flex items-center justify-center p-4">
+    <ModalShell isOpen onClose={onClose} layer="panel" className="flex items-center justify-center p-4">
       <div className="w-full max-w-2xl bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/15 p-6 rounded shadow-2xl flex flex-col gap-5 text-xs max-h-[90vh] overflow-y-auto">
         
         {/* Header */}
@@ -2342,7 +2343,7 @@ const PortfolioDeepDiveModal: React.FC<PortfolioDeepDiveModalProps> = ({
         </div>
 
       </div>
-    </div>
+    </ModalShell>
   );
 };
 
@@ -2378,7 +2379,7 @@ const RegionalAlertsModal: React.FC<RegionalAlertsModalProps> = ({
       const indicatorBg = sig.severity === 'critical' ? 'bg-red-500/10 text-red-500 border-red-500/20' : sig.severity === 'warning' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : 'bg-blue-500/10 text-blue-500 border-blue-500/20';
 
       return (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[60] flex items-center justify-center p-4">
+        <ModalShell isOpen onClose={onClose} layer="panel" className="flex items-center justify-center p-4">
           <div className="w-full max-w-2xl bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/15 p-6 rounded shadow-2xl flex flex-col gap-5 text-xs max-h-[90vh] overflow-y-auto">
             
             {/* Header */}
@@ -2522,13 +2523,13 @@ const RegionalAlertsModal: React.FC<RegionalAlertsModalProps> = ({
             </div>
 
           </div>
-        </div>
+        </ModalShell>
       );
     }
   }
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[60] flex items-center justify-center p-4">
+    <ModalShell isOpen onClose={onClose} layer="panel" className="flex items-center justify-center p-4">
       <div className="w-full max-w-3xl bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/15 p-6 rounded shadow-2xl flex flex-col gap-5 text-xs max-h-[90vh] overflow-y-auto">
         
         {/* Header */}
@@ -2651,7 +2652,7 @@ const RegionalAlertsModal: React.FC<RegionalAlertsModalProps> = ({
         </div>
 
       </div>
-    </div>
+    </ModalShell>
   );
 };
 

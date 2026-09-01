@@ -22,6 +22,7 @@ import { AgenticAlertExplanationModal } from './AgenticAlertExplanationModal';
 import { EventsCalendarModal } from '../portfolio-health/EventsCalendarModal';
 import { ScheduleMeetingModal } from '../portfolio-health/ScheduleMeetingModal';
 import { getChartTheme } from '../../../utils/chartTheme';
+import { ModalShell } from '../../common/Modal';
 
 interface CustomerInsight {
   name: string;
@@ -544,7 +545,7 @@ const MonthForecastModal: React.FC<{ isOpen: boolean; month: string | null; onCl
   const isBelowTarget = data.thisYearActual !== "N/A (Pending)" && parseFloat(data.thisYearActual.replace(/[^\d.]/g, "")) < parseFloat(data.thisYearTarget.replace(/[^\d.]/g, ""));
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[120] flex items-center justify-center p-4">
+    <ModalShell isOpen onClose={onClose} layer="nested" className="flex items-center justify-center p-4">
       <div className="w-full max-w-xl bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/15 p-6 rounded shadow-2xl flex flex-col gap-4 text-xs max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-start border-b border-black/10 dark:border-white/10 pb-3">
           <div className="space-y-1">
@@ -622,7 +623,7 @@ const MonthForecastModal: React.FC<{ isOpen: boolean; month: string | null; onCl
           </button>
         </div>
       </div>
-    </div>
+    </ModalShell>
   );
 };
 

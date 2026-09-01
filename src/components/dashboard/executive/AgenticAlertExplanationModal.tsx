@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import { X, Sparkles, ZoomIn } from 'lucide-react';
+import { ModalShell } from '../../common/Modal';
 
 interface AgenticAlertExplanationModalProps {
   isOpen: boolean;
@@ -696,7 +697,13 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
   const currentDiagnostic = diagnosticData[activeDiagnosticTab];
 
   return (
-    <div className={`fixed inset-0 backdrop-blur-md z-[120] flex items-center justify-center p-4 transition-colors duration-300 ${isDarkMode ? 'bg-black/85' : 'bg-slate-900/40'}`}>
+    <ModalShell
+      isOpen
+      onClose={onClose}
+      layer="nested"
+      scrimClassName={isDarkMode ? 'bg-black/85' : 'bg-slate-900/40'}
+      className="flex items-center justify-center p-4 transition-colors duration-300"
+    >
       <div className={`w-full max-w-5xl p-6 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex flex-col gap-5 text-xs max-h-[95vh] overflow-y-auto font-sans animate-fade-in bg-[#121218] border border-purple-500/15 text-zinc-300 ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
         <style>{`
           @keyframes fadeIn {
@@ -3075,11 +3082,15 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
 
       {/* Expanded Causal Network Zoom Modal Overlay */}
       {isZoomedRootCause && (
-        <div 
-          className="fixed inset-0 bg-black/90 backdrop-blur-lg z-[130] flex items-center justify-center p-6 animate-fade-in"
-          onClick={() => setIsZoomedRootCause(false)}
+        <ModalShell
+          isOpen
+          onClose={() => setIsZoomedRootCause(false)}
+          layer="detail"
+          scrimClassName="bg-black/90"
+          blur="lg"
+          className="flex items-center justify-center p-6 animate-fade-in"
         >
-          <div 
+          <div
             className="w-full max-w-5xl bg-[#0b0a0e] border border-purple-500/25 rounded-2xl p-6 shadow-[0_0_60px_rgba(168,85,247,0.2)] flex flex-col gap-5 text-xs max-h-[90vh] overflow-y-auto font-sans relative animate-in fade-in zoom-in duration-200"
             onClick={(e) => e.stopPropagation()}
           >
@@ -3455,8 +3466,8 @@ export const AgenticAlertExplanationModal: React.FC<AgenticAlertExplanationModal
               </div>
             </div>
           </div>
-        </div>
+        </ModalShell>
       )}
-    </div>
+    </ModalShell>
   );
 };

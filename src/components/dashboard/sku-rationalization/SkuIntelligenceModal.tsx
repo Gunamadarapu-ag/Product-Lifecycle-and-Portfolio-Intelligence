@@ -7,6 +7,7 @@ import React from 'react';
 import { Cpu, Sparkles, Rocket, GitFork, Bell, Sliders, FileText, CheckCircle2 } from 'lucide-react';
 import { SKUS } from '../../../constants/data';
 import { srClassify, SR_CLASSES } from './skuConstants';
+import { ModalShell } from '../../common/Modal';
 
 interface SkuIntelligenceModalProps {
   sku: typeof SKUS[0] | null;
@@ -32,7 +33,7 @@ export const SkuIntelligenceModal: React.FC<SkuIntelligenceModalProps> = ({
   const skuLogs = auditLog.filter(log => log.skuA === sku.name || log.skuB === sku.name);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <ModalShell isOpen onClose={onClose} layer="base" blur="sm" className="flex items-center justify-center p-4">
       {/* Backdrop click to close */}
       <div 
         className="absolute inset-0 cursor-pointer"
@@ -224,6 +225,6 @@ export const SkuIntelligenceModal: React.FC<SkuIntelligenceModalProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </ModalShell>
   );
 };

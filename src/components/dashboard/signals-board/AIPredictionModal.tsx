@@ -1,5 +1,6 @@
 import React from 'react';
 import { X, Zap, Brain, TrendingUp, Sparkles, AlertTriangle, ShieldCheck, Activity, CheckCircle2, User, ArrowLeft, Clock, Info } from 'lucide-react';
+import { ModalShell } from '../../common/Modal';
 
 interface AIPredictionModalProps {
   isOpen: boolean;
@@ -379,7 +380,7 @@ export const AIPredictionModal: React.FC<AIPredictionModalProps> = ({ isOpen, on
   if (selectedRecIdx !== null && content.recommendations[selectedRecIdx]) {
     const rec = content.recommendations[selectedRecIdx];
     return (
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[60] flex items-center justify-center p-4">
+      <ModalShell isOpen onClose={onClose} layer="panel" className="flex items-center justify-center p-4">
         <div className="w-full max-w-2xl bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/15 p-6 rounded shadow-2xl flex flex-col gap-5 text-xs max-h-[90vh] overflow-y-auto">
           
           {/* Header */}
@@ -513,13 +514,13 @@ export const AIPredictionModal: React.FC<AIPredictionModalProps> = ({ isOpen, on
           </div>
 
         </div>
-      </div>
+      </ModalShell>
     );
   }
 
   // Page 1: Main Explainer View (Why, How, and Recommendations 3 blocks with no bottom details box)
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[60] flex items-center justify-center p-4">
+    <ModalShell isOpen onClose={onClose} layer="panel" className="flex items-center justify-center p-4">
       <div className="w-full max-w-2xl bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/15 p-6 rounded shadow-2xl flex flex-col gap-5 text-xs max-h-[90vh] overflow-y-auto">
         
         {/* Header */}
@@ -643,6 +644,6 @@ export const AIPredictionModal: React.FC<AIPredictionModalProps> = ({ isOpen, on
         </div>
 
       </div>
-    </div>
+    </ModalShell>
   );
 };

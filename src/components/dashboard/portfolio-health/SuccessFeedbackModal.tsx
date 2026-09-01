@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { Mail, MessageSquare, Check, X } from 'lucide-react';
+import { ModalShell } from '../../common/Modal';
 
 interface SuccessFeedbackModalProps {
   isOpen: boolean;
@@ -46,7 +47,7 @@ export const SuccessFeedbackModal: React.FC<SuccessFeedbackModalProps> = ({
     : `The mitigation action plan for the "${contextTitle}" signal is managed by ${recipientName} (${recipientTitle}). You can coordinate resolution or align schedules by emailing or messaging them.`;
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[80] flex items-center justify-center p-4">
+    <ModalShell isOpen onClose={onClose} layer="elevated" className="flex items-center justify-center p-4">
       <div className="w-full max-w-sm bg-white dark:bg-[#161620] border border-black/10 dark:border-white/10 p-6 rounded-2xl shadow-2xl flex flex-col gap-4 text-xs animate-fade-in text-zinc-800 dark:text-zinc-200">
         
         {/* Profile Header */}
@@ -123,6 +124,6 @@ export const SuccessFeedbackModal: React.FC<SuccessFeedbackModalProps> = ({
         </button>
 
       </div>
-    </div>
+    </ModalShell>
   );
 };

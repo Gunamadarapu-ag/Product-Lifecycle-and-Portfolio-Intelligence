@@ -1,6 +1,7 @@
 import React from 'react';
 import { X, Sparkles, TrendingUp, TrendingDown, ArrowRight, Play, Eye, FileSearch, HelpCircle } from 'lucide-react';
 import { SKUS } from '../../../constants/data';
+import { ModalShell } from '../../common/Modal';
 
 interface KpiActionModalProps {
   activeKpi: string | null;
@@ -261,15 +262,10 @@ export const KpiActionModal: React.FC<KpiActionModalProps> = ({
   if (!details) return null;
 
   return (
-    <>
-      {/* Backdrop */}
-      <div 
-        onClick={onClose}
-        className="fixed inset-0 bg-black/60 backdrop-blur-md z-[120] transition-opacity duration-300"
-      />
-
-      {/* Action Dialog */}
-      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-xl bg-white dark:bg-acies-gray border border-black/10 dark:border-white/10 rounded-2xl shadow-2xl z-[130] overflow-hidden flex flex-col font-body text-zinc-800 dark:text-white animate-scaleUp">
+    <ModalShell isOpen onClose={onClose} layer="nested" aria-label="KPI actions">
+      {/* Action Dialog. Centring now comes from the shell, so the panel no
+          longer positions itself with fixed/translate offsets. */}
+      <div className="w-[90%] max-w-xl bg-white dark:bg-acies-gray border border-black/10 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col font-body text-zinc-800 dark:text-white animate-scaleUp">
         
         {/* Header */}
         <div className="border-b border-black/5 dark:border-white/5 bg-zinc-50 dark:bg-white/5 py-4 px-6 flex justify-between items-center">
@@ -351,6 +347,6 @@ export const KpiActionModal: React.FC<KpiActionModalProps> = ({
           <span className="flex items-center gap-1"><FileSearch size={10} /> Local Action Orchestrator</span>
         </div>
       </div>
-    </>
+    </ModalShell>
   );
 };

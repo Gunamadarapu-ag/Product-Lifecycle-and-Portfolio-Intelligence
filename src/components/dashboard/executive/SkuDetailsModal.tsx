@@ -7,6 +7,7 @@ import React from 'react';
 import { 
   X, TrendingUp, TrendingDown, AlertTriangle, Info, Mail, Zap, Activity, Clock, ShieldAlert 
 } from 'lucide-react';
+import { ModalShell } from '../../common/Modal';
 
 interface SKU {
   name: string;
@@ -236,7 +237,7 @@ Executive Director`;
   const isHighStockout = sku.stockouts >= 4;
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[60] flex items-center justify-center p-4">
+    <ModalShell isOpen onClose={onClose} layer="panel" className="flex items-center justify-center p-4">
       <div className="w-full max-w-xl bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/15 p-6 rounded shadow-2xl flex flex-col gap-4 text-xs max-h-[90vh] overflow-y-auto">
         
         {/* Header */}
@@ -409,6 +410,6 @@ Executive Director`;
         </div>
 
       </div>
-    </div>
+    </ModalShell>
   );
 };

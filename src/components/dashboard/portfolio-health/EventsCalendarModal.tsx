@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, ChevronLeft, ChevronRight, Calendar as CalendarIcon, AlertCircle, Clock, Check } from 'lucide-react';
+import { ModalShell } from '../../common/Modal';
 
 interface CalendarEvent {
   id: string;
@@ -400,7 +401,7 @@ export const EventsCalendarModal: React.FC<EventsCalendarModalProps> = ({ isOpen
     .sort((a, b) => a.start.getTime() - b.start.getTime());
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[60] flex items-center justify-center p-4">
+    <ModalShell isOpen onClose={onClose} layer="panel" className="flex items-center justify-center p-4">
       <div className="w-full max-w-5xl bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/15 p-6 rounded shadow-2xl flex flex-col gap-4 text-xs max-h-[95vh] overflow-y-auto">
         
         {/* Modal Header */}
@@ -652,6 +653,6 @@ export const EventsCalendarModal: React.FC<EventsCalendarModalProps> = ({ isOpen
         </div>
 
       </div>
-    </div>
+    </ModalShell>
   );
 };

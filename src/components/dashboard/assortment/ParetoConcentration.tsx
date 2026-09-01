@@ -3,10 +3,14 @@ import { PORTFOLIO_DATA } from '../../../constants/data';
 import { ResponsiveContainer, ComposedChart, Bar, Line, XAxis, YAxis, Tooltip, CartesianGrid, ReferenceLine, Cell } from 'recharts';
 import { BarChart2, Star, Award, Layers, X, Sparkles, TrendingUp, AlertTriangle, Percent, Clock, ShieldCheck, Box, ChevronRight, HelpCircle, Coins, BarChart3 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { LAYER } from '../../../constants/layers';
+import { useDialogBehavior } from '../../../hooks/useDialogBehavior';
 
 export const ParetoConcentration: React.FC = () => {
   const [filterType, setFilterType] = useState<'all' | 'heroes' | 'tail'>('all');
   const [selectedSkuName, setSelectedSkuName] = useState<string | null>(null);
+  // Escape-to-close, scroll lock and focus restore, shared with ModalShell.
+  useDialogBehavior(!!selectedSkuName, () => setSelectedSkuName(null));
   const [discountDepth, setDiscountDepth] = useState<number>(10);
   const [heroThreshold, setHeroThreshold] = useState<number>(30); // dynamic simulator from 20 to 60
 
@@ -275,7 +279,8 @@ export const ParetoConcentration: React.FC = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedSkuName(null)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[150]"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+              style={{ zIndex: LAYER.composer }}
             />
 
             {/* Drawer Container */}
@@ -284,7 +289,12 @@ export const ParetoConcentration: React.FC = () => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-l border-black/10 dark:border-white/10 z-[160] overflow-y-auto flex flex-col shadow-2xl text-zinc-800 dark:text-zinc-200 p-6"
+              role="dialog"
+              aria-modal="true"
+              aria-label={`SKU detail: ${selectedSkuName ?? ''}`}
+              // Drawer panels sit one step above their own backdrop.
+              style={{ zIndex: LAYER.composer + 10 }}
+              className="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-l border-black/10 dark:border-white/10 overflow-y-auto flex flex-col shadow-2xl text-zinc-800 dark:text-zinc-200 p-6"
             >
               {/* Header */}
               <div className="flex justify-between items-start border-b border-black/5 dark:border-white/5 pb-4 mb-4">

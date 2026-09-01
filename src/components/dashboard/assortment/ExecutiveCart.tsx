@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StagedAction } from './types';
 import { Briefcase, Trash2, X, CheckCircle, TrendingUp, TrendingDown, Layers, Box, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ModalShell } from '../../common/Modal';
 
 interface ExecutiveCartProps {
   stagedActions: StagedAction[];
@@ -96,7 +97,7 @@ export const ExecutiveCart: React.FC<ExecutiveCartProps> = ({ stagedActions, onR
       {/* Review Modal Backdrop Blur */}
       <AnimatePresence>
         {isOpen && (
-          <div className="fixed inset-0 z-[400] flex items-center justify-center p-4">
+          <ModalShell isOpen onClose={() => setIsOpen(false)} layer="cart" scrimClassName="" blur="none" className="flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -237,7 +238,7 @@ export const ExecutiveCart: React.FC<ExecutiveCartProps> = ({ stagedActions, onR
                 </>
               )}
             </motion.div>
-          </div>
+          </ModalShell>
         )}
       </AnimatePresence>
     </>

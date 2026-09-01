@@ -17,6 +17,7 @@ import { TimelineRange, getFilteredSKUS } from '../../../utils/timeframe';
 import type { TimeHorizon } from '../../../types/dashboard';
 import { useMemo } from 'react';
 import { getChartTheme } from '../../../utils/chartTheme';
+import { ModalShell } from '../../common/Modal';
 
 interface DrilldownSkuModalProps {
   isOpen: boolean;
@@ -197,7 +198,7 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
   const { gridStroke, tickColor, tooltipBg, tooltipBorder, tooltipText } = getChartTheme(isDarkMode);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
+    <ModalShell isOpen onClose={onClose} layer="base" blur="sm" className="flex items-center justify-center p-4 overflow-y-auto">
       {/* Modal Container */}
       <div 
         className="bg-white dark:bg-acies-gray border border-black/10 dark:border-white/10 w-full max-w-4xl shadow-2xl rounded-sm overflow-hidden animate-scaleIn flex flex-col relative max-h-[90vh]"
@@ -637,6 +638,6 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
           channel={successFeedback.channel}
         />
       )}
-    </div>
+    </ModalShell>
   );
 };

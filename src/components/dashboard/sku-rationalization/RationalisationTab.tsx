@@ -11,6 +11,7 @@ import {
   RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, LabelList,
   Sector
 } from 'recharts';
+import { ModalShell } from '../../common/Modal';
 
 // --- SHARED DATA TYPES & CONSTANTS ---
 
@@ -2264,7 +2265,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
         const maxStageCount = Math.max(...details.stages.map(s => s.count));
 
         return (
-          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 md:p-6 animate-fadeIn text-zinc-800 dark:text-zinc-200">
+          <ModalShell isOpen onClose={() => setSelectedRoadmapPhase(null)} layer="base" blur="sm" className="flex items-center justify-center p-4 md:p-6 animate-fadeIn text-zinc-800 dark:text-zinc-200">
             <div className="bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-sm max-w-4xl w-full overflow-hidden shadow-2xl relative flex flex-col max-h-[90vh] animate-slideIn">
               
               {/* Header */}
@@ -2449,13 +2450,13 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
               </div>
 
             </div>
-          </div>
+          </ModalShell>
         );
       })()}      {/* AI Risk Analysis Details Modal */}
       {selectedRiskForAnalysis && (() => {
         const rca = getRcaDetails(selectedRiskForAnalysis.sku, selectedRiskForAnalysis.factor);
         return (
-          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 md:p-6 animate-fadeIn text-zinc-800 dark:text-zinc-200">
+          <ModalShell isOpen onClose={() => setSelectedRiskForAnalysis(null)} layer="base" blur="sm" className="flex items-center justify-center p-4 md:p-6 animate-fadeIn text-zinc-800 dark:text-zinc-200">
             <div className="bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-sm max-w-3xl w-full overflow-hidden shadow-2xl relative flex flex-col max-h-[85vh] animate-slideIn">
               
               {/* Header */}
@@ -2586,7 +2587,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
               </div>
 
             </div>
-          </div>
+          </ModalShell>
         );
       })()}
 

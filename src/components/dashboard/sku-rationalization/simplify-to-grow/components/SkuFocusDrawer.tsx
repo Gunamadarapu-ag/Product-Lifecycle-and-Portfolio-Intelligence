@@ -2,6 +2,8 @@ import React from 'react';
 import { Scissors, Activity, Package, X } from 'lucide-react';
 import { EnrichedSKU } from '../types';
 import { COMPLEXITY_CONFIG } from '../utils';
+import { LAYER } from '../../../../../constants/layers';
+import { useDialogBehavior } from '../../../../../hooks/useDialogBehavior';
 
 interface SkuFocusDrawerProps {
   sku: EnrichedSKU;
@@ -25,6 +27,8 @@ const FillBar: React.FC<{ value: number; max: number; color: string; label: stri
 );
 
 export const SkuFocusDrawer: React.FC<SkuFocusDrawerProps> = ({ sku, onClose, onNavigate, isDarkMode, maxIppv }) => {
+  // Escape-to-close, scroll lock and focus restore, shared with ModalShell.
+  useDialogBehavior(!!sku, onClose);
   const cfg = COMPLEXITY_CONFIG[sku.complexityType];
   const growth = sku.growth * 100;
   const ippvComponents = [
@@ -48,12 +52,17 @@ export const SkuFocusDrawer: React.FC<SkuFocusDrawerProps> = ({ sku, onClose, on
       {/* Backdrop overlay */}
       <div 
         onClick={onClose}
-        className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-opacity duration-300 animate-fadeIn" 
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 animate-fadeIn"
+        style={{ zIndex: LAYER.base }}
       />
 
       {/* Drawer Panel */}
       <div 
-        className={`fixed inset-y-0 right-0 w-full sm:w-[480px] z-50 shadow-2xl flex flex-col justify-between overflow-y-auto animate-slide-in-right border-l ${
+        role="dialog"
+        aria-modal="true"
+        aria-label={`SKU focus: ${sku?.name ?? ''}`}
+        style={{ zIndex: LAYER.panel }}
+        className={`fixed inset-y-0 right-0 w-full sm:w-[480px] shadow-2xl flex flex-col justify-between overflow-y-auto animate-slide-in-right border-l ${
           isDarkMode 
             ? 'bg-[#181824] border-zinc-800 text-white' 
             : 'bg-white border-zinc-200 text-zinc-800'

@@ -14,6 +14,7 @@ import { MarginSimulator } from './MarginSimulator';
 import { TimelineRange, getTimeframeScale, getDeterministicNoise, getFilteredSKUS, getAdjustedMargin, getAdjustedPci } from '../../../utils/timeframe';
 import { chartDatum } from '../../../utils/rechartsCompat';
 import { getChartTheme } from '../../../utils/chartTheme';
+import { ModalShell } from '../../common/Modal';
 
 interface ProfitabilityTreeProps {
   role: Role;
@@ -663,7 +664,7 @@ const VPProfitabilityTreeView: React.FC<{
 
       {/* Contributor Detail Modal */}
       {selectedDetail && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+        <ModalShell isOpen onClose={() => setSelectedDetail(null)} layer="base" blur="sm" className="flex items-center justify-center p-4 animate-fade-in">
           <div className="bg-white dark:bg-[#1a1a24] border border-black/10 dark:border-white/10 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl animate-scale-up">
             {/* Modal Header */}
             <div className="flex items-center justify-between p-4 border-b border-black/5 dark:border-white/5 bg-zinc-50 dark:bg-zinc-900/40">
@@ -854,12 +855,12 @@ const VPProfitabilityTreeView: React.FC<{
               </div>
             </div>
           </div>
-        </div>
+        </ModalShell>
       )}
 
       {/* Category / Brand Breakdown Modal */}
       {openBreakdownModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+        <ModalShell isOpen onClose={() => setOpenBreakdownModal(null)} layer="base" blur="sm" className="flex items-center justify-center p-4 animate-fade-in">
           <div className="bg-white dark:bg-[#1a1a24] border border-black/10 dark:border-white/10 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl animate-scale-up">
             {/* Modal Header */}
             <div className="flex items-center justify-between p-4 border-b border-black/5 dark:border-white/5 bg-zinc-50 dark:bg-zinc-900/40">
@@ -951,7 +952,7 @@ const VPProfitabilityTreeView: React.FC<{
               )}
             </div>
           </div>
-        </div>
+        </ModalShell>
       )}
 
 

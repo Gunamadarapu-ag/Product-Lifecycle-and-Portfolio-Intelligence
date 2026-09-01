@@ -5,6 +5,8 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { LAYER } from '../../constants/layers';
+import { useDialogBehavior } from '../../hooks/useDialogBehavior';
 import { Zap, ChevronRight } from 'lucide-react';
 import { AGENT_ROSTER } from '../../constants/data';
 
@@ -13,7 +15,13 @@ interface SidebarProps {
   close: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ isOpen, close }) => (
+export const Sidebar: React.FC<SidebarProps> = ({ isOpen, close }) => {
+  // Escape-to-close, scroll lock and focus restore. The drawer keeps its own
+  // AnimatePresence markup — a centring ModalShell would nest the sliding
+  // aside inside the scrim and lose the spring exit.
+  useDialogBehavior(isOpen, close);
+
+  return (
   <>
     <AnimatePresence>
       {isOpen && (
@@ -22,15 +30,25 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, close }) => (
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={close}
-          className="fixed inset-0 bg-black/60 backdrop-blur-md z-50"
+          className="fixed inset-0 bg-black/60 backdrop-blur-md"
+          style={{ zIndex: LAYER.base }}
         />
       )}
     </AnimatePresence>
     <motion.aside 
+      // The aside stays mounted so it can slide in and out, so it must only
+      // advertise itself as a dialog while it is actually open — otherwise a
+      // permanently-present role="dialog" sits in the DOM behind every page.
+      role={isOpen ? 'dialog' : undefined}
+      aria-modal={isOpen || undefined}
+      aria-label="How This Evolves"
+      aria-hidden={!isOpen}
+      inert={!isOpen}
       animate={{ x: isOpen ? 0 : '100%' }}
       initial={{ x: '100%' }}
       transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-      className="fixed top-0 right-0 h-full w-full md:w-[500px] bg-white dark:bg-acies-gray border-l border-black/10 dark:border-white/10 z-[60] p-10 overflow-y-auto"
+      className="fixed top-0 right-0 h-full w-full md:w-[500px] bg-white dark:bg-acies-gray border-l border-black/10 dark:border-white/10 p-10 overflow-y-auto"
+      style={{ zIndex: LAYER.panel }}
     >
       <div className="flex justify-between items-center mb-16">
         <div>
@@ -122,4 +140,5 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, close }) => (
       </div>
     </motion.aside>
   </>
-);
+  );
+};

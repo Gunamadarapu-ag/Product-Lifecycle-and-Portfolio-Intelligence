@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { AlertCircle, MapPin, Mail, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ModalShell } from '../../common/Modal';
 
 interface Suggestion {
   action: string;
@@ -45,7 +46,7 @@ export const BottleneckDetailsModal: React.FC<BottleneckDetailsModalProps> = ({
   if (!isOpen || !bottleneck) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[60] flex items-center justify-center p-4">
+    <ModalShell isOpen onClose={onClose} layer="panel" className="flex items-center justify-center p-4">
       <div className="w-full max-w-lg bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/15 p-6 rounded shadow-2xl flex flex-col gap-4 text-xs max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center border-b border-black/15 dark:border-white/15 pb-2">
           <div className="flex items-center gap-1.5">
@@ -142,6 +143,6 @@ export const BottleneckDetailsModal: React.FC<BottleneckDetailsModalProps> = ({
           </button>
         </div>
       </div>
-    </div>
+    </ModalShell>
   );
 };

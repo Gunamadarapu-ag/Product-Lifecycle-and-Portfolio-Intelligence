@@ -21,8 +21,12 @@ export const LAYER = {
   drawer: 100,
   /** A dialog opened from inside another dialog. */
   nested: 120,
-  /** Third-level detail dialog. */
-  detail: 140,
+  /** Third level: a detail dialog opened from a nested one. */
+  detail: 130,
+  /** Fourth level: a deep-dive opened from a detail dialog. */
+  deepDive: 140,
+  /** Fifth level: root-cause dialog opened from a deep-dive. */
+  rootCause: 145,
   /** Email / message composer — sits above the content stack. */
   composer: 150,
   /** Floating executive cart. */

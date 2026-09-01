@@ -4,7 +4,9 @@
  */
 
 import React, { useState, useMemo } from 'react';
-import { createPortal } from 'react-dom';
+// ModalShell portals to document.body itself, so the explicit createPortal
+// calls these two overlays used are no longer needed.
+import { ModalShell } from '../../common/Modal';
 import { Role } from '../../../types/dashboard';
 import { Download, Search, CheckCircle2, Activity, X, Eye, Printer, FileText, RefreshCw } from 'lucide-react';
 import { SKUS as GLOBAL_SKUS } from '../../../constants/data';
@@ -485,8 +487,15 @@ export const SKURationalization: React.FC<SKURationalizationProps> = ({ role, is
       />
 
       {/* Full-Screen Action Control Room Modal Overlay */}
-      {state.isControlCenterOpen && createPortal(
-        <div className="fixed inset-0 bg-black/60 dark:bg-black/85 backdrop-blur-sm z-[999] flex items-center justify-center p-4 sm:p-6 md:p-10 animate-fadeIn font-sans">
+      {state.isControlCenterOpen && (
+        <ModalShell
+          isOpen
+          onClose={() => state.setIsControlCenterOpen(false)}
+          layer="critical"
+          blur="sm"
+          scrimClassName="bg-black/60 dark:bg-black/85"
+          className="flex items-center justify-center p-4 sm:p-6 md:p-10 font-sans"
+        >
           <div className="bg-white dark:bg-acies-offwhite border border-black/10 dark:border-white/10 rounded-2xl w-full max-w-5xl h-[90vh] flex flex-col overflow-hidden shadow-2xl relative text-zinc-900 dark:text-white">
             {/* Header */}
             <div className="px-6 py-4 border-b border-black/5 dark:border-white/5 flex justify-between items-center bg-black/[0.02] dark:bg-white/[0.02]">
@@ -545,13 +554,19 @@ export const SKURationalization: React.FC<SKURationalizationProps> = ({ role, is
               />
             </div>
           </div>
-        </div>,
-        document.body
+        </ModalShell>
       )}
 
       {/* Document Viewer Modal Overlay */}
-      {state.selectedDoc && documentTemplates[state.selectedDoc] && createPortal(
-        <div className="fixed inset-0 bg-black/60 dark:bg-black/85 backdrop-blur-sm z-[1000] flex items-center justify-center p-4 sm:p-6 animate-fadeIn font-mono">
+      {state.selectedDoc && documentTemplates[state.selectedDoc] && (
+        <ModalShell
+          isOpen
+          onClose={() => state.setSelectedDoc(null)}
+          layer="critical"
+          blur="sm"
+          scrimClassName="bg-black/60 dark:bg-black/85"
+          className="flex items-center justify-center p-4 sm:p-6 font-mono"
+        >
           <div className="bg-zinc-50 dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-xl w-full max-w-2xl h-[85vh] flex flex-col overflow-hidden shadow-2xl relative text-zinc-900 dark:text-zinc-100">
             {/* Header */}
             <div className="px-6 py-4 border-b border-black/5 dark:border-white/5 flex justify-between items-center bg-black/[0.02] dark:bg-white/[0.02]">
@@ -676,8 +691,7 @@ export const SKURationalization: React.FC<SKURationalizationProps> = ({ role, is
               )}
             </div>
           </div>
-        </div>,
-        document.body
+        </ModalShell>
       )}
 
     </div>

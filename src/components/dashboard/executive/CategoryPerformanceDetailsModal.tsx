@@ -11,6 +11,7 @@ import {
   ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid 
 } from 'recharts';
 import { Role } from '../../../types/dashboard';
+import { ModalShell } from '../../common/Modal';
 
 interface SkuPerformanceDetail {
   name: string;
@@ -1157,7 +1158,7 @@ const SkuRootCauseDeepDiveModal: React.FC<SkuRootCauseDeepDiveModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[145] flex items-center justify-center p-4 animate-fade-in">
+    <ModalShell isOpen onClose={onClose} layer="rootCause" className="flex items-center justify-center p-4 animate-fade-in">
       <div className="w-full max-w-md bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/15 p-6 rounded shadow-2xl flex flex-col gap-4 text-xs max-h-[85vh] overflow-y-auto">
         
         {/* Header */}
@@ -1214,7 +1215,7 @@ const SkuRootCauseDeepDiveModal: React.FC<SkuRootCauseDeepDiveModalProps> = ({
         </div>
 
       </div>
-    </div>
+    </ModalShell>
   );
 };
 
@@ -1276,7 +1277,7 @@ const RecommendationDetailModal: React.FC<RecommendationDetailModalProps> = ({
   const options = getMappedOptions();
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[140] flex items-center justify-center p-4 animate-fade-in">
+    <ModalShell isOpen onClose={onClose} layer="deepDive" className="flex items-center justify-center p-4 animate-fade-in">
       <div className="w-full max-w-lg bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/15 p-6 rounded shadow-2xl flex flex-col gap-4 text-xs max-h-[90vh] overflow-y-auto">
         
         {/* Header */}
@@ -1358,7 +1359,7 @@ const RecommendationDetailModal: React.FC<RecommendationDetailModalProps> = ({
           </button>
         </div>
       </div>
-    </div>
+    </ModalShell>
   );
 };
 
@@ -1419,7 +1420,7 @@ const SkuAnalysisModal: React.FC<SkuAnalysisModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[130] flex items-center justify-center p-4">
+    <ModalShell isOpen onClose={onClose} layer="detail" scrimClassName="bg-black/70" className="flex items-center justify-center p-4">
       <div className="w-full max-w-lg bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/15 p-6 rounded shadow-2xl flex flex-col gap-4 text-xs max-h-[90vh] overflow-y-auto animate-fade-in">
         
         {/* Header */}
@@ -1597,7 +1598,7 @@ const SkuAnalysisModal: React.FC<SkuAnalysisModalProps> = ({
           deepDive={details.deepDive}
         />
       )}
-    </div>
+    </ModalShell>
   );
 };
 
@@ -1624,7 +1625,7 @@ export const CategoryPerformanceDetailsModal: React.FC<CategoryPerformanceDetail
   if (!data) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[120] flex items-center justify-center p-4">
+    <ModalShell isOpen onClose={onClose} layer="nested" className="flex items-center justify-center p-4">
       <div className="w-full max-w-2xl bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/15 p-6 rounded shadow-2xl flex flex-col gap-4 text-xs max-h-[90vh] overflow-y-auto">
         
         {/* Header */}
@@ -1783,6 +1784,6 @@ export const CategoryPerformanceDetailsModal: React.FC<CategoryPerformanceDetail
           role={role}
         />
       )}
-    </div>
+    </ModalShell>
   );
 };
