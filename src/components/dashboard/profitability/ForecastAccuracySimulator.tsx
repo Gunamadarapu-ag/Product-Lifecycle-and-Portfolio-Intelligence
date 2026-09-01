@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Info, RefreshCw, BarChart2 } from 'lucide-react';
-import { 
-  ResponsiveContainer, ComposedChart, Line, Area, XAxis, YAxis, Tooltip, CartesianGrid 
+import {
+  ResponsiveContainer, ComposedChart, Line, Area, XAxis, YAxis, Tooltip, CartesianGrid
 } from 'recharts';
+import { getChartTheme } from '../../../utils/chartTheme';
 
 interface ForecastAccuracySimulatorProps {
   isDarkMode: boolean;
@@ -47,11 +48,7 @@ export const ForecastAccuracySimulator: React.FC<ForecastAccuracySimulatorProps>
   ];
 
   // Dynamic Theme Colors
-  const gridStroke = isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
-  const tickColor = isDarkMode ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
-  const tooltipBg = isDarkMode ? '#1e1e28' : '#ffffff';
-  const tooltipBorder = isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-  const tooltipText = isDarkMode ? '#ffffff' : '#1f2937';
+  const { gridStroke, tickColor, tooltipBg, tooltipBorder, tooltipText } = getChartTheme(isDarkMode);
 
   // Dynamic chart data where the green AI line and savings area respond to sliders
   const chartData = baseData.map((d) => {

@@ -184,6 +184,12 @@ export interface SKU {
   margin: number;
   growth: number;
   lead: number;
+  /**
+   * Fraction of target households regularly purchasing (Nielsen-style panel
+   * proxy). Present on every row in `SKUS` but previously absent from this
+   * interface, so consumers that needed it could not see it.
+   */
+  householdPenetration: number;
 }
 
 export interface SignalItem {
@@ -196,3 +202,12 @@ export interface SignalItem {
   acknowledged: boolean;
 }
 
+
+/**
+ * Time horizon for the Top-Down Drilldown filters.
+ *
+ * Previously this union was re-declared inline at five call sites and one of
+ * them (DrilldownRegionGrid) omitted '2Y', even though the picker offers it
+ * and the component's own lookup tables carry a '2Y' row.
+ */
+export type TimeHorizon = '1M' | '3M' | '6M' | 'YTD' | '12M' | '2Y' | '3Y';

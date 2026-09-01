@@ -5,13 +5,14 @@
 
 import React from 'react';
 import { Globe } from 'lucide-react';
+import type { TimeHorizon } from '../../../types/dashboard';
 
 interface DrilldownRegionGridProps {
   selectedRegion: string | null;
   onRegionSelect: (region: string) => void;
   selectedMetric: 'rev' | 'margin' | 'otif';
   multiplier: number;
-  timeHorizon: '1M' | '3M' | '6M' | 'YTD' | '12M' | '3Y';
+  timeHorizon: TimeHorizon;
   isDarkMode: boolean;
 }
 

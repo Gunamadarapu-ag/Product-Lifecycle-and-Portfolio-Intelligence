@@ -45,6 +45,11 @@ interface CannibalizationAnalystViewProps {
   isDarkMode: boolean;
   gridStroke: string;
   tickColor: string;
+  // These three were passed by the parent and destructured below, but never
+  // declared here — invisible while React was untyped.
+  tooltipBg: string;
+  tooltipBorder: string;
+  tooltipText: string;
   // Control Center additions
   completedSteps: Record<string, boolean>;
   setStepCompleted: (pairKey: string, team: string, stepIdx: number, completed: boolean) => void;

@@ -224,8 +224,13 @@ export const SKUHoldingsMatrix: React.FC<SKUHoldingsMatrixProps> = () => {
                           {status === 'critical' && (
                             <div className="w-2.5 h-2.5 bg-rose-500 rotate-45 border border-rose-600" title="Severe Stockout" />
                           )}
+                          {/* `title` on a Lucide icon lands on the <svg> as an
+                              attribute, which renders no tooltip — SVG needs a
+                              <title> child. The span makes it actually appear. */}
                           {status === 'not-listed' && (
-                            <Minus size={10} className="text-zinc-300 dark:text-zinc-700" title="Not Listed" />
+                            <span title="Not Listed" className="inline-flex">
+                              <Minus size={10} className="text-zinc-300 dark:text-zinc-700" />
+                            </span>
                           )}
                         </div>
                       </td>

@@ -3,6 +3,7 @@ import { ResponsiveContainer, BarChart, Bar, CartesianGrid, XAxis, YAxis, Toolti
 import { Info } from 'lucide-react';
 import { EnrichedSKU } from '../types';
 import { CAT_COLORS } from '../utils';
+import { chartDatum } from '../../../../../utils/rechartsCompat';
 
 interface ComplexityPlProps {
   categories: any[];
@@ -121,19 +122,19 @@ export const ComplexityPl: React.FC<ComplexityPlProps> = ({
                 {costDriverFilter === 'All' && (
                   <>
                     <Bar dataKey="productionDowntime" name="Production Downtime" stackId="a" fill="#ef4444" radius={[0,0,0,0]} barSize={28}
-                      onClick={(data) => setSelectedCategory(selectedCategory === data.cat ? null : data.cat)}>
+                      onClick={(data) => { const cat = chartDatum<{ cat: string }>(data).cat ?? null; setSelectedCategory(selectedCategory === cat ? null : cat); }}>
                       {categories.map(c => (
                         <Cell key={c.cat} fill="#ef4444" opacity={selectedCategory && selectedCategory !== c.cat ? 0.35 : 1} className="cursor-pointer" />
                       ))}
                     </Bar>
                     <Bar dataKey="transportOverhead" name="Transport Overhead" stackId="a" fill="#f59e0b" barSize={28}
-                      onClick={(data) => setSelectedCategory(selectedCategory === data.cat ? null : data.cat)}>
+                      onClick={(data) => { const cat = chartDatum<{ cat: string }>(data).cat ?? null; setSelectedCategory(selectedCategory === cat ? null : cat); }}>
                       {categories.map(c => (
                         <Cell key={c.cat} fill="#f59e0b" opacity={selectedCategory && selectedCategory !== c.cat ? 0.35 : 1} className="cursor-pointer" />
                       ))}
                     </Bar>
                     <Bar dataKey="wasteWriteOff" name="Waste & Write-off" stackId="a" fill="#8b5cf6" radius={[4,4,0,0]} barSize={28}
-                      onClick={(data) => setSelectedCategory(selectedCategory === data.cat ? null : data.cat)}>
+                      onClick={(data) => { const cat = chartDatum<{ cat: string }>(data).cat ?? null; setSelectedCategory(selectedCategory === cat ? null : cat); }}>
                       {categories.map(c => (
                         <Cell key={c.cat} fill="#8b5cf6" opacity={selectedCategory && selectedCategory !== c.cat ? 0.35 : 1} className="cursor-pointer" />
                       ))}
@@ -142,7 +143,7 @@ export const ComplexityPl: React.FC<ComplexityPlProps> = ({
                 )}
                 {costDriverFilter === 'downtime' && (
                   <Bar dataKey="productionDowntime" name="Production Downtime" fill="#ef4444" radius={[4,4,0,0]} barSize={28}
-                    onClick={(data) => setSelectedCategory(selectedCategory === data.cat ? null : data.cat)}>
+                    onClick={(data) => { const cat = chartDatum<{ cat: string }>(data).cat ?? null; setSelectedCategory(selectedCategory === cat ? null : cat); }}>
                     {categories.map(c => (
                       <Cell key={c.cat} fill="#ef4444" opacity={selectedCategory && selectedCategory !== c.cat ? 0.35 : 1} className="cursor-pointer" />
                     ))}
@@ -150,7 +151,7 @@ export const ComplexityPl: React.FC<ComplexityPlProps> = ({
                 )}
                 {costDriverFilter === 'transport' && (
                   <Bar dataKey="transportOverhead" name="Transport Overhead" fill="#f59e0b" radius={[4,4,0,0]} barSize={28}
-                    onClick={(data) => setSelectedCategory(selectedCategory === data.cat ? null : data.cat)}>
+                    onClick={(data) => { const cat = chartDatum<{ cat: string }>(data).cat ?? null; setSelectedCategory(selectedCategory === cat ? null : cat); }}>
                     {categories.map(c => (
                       <Cell key={c.cat} fill="#f59e0b" opacity={selectedCategory && selectedCategory !== c.cat ? 0.35 : 1} className="cursor-pointer" />
                     ))}
@@ -158,7 +159,7 @@ export const ComplexityPl: React.FC<ComplexityPlProps> = ({
                 )}
                 {costDriverFilter === 'waste' && (
                   <Bar dataKey="wasteWriteOff" name="Waste & Write-off" fill="#8b5cf6" radius={[4,4,0,0]} barSize={28}
-                    onClick={(data) => setSelectedCategory(selectedCategory === data.cat ? null : data.cat)}>
+                    onClick={(data) => { const cat = chartDatum<{ cat: string }>(data).cat ?? null; setSelectedCategory(selectedCategory === cat ? null : cat); }}>
                     {categories.map(c => (
                       <Cell key={c.cat} fill="#8b5cf6" opacity={selectedCategory && selectedCategory !== c.cat ? 0.35 : 1} className="cursor-pointer" />
                     ))}

@@ -1448,16 +1448,10 @@ const SkuCategoryBenchmarks: React.FC<{ skuName: string, category: string }> = (
   );
 };
 
-interface Task {
-  id: string;
-  tags: string[];
-  title: string;
-  duration: string;
-  dueDate: string;
-  avatars: string[];
-  isNew: boolean;
-  createdAt: number;
-}
+// Previously a second, narrower `Task` interface was declared here while the
+// tracker used its own. Both fed the same `trackerTasks` state, so the two
+// shapes could disagree silently. Use the canonical model instead.
+import type { Task } from './trackerTasks';
 
 const generateTasksForSku = (skuName: string, action: string, factor: string): Record<string, Task[]> => {
   const normAction = (action || '').toLowerCase();
@@ -2165,6 +2159,11 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                   <div className="w-[200px] h-[200px]">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
+                        {/* `activeIndex` was removed from <Pie> in Recharts v3
+                            (this project is on 3.8.1), so it had been inert since
+                            the upgrade — the first slice is no longer statically
+                            emphasised. `activeShape` still applies on hover.
+                            The dead prop was dropped to match real behaviour. */}
                         <Pie
                           data={RATIONALE_DRIVERS}
                           cx="50%"
@@ -2175,7 +2174,6 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                           dataKey="count"
                           stroke="#ffffff"
                           strokeWidth={2}
-                          activeIndex={0}
                           activeShape={renderActiveShape}
                         >
                           {RATIONALE_DRIVERS.map((entry, index) => (

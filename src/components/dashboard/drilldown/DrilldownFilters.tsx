@@ -5,15 +5,16 @@
 
 import React, { useRef } from 'react';
 import { Calendar } from 'lucide-react';
+import type { TimeHorizon } from '../../../types/dashboard';
 
 interface DrilldownFiltersProps {
-  timeHorizon: '1M' | '3M' | '6M' | 'YTD' | '12M' | '2Y' | '3Y';
-  setTimeHorizon: (q: '1M' | '3M' | '6M' | 'YTD' | '12M' | '2Y' | '3Y') => void;
+  timeHorizon: TimeHorizon;
+  setTimeHorizon: (q: TimeHorizon) => void;
   selectedMetric: 'rev' | 'margin' | 'otif';
   setSelectedMetric: (m: 'rev' | 'margin' | 'otif') => void;
 }
 
-const getDateRangeLabel = (horizon: '1M' | '3M' | '6M' | 'YTD' | '12M' | '2Y' | '3Y') => {
+const getDateRangeLabel = (horizon: TimeHorizon) => {
   switch (horizon) {
     case '1M':  return 'May 09, 2026 – Jun 08, 2026 (30 Days)';
     case '3M':  return 'Mar 09, 2026 – Jun 08, 2026 (91 Days)';

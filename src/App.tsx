@@ -3,10 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Activity, Rocket, Layers, Scissors, AlertOctagon, Home, Cpu, Award, BarChart3, LayoutDashboard, Zap, BookOpen, Download,
-  DollarSign, Play, CheckSquare, Folder
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import {
+  Activity, Rocket, Layers, Scissors, AlertOctagon, Home, Cpu, Award, BarChart3, LayoutDashboard, Zap
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -17,35 +16,54 @@ import { Role } from './types/dashboard';
 import { KPIS, TABS, SKUS, PORTFOLIO_DATA } from './constants/data';
 import { getAgentThoughtsForTab } from './constants/agentData';
 
-// Components
+// ── Eager shell ──────────────────────────────────────────────────────────────
+// Chrome that is on screen for every tab, so there is nothing to gain by
+// deferring it.
 import { Header } from './components/common/Header';
 import { Sidebar } from './components/common/Sidebar';
 import { KPICard } from './components/dashboard/KPICard';
-import { PortfolioHealthMap } from './components/dashboard/portfolio-health/PortfolioHealthMap';
-import { LaunchReadinessDashboard } from './components/dashboard/launch-readiness/LaunchReadinessDashboard';
-import { ExecutiveOverview } from './components/dashboard/executive/ExecutiveOverview';
-import { ProfitabilityTree } from './components/dashboard/profitability/ProfitabilityTree';
-import { SignalsBoard, VP_SIGNALS_DATA } from './components/dashboard/signals-board/SignalsBoard';
 import { AuditDrawer } from './components/dashboard/AuditDrawer';
-import { SKURationalization } from './components/dashboard/sku-rationalization/SKURationalization';
-import { RationalisationTab } from './components/dashboard/sku-rationalization/RationalisationTab';
-import { DemoTab } from './components/dashboard/sku-rationalization/DemoTab';
-import { TrackerTab, DEFAULT_TASKS, Task } from './components/dashboard/sku-rationalization/TrackerTab';
-import { SKUSubNav } from './components/dashboard/sku-rationalization/SKUSubNav';
 import { WelcomeGate } from './components/common/WelcomeGate';
-import { TopDownDrilldown } from './components/dashboard/drilldown/TopDownDrilldown';
-import { AgentOrchestrator } from './components/dashboard/orchestrator/AgentOrchestrator';
 import { SkuDetailsModal } from './components/dashboard/executive/SkuDetailsModal';
-import { AssortmentOverview } from './components/dashboard/assortment/AssortmentOverview';
 import { GlobalSearchBar } from './components/common/GlobalSearchBar';
 import { AgentWidget } from './components/common/AgentWidget';
-import { SKUPerformanceTab } from './components/dashboard/executive/SKUPerformanceTab';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
+
+// ── Lazily loaded tab modules ────────────────────────────────────────────────
+// Only one tab is ever mounted at a time, so each gets its own chunk. Before
+// this, all twelve (plus every modal they pull in) shipped in the initial
+// bundle — ~1.79 MB of JS before the first paint.
+const ExecutiveOverview        = lazy(() => import('./components/dashboard/executive/ExecutiveOverview').then(m => ({ default: m.ExecutiveOverview })));
+const PortfolioHealthMap       = lazy(() => import('./components/dashboard/portfolio-health/PortfolioHealthMap').then(m => ({ default: m.PortfolioHealthMap })));
+const LaunchReadinessDashboard = lazy(() => import('./components/dashboard/launch-readiness/LaunchReadinessDashboard').then(m => ({ default: m.LaunchReadinessDashboard })));
+const ProfitabilityTree        = lazy(() => import('./components/dashboard/profitability/ProfitabilityTree').then(m => ({ default: m.ProfitabilityTree })));
+const SKURationalization       = lazy(() => import('./components/dashboard/sku-rationalization/SKURationalization').then(m => ({ default: m.SKURationalization })));
+const SignalsBoard             = lazy(() => import('./components/dashboard/signals-board/SignalsBoard').then(m => ({ default: m.SignalsBoard })));
+const TopDownDrilldown         = lazy(() => import('./components/dashboard/drilldown/TopDownDrilldown').then(m => ({ default: m.TopDownDrilldown })));
+const AgentOrchestrator        = lazy(() => import('./components/dashboard/orchestrator/AgentOrchestrator').then(m => ({ default: m.AgentOrchestrator })));
+const AssortmentOverview       = lazy(() => import('./components/dashboard/assortment/AssortmentOverview').then(m => ({ default: m.AssortmentOverview })));
+const RationalisationTab       = lazy(() => import('./components/dashboard/sku-rationalization/RationalisationTab').then(m => ({ default: m.RationalisationTab })));
+const DemoTab                  = lazy(() => import('./components/dashboard/sku-rationalization/DemoTab').then(m => ({ default: m.DemoTab })));
+const TrackerTab               = lazy(() => import('./components/dashboard/sku-rationalization/TrackerTab').then(m => ({ default: m.TrackerTab })));
+const SKUPerformanceTab        = lazy(() => import('./components/dashboard/executive/SKUPerformanceTab').then(m => ({ default: m.SKUPerformanceTab })));
+
+// Task model is imported from its own module rather than from TrackerTab, so
+// seeding task state does not drag the tracker into the initial chunk.
+import { DEFAULT_TASKS, Task } from './components/dashboard/sku-rationalization/trackerTasks';
 
 // Utils / Hooks
 import { TimelineRange, getFilteredKPIS, getFilteredSKUS, getFilteredPortfolioData } from './utils/timeframe';
-import { safeGetItem, safeSetItem, getHashParam, updateHash } from './utils/hash';
+import { safeGetItem, safeSetItem, getHashParam } from './utils/hash';
 import { useGlobalSearch } from './hooks/useGlobalSearch';
 import { useAgentWidget } from './hooks/useAgentWidget';
+
+/** Placeholder shown while a tab chunk is in flight. */
+const TabLoading = () => (
+  <div className="flex flex-col items-center justify-center min-h-[550px] glass-card">
+    <div className="w-10 h-10 rounded-full border-2 border-acies-yellow/20 border-t-acies-yellow animate-spin mb-4" />
+    <p className="text-[10px] uppercase tracking-[0.2em] opacity-40">Loading module…</p>
+  </div>
+);
 
 const getTabDisplayName = (id: number, name: string): string => {
   switch (id) {
@@ -446,11 +464,15 @@ export default function App() {
           {/* Main Content Area */}
           <main className="flex-1 min-w-0">
             {showSkuPerformancePage ? (
-              <SKUPerformanceTab 
-                isDarkMode={isDarkMode} 
-                onSelectSku={(sku) => setSelectedSkuForSearch(sku)} 
-                onBack={() => setShowSkuPerformancePage(false)}
-              />
+              <ErrorBoundary moduleName="SKU Performance" resetKey="sku-performance">
+                <Suspense fallback={<TabLoading />}>
+                  <SKUPerformanceTab
+                    isDarkMode={isDarkMode}
+                    onSelectSku={(sku) => setSelectedSkuForSearch(sku)}
+                    onBack={() => setShowSkuPerformancePage(false)}
+                  />
+                </Suspense>
+              </ErrorBoundary>
             ) : (
               <>
                 {activeTab !== 0 && activeTab !== 9 && activeTab !== 10 && activeTab !== 11 && !(activeTab === 3 && isProfitabilitySimulatorOpen) && !(activeTab === 4 && role === 'VP Product Management') && !(activeTab === 5 && isExploreOpen) && (
@@ -607,6 +629,14 @@ export default function App() {
                     exit={{ opacity: 0, x: -20 }}
                     transition={{ duration: 0.2 }}
                   >
+                    {/* One boundary per tab: a module that throws shows its own
+                        fallback instead of blanking the dashboard, and switching
+                        tabs clears the error via resetKey. */}
+                    <ErrorBoundary
+                      moduleName={getTabDisplayName(activeTab, tabs[activeTab]?.name ?? 'This module')}
+                      resetKey={activeTab}
+                    >
+                    <Suspense fallback={<TabLoading />}>
                     {activeTab === 0 && (
                       <ExecutiveOverview 
                         role={role} 
@@ -683,6 +713,8 @@ export default function App() {
                         </div>
                       </div>
                     ) : null}
+                    </Suspense>
+                    </ErrorBoundary>
                   </motion.div>
                 </AnimatePresence>
               </>

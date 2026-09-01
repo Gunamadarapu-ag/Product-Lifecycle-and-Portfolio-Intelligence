@@ -14,14 +14,16 @@ import { SKUS as GLOBAL_SKUS } from '../../../constants/data';
 import { EmailComposerModal } from '../portfolio-health/EmailComposerModal';
 import { SuccessFeedbackModal } from '../portfolio-health/SuccessFeedbackModal';
 import { TimelineRange, getFilteredSKUS } from '../../../utils/timeframe';
+import type { TimeHorizon } from '../../../types/dashboard';
 import { useMemo } from 'react';
+import { getChartTheme } from '../../../utils/chartTheme';
 
 interface DrilldownSkuModalProps {
   isOpen: boolean;
   onClose: () => void;
   skuName: string;
   selectedRegion: string;
-  timeHorizon: '1M' | '3M' | '6M' | 'YTD' | '12M' | '2Y' | '3Y';
+  timeHorizon: TimeHorizon;
   multiplier: number;
   isDarkMode: boolean;
   timelineRange: TimelineRange;
@@ -192,11 +194,7 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
   const stockoutStatus = getStockoutStatus(skuStockouts);
 
   // Recharts styling
-  const gridStroke = isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
-  const tickColor = isDarkMode ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
-  const tooltipBg = isDarkMode ? '#1f1f1f' : '#fff';
-  const tooltipBorder = isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-  const tooltipText = isDarkMode ? '#fff' : '#000';
+  const { gridStroke, tickColor, tooltipBg, tooltipBorder, tooltipText } = getChartTheme(isDarkMode);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">

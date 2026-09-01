@@ -261,9 +261,10 @@ export const LaunchSpiderChart: React.FC<LaunchSpiderChartProps> = ({ selectedPr
               
               {/* Slicing findings text to fit cleanly inside tooltip */}
               <foreignObject x={tx + 8} y={ty + 36} width={tipW - 16} height={34}>
-                <div 
-                  xmlns="http://www.w3.org/1999/xhtml" 
-                  style={{ 
+                {/* No xmlns needed: React switches back to the HTML namespace
+                    for <foreignObject> children, so the attribute was inert. */}
+                <div
+                  style={{
                     fontSize: '6.5px', 
                     color: 'rgba(255,255,255,0.7)', 
                     lineHeight: '1.3', 

@@ -2,6 +2,7 @@ import React from 'react';
 import { ResponsiveContainer, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Cell } from 'recharts';
 import { Info, ArrowRight } from 'lucide-react';
 import { CAT_COLORS } from '../utils';
+import { chartDatum } from '../../../../../utils/rechartsCompat';
 
 interface ShelfProductivityProps {
   categories: any[];
@@ -80,7 +81,7 @@ export const ShelfProductivity: React.FC<ShelfProductivityProps> = ({
               <Tooltip contentStyle={{ backgroundColor: ttBg, borderColor: ttBorder, fontSize: '9px' }}
                 formatter={(v: any) => [`${v}/100`, 'Shelf Productivity']} />
               <Bar dataKey="avgShelf" name="Avg Shelf Productivity" radius={[4,4,0,0]} barSize={32}
-                onClick={(data) => setSelectedCategory(selectedCategory === data.cat ? null : data.cat)}>
+                onClick={(data) => { const cat = chartDatum<{ cat: string }>(data).cat ?? null; setSelectedCategory(selectedCategory === cat ? null : cat); }}>
                 {categories.map(c => (
                   <Cell key={c.cat} fill={CAT_COLORS[c.cat]} className="cursor-pointer"
                     opacity={selectedCategory && selectedCategory !== c.cat ? 0.3 : 1} />

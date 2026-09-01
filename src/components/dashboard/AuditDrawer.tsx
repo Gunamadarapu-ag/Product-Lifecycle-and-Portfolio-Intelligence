@@ -10,6 +10,7 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell, Cartes
 import { AUDIT_DATA } from '../../constants/auditData';
 import { SKUS } from '../../constants/data';
 import { parseTrendData, getConfidenceScore, getMetricStatus, getMetricTrend } from '../../utils/auditHelpers';
+import { getChartTheme } from '../../utils/chartTheme';
 
 interface AuditDrawerProps {
   activeMetric: string | null;
@@ -28,10 +29,7 @@ const TrendChart: React.FC<{ headers: string[]; rows: string[][]; isDarkMode: bo
   const actualLabel = isYoY ? '2023 Sales' : hasTarget ? 'Actual' : headers[1] || 'Value';
   
   const textCol = isDarkMode ? '#a1a1aa' : '#71717a'; 
-  const gridStroke = isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
-  const tooltipBg = isDarkMode ? '#09090b' : '#ffffff';
-  const tooltipBorder = isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-  const tooltipText = isDarkMode ? '#ffffff' : '#18181b';
+  const { gridStroke, tooltipBg, tooltipBorder, tooltipText } = getChartTheme(isDarkMode);
   
   return (
     <div className="h-[200px] w-full mt-4 mb-2">

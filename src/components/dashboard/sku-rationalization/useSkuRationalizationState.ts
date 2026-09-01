@@ -9,9 +9,10 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { SKUS as GLOBAL_SKUS } from '../../../constants/data';
-import { Role } from '../../../types/dashboard';
+import { Role, KPI } from '../../../types/dashboard';
 import { srClassify, getSkuLocation, PAIRS_DATA, SR_CLASSES } from './skuConstants';
 import { TimelineRange, getFilteredSKUS } from '../../../utils/timeframe';
+import { getChartTheme } from '../../../utils/chartTheme';
 
 export function useSkuRationalizationState(role: Role, isDarkMode: boolean, timelineRange: TimelineRange) {
   const SKUS = useMemo(() => getFilteredSKUS(GLOBAL_SKUS, timelineRange), [timelineRange]);
@@ -25,11 +26,10 @@ export function useSkuRationalizationState(role: Role, isDarkMode: boolean, time
   }, [selectedLocation, SKUS]);
 
   // ── Chart visual constants ─────────────────────────────────────────────────
-  const gridStroke    = isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
-  const tickColor     = isDarkMode ? 'rgba(255,255,255,0.4)'  : 'rgba(0,0,0,0.4)';
-  const tooltipBg     = isDarkMode ? '#1f1f1f' : '#fff';
-  const tooltipBorder = isDarkMode ? 'rgba(255,255,255,0.1)'  : 'rgba(0,0,0,0.1)';
-  const tooltipText   = isDarkMode ? '#fff' : '#000';
+  // Sourced from the shared theme so every chart in the app resolves the same
+  // palette. Destructured rather than passed as one object to keep the hook's
+  // existing return shape unchanged for its many consumers.
+  const { gridStroke, tickColor, tooltipBg, tooltipBorder, tooltipText } = getChartTheme(isDarkMode);
 
   // ── View & toolbar ─────────────────────────────────────────────────────────
   const [activeView, setActiveView] = useState<'simulator' | 'analyst' | 'simplify'>(() => {
@@ -67,7 +67,9 @@ export function useSkuRationalizationState(role: Role, isDarkMode: boolean, time
     const revAtRisk    = locationFilteredSkus.filter(isSunset).reduce((sum, s) => sum + s.rev, 0);
     const avgComplexity = locationFilteredSkus.reduce((sum, s) => sum + s.cx, 0) / (activeSkusCount || 1);
 
-    const cards = [
+    // Annotated so `highlight` narrows to Role[] rather than widening to
+    // string[] — without this the cards do not satisfy the KPI contract.
+    const cards: KPI[] = [
       {
         label: 'Portfolio SKUs',
         value: String(activeSkusCount),

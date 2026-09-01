@@ -18,6 +18,7 @@ import { ScheduleMeetingModal } from './ScheduleMeetingModal';
 import { SuccessFeedbackModal } from './SuccessFeedbackModal';
 import { SkuDetailsModal } from '../executive/SkuDetailsModal';
 import { ParetoConcentration } from '../assortment/ParetoConcentration';
+import { getChartTheme } from '../../../utils/chartTheme';
 
 
 interface PortfolioHealthMapProps {
@@ -622,8 +623,7 @@ const InvestmentMarginMap: React.FC<InvestmentMarginMapProps> = ({ skusList, isD
   }, [categoryFilter]);
   
   const accentColor = isDarkMode ? '#a78bfa' : '#6d28d9';
-  const gridStroke = isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
-  const tickColor = isDarkMode ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
+  const { gridStroke, tickColor } = getChartTheme(isDarkMode);
 
   const categoryColors: Record<string, string> = {
     'Beverages': '#7C3AED',
@@ -1032,8 +1032,7 @@ const RevenuePerformanceMatrix: React.FC<RevenuePerformanceMatrixProps> = ({ sku
   }, [categoryFilter]);
   
   const accentColor = isDarkMode ? '#a78bfa' : '#6d28d9';
-  const gridStroke = isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
-  const tickColor = isDarkMode ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
+  const { gridStroke, tickColor } = getChartTheme(isDarkMode);
 
   const categoryColors: Record<string, string> = {
     'Beverages': '#7C3AED',
@@ -1397,11 +1396,7 @@ const VPCommandCenter: React.FC<{
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
-  const gridStroke = isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
-  const tickColor = isDarkMode ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
-  const tooltipBg = isDarkMode ? '#1f1f1f' : '#fff';
-  const tooltipBorder = isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-  const tooltipText = isDarkMode ? '#fff' : '#000';
+  const { gridStroke, tickColor, tooltipBg, tooltipBorder, tooltipText } = getChartTheme(isDarkMode);
 
   // Toasts
   interface Toast {
@@ -2720,11 +2715,7 @@ export const PortfolioHealthMapOld: React.FC<PortfolioHealthMapProps> = ({
   }, [activeSubTab]);
   
   const accentColor = isDarkMode ? '#a78bfa' : '#6d28d9';
-  const gridStroke = isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
-  const tickColor = isDarkMode ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
-  const tooltipBg = isDarkMode ? '#1f1f1f' : '#fff';
-  const tooltipBorder = isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-  const tooltipText = isDarkMode ? '#fff' : '#000';
+  const { gridStroke, tickColor, tooltipBg, tooltipBorder, tooltipText } = getChartTheme(isDarkMode);
   const nonAccentColor = isDarkMode ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)';
   
   // ─── Sub-Tab 0: KPI Filters & Recalculations ────────────────────────────────
@@ -3190,8 +3181,13 @@ export const PortfolioHealthMapOld: React.FC<PortfolioHealthMapProps> = ({
           {/* Dynamic KPI Strip (8 cards) */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {kpisData.map((k, i) => {
-              const roleHighlight = role === 'VP Product Management' && (i === 0 || i === 3);
-              const highlightBorder = roleHighlight ? 'border-2 border-acies-yellow shadow-lg shadow-acies-yellow/5' : 'border-black/5 dark:border-white/10';
+              // NOTE: this strip previously highlighted cards 0 and 3 when
+              // `role === 'VP Product Management'`. That became unreachable once
+              // the VP path started returning <VPCommandCenter/> early (above),
+              // so the highlight never rendered for any role. Kept as the plain
+              // border to preserve what actually shipped; re-introduce a
+              // highlight here only with a role that can reach this branch.
+              const highlightBorder = 'border-black/5 dark:border-white/10';
               return (
                 <div 
                   key={k.label} 

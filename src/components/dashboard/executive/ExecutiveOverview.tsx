@@ -21,6 +21,7 @@ import { SmartAlertDetailsModal, AlertData } from './SmartAlertDetailsModal';
 import { AgenticAlertExplanationModal } from './AgenticAlertExplanationModal';
 import { EventsCalendarModal } from '../portfolio-health/EventsCalendarModal';
 import { ScheduleMeetingModal } from '../portfolio-health/ScheduleMeetingModal';
+import { getChartTheme } from '../../../utils/chartTheme';
 
 interface CustomerInsight {
   name: string;
@@ -776,9 +777,12 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
             if (prevAlerts.some(a => a.title === msg)) return prevAlerts;
             const newAlert = {
               id: 'dyn-al-' + Date.now(),
-              sev: 'critical',
+              sev: 'critical' as const,
               title: msg,
-              detail: tmpl.type + ' · Auto-detected'
+              detail: tmpl.type + ' · Auto-detected',
+              // Auto-detected alerts start unacknowledged. This was previously
+              // omitted, leaving `ack` undefined on generated alerts only.
+              ack: false
             };
             return [newAlert, ...prevAlerts.slice(0, 11)];
           });
@@ -813,10 +817,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
 
   // Dynamic accent color based on theme
   const accentColor = isDarkMode ? '#a78bfa' : '#6d28d9';
-  const tooltipBg = isDarkMode ? '#1a1a1a' : '#f5f5f5';
-  const tooltipBorder = isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-  const tooltipText = isDarkMode ? '#fff' : '#000';
-  const gridStroke = isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+  const { tooltipBg, tooltipBorder, tooltipText, gridStroke } = getChartTheme(isDarkMode);
   const todayStr = new Date().toLocaleDateString('en-IN', {
     weekday: 'long',
     year: 'numeric',
@@ -1128,7 +1129,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
                   className="cursor-pointer"
                   data={revenueTrendData} 
                   margin={{ top: 15, right: 20, left: -10, bottom: 5 }}
-                  onClick={(state) => { if (state && state.activeLabel) setSelectedTrendMonth(state.activeLabel); }}
+                  onClick={(state) => { if (state && state.activeLabel) setSelectedTrendMonth(String(state.activeLabel)); }}
                 >
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridStroke} />
                   <XAxis dataKey="month" tick={{ fill: isDarkMode ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', fontSize: 8 }} axisLine={false} tickLine={false} />
@@ -1146,7 +1147,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
                   className="cursor-pointer"
                   data={revenueTrendData} 
                   margin={{ top: 15, right: 20, left: -10, bottom: 5 }}
-                  onClick={(state) => { if (state && state.activeLabel) setSelectedTrendMonth(state.activeLabel); }}
+                  onClick={(state) => { if (state && state.activeLabel) setSelectedTrendMonth(String(state.activeLabel)); }}
                 >
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridStroke} />
                   <XAxis dataKey="month" tick={{ fill: isDarkMode ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', fontSize: 8 }} axisLine={false} tickLine={false} />
@@ -1165,7 +1166,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
                   data={revenueTrendData} 
                   margin={{ top: 15, right: 20, left: -10, bottom: 5 }} 
                   barGap={4}
-                  onClick={(state) => { if (state && state.activeLabel) setSelectedTrendMonth(state.activeLabel); }}
+                  onClick={(state) => { if (state && state.activeLabel) setSelectedTrendMonth(String(state.activeLabel)); }}
                 >
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridStroke} />
                   <XAxis dataKey="month" tick={{ fill: isDarkMode ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', fontSize: 8 }} axisLine={false} tickLine={false} />
@@ -1276,7 +1277,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
                 <BarChart 
                   data={categoryPerfData} 
                   margin={{ top: 20, right: 20, left: -10, bottom: 5 }}
-                  onClick={(state) => { if (state && state.activeLabel) setSelectedCategory(state.activeLabel); }}
+                  onClick={(state) => { if (state && state.activeLabel) setSelectedCategory(String(state.activeLabel)); }}
                   className="cursor-pointer"
                 >
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridStroke} />
@@ -1299,7 +1300,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
                   cy="50%" 
                   outerRadius="70%" 
                   data={categoryPerfData}
-                  onClick={(state) => { if (state && state.activeLabel) setSelectedCategory(state.activeLabel); }}
+                  onClick={(state) => { if (state && state.activeLabel) setSelectedCategory(String(state.activeLabel)); }}
                   className="cursor-pointer"
                 >
                   <PolarGrid stroke={gridStroke} />

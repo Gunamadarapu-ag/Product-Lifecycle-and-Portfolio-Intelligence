@@ -5,6 +5,7 @@ import { DrilldownRegionGrid }   from './DrilldownRegionGrid';
 import { DrilldownSkuGrid }      from './DrilldownSkuGrid';
 import { DrilldownSkuModal }     from './DrilldownSkuModal';
 import { TimelineRange }         from '../../../utils/timeframe';
+import type { TimeHorizon }      from '../../../types/dashboard';
 
 interface TopDownDrilldownProps {
   isDarkMode: boolean;
@@ -38,9 +39,9 @@ export const TopDownDrilldown: React.FC<TopDownDrilldownProps> = ({ isDarkMode, 
       case '36m': return '3Y';
       default: return '3M';
     }
-  })() as '1M' | '3M' | '6M' | 'YTD' | '12M' | '2Y' | '3Y';
+  })() as TimeHorizon;
 
-  const setTimeHorizon = (h: '1M' | '3M' | '6M' | 'YTD' | '12M' | '2Y' | '3Y') => {
+  const setTimeHorizon = (h: TimeHorizon) => {
     switch (h) {
       case '1M': setTimelineRange('1m'); break;
       case '3M': setTimelineRange('3m'); break;

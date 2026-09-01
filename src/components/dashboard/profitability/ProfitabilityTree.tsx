@@ -12,6 +12,8 @@ import { SKUS as GLOBAL_SKUS } from '../../../constants/data';
 import { ForecastAccuracySimulator } from './ForecastAccuracySimulator';
 import { MarginSimulator } from './MarginSimulator';
 import { TimelineRange, getTimeframeScale, getDeterministicNoise, getFilteredSKUS, getAdjustedMargin, getAdjustedPci } from '../../../utils/timeframe';
+import { chartDatum } from '../../../utils/rechartsCompat';
+import { getChartTheme } from '../../../utils/chartTheme';
 
 interface ProfitabilityTreeProps {
   role: Role;
@@ -85,11 +87,7 @@ const VPProfitabilityTreeView: React.FC<{
   timelineRange: TimelineRange;
 }> = ({ isDarkMode, isSimulatorOpen, setIsSimulatorOpen, onAuditClick, timelineRange }) => {
   const accentColor = isDarkMode ? '#a78bfa' : '#6d28d9';
-  const gridStroke = isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
-  const tickColor = isDarkMode ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
-  const tooltipBg = isDarkMode ? '#1f1f1f' : '#fff';
-  const tooltipBorder = isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-  const tooltipText = isDarkMode ? '#fff' : '#000';
+  const { gridStroke, tickColor, tooltipBg, tooltipBorder, tooltipText } = getChartTheme(isDarkMode);
 
 
   const [showForecastSimulatorLocal, setShowForecastSimulatorLocal] = useState<boolean>(false);
@@ -641,9 +639,10 @@ const VPProfitabilityTreeView: React.FC<{
                     className="cursor-pointer"
                     onClick={(data) => {
                       if (data) {
-                        const name = data.name || (data.payload && data.payload.name);
-                        const value = data.value || (data.payload && data.payload.value);
-                        const percent = data.percent || (data.payload && data.payload.percent) || 0;
+                        const row = chartDatum<{ name: string; value: number; percent: number }>(data);
+                        const name = row.name ?? (data as { name?: string }).name;
+                        const value = row.value ?? (data as { value?: number }).value;
+                        const percent = row.percent ?? 0;
                         if (name && value) {
                           setSelectedDetail({
                             type: contributorTab,
@@ -1696,11 +1695,7 @@ export const ProfitabilityTree: React.FC<ProfitabilityTreeProps> = ({
     );
   }
   const accentColor = isDarkMode ? '#a78bfa' : '#6d28d9';
-  const gridStroke = isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
-  const tickColor = isDarkMode ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
-  const tooltipBg = isDarkMode ? '#1f1f1f' : '#fff';
-  const tooltipBorder = isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-  const tooltipText = isDarkMode ? '#fff' : '#000';
+  const { gridStroke, tickColor, tooltipBg, tooltipBorder, tooltipText } = getChartTheme(isDarkMode);
   
   const [units, setUnits] = useState(850);
   const [price, setPrice] = useState(180);

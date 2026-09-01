@@ -1,5 +1,6 @@
 import React from 'react';
-import { Calendar, User, Mail, X, AlertTriangle, AlertCircle, TrendingUp, Cpu } from 'lucide-react';
+import { Calendar, User, Mail, AlertTriangle, AlertCircle, TrendingUp, Cpu } from 'lucide-react';
+import { Modal } from '../../common/Modal';
 import { VPSignal } from './SignalsBoard';
 
 interface ResolveTeamOption {
@@ -130,22 +131,25 @@ export const ResolveSignalModal: React.FC<ResolveSignalModalProps> = ({
   const options = getTeamOptions();
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[60] flex items-center justify-center p-4">
-      <div className="w-full max-w-lg bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/15 p-6 rounded shadow-2xl flex flex-col gap-4 text-xs max-h-[90vh] overflow-y-auto">
-        <div className="flex justify-between items-center border-b border-black/15 dark:border-white/15 pb-2">
-          <div className="flex items-center gap-1.5 text-blue-500">
-            <Calendar size={15} />
-            <span className="text-[14px] font-display font-bold text-zinc-800 dark:text-zinc-100">
-              Schedule Resolution Meeting
-            </span>
-          </div>
-          <button 
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Schedule Resolution Meeting"
+      icon={<Calendar size={15} />}
+      accentClassName="text-blue-500"
+      size="md"
+      layer="panel"
+      footer={
+        <div className="flex justify-end">
+          <button
             onClick={onClose}
-            className="p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded text-zinc-400 hover:text-zinc-600 cursor-pointer border-none bg-transparent"
+            className="px-4 py-2 border border-black/10 dark:border-white/10 rounded-sm font-bold uppercase tracking-wider text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer bg-transparent"
           >
-            <X size={14} />
+            Cancel
           </button>
         </div>
+      }
+    >
         
         {/* Item Details */}
         <div className="flex justify-between items-start gap-2 bg-zinc-50 dark:bg-white/5 p-3 rounded border border-black/5 dark:border-white/10">
@@ -203,15 +207,6 @@ export const ResolveSignalModal: React.FC<ResolveSignalModalProps> = ({
           ))}
         </div>
         
-        <div className="flex justify-end border-t border-black/15 dark:border-white/15 pt-3">
-          <button 
-            onClick={onClose}
-            className="px-4 py-2 border border-black/10 dark:border-white/10 rounded-sm font-bold uppercase tracking-wider text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer bg-transparent"
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
-    </div>
+    </Modal>
   );
 };

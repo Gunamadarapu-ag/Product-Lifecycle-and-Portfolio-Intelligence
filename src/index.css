@@ -163,3 +163,25 @@ g:focus {
   transform: scale(1.2);
 }
 
+
+/* ── Animations ─────────────────────────────────────────────────────────────
+   `animate-fadeIn` / `animate-fade-in` were used at 76 call sites across the
+   dashboard but never defined — Tailwind v4 ships only spin/ping/pulse/bounce,
+   so every one of those classes was a no-op. Both spellings are defined here
+   so the existing call sites work without touching all 76.                    */
+@keyframes acies-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn,
+.animate-fade-in {
+  animation: acies-fade-in 0.2s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fadeIn,
+  .animate-fade-in {
+    animation: none;
+  }
+}
