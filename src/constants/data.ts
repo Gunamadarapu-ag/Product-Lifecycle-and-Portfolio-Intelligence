@@ -23,6 +23,15 @@ import {
   SKU,
   SignalItem,
 } from '../types/dashboard';
+import {
+  GENERATED_KPI_VALUES,
+  GENERATED_REGIONAL_DATA,
+  GENERATED_CHANNEL_DATA,
+  GENERATED_PCI_DRIVERS,
+  GENERATED_STOCKOUT_TOP10,
+  GENERATED_TOP_SKUS_REVENUE,
+  GENERATED_RATIONALIZATION_SCENARIOS,
+} from './generated';
 
 // ─── Company Context ──────────────────────────────────────────────────────────
 export const COMPANY_CONTEXT = {
@@ -34,7 +43,7 @@ export const COMPANY_CONTEXT = {
 
 // ─── KPI Strip (8 cards) ─────────────────────────────────────────────────────
 // Values sourced from extracted_text.txt (Colab Notebook analysis)
-export const KPIS: KPI[] = [
+const KPIS_SEED: KPI[] = [
   {
     label: 'Net Sales (Portfolio)',
     value: '$473M',
@@ -107,6 +116,15 @@ export const KPIS: KPI[] = [
 ];
 
 // ─── Segment Colors ───────────────────────────────────────────────────────────
+/**
+ * KPI cards. Labels, tooltips and role highlighting stay authored here; the
+ * numbers come from the generated dataset so they cannot drift from the data.
+ */
+export const KPIS: KPI[] = KPIS_SEED.map(kpi => {
+  const computed = GENERATED_KPI_VALUES[kpi.label];
+  return computed ? { ...kpi, value: computed.value, trendValue: computed.trendValue } : kpi;
+});
+
 export const SEGMENT_COLORS: Record<string, string> = {
   Keep: '#4ade80',
   Grow: '#ffd966',
@@ -154,64 +172,28 @@ export const PORTFOLIO_DATA: PortfolioItem[] = [
 ];
 
 // ─── Channel Performance (Q17/Q18) ───────────────────────────────────────────
-export const CHANNEL_DATA: ChannelData[] = [
-  { channel: 'E-commerce',  marginPct: 38.56, volatilityCV: 0.061, stockoutCount: 7907  },
-  { channel: 'Supermarket', marginPct: 38.53, volatilityCV: 0.065, stockoutCount: 7818  },
-  { channel: 'Hypermarket', marginPct: 38.52, volatilityCV: 0.063, stockoutCount: 15907 },
-  { channel: 'Convenience', marginPct: 38.20, volatilityCV: 0.069, stockoutCount: 1482  },
-];
+/** Computed from the generated dataset - see src/constants/generated.ts */
+export const CHANNEL_DATA: ChannelData[] = GENERATED_CHANNEL_DATA;
 
 // ─── Regional Data (Q16) ─────────────────────────────────────────────────────
-export const REGIONAL_DATA: RegionalData[] = [
-  { country: 'Italy',       skuCount: 100, netSalesM: 137.2, marginPct: 38.53, complexityLabel: 'High' },
-  { country: 'Spain',       skuCount: 100, netSalesM: 106.7, marginPct: 38.60, complexityLabel: 'High' },
-  { country: 'Germany',     skuCount:  98, netSalesM:  88.5, marginPct: 38.48, complexityLabel: 'High' },
-  { country: 'France',      skuCount:  80, netSalesM:  42.6, marginPct: 38.55, complexityLabel: 'Medium' },
-  { country: 'Austria',     skuCount:  80, netSalesM:  43.0, marginPct: 38.64, complexityLabel: 'Medium' },
-  { country: 'Poland',      skuCount:  80, netSalesM:  42.4, marginPct: 38.36, complexityLabel: 'Medium' },
-  { country: 'Netherlands', skuCount:  45, netSalesM:  12.5, marginPct: 38.20, complexityLabel: 'Opt' },
-];
+/** Computed from the generated dataset - see src/constants/generated.ts */
+export const REGIONAL_DATA: RegionalData[] = GENERATED_REGIONAL_DATA;
 
 // ─── Top 10 Stockout SKUs (Q11 + Q12) ────────────────────────────────────────
-export const STOCKOUT_TOP10: StockoutItem[] = [
-  { name: 'BrandC Biscuits',     category: 'Snacks',        stockoutCount: 440, safetyStockRatio: 0.000165, netSalesM: 3.20, segment: 'Rationalize' },
-  { name: 'BrandF Soap',         category: 'Personal Care', stockoutCount: 440, safetyStockRatio: 0.000148, netSalesM: 4.10, segment: 'Consolidate' },
-  { name: 'BrandB Energy Drink', category: 'Beverages',     stockoutCount: 427, safetyStockRatio: 0.000172, netSalesM: 2.85, segment: 'Rationalize' },
-  { name: 'BrandB Milk',         category: 'Dairy',         stockoutCount: 417, safetyStockRatio: 0.000180, netSalesM: 2.40, segment: 'Rationalize' },
-  { name: 'BrandD Chips',        category: 'Snacks',        stockoutCount: 416, safetyStockRatio: 0.000160, netSalesM: 5.80, segment: 'Grow'        },
-  { name: 'BrandE Cheese',       category: 'Dairy',         stockoutCount: 405, safetyStockRatio: 0.000248, netSalesM: 0.85, segment: 'Consolidate' },
-  { name: 'BrandA Soda',         category: 'Beverages',     stockoutCount: 397, safetyStockRatio: 0.000162, netSalesM: 11.8, segment: 'Grow'        },
-  { name: 'BrandA Toothpaste',   category: 'Personal Care', stockoutCount: 394, safetyStockRatio: 0.000155, netSalesM: 3.90, segment: 'Keep'        },
-  { name: 'BrandF Soda',         category: 'Beverages',     stockoutCount: 393, safetyStockRatio: 0.000222, netSalesM: 2.02, segment: 'Rationalize' },
-  { name: 'BrandA Chips',        category: 'Snacks',        stockoutCount: 392, safetyStockRatio: 0.000158, netSalesM: 4.50, segment: 'Keep'        },
-];
+/** Computed from the generated dataset - see src/constants/generated.ts */
+export const STOCKOUT_TOP10: StockoutItem[] = GENERATED_STOCKOUT_TOP10;
 
 // ─── Rationalization Scenarios (Q28-Q30) ─────────────────────────────────────
-export const RATIONALIZATION_SCENARIOS: RationalizationScenario[] = [
-  { label: 'Bottom 10%',     skusRemoved: 10, revenueImpact: -3.58,  marginImpact: -3.46,  safetyStockFreed: 8.81,  supplierReduction: 0 },
-  { label: 'Bottom 20%',     skusRemoved: 20, revenueImpact: -9.00,  marginImpact: -8.81,  safetyStockFreed: 22.31, supplierReduction: 0 },
-  { label: 'Bottom 30%',     skusRemoved: 30, revenueImpact: -14.05, marginImpact: -13.82, safetyStockFreed: 29.57, supplierReduction: 0 },
-  { label: 'Full Rationalize', skusRemoved: 43, revenueImpact: -27.08, marginImpact: 0,      safetyStockFreed: 42.20, supplierReduction: 0 },
-];
+/** Computed from the generated dataset - see src/constants/generated.ts */
+export const RATIONALIZATION_SCENARIOS: RationalizationScenario[] = GENERATED_RATIONALIZATION_SCENARIOS;
 
 // ─── PCI Sub-Drivers (Q25) ───────────────────────────────────────────────────
-export const PCI_DRIVERS: PCIDriver[] = [
-  { label: 'Supplier Fragmentation Index', value: 1.2000, benchmark: 1.0000 },
-  { label: 'SKU Proliferation Index',      value: 1.0200, benchmark: 0.8500 },
-  { label: 'Low Velocity SKU %',           value: 0.6667, benchmark: 0.4000 },
-  { label: 'Lead Time Instability (CV)',    value: 0.2014, benchmark: 0.1500 },
-  { label: 'Promo Dependency Score',        value: 0.1100, benchmark: 0.0800 },
-  { label: 'Avg Portfolio Volatility CV',   value: 0.1071, benchmark: 0.0800 },
-];
+/** Computed from the generated dataset - see src/constants/generated.ts */
+export const PCI_DRIVERS: PCIDriver[] = GENERATED_PCI_DRIVERS;
 
 // ─── Top SKUs by Revenue (Q1) ─────────────────────────────────────────────────
-export const TOP_SKUS_REVENUE: TopSKU[] = [
-  { name: 'BrandF Water',     category: 'Beverages',     netSalesM: 17.03, grossMarginM: 6.83 },
-  { name: 'BrandC Chips',     category: 'Snacks',        netSalesM: 16.00, grossMarginM: 5.80 },
-  { name: 'BrandB Chips',     category: 'Snacks',        netSalesM: 13.03, grossMarginM: 5.19 },
-  { name: 'BrandC Toothpaste',category: 'Personal Care', netSalesM: 12.97, grossMarginM: 4.62 },
-  { name: 'BrandB Soap',      category: 'Personal Care', netSalesM: 12.50, grossMarginM: 5.00 },
-];
+/** Computed from the generated dataset - see src/constants/generated.ts */
+export const TOP_SKUS_REVENUE: TopSKU[] = GENERATED_TOP_SKUS_REVENUE;
 
 // ─── Agent Roster ─────────────────────────────────────────────────────────────
 export const AGENT_ROSTER: Agent[] = [

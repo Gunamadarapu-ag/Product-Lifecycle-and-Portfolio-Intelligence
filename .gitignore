@@ -10,3 +10,11 @@ coverage/
 debug_blank.js
 get_full_html.js
 
+# Generated dataset - reproducible from data/generator (seeded, deterministic).
+# fact_sales.csv alone is ~18 MB; regenerate with: python data/generator/main.py
+data/output/
+!data/output/.gitkeep
+
+# Python
+__pycache__/
+*.pyc
