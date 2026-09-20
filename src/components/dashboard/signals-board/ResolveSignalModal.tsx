@@ -1,7 +1,7 @@
 import React from 'react';
 import { Calendar, User, Mail, AlertTriangle, AlertCircle, TrendingUp, Cpu } from 'lucide-react';
 import { Modal } from '../../common/Modal';
-import { VPSignal } from './SignalsBoard';
+import { VPSignal } from './signalsData';
 
 interface ResolveTeamOption {
   action: string;

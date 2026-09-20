@@ -29,13 +29,3 @@ export const getHashParam = (key: string): string | null => {
   }
 };
 
-export const updateHash = (key: string, value: string) => {
-  try {
-    const hash = window.location.hash || '#';
-    const params = new URLSearchParams(hash.substring(1));
-    params.set(key, value);
-    window.history.replaceState(null, '', '#' + params.toString());
-  } catch (e) {
-    console.warn("Could not update URL hash:", e);
-  }
-};

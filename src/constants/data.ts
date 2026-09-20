@@ -13,15 +13,10 @@ import {
   RationalizationScenario,
   PCIDriver,
   TopSKU,
-  PromoErosionItem,
-  SKUBurdenItem,
-  LaunchProduct,
-  LaunchTimelineItem,
   VPAlert,
   VPApproval,
   VPForecast,
   SKU,
-  SignalItem,
 } from '../types/dashboard';
 import {
   GENERATED_KPI_VALUES,
@@ -125,13 +120,6 @@ export const KPIS: KPI[] = KPIS_SEED.map(kpi => {
   return computed ? { ...kpi, value: computed.value, trendValue: computed.trendValue } : kpi;
 });
 
-export const SEGMENT_COLORS: Record<string, string> = {
-  Keep: '#4ade80',
-  Grow: '#ffd966',
-  Consolidate: '#60a5fa',
-  Rationalize: '#f87171',
-};
-
 // ─── Portfolio Data (25 SKUs across all 4 segments) ───────────────────────────
 // Derived from Q1, Q4, Q5, Q10, Q21, Q27 of extracted_text.txt
 // value = Commercial Value Score 0-100 (norm revenue+margin+growth+stability)
@@ -202,14 +190,6 @@ export const AGENT_ROSTER: Agent[] = [
   { name: 'Supplier Agent',      role: 'Identified 60 universal suppliers creating interconnectivity risk (0% reducible).' },
   { name: 'Profitability Agent', role: '12 high-volume SKUs diluting portfolio margin to 38.53% vs 40% target.' },
   { name: 'Sunset Agent',        role: 'Removing 35 "Rationalize" SKUs frees 42.2% safety stock capital ($246M → $142M).' },
-];
-
-
-
-export const SIGNALS: SignalItem[] = [
-  { id: 'SI001', category: 'Supply', severity: 'critical', title: 'Packaging gap detected', summary: 'Eco-pack supplier capacity shortfall could impact BrandF Water rollout.', received: '1h ago', acknowledged: false },
-  { id: 'SI002', category: 'Margin', severity: 'warning', title: 'Promo margin compression', summary: 'Masala Puffs discount wave is reducing expected margin by 2.4%.', received: '3h ago', acknowledged: false },
-  { id: 'SI003', category: 'Demand', severity: 'info', title: 'Retailer reorder trend', summary: 'Aloe Vera reordered at +15% week-over-week in convenience channel.', received: '12h ago', acknowledged: false },
 ];
 
 export const TABS = [
@@ -395,197 +375,8 @@ export const VP_KPI_BASE = [
   {label:'Critical Alerts',value:2,unit:'',trend:+2,spark:[0,0,1,0,1,2,2,2],color:'#A32D2D',fmt:(v: number)=>String(v)},
 ];
 
-
-// ─── SKU Rationalization Datasets (Tab 3) ─────────────────────────────────────
-export const PROMO_EROSION_DATA: PromoErosionItem[] = [
-  { name: 'BrandC Toothpaste', category: 'Personal Care', erosionScore: 15.49, promoDependency: 27.59 },
-  { name: 'BrandA Cleaner',    category: 'Home Care',     erosionScore: 15.13, promoDependency: 23.10 },
-  { name: 'BrandE Toothpaste', category: 'Personal Care', erosionScore: 15.01, promoDependency: 24.50 },
-  { name: 'BrandB Milk',         category: 'Dairy',         erosionScore: 14.96, promoDependency: 22.00 },
-  { name: 'BrandC Nuts',         category: 'Snacks',        erosionScore: 14.88, promoDependency: 21.50 },
-  { name: 'BrandE Softener',    category: 'Home Care',     erosionScore: 14.87, promoDependency: 20.80 },
-  { name: 'BrandA Water',        category: 'Beverages',     erosionScore: 14.81, promoDependency: 23.50 },
-  { name: 'BrandA Soap',         category: 'Personal Care', erosionScore: 14.80, promoDependency: 22.20 },
-  { name: 'BrandF Juice',        category: 'Beverages',     erosionScore: 14.80, promoDependency: 27.59 },
-  { name: 'BrandE Biscuits',     category: 'Snacks',        erosionScore: 14.77, promoDependency: 23.80 },
-];
-
-export const SKU_BURDEN_DATA: SKUBurdenItem[] = [
-  { name: 'BrandF Soda',      category: 'Beverages', opBurdenRatio: 3.58, netSales: 2.02, leadTime: 6.4, stockouts: 393, promoDep: 26.10 },
-  { name: 'BrandA Chocolate', category: 'Snacks',    opBurdenRatio: 3.08, netSales: 1.80, leadTime: 6.5, stockouts: 392, promoDep: 24.70 },
-  { name: 'BrandD Chocolate', category: 'Snacks',    opBurdenRatio: 2.98, netSales: 9.90, leadTime: 6.3, stockouts: 416, promoDep: 22.80 },
-  { name: 'BrandD Water',     category: 'Beverages', opBurdenRatio: 2.61, netSales: 3.10, leadTime: 6.4, stockouts: 378, promoDep: 27.97 },
-  { name: 'BrandE Water',     category: 'Beverages', opBurdenRatio: 2.36, netSales: 2.23, leadTime: 6.3, stockouts: 360, promoDep: 25.40 },
-  { name: 'BrandE Juice',     category: 'Beverages', opBurdenRatio: 2.33, netSales: 1.65, leadTime: 6.2, stockouts: 345, promoDep: 27.62 },
-  { name: 'BrandD Juice',     category: 'Beverages', opBurdenRatio: 2.05, netSales: 2.10, leadTime: 5.9, stockouts: 280, promoDep: 27.79 },
-  { name: 'BrandC Water',     category: 'Beverages', opBurdenRatio: 1.94, netSales: 1.75, leadTime: 6.3, stockouts: 330, promoDep: 24.50 },
-  { name: 'BrandB Juice',     category: 'Beverages', opBurdenRatio: 1.87, netSales: 1.50, leadTime: 6.1, stockouts: 310, promoDep: 27.00 },
-  { name: 'BrandF Juice',     category: 'Beverages', opBurdenRatio: 1.86, netSales: 1.70, leadTime: 6.0, stockouts: 320, promoDep: 27.59 },
-];
-
 // ─── Launch Readiness Datasets (Tab 1) ────────────────────────────────────────
 // 5 products in pipeline: 2 new launches, 3 relaunches in various lifecycle stages
-export const LAUNCH_PRODUCTS: LaunchProduct[] = [
-  {
-    id: 'LP001',
-    name: 'BrandA Premium Energy',
-    category: 'Beverages',
-    brand: 'BrandA',
-    currentStage: 'Pre-Launch',
-    gateProgress: 92,
-    targetLaunchDate: '2026-09-15',
-    estimatedFirstYearRevenue: 24.5,
-    estimatedMargin: 37.8,
-    targetMarkets: ['Italy', 'Spain', 'Germany', 'France'],
-    overallReadiness: 88,
-    riskLevel: 'Low',
-    launchType: 'New',
-    readiness: [
-      { dimension: 'Market', readinessScore: 92, status: 'On Track', keyFindings: ['Strong consumer demand signals in target markets', 'Competitive positioning validated'], actionItems: ['Finalize packaging design', 'Brief channel partners'] },
-      { dimension: 'Supply Chain', readinessScore: 85, status: 'On Track', keyFindings: ['Bulk ingredient sourcing confirmed', 'Manufacturing schedule locked'], actionItems: ['Validate label supplier lead times'] },
-      { dimension: 'Channel', readinessScore: 88, status: 'On Track', keyFindings: ['Supermarket allocation agreed (80% distribution target)', 'E-commerce integration tested'], actionItems: ['Confirm promotional calendar', 'Set shelf space allocation'] },
-      { dimension: 'Pricing', readinessScore: 90, status: 'On Track', keyFindings: ['Retail price point validated ($4.99)', 'Promotional architecture aligned'], actionItems: ['Deploy price monitoring system'] },
-      { dimension: 'Operations', readinessScore: 84, status: 'On Track', keyFindings: ['Sales team training scheduled', 'Inventory buffers modeled'], actionItems: ['Conduct final readiness audit'] },
-    ],
-    completedGates: [
-      { stageName: 'Concept', gateDate: '2025-12-10', isCompleted: true, keyMilestones: ['Strategic fit confirmed', 'ROI target met'], gateOwner: 'VP Product' },
-      { stageName: 'Development', gateDate: '2026-04-30', isCompleted: true, keyMilestones: ['Recipe finalized', 'Packaging artwork approved'], gateOwner: 'Product Dev' },
-    ],
-    upcomingGates: [
-      { stageName: 'Pre-Launch', gateDate: '2026-06-15', isCompleted: false, keyMilestones: ['Supply chain readiness', 'Channel activation'], gateOwner: 'Supply Chain' },
-      { stageName: 'Launch', gateDate: '2026-09-15', isCompleted: false, keyMilestones: ['Market availability', 'Launch campaign live'], gateOwner: 'Launch Mgmt' },
-    ],
-  },
-  {
-    id: 'LP002',
-    name: 'BrandD Organic Yogurt',
-    category: 'Dairy',
-    brand: 'BrandD',
-    currentStage: 'Pre-Launch',
-    gateProgress: 78,
-    targetLaunchDate: '2026-10-20',
-    estimatedFirstYearRevenue: 18.2,
-    estimatedMargin: 39.2,
-    targetMarkets: ['Austria', 'Germany', 'Netherlands'],
-    overallReadiness: 74,
-    riskLevel: 'Medium',
-    launchType: 'New',
-    readiness: [
-      { dimension: 'Market', readinessScore: 82, status: 'On Track', keyFindings: ['Premium segment traction confirmed', 'Health-conscious demographic engaged'], actionItems: ['Expand market research to Poland', 'Validate pricing elasticity'] },
-      { dimension: 'Supply Chain', readinessScore: 72, status: 'At Risk', keyFindings: ['Organic milk sourcing agreement pending (3 suppliers)', 'Lead time 14 days longer than standard'], actionItems: ['Secure backup organic supplier', 'Pre-position safety stock'] },
-      { dimension: 'Channel', readinessScore: 68, status: 'At Risk', keyFindings: ['Hypermarket shelf space competition high', 'Natural/organic positioning in development'], actionItems: ['Negotiate dedicated shelf POG', 'Finalize retailer bundles'] },
-      { dimension: 'Pricing', readinessScore: 78, status: 'On Track', keyFindings: ['Premium price point validated ($3.79/500g)', 'Margin target achievable'], actionItems: ['Monitor competitor pricing', 'Set promotional calendar'] },
-      { dimension: 'Operations', readinessScore: 72, status: 'At Risk', keyFindings: ['New production line needs validation', 'Quality assurance protocols established'], actionItems: ['Run pilot production batch', 'Validate yield targets'] },
-    ],
-    completedGates: [
-      { stageName: 'Concept', gateDate: '2026-01-15', isCompleted: true, keyMilestones: ['Market opportunity validated', 'Strategic alignment confirmed'], gateOwner: 'VP Product' },
-    ],
-    upcomingGates: [
-      { stageName: 'Development', gateDate: '2026-06-30', isCompleted: false, keyMilestones: ['Recipe finalization', 'Packaging design approval'], gateOwner: 'Product Dev' },
-      { stageName: 'Pre-Launch', gateDate: '2026-09-01', isCompleted: false, keyMilestones: ['Supply chain readiness', 'Channel activation'], gateOwner: 'Supply Chain' },
-      { stageName: 'Launch', gateDate: '2026-10-20', isCompleted: false, keyMilestones: ['Market availability', 'Launch campaign live'], gateOwner: 'Launch Mgmt' },
-    ],
-  },
-  {
-    id: 'LP003',
-    name: 'BrandB Chips (Relaunch - Premium)',
-    category: 'Snacks',
-    brand: 'BrandB',
-    currentStage: 'Launch',
-    gateProgress: 100,
-    targetLaunchDate: '2026-05-01',
-    estimatedFirstYearRevenue: 15.8,
-    estimatedMargin: 40.5,
-    targetMarkets: ['Italy', 'Spain', 'Germany', 'France', 'Austria'],
-    overallReadiness: 96,
-    riskLevel: 'Low',
-    launchType: 'Relaunch',
-    readiness: [
-      { dimension: 'Market', readinessScore: 98, status: 'Complete', keyFindings: ['Premium positioning resonates with target demographic', 'Purchase intent 34% above baseline'], actionItems: [] },
-      { dimension: 'Supply Chain', readinessScore: 95, status: 'Complete', keyFindings: ['Production capacity secured', 'Quality benchmarks exceeded'], actionItems: [] },
-      { dimension: 'Channel', readinessScore: 96, status: 'Complete', keyFindings: ['85% supermarket distribution confirmed', 'Premium shelf placement secured'], actionItems: [] },
-      { dimension: 'Pricing', readinessScore: 95, status: 'Complete', keyFindings: ['$2.49 price point delivers 40.5% margin', 'Trade promotional strategy locked'], actionItems: [] },
-      { dimension: 'Operations', readinessScore: 95, status: 'Complete', keyFindings: ['Sales team trained and deployed', 'Inventory levels optimal'], actionItems: [] },
-    ],
-    completedGates: [
-      { stageName: 'Concept', gateDate: '2025-10-15', isCompleted: true, keyMilestones: ['Rebranding strategy approved', 'Volume forecast 20% growth'], gateOwner: 'VP Product' },
-      { stageName: 'Development', gateDate: '2026-01-20', isCompleted: true, keyMilestones: ['Packaging artwork finalized', 'Recipe optimization complete'], gateOwner: 'Product Dev' },
-      { stageName: 'Pre-Launch', gateDate: '2026-03-15', isCompleted: true, keyMilestones: ['Supply chain assets ready', 'Channel agreements signed'], gateOwner: 'Supply Chain' },
-    ],
-    upcomingGates: [
-      { stageName: 'Post-Launch', gateDate: '2026-06-01', isCompleted: false, keyMilestones: ['Monitor velocity', 'Assess market share lift'], gateOwner: 'Launch Mgmt' },
-    ],
-  },
-  {
-    id: 'LP004',
-    name: 'BrandC Biscuits (Relaunch - Reduced Sugar)',
-    category: 'Snacks',
-    brand: 'BrandC',
-    currentStage: 'Development',
-    gateProgress: 65,
-    targetLaunchDate: '2026-12-15',
-    estimatedFirstYearRevenue: 12.5,
-    estimatedMargin: 38.9,
-    targetMarkets: ['Spain', 'Germany', 'Poland'],
-    overallReadiness: 62,
-    riskLevel: 'High',
-    launchType: 'Relaunch',
-    readiness: [
-      { dimension: 'Market', readinessScore: 72, status: 'At Risk', keyFindings: ['Health & wellness trend strong but crowded', 'Competitor Reduced-Sugar launch planned Q4'], actionItems: ['Accelerate market research', 'Differentiate vs. competitor offering'] },
-      { dimension: 'Supply Chain', readinessScore: 58, status: 'Critical', keyFindings: ['Reduced-sugar formulation requires new ingredients (lead time 120 days)', 'Supplier validation in progress (60% complete)'], actionItems: ['Expedite supplier qualification', 'Secure ingredient allocation'] },
-      { dimension: 'Channel', readinessScore: 60, status: 'At Risk', keyFindings: ['Hypermarket interest lukewarm', 'E-commerce channel shows strength'], actionItems: ['Develop direct-to-consumer strategy', 'Lock online shelf space'] },
-      { dimension: 'Pricing', readinessScore: 68, status: 'At Risk', keyFindings: ['Raw material cost increase 12%', 'Margin pressure vs. standard product'], actionItems: ['Refine pricing architecture', 'Identify cost-reduction opportunities'] },
-      { dimension: 'Operations', readinessScore: 48, status: 'Critical', keyFindings: ['New production line requires additional training', 'Quality assurance protocols under development'], actionItems: ['Complete process validation', 'Deploy workforce training program'] },
-    ],
-    completedGates: [
-      { stageName: 'Concept', gateDate: '2025-11-01', isCompleted: true, keyMilestones: ['Health trend analysis', 'Preliminary margin modeling'], gateOwner: 'VP Product' },
-    ],
-    upcomingGates: [
-      { stageName: 'Development', gateDate: '2026-08-15', isCompleted: false, keyMilestones: ['Recipe finalization', 'Regulatory approvals'], gateOwner: 'Product Dev' },
-      { stageName: 'Pre-Launch', gateDate: '2026-10-01', isCompleted: false, keyMilestones: ['Supply chain readiness', 'Channel activation'], gateOwner: 'Supply Chain' },
-      { stageName: 'Launch', gateDate: '2026-12-15', isCompleted: false, keyMilestones: ['Market availability', 'Launch campaign live'], gateOwner: 'Launch Mgmt' },
-    ],
-  },
-  {
-    id: 'LP005',
-    name: 'BrandF Water (Relaunch - Eco-Packaging)',
-    category: 'Beverages',
-    brand: 'BrandF',
-    currentStage: 'Pre-Launch',
-    gateProgress: 82,
-    targetLaunchDate: '2026-07-30',
-    estimatedFirstYearRevenue: 22.1,
-    estimatedMargin: 38.2,
-    targetMarkets: ['Italy', 'Netherlands', 'Austria', 'Poland'],
-    overallReadiness: 80,
-    riskLevel: 'Low',
-    launchType: 'Relaunch',
-    readiness: [
-      { dimension: 'Market', readinessScore: 86, status: 'On Track', keyFindings: ['Sustainability messaging resonates (ESG + price premium)', 'Consumer willingness-to-pay +8% validated'], actionItems: ['Amplify sustainability narrative', 'Expand eco-messaging'] },
-      { dimension: 'Supply Chain', readinessScore: 82, status: 'On Track', keyFindings: ['Eco-packaging supplier locked in with 8-week lead time', 'Recycled material sourcing confirmed'], actionItems: ['Validate packaging durability in transit'] },
-      { dimension: 'Channel', readinessScore: 80, status: 'On Track', keyFindings: ['Supermarket premium shelf placement interest high', 'E-commerce premium tier ready'], actionItems: ['Negotiate premium shelf fees', 'Coordinate digital launch'] },
-      { dimension: 'Pricing', readinessScore: 78, status: 'On Track', keyFindings: ['Premium price point $2.79 (+$0.35 vs. current)', 'Margin expansion to 38.2% achievable'], actionItems: ['Deploy dynamic pricing model'] },
-      { dimension: 'Operations', readinessScore: 78, status: 'On Track', keyFindings: ['Packaging line retrofitted', 'Quality assurance testing complete'], actionItems: ['Conduct production dry run', 'Finalize inventory buffers'] },
-    ],
-    completedGates: [
-      { stageName: 'Concept', gateDate: '2025-09-20', isCompleted: true, keyMilestones: ['Sustainability strategy approved', 'ESG alignment confirmed'], gateOwner: 'VP Sustainability' },
-      { stageName: 'Development', gateDate: '2026-02-28', isCompleted: true, keyMilestones: ['Packaging design finalized', 'QA testing passed'], gateOwner: 'Product Dev' },
-    ],
-    upcomingGates: [
-      { stageName: 'Pre-Launch', gateDate: '2026-06-15', isCompleted: false, keyMilestones: ['Fulfillment readiness', 'Channel brief-in complete'], gateOwner: 'Supply Chain' },
-      { stageName: 'Launch', gateDate: '2026-07-30', isCompleted: false, keyMilestones: ['Ecosystem go-live', 'Campaign activation'], gateOwner: 'Launch Mgmt' },
-    ],
-  },
-];
 
 // ─── Launch Timeline ──────────────────────────────────────────────────────────
-export const LAUNCH_TIMELINE: LaunchTimelineItem[] = [
-  { date: '2026-05-01', product: 'BrandB Chips (Relaunch)', stage: 'Launch', region: 'Multi-Market', status: 'Completed' },
-  { date: '2026-06-15', product: 'BrandA Premium Energy', stage: 'Pre-Launch', region: 'Italy', status: 'Planned' },
-  { date: '2026-07-30', product: 'BrandF Water (Eco-Pack)', stage: 'Launch', region: 'Multi-Market', status: 'Planned' },
-  { date: '2026-08-15', product: 'BrandD Organic Yogurt', stage: 'Development', region: 'Austria', status: 'Planned' },
-  { date: '2026-09-15', product: 'BrandA Premium Energy', stage: 'Launch', region: 'Multi-Market', status: 'Planned' },
-  { date: '2026-10-20', product: 'BrandD Organic Yogurt', stage: 'Launch', region: 'Multi-Market', status: 'Planned' },
-  { date: '2026-12-15', product: 'BrandC Biscuits (Reduced Sugar)', stage: 'Launch', region: 'Multi-Market', status: 'Planned' },
-];
 

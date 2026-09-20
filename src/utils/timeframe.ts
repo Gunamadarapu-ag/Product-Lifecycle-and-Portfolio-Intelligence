@@ -234,38 +234,4 @@ export function getFilteredRegionalData(baseRegional: RegionalData[], timeframe:
   });
 }
 
-/**
- * Scales and filters channel data
- */
-export function getFilteredChannelData(baseChannel: ChannelData[], timeframe: TimelineRange): ChannelData[] {
-  return baseChannel.map(c => {
-    const scale = getTimeframeScale(timeframe);
-    const noise = getDeterministicNoise(c.channel, timeframe) * 0.05;
-    const adjustedStockouts = Math.round(c.stockoutCount * scale * (1 + noise));
-    const adjustedMargin = getAdjustedMargin(c.marginPct, c.channel, timeframe);
-    
-    return {
-      ...c,
-      stockoutCount: Math.max(10, adjustedStockouts),
-      marginPct: adjustedMargin
-    };
-  });
-}
 
-/**
- * Scales and filters top stockout items
- */
-export function getFilteredStockoutTop10(baseStockouts: StockoutItem[], timeframe: TimelineRange): StockoutItem[] {
-  return baseStockouts.map(s => {
-    const scale = getTimeframeScale(timeframe);
-    const noise = getDeterministicNoise(s.name + 'stockout', timeframe) * 0.05;
-    const adjustedCount = Math.round(s.stockoutCount * scale * (1 + noise));
-    const adjustedSales = s.netSalesM * scale * (1 + noise);
-    
-    return {
-      ...s,
-      stockoutCount: Math.max(1, adjustedCount),
-      netSalesM: parseFloat(adjustedSales.toFixed(2))
-    };
-  });
-}
