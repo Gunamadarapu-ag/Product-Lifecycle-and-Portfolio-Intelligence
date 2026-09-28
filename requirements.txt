@@ -1,0 +1,32 @@
+# Python dependencies — Acies AgenticBus: Product Lifecycle & Portfolio Intelligence
+#
+# Tested on CPython 3.14.4 (Windows 11).  Versions are pinned exactly because the
+# dataset is deterministic: main.py seeds every RNG with 20260909 and validate.py
+# asserts 16 reconciliation targets.  A different NumPy or SciPy can change
+# floating-point results enough to move a target outside tolerance, so an
+# unpinned install would silently produce a different dataset.
+#
+#     python -m venv .venv
+#     .venv\Scripts\activate          # Windows
+#     source .venv/bin/activate       # macOS / Linux
+#     pip install -r requirements.txt
+#
+# Regenerate the dataset with:  python data/generator/main.py
+
+# ── Dataset generator (data/generator/) ──────────────────────────────────────
+pandas==3.0.2
+numpy==2.4.4
+scipy==1.17.1            # PCHIP interpolation for the Pareto curve
+pyarrow==23.0.1          # not imported directly; backs fact_sales.parquet
+
+# ── Database loader (data/generator/load.py) ─────────────────────────────────
+# Imported lazily, so the generator runs without it. Needed only to COPY the
+# CSVs into PostgreSQL 17 (localhost:5433).
+psycopg2-binary==2.9.11
+
+# ── FastAPI read API (decided 20 Sep 2026; code not yet written) ─────────────
+# The backend is Python. These are pinned now so the environment is reproducible
+# the moment the first endpoint lands; nothing imports them yet.
+fastapi==0.136.0
+uvicorn==0.44.0
+pydantic==2.13.2

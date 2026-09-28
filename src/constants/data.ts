@@ -28,14 +28,6 @@ import {
   GENERATED_RATIONALIZATION_SCENARIOS,
 } from './generated';
 
-// ─── Company Context ──────────────────────────────────────────────────────────
-export const COMPANY_CONTEXT = {
-  entity: 'FMCG Multi-Country Enterprise',
-  brands: '100 SKUs across 6 Brands',
-  revenue: '$473M Annual',
-  categories: 5,
-};
-
 // ─── KPI Strip (8 cards) ─────────────────────────────────────────────────────
 // Values sourced from extracted_text.txt (Colab Notebook analysis)
 const KPIS_SEED: KPI[] = [
@@ -160,7 +152,12 @@ export const PORTFOLIO_DATA: PortfolioItem[] = [
 ];
 
 // ─── Channel Performance (Q17/Q18) ───────────────────────────────────────────
-/** Computed from the generated dataset - see src/constants/generated.ts */
+/**
+ * Computed from the generated dataset - see src/constants/generated.ts
+ *
+ * NOT RENDERED ANYWHERE. Its only consumer was the deleted Express server,
+ * so the dashboard still shows hardcoded values for this. Wiring it is TODO O7.
+ */
 export const CHANNEL_DATA: ChannelData[] = GENERATED_CHANNEL_DATA;
 
 // ─── Regional Data (Q16) ─────────────────────────────────────────────────────
@@ -168,19 +165,39 @@ export const CHANNEL_DATA: ChannelData[] = GENERATED_CHANNEL_DATA;
 export const REGIONAL_DATA: RegionalData[] = GENERATED_REGIONAL_DATA;
 
 // ─── Top 10 Stockout SKUs (Q11 + Q12) ────────────────────────────────────────
-/** Computed from the generated dataset - see src/constants/generated.ts */
+/**
+ * Computed from the generated dataset - see src/constants/generated.ts
+ *
+ * NOT RENDERED ANYWHERE. Its only consumer was the deleted Express server,
+ * so the dashboard still shows hardcoded values for this. Wiring it is TODO O7.
+ */
 export const STOCKOUT_TOP10: StockoutItem[] = GENERATED_STOCKOUT_TOP10;
 
 // ─── Rationalization Scenarios (Q28-Q30) ─────────────────────────────────────
-/** Computed from the generated dataset - see src/constants/generated.ts */
+/**
+ * Computed from the generated dataset - see src/constants/generated.ts
+ *
+ * NOT RENDERED ANYWHERE. Its only consumer was the deleted Express server,
+ * so the dashboard still shows hardcoded values for this. Wiring it is TODO O7.
+ */
 export const RATIONALIZATION_SCENARIOS: RationalizationScenario[] = GENERATED_RATIONALIZATION_SCENARIOS;
 
 // ─── PCI Sub-Drivers (Q25) ───────────────────────────────────────────────────
-/** Computed from the generated dataset - see src/constants/generated.ts */
+/**
+ * Computed from the generated dataset - see src/constants/generated.ts
+ *
+ * NOT RENDERED ANYWHERE. Its only consumer was the deleted Express server,
+ * so the dashboard still shows hardcoded values for this. Wiring it is TODO O7.
+ */
 export const PCI_DRIVERS: PCIDriver[] = GENERATED_PCI_DRIVERS;
 
 // ─── Top SKUs by Revenue (Q1) ─────────────────────────────────────────────────
-/** Computed from the generated dataset - see src/constants/generated.ts */
+/**
+ * Computed from the generated dataset - see src/constants/generated.ts
+ *
+ * NOT RENDERED ANYWHERE. Its only consumer was the deleted Express server,
+ * so the dashboard still shows hardcoded values for this. Wiring it is TODO O7.
+ */
 export const TOP_SKUS_REVENUE: TopSKU[] = GENERATED_TOP_SKUS_REVENUE;
 
 // ─── Agent Roster ─────────────────────────────────────────────────────────────

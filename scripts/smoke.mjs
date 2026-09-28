@@ -31,15 +31,26 @@ page.on('response', (r) => {
   if (r.status() >= 400 && !IGNORE.test(r.url())) problems.push(`${current} :: HTTP ${r.status()} ${r.url()}`);
 });
 
+/** Load one combination and return anything it reported. */
+async function visit(role, tab) {
+  const before = problems.length;
+  current = `${role} / tab ${tab}`;
+  const url = `${BASE}/#tab=${tab}&role=${encodeURIComponent(role)}&timeline=12m&theme=light`;
+  await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+  // lazy chunk, then let ResponsiveContainer measure and charts finish animating
+  await new Promise((r) => setTimeout(r, 1500));
+  const text = await page.evaluate(() => document.body.innerText.trim().length);
+  if (text < 200) problems.push(`${current} :: rendered only ${text} chars — likely blank`);
+  return problems.splice(before);
+}
+
 for (const role of ROLES) {
   for (const tab of TABS) {
-    current = `${role} / tab ${tab}`;
-    const url = `${BASE}/#tab=${tab}&role=${encodeURIComponent(role)}&timeline=12m&theme=light`;
-    await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
-    // lazy chunk + chart render
-    await new Promise((r) => setTimeout(r, 900));
-    const text = await page.evaluate(() => document.body.innerText.trim().length);
-    if (text < 200) problems.push(`${current} :: rendered only ${text} chars — likely blank`);
+    let found = await visit(role, tab);
+    // Recharts can emit a transient attribute error if ResponsiveContainer
+    // measures zero width on first paint. Retry once; only a repeat is real.
+    if (found.length) found = await visit(role, tab);
+    problems.push(...found);
   }
 }
 

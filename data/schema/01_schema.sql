@@ -4,12 +4,14 @@
 -- Implements documentation/data_model_specification.md in full:
 --   7 dimensions, 1 bridge, 1 fact, 4 derived tables, 1 matview, 1 view.
 --
--- Run as ppl_app against the ppl_intelligence database:
+-- Run as ppl_app against the ppl_intelligence database. From the repo root in
+-- Command Prompt (cmd.exe), as two separate lines:
 --
---   $env:PGPASSWORD = "<APP_PASSWORD>"
---   & "C:\Program Files\PostgreSQL\17\bin\psql.exe" `
---       -h localhost -p 5433 -U ppl_app -d ppl_intelligence `
---       -f data/schema/01_schema.sql
+--   set PGPASSWORD=<APP_PASSWORD>
+--   "C:\Program Files\PostgreSQL\17\bin\psql.exe" -h localhost -p 5433 -U ppl_app -d ppl_intelligence -f data\schema\01_schema.sql
+--
+-- cmd.exe has no & call operator and no backtick continuation — keep each
+-- command on a single line or it breaks into fragments.
 --
 -- Idempotent: drops and recreates everything. Safe to re-run during design.
 -- All monetary columns are USD. Money is NUMERIC, never FLOAT.

@@ -24,6 +24,7 @@ import { Sidebar } from './components/common/Sidebar';
 import { KPICard } from './components/dashboard/KPICard';
 import { AuditDrawer } from './components/dashboard/AuditDrawer';
 import { WelcomeGate } from './components/common/WelcomeGate';
+import { LoginPage } from './components/common/LoginPage';
 import { SkuDetailsModal } from './components/dashboard/executive/SkuDetailsModal';
 import { GlobalSearchBar } from './components/common/GlobalSearchBar';
 import { AgentWidget } from './components/common/AgentWidget';
@@ -186,10 +187,22 @@ export default function App() {
   const [showWelcomeGate, setShowWelcomeGate] = useState<boolean>(() => {
     const roleParam = getHashParam('role');
     if (roleParam !== null) return false;
-    
+
     try {
       const sessionActive = sessionStorage.getItem('acies_session_active');
       return sessionActive === null;
+    } catch (e) {
+      return true;
+    }
+  });
+  // Same bypass rule as the welcome gate: a role-specific deep link (used by
+  // scripts/smoke.mjs and shared links) skips straight past both gates.
+  const [showLoginPage, setShowLoginPage] = useState<boolean>(() => {
+    const roleParam = getHashParam('role');
+    if (roleParam !== null) return false;
+
+    try {
+      return sessionStorage.getItem('acies_authenticated') === null;
     } catch (e) {
       return true;
     }
@@ -315,6 +328,21 @@ export default function App() {
      return { ...tab, icon };
   });
 
+  // Sidebar display order only — `tabs` itself stays in id order because
+  // `tabs[activeTab]` is used elsewhere (header title, audit drawer) as a
+  // direct id lookup. Reordering that array would show the wrong tab name.
+  // Home (0) always leads; the rest are ranked by how central each tab is
+  // to that persona's primary decisions (persona x capability matrix,
+  // Research_doc/...Project_Tracker 1.xlsx -> "Profile Hirarchy Importance").
+  const SIDEBAR_ORDER: Record<Role, number[]> = {
+    'VP Product Management':      [0, 1, 3, 5, 2, 4, 8, 6, 7],
+    'Product Manager':            [0, 2, 4, 3, 5, 1, 8, 6, 7],
+    'Pricing and Margin Partner': [0, 3, 4, 1, 2, 5, 8, 6, 7],
+  };
+  const sidebarTabs = SIDEBAR_ORDER[role]
+    .map(id => tabs.find(t => t.id === id))
+    .filter((t): t is typeof tabs[number] => t !== undefined);
+
   const [isExploreOpen, setIsExploreOpen] = useState<boolean>(false);
 
   const handleSwitchPersona = () => {
@@ -332,16 +360,29 @@ export default function App() {
     setShowWelcomeGate(true);
   };
 
+  if (showLoginPage) {
+    return (
+      <LoginPage
+        onLogin={() => {
+          try {
+            sessionStorage.setItem('acies_authenticated', 'true');
+          } catch (e) {}
+          setShowLoginPage(false);
+        }}
+      />
+    );
+  }
+
   if (showWelcomeGate) {
     return (
-      <WelcomeGate 
+      <WelcomeGate
         onSelectRole={(selectedRole) => {
           setRole(selectedRole);
           try {
             sessionStorage.setItem('acies_session_active', 'true');
           } catch (e) {}
           setShowWelcomeGate(false);
-        }} 
+        }}
       />
     );
   }
@@ -394,7 +435,7 @@ export default function App() {
                 <div className={`flex flex-row lg:flex-col gap-3 p-2 lg:py-3 bg-white dark:bg-white/5 border border-acies-yellow/15 dark:border-white/10 rounded-2xl items-center justify-start overflow-x-auto lg:overflow-y-auto lg:max-h-[calc(100vh-120px)] scroll-smooth no-scrollbar shadow-sm shadow-acies-yellow/5 transition-all duration-300 ${
                   hasSubdivisions ? 'lg:px-2' : 'lg:px-0.5'
                 }`}>
-                  {tabs.filter(tab => tab.id < 9).map((tab) => {
+                  {sidebarTabs.map((tab) => {
                     const isActive = activeTab === tab.id || (tab.id === 4 && (activeTab === 9 || activeTab === 10 || activeTab === 11));
                     const displayName = getTabDisplayName(tab.id, tab.name);
                     return (

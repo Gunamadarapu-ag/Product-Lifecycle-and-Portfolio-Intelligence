@@ -3,8 +3,8 @@
 Tracking the move from hardcoded constants to a generated, validated dataset and a
 PostgreSQL database.
 
-**Last updated:** 17 September 2026
-**Branch:** `refactor/cleanup-and-architecture`
+**Last updated:** 22 September 2026
+**Branch:** `Branch_G` (pushed to `origin`) — `refactor/cleanup-and-architecture` also exists locally
 
 ---
 
@@ -15,14 +15,16 @@ PostgreSQL database.
 | 1. Schema design | **Done** |
 | 2. Dataset generation | **Done** — 16/16 targets pass |
 | 3. Dashboard wiring (partial) | **Done** — 7 arrays live |
-| 4. Database | **Blocked** — postgres superuser password |
+| 4. Database | **Done** — 20 Sep, loaded and reconciled |
 | 5. Dashboard wiring (SKUS) | **Open** — needs threshold audit |
 | 6. Repo cleanup | **Blocked** — permissions |
 | 7. Product review — metrics, tabs, competitors | **Done** — 3 reports, 17 Sep |
 | 8. Metric integrity | **Open** — see O7 |
 | 9. Tab consolidation, 12 → 5 | **Open** — see O8 |
 | 10. Repo cleanup, phases A and B | **Done** — 20 Sep, 187 files removed |
-| 11. Phase C — split the giant files | **Done** — 20 Sep, 4 files split into 16 |
+| 11. Phase C — split the giant files | **Done** — 20 Sep, 9 files split into 30 |
+| 12. Backend language | **Decided** — 20 Sep, Python/FastAPI; Node backend deleted |
+| 13. Python dependencies pinned | **Done** — 20 Sep, `requirements.txt` |
 
 ---
 
@@ -62,29 +64,193 @@ gone. (`DemoTab` has its own `EXPLORER_ROWS`; it never imported this one.)
 across all 3 personas × 9 tabs and fails on any console error, page error or blank render.
 Compilation does not prove a lazy-loaded chunk renders; this does. Currently **27/27 pass**.
 
+### Second pass — five more files
+
+Using a generic splitter that derives exact ranges from a full declaration scan and
+computes each new module's imports from the identifiers it actually uses.
+
+| File | Before | After | New modules |
+| --- | ---: | ---: | --- |
+| `CategoryPerformanceDetailsModal.tsx` | 1,790 | **197** | `categoryDetailsData`, `categoryHelpers`, `SkuAnalysisModal` |
+| `ProfitabilityTree.tsx` | 2,081 | **426** | `profitabilityData`, `VPProfitabilityTreeView` |
+| `PortfolioHealthMap.tsx` | 2,663 | **1,334** | `LifecycleHealthPanel`, `InvestmentMarginMap`, `RevenuePerformanceMatrix` |
+| `DemoTab.tsx` | 1,233 | **777** | `demoTabData`, `demoTabHelpers`, `DemoTabCharts` |
+| `ExecutiveOverview.tsx` | 2,142 | **1,511** | `executiveData`, `MonthForecastModal` |
+
+**More dead code removed:** `CustomSKUType` (12) and `CUSTOMER_INSIGHTS_DATA` (148) —
+declared, never read.
+
+**One real duplicate removed:** `DemoTab` carried a byte-identical copy of
+`generateTasksForSku` (48 lines, 100% match). It now imports the shared one.
+`getRcaDetails`, `MarginWaterfallChart` and `SkuCategoryBenchmarks` also exist in both
+places but differ (34–77% similar), so they are **variants, not duplicates** — merging
+them would change behaviour and was left alone.
+
+**Smoke test made stable.** `ProductMixClustering`'s ScatterChart intermittently logs
+`<circle> attribute cx: Expected length, "undefined"` when `ResponsiveContainer` measures
+zero width on first paint. Pre-existing and cosmetic, but it made the test flaky, so a
+combination is now retried once and only a repeat failure counts. Three consecutive
+clean runs.
+
 The two modals and `VPLaunchReadinessView` shrank less because their remainder is one
 contiguous JSX return. Splitting those means extracting panel sub-components and threading
 props — real refactoring, not a move, so it was left out of this pass.
 
-**Still to decide — `server.ts`.** It is an orphaned Express API: no npm script starts it
-and nothing imports it. It is also the only consumer of nine `data.ts` constants
-(`COMPANY_CONTEXT`, `CHANNEL_DATA`, `STOCKOUT_TOP10`, `PCI_DRIVERS`, `TOP_SKUS_REVENUE`,
-`RATIONALIZATION_SCENARIOS`, `LAUNCH_PRODUCTS`, `LAUNCH_TIMELINE`, `SEGMENT_COLORS`,
-`PROMO_EROSION_DATA`, `SKU_BURDEN_DATA`, `SIGNALS`), which is why those were left in place.
-Delete it and they can go too; keep it as the seed of the API layer and they stay.
+**Decided and done — `server.ts` deleted (20 Sep).** The user confirmed the backend will be
+**Python**, which settled it: an orphaned Express API is not the seed of a FastAPI layer.
+
+Two corrections to what this entry previously claimed:
+
+- It named twelve `data.ts` constants as server-only. `server.ts` actually imported **ten**,
+  and six of the names listed (`LAUNCH_PRODUCTS`, `LAUNCH_TIMELINE`, `SEGMENT_COLORS`,
+  `PROMO_EROSION_DATA`, `SKU_BURDEN_DATA`, `SIGNALS`) **do not exist anywhere in the repo** —
+  zero references, no declaration. The note was written from a stale reading.
+- Of the ten it did import, four (`KPIS`, `PORTFOLIO_DATA`, `REGIONAL_DATA`, `AGENT_ROSTER`)
+  are live in components and were never at risk.
+
+**What was removed**
+
+| Item | Detail |
+| --- | --- |
+| `server.ts` | 205 lines, Express, no npm script started it |
+| `COMPANY_CONTEXT` | Dead once the server went — and wrong: it read "100 SKUs" against a 119-SKU dataset |
+| `express`, `@types/express` | Only `server.ts` used them |
+| `dotenv` | Declared but imported by **nothing**, not even `server.ts` |
+| `tsx` | Declared but referenced by no script |
+| `@google/genai` | Imported nowhere. With the LLM tier moving to Python it would also have meant shipping a Gemini key in a static bundle |
+| `vite` duplicate | Was listed in **both** `dependencies` and `devDependencies` |
+| `puppeteer` | Moved to `devDependencies` — it is a test tool, not a runtime dep |
+| `"clean"` script | Targeted `server.js`, a build output no script produces |
+
+**Net:** 124 npm packages removed. `tsc --noEmit` clean, production build clean,
+`npm run smoke` 27/27.
+
+**Kept deliberately.** The five `data.ts` aliases of computed arrays (`CHANNEL_DATA`,
+`STOCKOUT_TOP10`, `RATIONALIZATION_SCENARIOS`, `PCI_DRIVERS`, `TOP_SKUS_REVENUE`). Deleting
+`server.ts` exposed that these were its *only* consumers — see O7 below, which this makes
+considerably more concrete.
+
+## Python dependencies pinned — 20 September
+
+`requirements.txt` added at the repo root. There was none, so the dataset was reproducible
+only on this machine.
+
+Versions are pinned **exactly**, not with `>=`. The generator is deterministic — every RNG
+is seeded with `20260909` and `validate.py` asserts 16 reconciliation targets — so a
+different NumPy or SciPy can move a target outside tolerance and silently produce a
+different dataset. All eight pins were verified against what is installed.
+
+| Group | Packages |
+| --- | --- |
+| Generator | `pandas==3.0.2`, `numpy==2.4.4`, `scipy==1.17.1`, `pyarrow==23.0.1` |
+| Loader | `psycopg2-binary==2.9.11` (imported lazily; generator runs without it) |
+| FastAPI backend | `fastapi==0.136.0`, `uvicorn==0.44.0`, `pydantic==2.13.2` |
+
+Two things deliberately **not** pinned: `SQLAlchemy` (installed but imported nowhere — the
+loader uses raw `psycopg2` `COPY`) and `python-dotenv` (`load.py` has its own `read_env`
+parser). `pyarrow` is pinned despite never being imported directly, because it backs
+`fact_sales.parquet`.
+
+Tested on CPython 3.14.4, Windows 11.
+
+---
+
+## Database live — 20 September
+
+`B1 is unblocked.` PostgreSQL 17.11 on `localhost:5433` now holds the full dataset.
+
+| Object | Value |
+| --- | --- |
+| Database | `ppl_intelligence` (created by hand as `Pd_lc_app`, renamed by the script) |
+| Owner / app role | `Pd_lc_app` — LOGIN, not superuser |
+| Credentials | `.env` only (gitignored) |
+| Rows loaded | **377,364** across 13 tables, in 44.9s |
+
+**Reconciliation against the generator's targets — all pass:**
+
+| Check | Target | In the database |
+| --- | --- | --- |
+| 2025 net sales | $473.0M | $473.0M |
+| YoY growth | +8.3% | +8.29% (436.8M → 473.0M) |
+| Avg gross margin | 38.53% | 38.55% |
+| SKUs / brands / categories | 119 / 6 / 7 | 119 / 6 / 7 |
+
+### Two bugs found by actually running the scripts
+
+1. **`00_create_role.sql` had never worked.** It wrapped `:'app_password'` in a
+   `DO $$ ... $$` block, but **psql does not substitute `:variables` inside dollar-quoted
+   strings** — it treats the body as one literal. The variable reached the server verbatim
+   and failed with `syntax error at or near ":"`. Rewritten as `SELECT format(...) \gexec`,
+   which keeps the variables in plain SQL text. This latent bug survived because the file had
+   never been executed.
+2. **Mixed-case identifiers.** `CREATE ROLE Pd_lc_app` unquoted folds to `pd_lc_app`, after
+   which `-U Pd_lc_app` fails with "role does not exist". All identifiers now go through
+   `format('%I')`, which quotes only when required. Verified: the role connects by its
+   exact case.
+
+The script is now fully parameterised (`-v app_user`, `-v app_db`, `-v app_password`) so it
+tracks `.env` instead of drifting from it, and both schema files carry cmd.exe invocation
+lines rather than PowerShell ones.
+
+**Stale reference:** `01_schema.sql` ends by pointing at `02_seed_dimensions.sql`, which does
+not exist. `load.py` does that job. Harmless, but the message should be corrected.
 
 ---
 
 ## Security
 
-### S1 — Database password committed in `a3a3c54`
+### S1 — Database password committed in `a3a3c54` — **escalated 20 Sep**
 The `ppl_app` password was written in plain text into this file and committed.
-**Contained:** the branch has never been pushed, and the `ppl_app` role does not exist yet,
-so the value protects nothing. The plaintext has been removed from this file (17 Sep).
 
-- [ ] **Before creating the role, generate a new password** and put it in `.env`. The
-      committed value then becomes worthless and history needs no rewriting.
-- [ ] **Do not push this branch** until that is done — the old value remains in history.
+**The earlier containment note was wrong.** It said "the branch has never been pushed."
+Verified on 20 September:
+
+| Check | Result |
+| --- | --- |
+| Is `a3a3c54` an ancestor of `origin/Branch_G`? | **Yes** |
+| Does `origin/Branch_G` exist on GitHub? | **Yes** — `Gunamadarapu-ag/Product-Lifecycle-and-Portfolio-Intelligence` |
+| Where is the plaintext? | `TODO.md` lines 64 and 67 of `a3a3c54` |
+| Is it at the current tip? | No — removed 17 Sep, but history retains it |
+| Branches carrying it | `Branch_G`, `refactor/cleanup-and-architecture` |
+
+So the secret **has left this machine**. Anyone who can read that repository can recover it
+with `git show a3a3c54:TODO.md`. Removing it from the tip did not remove it from history.
+
+**What still limits the damage:** the `ppl_app` role has never been created, so the value
+currently unlocks nothing. That holds only until someone creates the role with that password.
+
+- [ ] **Never use this password.** Generate a fresh one when creating the role — treat
+      `2GuYYX4LFOJmpdsQL7dhihWG` as burned. This is the single most important step and it
+      costs nothing.
+- [ ] **Confirm the repository's visibility.** If `Gunamadarapu-ag/...` is public, the value
+      should be considered disclosed to anyone, and any *other* place it was reused needs
+      changing too.
+- [ ] **Decide whether to purge history.** Only worth the disruption if the value was reused
+      elsewhere; otherwise generating a new one is sufficient. Purging means a force-push
+      (`git filter-repo`), which rewrites commits others may have pulled.
+**Status 20 Sep, after the database went live.** The leaked value is no longer used
+anywhere: `.env` was rewritten and the `Pd_lc_app` role was created with a different
+password. The leaked string remains in `origin/Branch_G` history and should still be treated
+as burned.
+
+**New finding — `pg_hba.conf` is set to `trust`.** All three local lines
+(`local`, `127.0.0.1/32`, `::1/128`) use `trust`, which means **no password is verified for
+any local connection, including `postgres`**. So the database password currently protects
+nothing on this machine, and the S1 leak never protected anything either.
+
+Contained by: `listen_addresses = '*'` exposes the port, but there is **no `pg_hba` rule for
+non-loopback addresses**, and PostgreSQL rejects connections matching no rule. Remote access
+is refused.
+
+- [ ] **Switch the two `host` lines to `scram-sha-256`** and reload
+      (`pg_ctl reload -D "C:\Program Files\PostgreSQL\data"`, Administrator). Until
+      then the password in `.env` is decorative.
+- [ ] **Then strengthen the app password.** The current one follows a very common pattern
+      and is among the first strings any scanner tries. Harmless while auth is `trust`;
+      not harmless the moment it is not.
+
+- [ ] **Do not add the new password to any tracked file** — `.env` only (`.gitignore:7`
+      covers `.env*`, verified with `git check-ignore`).
 
 ---
 
@@ -239,6 +405,33 @@ separate source with its own grain and refresh cadence.
 Only **2 of the brief's 6 required KPIs** are properly computed. Revenue and margin each
 have two competing baselines.
 
+**Sharpened on 20 Sep by deleting `server.ts`.** `data.ts` is the sole importer of
+`generated.ts`, and only **2 of its 7 computed exports reach a component**:
+
+| Generated export | Reaches the UI? |
+| --- | --- |
+| `GENERATED_KPI_VALUES` | Yes — overrides the KPI strip |
+| `GENERATED_REGIONAL_DATA` | Yes — 19 references |
+| `GENERATED_CHANNEL_DATA` | **No** |
+| `GENERATED_STOCKOUT_TOP10` | **No** |
+| `GENERATED_RATIONALIZATION_SCENARIOS` | **No** |
+| `GENERATED_PCI_DRIVERS` | **No** |
+| `GENERATED_TOP_SKUS_REVENUE` | **No** |
+
+The five unconnected ones had exactly one consumer: the deleted Express server. So every
+screen showing channel performance, stockouts, rationalization scenarios, PCI drivers or top
+SKUs renders a hardcoded number while a correct computed one sits one import away. The
+aliases in `data.ts` are kept and annotated as the wiring points.
+
+This is the cheapest high-value item on this list — five arrays already computed and
+validated, needing only to be consumed.
+
+- [ ] **Fix the lifecycle "Total Revenue" units bug** (found by a teammate's review, confirmed
+      22 Sep). `LifecycleHealthPanel.tsx:100` sums each SKU's `rev` field and renders it as
+      `$…M`. Across 119 SKUs `rev` totals **10,608** — against annual net sales of **$473M** —
+      so the screen shows ~$10,592M, about 22× too high. `rev` is not in millions. *(hours)*
+- [ ] **Wire the five orphaned computed arrays** into the components that currently hardcode
+      them. No new data work; the generator already produces all five. *(1–2 days)*
 - [ ] **One metric registry** — every card, search result, agent reply and audit entry reads
       its value from one place. Fixes O4 and stops new conflicts. *(2–3 days)*
 - [ ] **Retire the $851.2M / $851.4M / 36.2% baseline** and the Gross Profit, Net Profit and
@@ -272,8 +465,34 @@ outside the brief's scope. Four of the five brief tabs are built twice (VP + sta
 - [ ] **Wire the Consulting CTA** — Diagnostic Workshop, Use Cases and Lab Explorer have no
       click handlers. The acceptance criteria require them functional, and it's the GTM
       conversion point.
-- [ ] **Remove the real trademark** "Coca-Cola 500ml" from the SKU list.
+- [ ] **Remove real brands — seven, not one** (corrected 22 Sep). In `dim_sku`: Coca-Cola,
+      Sprite, Thums Up, Pulpy Orange, 5-Star, Munch, "Foorti" — all added in one commit on
+      13 Jul. Also Pepsi, Mountain Dew and Lay's by name in the Signals Board pricing simulator
+      (`SignalsBoard.tsx`, `signalsData.ts`). Rename to fictional brands; the SKU names live in
+      `data.ts` → `sku_seed.json`, so regenerate and reload the dataset after renaming.
 - [ ] Review category mix — 3 of the top 5 SKUs by revenue are apparel in an FMCG portfolio.
+
+### O10 — `role` never updates from a `hashchange` event  *(found 22 Sep, while reordering the sidebar)*
+`App.tsx`'s `role` state is set once, in the `useState` lazy initializer, from the URL hash or
+`localStorage`. The `hashchange` listener (`App.tsx` ~line 229) re-reads `tab`, `timeline`,
+`metric`, `simulator` and `view` on every hash change — but never `role`.
+
+**Consequence:** a role-specific link (`#tab=0&role=Product%20Manager...`) opened in a tab that
+already has the app loaded silently keeps whichever role loaded first. Only a full page load
+picks up a new `role` from the URL. Confirmed with Puppeteer: reusing one browser tab across
+three `role` values in the hash rendered the same role three times; a fresh page per URL
+rendered correctly each time.
+
+**Also affects `scripts/smoke.mjs`** — it reuses one `page` across every `visit(role, tab)`
+call. Worth an audit: with 27/27 passing, either the role switch works in some environments
+this reproduction didn't hit, or the smoke test has been exercising fewer real role/tab
+combinations than its "3 × 9 = 27" label claims. Check before trusting future green runs.
+
+- [ ] Fix: read and apply `role` inside the `hashchange` handler, matching the pattern already
+      used for `tab` and `timeline`.
+- [ ] Re-verify `scripts/smoke.mjs` actually switches role per combination (e.g. assert
+      `document.title` or a role-specific DOM marker changes between combinations), not just
+      that no console error fires.
 
 ---
 
@@ -303,6 +522,8 @@ npm run preview                      # serve dist/ on :4173
 | --- | --- |
 | `documentation/data_model_specification.md` | Tables, columns, types, keys |
 | `documentation/dataset_generation_plan.md` | Generation rules, targets, run outcomes |
+| `documentation/system_architecture.md` | Now / Next / Future diagrams, Excalidraw-ready |
+| `documentation/architecture_proposal.md` | Target state and cost strategy — see corrections in the file above |
 | `TODO.md` | This file |
 
 **Published:** [build brief](https://claude.ai/code/artifact/0afd68c0-d0c6-49d7-88bb-747af9c9cda7) ·
