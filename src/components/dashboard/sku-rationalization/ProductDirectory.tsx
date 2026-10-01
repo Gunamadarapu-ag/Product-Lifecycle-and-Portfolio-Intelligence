@@ -6,6 +6,7 @@
 import React, { useState, useMemo } from 'react';
 import { SKUS } from '../../../constants/data';
 import { srClassify, SR_CLASSES, getSkuLocation } from './SKURationalization';
+import { useLiveData } from '../../../api/liveData';
 
 interface ProductDirectoryProps {
   onSelectSku: (sku: typeof SKUS[0]) => void;
@@ -20,6 +21,8 @@ export const ProductDirectory: React.FC<ProductDirectoryProps> = ({
   shortlistedSkus = [],
   frozenSkus = [],
 }) => {
+  // Real per-SKU net sales ($M); `sku.rev` is ~22x too large (TODO.md O1).
+  const { skuRevenueM } = useLiveData();
   // Product Directory Search & Filtering States
   const [dirSearch, setDirSearch] = useState('');
   const [dirCatFilter, setDirCatFilter] = useState('ALL');
@@ -116,7 +119,7 @@ export const ProductDirectory: React.FC<ProductDirectoryProps> = ({
                       {isFrozen && <span title="Replenishment frozen" className="text-[9px]">❄️</span>}
                     </div>
                   </div>
-                  <div className="text-[8px] text-zinc-500 dark:text-zinc-500 font-bold uppercase mt-0.5">{sku.cat} · ${sku.rev}M · {getSkuLocation(sku.name)}</div>
+                  <div className="text-[8px] text-zinc-500 dark:text-zinc-500 font-bold uppercase mt-0.5">{sku.cat} · ${(skuRevenueM?.[sku.name] ?? sku.rev).toLocaleString('en-US', { maximumFractionDigits: 1 })}M · {getSkuLocation(sku.name)}</div>
                 </div>
                 <div className="flex justify-between items-center mt-2 font-sans">
                   <div className="flex items-center gap-1 flex-wrap">

@@ -1,0 +1,246 @@
+﻿Research on Metrics
+
+
+Forecast Attainment:
+Forecast Attainment measures how closely actual sales matched the forecasted sales.
+Formula
+  
+
+Example
+* Forecasted Sales = ₹10 Cr
+* Actual Sales = ₹9 Cr
+Forecast Attainment = (9/10) × 100 = 90%
+Interpretation:
+* 100% → Forecast was perfectly achieved.
+* <100% → Actual sales were below forecast.
+* >100% → Actual sales exceeded forecast.
+Why a VP cares
+It helps answer:
+* Are our demand forecasts accurate?
+* Are launches and promotions performing as expected?
+* Are we likely to face stockouts or excess inventory?
+* Which categories/SKUs are underperforming against plan?
+Best Tab for Forecast Attainment
+1. Launch Readiness Tab ⭐ (Most Suitable)
+For new product launches, forecast attainment shows whether the launch is tracking against expected demand.
+Related metrics:
+* Launch Revenue vs Target
+* Forecast Attainment
+* Sell-through Rate
+* Inventory Coverage
+* Launch Success Score
+2. Signals Board ⭐
+Can be used as an alert metric:
+* Forecast Attainment < 80% → Underperforming
+* Forecast Attainment > 120% → Demand spike
+This helps the VP quickly identify products needing action.
+3. Portfolio Health Map
+Can be used as one dimension of SKU health:
+* High Margin + High Forecast Attainment → Star Products
+* Low Forecast Attainment → At-Risk Products
+For your VP Dashboard
+I would place it in:
+1. Launch Readiness Tab (primary KPI)
+2. Signals Board (alert/exception monitoring)
+3. Portfolio Health Map (as a drill-down metric for SKU health)
+If you have to choose only one tab, choose Launch Readiness, because forecast attainment directly measures whether the business is achieving its planned demand and revenue targets.
+
+
+Active Stockouts:
+Active Stockouts measure the number of SKUs that are currently out of stock and unavailable for sale.
+Formula
+  
+
+Why a VP Cares
+It helps answer:
+* How much revenue is being lost due to unavailable products?
+* Which categories are facing supply issues?
+* Are high-performing SKUs running out of stock?
+* Is inventory planning aligned with demand?
+Stockouts directly impact:
+* Revenue
+* Customer satisfaction
+* Market share
+* Launch success
+Best Tab for Active Stockouts
+1. Signals Board ⭐ (Most Suitable)
+Active stockouts should primarily act as an alert.
+Examples:
+* Critical SKU stockout
+* Top-selling SKU out of stock
+* Stockouts increasing week-over-week
+This allows the VP to immediately identify operational risks.
+Related metrics:
+* Active Stockouts
+* Revenue at Risk
+* Inventory Coverage
+* Low Stock Alerts
+2. Launch Readiness Tab ⭐
+For new launches, stockouts indicate whether supply can support expected demand.
+Related metrics:
+* Active Stockouts
+* Inventory Readiness
+* Forecast Attainment
+* Days of Supply
+3. Portfolio Health Map
+Can be incorporated into SKU health scoring.
+Examples:
+* High Revenue + Frequent Stockouts → Supply Risk
+* High Growth + Stockouts → Expansion Opportunity
+For your VP Dashboard
+Primary placement: Signals Board
+Reason:
+A VP does not usually monitor stockout counts daily. They want to know when stockouts become a business risk. Therefore, Active Stockouts is best presented as a high-priority alert on the Signals Board.
+You could show:
+* Active Stockouts: 24 SKUs
+* Revenue at Risk: ₹3.2 Cr
+* Critical Stockouts: 7 SKUs
+* Trending: ↑ 15% vs last week
+This makes it actionable rather than just an inventory metric.
+
+
+Y do we have Portfolio SKUs in SKU Rationalisation Tab ?
+Portfolio SKUs = Total number of SKUs currently in the portfolio.
+Why it is often placed in the SKU Rationalization Tab
+SKU Rationalization is about answering:
+* Do we have too many SKUs?
+* Which SKUs should be retained, optimized, or discontinued?
+* Is the portfolio becoming overly complex?
+The first thing a VP wants to know is:
+"How large is my portfolio?"
+So Portfolio SKUs acts as a baseline metric for rationalization analysis.
+Example:
+* Portfolio SKUs = 2,500
+* Low-performing SKUs = 800
+* Candidates for delisting = 300
+Without the total SKU count, it's difficult to understand the scale of the rationalization opportunity.
+Is it a High-Priority VP Metric?
+Not really.
+A VP rarely wakes up wondering:
+"How many SKUs do I have today?"
+They care more about:
+* Revenue
+* Profitability
+* Portfolio Health
+* Stockouts
+* Forecast Attainment
+* Slow Movers
+* Delisting Opportunities
+Portfolio SKU count is more of a context metric than a decision-making metric.
+Better Places to Keep It
+Option 1: SKU Rationalization Tab (Recommended)
+Keep it as a small summary KPI at the top.
+Example:
+* Portfolio SKUs
+* Active SKUs
+* Delisting Candidates
+* New SKUs Added
+Option 2: Portfolio Health Tab
+If you have a Portfolio Health Map, Portfolio SKUs can be shown as a supporting metric because it represents the size of the portfolio being analyzed.
+Do not make Portfolio SKUs one of the main KPI cards.
+Instead:
+* Keep it as a small contextual metric in the SKU Rationalization Tab.
+* Prioritize metrics such as:
+   * Delisting Candidates
+   * Dead Stock SKUs
+   * Slow Movers
+   * Revenue Contribution of Bottom 20% SKUs
+   * SKU Complexity Index
+If dashboard space is limited, Portfolio SKUs can even be removed from the main view and shown only in a tooltip, filter summary, or secondary information panel. It has relatively low decision-making value compared to the other rationalization metrics.
+Revenue MTD:
+Revenue MTD represents the total revenue generated from the beginning of the current month up to today.
+Formula
+  
+
+
+
+Why a VP Cares
+Revenue MTD helps answer:
+* Are we on track to hit monthly revenue targets?
+* How is the current month performing versus last month?
+* Are launches, promotions, and categories contributing as expected?
+* Do we need corrective actions before month-end?
+It is one of the most frequently monitored executive metrics.
+Best Tab for Revenue MTD
+1. Profitability Tab ⭐ (Most Suitable)
+Revenue is the starting point of profitability analysis.
+Related metrics:
+* Revenue MTD
+* Gross Profit
+* Gross Margin %
+* EBITDA
+* Profit Growth
+A VP reviewing profitability will always want current revenue performance.
+2. Signals Board ⭐
+Revenue MTD can be used as an alert metric.
+Examples:
+* Revenue MTD below target by 10%
+* Revenue growth slowing
+* Category revenue decline
+This helps identify issues requiring immediate attention.
+3. Portfolio Health Tab
+Revenue MTD can be broken down by:
+* Brand
+* Category
+* SKU Cluster
+This helps identify which parts of the portfolio are driving growth.
+For Your VP Dashboard
+Primary placement: Profitability Tab
+Show it prominently as:
+* Revenue MTD: ₹125 Cr
+* vs Target: +5%
+* vs Last Month MTD: +8%
+* Forecast End-of-Month Revenue: ₹260 Cr
+Priority Level
+⭐⭐⭐⭐⭐ Very High Priority
+Among all metrics, Revenue MTD is one of the core KPIs a VP will check regularly because it provides an immediate view of current business performance and progress toward monthly goals.
+OTIF:
+OTIF(On-Time In-Full)  measures the percentage of orders delivered on time and in full, without shortages or delays.
+Formula
+  
+
+Why a VP Cares
+OTIF helps answer:
+* Are customers receiving orders as promised?
+* Are supply chain and inventory operations performing effectively?
+* Are stockouts or logistics issues impacting service levels?
+* Could poor fulfillment affect revenue and customer satisfaction?
+A low OTIF often leads to:
+* Lost sales
+* Customer complaints
+* Retailer penalties
+* Reduced customer loyalty
+Best Tab for OTIF
+1. Signals Board ⭐ (Most Suitable)
+OTIF is an operational performance indicator that should trigger attention when it drops.
+Examples:
+* OTIF below 95%
+* OTIF declining for key categories
+* Regional fulfillment issues
+Related metrics:
+* Active Stockouts
+* Fill Rate
+* Inventory Coverage
+* Revenue at Risk
+2. Launch Readiness Tab ⭐
+For new product launches, OTIF indicates whether the supply chain is ready to fulfill demand.
+Related metrics:
+* Inventory Readiness
+* Forecast Attainment
+* OTIF
+* Days of Supply
+3. Portfolio Health Tab
+Can be used as a supporting metric for category or SKU health.
+Example:
+* High Revenue SKU + Low OTIF = Execution Risk
+For Your VP Dashboard
+Primary placement: Signals Board
+Display as:
+* OTIF: 96.2%
+* Target: 98%
+* Change vs Last Month: -1.5%
+* Impacted Revenue: ₹4.2 Cr
+Priority Level
+⭐⭐⭐⭐ High Priority
+OTIF is not as important as Revenue, Profit, or Portfolio Health, but it is one of the key operational KPIs a VP monitors because it directly affects customer service, revenue realization, and supply chain effectiveness.
+Maybe I will add this instead of Active Stockouts.

@@ -4,6 +4,52 @@
 **From:** Guna
 **For:** Lab 8 program owners
 **Read time:** ~6 minutes. The questions in Part 3 are the point.
+**Updated 1 October 2026** — see the status update immediately below. The original letter is
+unchanged after it.
+
+---
+
+## Update — 1 October 2026
+
+Ten days on, most of Part 3 is still open exactly as written — but one question now has a
+real answer, two have moved partway, and one flagged risk still hasn't been actioned despite
+saying it would be. Below is what changed; nothing here replaces the original, it corrects it
+where it's gone stale. For everything built since 21 Sep (the database went live and the app
+now reads from it, SKU-level figures, branding, a full rebuild of the Top-Down Drilldown, and
+three new gaps from a 30 Sep team call), `TODO.md` is the current, live tracker — this letter
+was never meant to be regenerated for every build update.
+
+**Q12 is now answered: the repository is public.** Confirmed directly against the GitHub API
+(`visibility: public`), not inferred. That changes "confirm either way" to an action item —
+the database password leaked in commit `a3a3c54` (S1) should now be treated as **definitely
+disclosed**, not hypothetically. It's already rotated and the account it referenced was never
+created with that password, so nothing is unlocked today — but anyone who finds the repo can
+read the old value from history (`git show a3a3c54:TODO.md`), and if it was ever reused
+anywhere else, that place needs changing too.
+
+**Q2 (baseline) is genuinely half-resolved, not just stale.** `$473M` is now live and correct
+on the KPI strip, Home, Portfolio Health, and SKU Rationalization (wired 29 Sep). But
+`$851.2M`/`$851.4M` are still reachable in real paths, not just dead code: the entire VP
+Profitability tree simulator, a KPI tooltip and sparkline, and — worth flagging specifically —
+**global search and the audit drawer still return `$851.2 M`/`$851.4 M` as literal result
+values**. That is the exact failure this question described ("global search returns both
+answers side by side"), still partly true today.
+
+**Q4 (profit cards) has split.** Gross Profit only ever needed gross margin, which the data
+always had — it's now correctly computed and live. Net Profit and SG&A are exactly as stuck as
+originally written: still no cost basis anywhere in the warehouse, still undecided.
+
+**Q8 (real brands) — flagging that the stated intent didn't happen.** This letter said *"I
+will do it unless told otherwise."* Nobody said otherwise, and ten days later all seven real
+brands (Coca-Cola, Sprite, Thums Up, Pulpy Orange, 5-Star, Munch, Foorti) are still in the SKU
+list, and Pepsi/Mountain Dew are still named in the Signals Board pricing simulator — confirmed
+by grep, not assumed fixed. If this keeps slipping it needs an explicit decision, not another
+default.
+
+**Q9 (demo date) is more stale, not less.** The programme timeline was already "three months in
+the past" on 21 Sep. It is now past that by over three months.
+
+Q1, Q3, Q5, Q6, Q7, Q10, Q11 are unchanged — still open exactly as Part 3 describes them.
 
 ---
 

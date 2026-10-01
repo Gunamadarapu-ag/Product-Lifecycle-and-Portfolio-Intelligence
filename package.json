@@ -9,7 +9,9 @@
     "preview": "vite preview",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
-    "smoke": "node scripts/smoke.mjs"
+    "smoke": "node scripts/smoke.mjs",
+    "api": "python -m uvicorn backend.app.main:app --port 8000 --reload",
+    "test:api": "python -m pytest backend/tests -q"
   },
   "dependencies": {
     "@fontsource/dm-serif-display": "^5.2.8",

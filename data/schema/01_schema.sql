@@ -467,4 +467,4 @@ COMMIT;
 
 \echo ''
 \echo 'Schema created: 13 tables, 1 materialized view, 1 view.'
-\echo 'Next: 02_seed_dimensions.sql'
+\echo 'Next: python data/generator/load.py, then 03_derive_metrics.sql and 04_validate.sql'

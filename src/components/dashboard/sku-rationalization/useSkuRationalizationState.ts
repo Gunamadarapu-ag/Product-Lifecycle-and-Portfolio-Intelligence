@@ -13,6 +13,7 @@ import { Role, KPI } from '../../../types/dashboard';
 import { srClassify, getSkuLocation, PAIRS_DATA, SR_CLASSES } from './skuConstants';
 import { TimelineRange, getFilteredSKUS } from '../../../utils/timeframe';
 import { getChartTheme } from '../../../utils/chartTheme';
+import { useLiveData } from '../../../api/liveData';
 
 export function useSkuRationalizationState(role: Role, isDarkMode: boolean, timelineRange: TimelineRange) {
   const SKUS = useMemo(() => getFilteredSKUS(GLOBAL_SKUS, timelineRange), [timelineRange]);
@@ -54,6 +55,10 @@ export function useSkuRationalizationState(role: Role, isDarkMode: boolean, time
     } catch {}
   }, [activeView]);
   // ── KPI cards ──────────────────────────────────────────────────────────────
+  // Real per-SKU net sales ($M) from the warehouse. The `rev` field on the
+  // built-in SKUS is ~22x too large (TODO.md O1) — summing it is how 11
+  // sunset SKUs came to hold $447M of a $473M portfolio.
+  const { skuRevenueM } = useLiveData();
   const kpis = useMemo(() => {
     const activeSkusCount = locationFilteredSkus.length;
     const isSunset = (s: any) => {
@@ -64,7 +69,8 @@ export function useSkuRationalizationState(role: Role, isDarkMode: boolean, time
       return false;
     };
     const sunsetCount  = locationFilteredSkus.filter(isSunset).length;
-    const revAtRisk    = locationFilteredSkus.filter(isSunset).reduce((sum, s) => sum + s.rev, 0);
+    const revAtRisk    = locationFilteredSkus.filter(isSunset)
+      .reduce((sum, s) => sum + (skuRevenueM?.[s.name] ?? s.rev), 0);
     const avgComplexity = locationFilteredSkus.reduce((sum, s) => sum + s.cx, 0) / (activeSkusCount || 1);
 
     // Annotated so `highlight` narrows to Role[] rather than widening to
@@ -89,7 +95,7 @@ export function useSkuRationalizationState(role: Role, isDarkMode: boolean, time
       },
       {
         label: 'Revenue at Risk',
-        value: `$${revAtRisk} M`,
+        value: `$${revAtRisk.toLocaleString('en-US', { maximumFractionDigits: 1 })} M`,
         trend: 'down' as const,
         trendValue: 'If tail SKUs removed',
         info: 'Estimated maximum revenue exposure if all sunset candidates are removed concurrently.',
@@ -110,7 +116,7 @@ export function useSkuRationalizationState(role: Role, isDarkMode: boolean, time
     return role === 'VP Product Management'
       ? cards.filter(c => c.label !== 'Portfolio SKUs')
       : cards;
-  }, [locationFilteredSkus, role]);
+  }, [locationFilteredSkus, role, skuRevenueM]);
 
   // ── Auto-scroll to directory ───────────────────────────────────────────────
   useEffect(() => {

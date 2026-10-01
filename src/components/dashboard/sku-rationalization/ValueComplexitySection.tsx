@@ -9,6 +9,7 @@ import {
 } from 'recharts';
 import { Sparkles } from 'lucide-react';
 import { srClassify, SR_CLASSES } from './SKURationalization';
+import { useLiveData } from '../../../api/liveData';
 
 interface ValueComplexitySectionProps {
   groupedBarData: any[];
@@ -39,6 +40,8 @@ export const ValueComplexitySection: React.FC<ValueComplexitySectionProps> = ({
   tooltipBorder,
   tooltipText
 }) => {
+  // Real per-SKU net sales ($M); `sku.rev` is ~22x too large (TODO.md O1).
+  const { skuRevenueM } = useLiveData();
   return (
     <div className="space-y-3" id="quadrant-matrix-section" style={{ scrollMarginTop: '100px' }}>
 
@@ -140,7 +143,7 @@ export const ValueComplexitySection: React.FC<ValueComplexitySectionProps> = ({
                     <div className="flex-1 min-w-0">
                       <div className="text-acies-gray dark:text-white truncate font-bold text-[10px]">{sku.name}</div>
                       <div className="text-[7.5px] text-zinc-500 font-bold uppercase tracking-wider">
-                        Complexity {sku.cx.toFixed(2)} · Value {sku.val.toFixed(2)} · ${sku.rev}M
+                        Complexity {sku.cx.toFixed(2)} · Value {sku.val.toFixed(2)} · ${(skuRevenueM?.[sku.name] ?? sku.rev).toLocaleString('en-US', { maximumFractionDigits: 1 })}M
                       </div>
                     </div>
                     <div className="flex items-center gap-1.5 shrink-0">

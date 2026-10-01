@@ -8,6 +8,7 @@ import {
   X, TrendingUp, TrendingDown, AlertTriangle, Info, Mail, Zap, Activity, Clock, ShieldAlert 
 } from 'lucide-react';
 import { ModalShell } from '../../common/Modal';
+import { useLiveData } from '../../../api/liveData';
 
 interface SKU {
   name: string;
@@ -35,7 +36,15 @@ export const SkuDetailsModal: React.FC<SkuDetailsModalProps> = ({
   onClose,
   onRequestAction
 }) => {
+  // Real per-SKU net sales ($M); `sku.rev` is ~22x too large (TODO.md O1). Only
+  // raw revenue displays/mentions below are switched — the derived % impact
+  // estimates (revLoss, inventorySavings, promoSpend, etc.) keep their
+  // built-in scale (Tier 2, same category as PLSimulatorSection.tsx).
+  const { skuRevenueM } = useLiveData();
+
   if (!isOpen || !sku) return null;
+
+  const liveRev = skuRevenueM?.[sku.name] ?? sku.rev;
 
   // Determine SKU segment
   let segment = 'Consolidate';
@@ -85,10 +94,10 @@ export const SkuDetailsModal: React.FC<SkuDetailsModalProps> = ({
       list.push({
         action: `Qualify secondary logistics routes and local buffer partners at ${plantName} to mitigate the ${item.lead}-day lead time.`,
         impact: `Recover an estimated $${revLoss} M in stockout-related sales dilution and reduce supply volatility.`,
-        owner: 'Vijay Kumar',
-        title: 'APAC Logistics Head',
-        email: 'vijay.kumar@aciesglobal.com',
-        body: `Hi Vijay,
+        owner: 'Rohan Das',
+        title: 'Supply Chain Lead',
+        email: 'rohan.das@aciesglobal.com',
+        body: `Hi Rohan,
 
 I am writing to address the critical logistics constraints facing "${item.name}" in the ${item.cat} segment. 
 
@@ -149,7 +158,7 @@ Executive Director`
 
 Given the low promotional dependency of "${item.name}" (${Math.round(item.promo * 100)}%) and stable demand, we have a pricing premium window. 
 
-I propose a +1.5% adjustment to the list price. With quarterly sales at $${item.rev} M, this is projected to return $${pricingLift} M in gross margin. Let's review the price-sensitivity analysis for this brand category.
+I propose a +1.5% adjustment to the list price. With quarterly sales at $${liveRev.toFixed(1)} M, this is projected to return $${pricingLift} M in gross margin. Let's review the price-sensitivity analysis for this brand category.
 
 Best regards,
 Executive Director`
@@ -184,7 +193,7 @@ Executive Director`
         email: brandLeadEmail,
         body: `Hi ${brandLeadName.split(' ')[0]},
 
-Excellent performance on "${item.name}" with a YoY growth rate of ${Math.round(item.growth * 100)}% and $${item.rev} M in sales. 
+Excellent performance on "${item.name}" with a YoY growth rate of ${Math.round(item.growth * 100)}% and $${liveRev.toFixed(1)} M in sales.
 
 Given this momentum, I want to accelerate channel distribution expansion, specifically targeting e-commerce and premium retail channels. Please draft a shelf-space expansion plan for our next quarterly review.
 
@@ -267,7 +276,7 @@ Executive Director`;
         <div className="grid grid-cols-3 gap-3">
           <div className="p-3 bg-zinc-50 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded">
             <p className="font-bold text-[8.5px] uppercase tracking-widest text-zinc-400 mb-1">QTD Revenue</p>
-            <p className="text-lg font-display font-bold text-acies-yellow">${sku.rev} M</p>
+            <p className="text-lg font-display font-bold text-acies-yellow">${liveRev.toLocaleString('en-US', { maximumFractionDigits: 1 })} M</p>
           </div>
           <div className="p-3 bg-zinc-50 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded">
             <p className="font-bold text-[8.5px] uppercase tracking-widest text-zinc-400 mb-1">Gross Margin</p>

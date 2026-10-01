@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { TABS } from '../constants/data';
 import { SKU } from '../types/dashboard';
+import { useLiveData } from '../api/liveData';
 
 export interface SearchItem {
   name: string;
@@ -21,6 +22,9 @@ export const useGlobalSearch = (
   onSelectMetric: (metricLabel: string) => void,
   onSelectSku: (skuData: SKU) => void
 ) => {
+  // Real per-SKU net sales ($M) from the warehouse. The `rev` field on SKU is
+  // ~22x too large (TODO.md O1). Falls back to `rev` when the API is offline.
+  const { skuRevenueM } = useLiveData();
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [activeSearchIndex, setActiveSearchIndex] = useState(-1);
@@ -151,7 +155,7 @@ export const useGlobalSearch = (
         categoryName: 'SKU Products',
         type: 'sku',
         subtitle: `Category: ${s.cat}${segmentStr}${stageStr} • Margin: ${s.margin}%`,
-        valueText: `$${s.rev}M`,
+        valueText: `$${(skuRevenueM?.[s.name] ?? s.rev).toLocaleString('en-US', { maximumFractionDigits: 1 })}M`,
         skuData: s
       });
     });

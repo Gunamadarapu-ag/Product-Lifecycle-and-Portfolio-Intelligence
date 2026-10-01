@@ -4,6 +4,7 @@ import { EnrichedSKU } from '../types';
 import { COMPLEXITY_CONFIG } from '../utils';
 import { LAYER } from '../../../../../constants/layers';
 import { useDialogBehavior } from '../../../../../hooks/useDialogBehavior';
+import { useLiveData } from '../../../../../api/liveData';
 
 interface SkuFocusDrawerProps {
   sku: EnrichedSKU;
@@ -29,6 +30,12 @@ const FillBar: React.FC<{ value: number; max: number; color: string; label: stri
 export const SkuFocusDrawer: React.FC<SkuFocusDrawerProps> = ({ sku, onClose, onNavigate, isDarkMode, maxIppv }) => {
   // Escape-to-close, scroll lock and focus restore, shared with ModalShell.
   useDialogBehavior(!!sku, onClose);
+  // Real per-SKU net sales ($M); `sku.rev` is ~22x too large (TODO.md O1). Only
+  // the raw revenue display below is switched — the derived hidden-cost/profit
+  // fields on EnrichedSKU keep their built-in scale (simplify-to-grow/utils.ts,
+  // Tier 2 — compound formulas with constants possibly tuned against it).
+  const { skuRevenueM } = useLiveData();
+  const liveRev = skuRevenueM?.[sku.name] ?? sku.rev;
   const cfg = COMPLEXITY_CONFIG[sku.complexityType];
   const growth = sku.growth * 100;
   const ippvComponents = [
@@ -147,7 +154,7 @@ export const SkuFocusDrawer: React.FC<SkuFocusDrawerProps> = ({ sku, onClose, on
               <div className="text-[8px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400">SKU Vitals &amp; Commercial Health</div>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { label: 'Revenue', value: `$${sku.rev}M`, color: '#6366f1' },
+                  { label: 'Revenue', value: `$${liveRev.toLocaleString('en-US', { maximumFractionDigits: 1 })}M`, color: '#6366f1' },
                   { label: 'Gross Margin', value: `${sku.margin}%`, color: '#10b981' },
                   { label: 'Growth Rate', value: `${growth >= 0 ? '+' : ''}${growth.toFixed(1)}%`, color: growth >= 0 ? '#10b981' : '#ef4444' },
                   { label: 'Promo Dependency', value: `${(sku.promo * 100).toFixed(0)}%`, color: sku.promo > 0.5 ? '#ef4444' : '#f59e0b' },

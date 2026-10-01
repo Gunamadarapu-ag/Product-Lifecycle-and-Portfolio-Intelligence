@@ -8,6 +8,7 @@ import { Cpu, Sparkles, Rocket, GitFork, Bell, Sliders, FileText, CheckCircle2 }
 import { SKUS } from '../../../constants/data';
 import { srClassify, SR_CLASSES } from './skuConstants';
 import { ModalShell } from '../../common/Modal';
+import { useLiveData } from '../../../api/liveData';
 
 interface SkuIntelligenceModalProps {
   sku: typeof SKUS[0] | null;
@@ -24,6 +25,9 @@ export const SkuIntelligenceModal: React.FC<SkuIntelligenceModalProps> = ({
   onLoadInSimulator,
   auditLog = [],
 }) => {
+  // Real per-SKU net sales ($M); `sku.rev` is ~22x too large (TODO.md O1). Must
+  // run before the early return below — hooks can't be called conditionally.
+  const { skuRevenueM } = useLiveData();
   if (!sku) return null;
 
   const currentClass = srClassify(sku);
@@ -73,7 +77,7 @@ export const SkuIntelligenceModal: React.FC<SkuIntelligenceModalProps> = ({
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           <div className="bg-black/5 dark:bg-white/5 p-3 rounded-xl border border-black/5 dark:border-white/5">
             <span className="text-[8px] font-bold uppercase tracking-widest text-zinc-400 block">Annual Sales</span>
-            <span className="text-base font-black text-acies-gray dark:text-white mt-1 block">${sku.rev} M</span>
+            <span className="text-base font-black text-acies-gray dark:text-white mt-1 block">${(skuRevenueM?.[sku.name] ?? sku.rev).toLocaleString('en-US', { maximumFractionDigits: 1 })} M</span>
             <span className="text-[7.5px] font-bold text-zinc-500 dark:text-zinc-600 uppercase">Category sales impact</span>
           </div>
           

@@ -7,6 +7,7 @@ import React, { useMemo } from 'react';
 import { Layers, TrendingUp, TrendingDown, Clock, ShieldAlert, ChevronRight } from 'lucide-react';
 import { SKUS as GLOBAL_SKUS } from '../../../constants/data';
 import { TimelineRange, getFilteredSKUS } from '../../../utils/timeframe';
+import { useLiveData } from '../../../api/liveData';
 
 interface DrilldownSkuGridProps {
   activeRegionSkus: string[];
@@ -24,6 +25,8 @@ export const DrilldownSkuGrid: React.FC<DrilldownSkuGridProps> = ({
   timelineRange,
 }) => {
   const SKUS = useMemo(() => getFilteredSKUS(GLOBAL_SKUS, timelineRange), [timelineRange]);
+  const { skuRevenueM } = useLiveData();
+  const revOf = (sku: { name: string; rev: number }): number => skuRevenueM?.[sku.name] ?? sku.rev;
   return (
     <div className="glass-card bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-5 rounded shadow-sm space-y-4 w-full">
       {/* Header */}
@@ -131,7 +134,7 @@ export const DrilldownSkuGrid: React.FC<DrilldownSkuGridProps> = ({
               <div className="border-t border-black/5 dark:border-white/10 pt-2 flex items-center justify-between w-full text-[8.5px]">
                 <div className="flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400 font-bold uppercase">
                   <span>Rev:</span>
-                  <span className="font-extrabold text-zinc-800 dark:text-white font-mono">${item.rev} M</span>
+                  <span className="font-extrabold text-zinc-800 dark:text-white font-mono">${revOf(item).toLocaleString('en-US', { maximumFractionDigits: 1 })} M</span>
                 </div>
 
                 <div className="flex items-center gap-2">

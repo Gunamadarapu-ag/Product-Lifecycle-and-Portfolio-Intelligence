@@ -25,7 +25,13 @@ npm run build        # production build to dist/
 npm run preview      # serve dist/ on :4173 — required before npm run smoke
 npm run lint         # tsc --noEmit (type check; there is no ESLint config)
 npm run smoke        # headless browser test, 3 roles x 9 tabs = 27 combinations
+npm run api          # FastAPI backend on :8000 (reads PostgreSQL; Vite proxies /api to it)
+npm run test:api     # 12 API integration tests against the real database
 ```
+
+**Run `npm run api` alongside `dev`/`preview`.** Without it the app still works, but shows
+built-in sample figures and a grey "Offline · sample figures" badge. The browser also logs the
+failed `/api` requests as console errors, so **`npm run smoke` fails unless the API is up**.
 
 `npm run smoke` needs a preview server already running on :4173. Override with
 `BASE=http://localhost:3000 npm run smoke`. There is no unit-test framework — `smoke` is the
@@ -51,36 +57,58 @@ python data/generator/load.py --dry-run # check DB connection + CSVs, write noth
 python data/generator/load.py          # COPY all 13 tables in FK order (~45s)
 ```
 
+The SQL calculation layer is installed and checked with psql as the app role. After any
+reload, re-run both scripts (cmd.exe, one line each):
+
+```
+"C:\Program Files\PostgreSQL\17\bin\psql.exe" -h localhost -p 5433 -U Pd_lc_app -d ppl_intelligence -f data\schema\03_derive_metrics.sql
+"C:\Program Files\PostgreSQL\17\bin\psql.exe" -h localhost -p 5433 -U Pd_lc_app -d ppl_intelligence -f data\schema\04_validate.sql
+```
+
 ## The architecture fact that matters most
 
-**Two data paths feed the UI, and the database is not one of them.**
+**The headline figures now come from PostgreSQL. Most of the app still doesn't.**
 
 ```
-generator -> data/output/*.csv -> PostgreSQL          <- live, reconciled, READ BY NOTHING
-                  |
-                  +-> export_ts.py -> generated.ts -> data.ts -> components   <- what renders
+PostgreSQL --> SQL functions (03_derive_metrics.sql) --> FastAPI (backend/) --> /api
+    --> src/api/liveData.tsx (one fetch per timeline period, shared via context)
+    --> KPI strip, Home cards, Portfolio Health, SKU Rationalization "Revenue at Risk",
+        Profitability "Gross Profit"
 ```
 
-There are **zero `fetch` calls in `src/`** and no backend directory. The app is a static SPA
-whose numbers are compiled into the bundle.
+Wired since 29 Sep. The rules that make it work — keep them:
 
-Worse, the computed path is barely connected. `src/constants/data.ts` is the **only** importer
-of `generated.ts`, and of its 7 computed exports only two reach a component:
+- **All arithmetic lives in SQL.** Each figure is one function in `03_derive_metrics.sql`
+  (registered in the `metric_registry` table). FastAPI (`backend/app/main.py`) only calls
+  those functions, and the frontend only formats their results. A new live figure means a new
+  SQL function, not a calculation in Python or TypeScript.
+- **`months` is the timeline selector.** Every function takes the trailing 1/3/6/12/24/36
+  months, and growth compares against the prior window of equal length. The data covers
+  24 months: 36 is clamped (`months_available`), and growth is `NULL` when there is no full
+  prior window, never invented.
+- **`04_validate.sql` (36 checks) and `backend/tests` (12 tests)** assert the targets
+  ($473.0M, 38.55%, +8.30%, 119 SKUs, the Pareto anchors). They also assert that every
+  breakdown sums to the headline for every period. That second rule is what stops two
+  screens disagreeing.
+- **Offline fallback is deliberate.** The static Vercel deployment has no backend. With no
+  API, `useLivePortfolio` returns `status: 'offline'`, screens keep their built-in figures,
+  and `LiveDataBadge` says so.
 
-| Generated export | Reaches UI? |
-| --- | --- |
-| `GENERATED_KPI_VALUES` | yes — overrides the KPI strip |
-| `GENERATED_REGIONAL_DATA` | yes |
-| `GENERATED_CHANNEL_DATA`, `GENERATED_STOCKOUT_TOP10`, `GENERATED_RATIONALIZATION_SCENARIOS`, `GENERATED_PCI_DRIVERS`, `GENERATED_TOP_SKUS_REVENUE` | **no** |
+**Everything else is still the old path:** `constants/data.ts` / `generated.ts` / values
+typed into components, and for timeline changes `utils/timeframe.ts` adds fabricated
+hash-based "noise" (see `documentation/formulas.md`). In particular:
 
-Those five are re-exported by `data.ts` and consumed by nothing — their only consumer was a
-deleted Express server. Screens showing channel performance, stockouts, rationalization
-scenarios, PCI drivers or top SKUs render **hardcoded values while a correct computed value
-sits one import away**. This is why the same figure differs between screens (revenue reads
-`$473M` in one place and `$851M` in another; margin `38.55%` vs `36.2%`).
+- **22 component files still read `SKUS[].rev`, which is ~22x too large** (TODO.md O1).
+  Example: Mango Fizz 500ml displays $142M, but its real 2025 net sales are $11.2M. Live
+  per-SKU revenue is available as `useLiveData().skuRevenueM[name]` (all 119 names match
+  `dim_sku`). The lifecycle stage *classification* still uses `rev` pending O1's threshold
+  audit — only its revenue totals were switched.
+- VP Profitability's tree, scenarios and YTD rows are built on the $851.2M baseline
+  throughout. Only the header Gross Profit card is live.
+- Net Profit and SG&A have no cost basis in the data at all (pitch.md Q4).
 
-Before "fixing" a number, find out which path produces it. Changing an authored constant when
-the screen reads a computed one — or the reverse — silently does nothing.
+Before "fixing" a number, find out which path produces it. If the database can supply it,
+add or extend a SQL function and read it through `useLiveData()` — don't patch the constant.
 
 ## App shell
 
@@ -135,12 +163,12 @@ tracks `.env` instead of hardcoding. Three traps that have already cost time her
 `pg_hba.conf` is currently set to `trust` for all local connections, so no password is
 actually verified locally.
 
-## Planned backend
+## Backend
 
-Decided: **Python / FastAPI**, reading from PostgreSQL, with metrics computed in SQL so there
-is one implementation. `fastapi`, `uvicorn` and `pydantic` are already pinned in
-`requirements.txt` but nothing imports them yet. A Node/Express `server.ts` used to exist and
-was deleted — do not reintroduce a JavaScript backend.
+**Python / FastAPI**, in `backend/`. Run it with `npm run api`; `vite.config.ts` proxies
+`/api` to it for both `dev` and `preview`. Credentials are read from the repo-root `.env`,
+the same file `load.py` uses. A Node/Express `server.ts` used to exist and was deleted — do
+not reintroduce a JavaScript backend.
 
 `vite.config.ts` still defines `process.env.GEMINI_API_KEY`, left over from a removed
 `@google/genai` dependency. Any LLM calls belong in the Python tier, not the browser bundle.

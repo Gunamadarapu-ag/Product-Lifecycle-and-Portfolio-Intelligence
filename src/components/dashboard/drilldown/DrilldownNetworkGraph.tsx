@@ -4,13 +4,7 @@
  */
 
 import React, { useState } from 'react';
-
-const REGIONS_CONFIG: Record<string, { plant: string; fullName: string }> = {
-  APAC:     { plant: 'Chennai',       fullName: 'Asia-Pacific'      },
-  Americas: { plant: 'Vapi Hub',      fullName: 'Americas'          },
-  EMEA:     { plant: 'Baddi Hub',     fullName: 'EMEA'              },
-  LATAM:    { plant: 'Vapi Hub',      fullName: 'Latin America'     },
-};
+import { REGIONS_CONFIG } from '../../../constants/regions';
 
 interface DrilldownNetworkGraphProps {
   selectedRegion: string | null;
@@ -18,12 +12,13 @@ interface DrilldownNetworkGraphProps {
   isDarkMode: boolean;
 }
 
-// Positioned in a 600×280 viewBox with centre at (300, 140)
+// Positioned in a 600×280 viewBox with centre at (300, 140). `key` matches
+// REGIONS_CONFIG exactly (used for state/lookups); `label` is the short
+// on-node text, since the real region names are too long for that spot.
 const NODES = [
-  { key: 'EMEA',     x:  80, y:  80, qx: 190, qy:  80 },
-  { key: 'APAC',     x: 520, y:  80, qx: 410, qy:  80 },
-  { key: 'Americas', x:  80, y: 200, qx: 190, qy: 200 },
-  { key: 'LATAM',    x: 520, y: 200, qx: 410, qy: 200 },
+  { key: 'Western Europe',  label: 'WEST',    x:  80, y:  80, qx: 190, qy:  80 },
+  { key: 'Central Europe',  label: 'CENTRAL', x: 520, y:  80, qx: 410, qy:  80 },
+  { key: 'Southern Europe', label: 'SOUTH',   x: 300, y: 230, qx: 300, qy: 185 },
 ] as const;
 
 const CX = 300;  // Centre HQ x
@@ -187,7 +182,7 @@ export const DrilldownNetworkGraph: React.FC<DrilldownNetworkGraphProps> = ({
                   style={{ fontSize: 13, fontWeight: 900, textTransform: 'uppercase', letterSpacing: 2, transition: 'fill 0.2s ease' }}
                   fill={labelColour}
                 >
-                  {node.key}
+                  {node.label}
                 </text>
 
                 {/* Full region name */}
@@ -197,7 +192,7 @@ export const DrilldownNetworkGraph: React.FC<DrilldownNetworkGraphProps> = ({
                   style={{ fontSize: 8.5, fontWeight: 700, letterSpacing: 1 }}
                   fill={isDarkMode ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.38)'}
                 >
-                  {REGIONS_CONFIG[node.key]?.fullName}
+                  {REGIONS_CONFIG[node.key]?.name}
                 </text>
 
                 {/* Plant sub-label (below) */}

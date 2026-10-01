@@ -9,6 +9,7 @@ import { ResponsiveContainer, YAxis, Bar, AreaChart, Area } from 'recharts';
 import { Role } from '../../../types/dashboard';
 import { SKUS as GLOBAL_SKUS } from '../../../constants/data';
 import { TimelineRange, getFilteredSKUS } from '../../../utils/timeframe';
+import { useLiveData } from '../../../api/liveData';
 import { BottleneckDetailsModal } from './BottleneckDetailsModal';
 import { EmailComposerModal } from './EmailComposerModal';
 import { ScheduleMeetingModal } from './ScheduleMeetingModal';
@@ -36,19 +37,18 @@ export const RECIPIENT_TITLES: Record<string, string> = {
   'karan.johar@aciesglobal.com': 'Retail Relations Director',
   'k.srinivasan@aciesglobal.com': 'Maintenance Director',
   'priyanka.rao@aciesglobal.com': 'Chennai Plant Supervisor',
-  'gautam.sen@aciesglobal.com': 'National Distribution Manager',
   'marcus.ng@aciesglobal.com': 'Global Procurement Director',
   'elena.rostova@aciesglobal.com': 'R&D Product Lead',
-  'vijay.kumar@aciesglobal.com': 'APAC Logistics Head',
+  'elena.marchetti@aciesglobal.com': 'Regional Supply Lead — Southern Europe',
   'rohan.sharma@aciesglobal.com': 'Plant Manager - Baddi',
   'amit.mehta@aciesglobal.com': 'Supplier Quality QA Lead',
   'pooja.iyer@aciesglobal.com': 'Citrus Category Manager',
   'siddharth.roy@aciesglobal.com': 'NPD Project Lead',
   'nisha.patel@aciesglobal.com': 'Demand Planning Lead',
   'rajesh.verma@aciesglobal.com': 'VP Sales',
-  'jp.dubois@aciesglobal.com': 'Commodities Hedging Director',
+  'lukas.hoffmann@aciesglobal.com': 'Regional Supply Lead — Western Europe',
   'sarah.jenkins@aciesglobal.com': 'Product Formulation Scientist',
-  'dieter.maes@aciesglobal.com': 'Production Scheduler'
+  'katarzyna.nowak@aciesglobal.com': 'Regional Supply Lead — Central Europe'
 };
 
 // Helper to calculate lifecycle stage dynamically
@@ -239,18 +239,39 @@ export const VPCommandCenter: React.FC<{
   const dynamicOrders = filteredSKUs.reduce((sum, s) => sum + s.rev, 0) * (4218 / 8419.74);
   const dynamicFcast = 94.6 + (filteredSKUs.reduce((sum, s) => sum + s.margin, 0) / filteredCount - 35.1) * 0.1;
 
-  // Apply scale offsets
-  const revVal = parseFloat((dynamicTotalRev + jitterOffset.rev).toFixed(1));
-  const revScale = Math.max(0.1, revVal / 851.2);
-  const revHist = [790, 800, 811, 820, 829, 838, 845, 851.2].map(v => v * revScale);
+  // Live warehouse figures replace the three cards the database can supply.
+  // The built-in path above scales SKU revenue onto the rejected $851.2M
+  // baseline and adds jitter — kept only as the offline fallback.
+  const liveData = useLiveData();
+  const lk = liveData.kpis;
+  const liveRevM = liveData.skuRevenueM;
+  const isLive = !!(lk && liveRevM);
 
-  const skuCountVal = Math.round(dynamicSkuCount + jitterOffset.skuCount);
+  // Apply scale offsets
+  const revVal = isLive
+    ? parseFloat(filteredSKUs.reduce((sum, s) => sum + (liveRevM![s.name] ?? 0), 0).toFixed(1))
+    : parseFloat((dynamicTotalRev + jitterOffset.rev).toFixed(1));
+  const revScale = Math.max(0.1, revVal / 851.2);
+  const revHist = isLive && liveData.trend
+    ? liveData.trend.slice(-8).map(p => +(p.net_sales / 1e6).toFixed(1))
+    : [790, 800, 811, 820, 829, 838, 845, 851.2].map(v => v * revScale);
+  // The tab's own growth target is 10%, so the revenue target is last period x 1.10.
+  const revTarget = isLive && lk!.prior_net_sales
+    ? parseFloat((lk!.prior_net_sales * 1.10 / 1e6).toFixed(1))
+    : 900;
+
+  const skuCountVal = isLive
+    ? filteredSKUs.filter(s => liveRevM![s.name] !== undefined).length
+    : Math.round(dynamicSkuCount + jitterOffset.skuCount);
   const skuCountScale = Math.max(0.1, skuCountVal / 100);
   const skuCountHist = [105, 104, 104, 103, 103, 100, 100, 100].map(v => v * skuCountScale);
 
-  const growthVal = parseFloat((dynamicGrowth + jitterOffset.growth).toFixed(1));
+  const liveGrowth = isLive ? lk!.growth_pct : undefined; // null = no prior period in the data
+  const growthVal = isLive
+    ? (liveGrowth === null ? NaN : parseFloat((liveGrowth! * 100).toFixed(1)))
+    : parseFloat((dynamicGrowth + jitterOffset.growth).toFixed(1));
   const growthScale = Math.max(0.1, growthVal / 8.4);
-  const growthHist = [7.2, 7.5, 7.8, 8.0, 8.1, 8.3, 8.3, 8.4].map(v => v * growthScale);
+  const growthHist = [7.2, 7.5, 7.8, 8.0, 8.1, 8.3, 8.3, 8.4].map(v => v * (Number.isFinite(growthScale) ? growthScale : 1));
 
   const ordersVal = Math.round(dynamicOrders + jitterOffset.orders);
   const ordersScale = Math.max(0.1, ordersVal / 4218);
@@ -261,9 +282,9 @@ export const VPCommandCenter: React.FC<{
   const fcastHist = [96.1, 95.8, 95.4, 95.2, 95.0, 94.9, 94.7, 94.6].map(v => v * fcastScale);
 
   const kpis = {
-    rev: { val: revVal, hist: revHist, target: 900, label: 'Portfolio Revenue', suffix: ' M', prefix: '$', color: '#3b82f6' },
+    rev: { val: revVal, hist: revHist, target: revTarget, label: 'Portfolio Revenue', suffix: ' M', prefix: '$', color: '#3b82f6' },
     skuCount: { val: skuCountVal, hist: skuCountHist, target: 100, label: 'Portfolio SKU Count', suffix: '', prefix: '', color: '#10b981' },
-    growth: { val: growthVal, hist: growthHist, target: 10.0, label: 'Growth Rate', suffix: '%', prefix: '', color: '#ec4899' },
+    growth: { val: Number.isFinite(growthVal) ? growthVal : 'n/a', hist: growthHist, target: 10.0, label: 'Growth Rate', suffix: '%', prefix: '', color: '#ec4899' },
     orders: { val: ordersVal, hist: ordersHist, target: 5000, label: 'Orders — Today', suffix: '', prefix: '', color: '#8b5cf6' },
     fcast: { val: fcastVal, hist: fcastHist, target: 97.0, label: 'Forecast Attainment', suffix: '%', prefix: '', color: '#f59e0b' },
   };
@@ -796,7 +817,18 @@ export const VPCommandCenter: React.FC<{
           
           let deltaText = '';
           let deltaColor = 'text-zinc-500 dark:text-zinc-400';
-          if (key === 'rev') {
+          if (key === 'rev' && isLive) {
+            const g = lk!.growth_pct;
+            deltaText = g === null ? 'No prior period in data' : `${g >= 0 ? '▲ +' : '▼ '}${(g * 100).toFixed(1)}% vs prior period`;
+            deltaColor = g === null ? 'text-zinc-500 dark:text-zinc-400' : g >= 0 ? 'text-emerald-500' : 'text-red-500';
+          } else if (key === 'growth' && isLive) {
+            const g = lk!.growth_pct;
+            const gap = g === null ? null : g * 100 - 10;
+            deltaText = gap === null ? 'No prior period in data' : `${gap >= 0 ? '▲ +' : '▼ '}${gap.toFixed(1)}pp vs target`;
+            deltaColor = gap === null ? 'text-zinc-500 dark:text-zinc-400' : gap >= 0 ? 'text-emerald-500' : 'text-amber-500';
+          } else if (key === 'skuCount' && isLive) {
+            deltaText = 'Selling in period';
+          } else if (key === 'rev') {
             deltaText = '▲ +8.4% vs last month';
             deltaColor = 'text-emerald-500';
           } else if (key === 'orders') {
@@ -977,7 +1009,7 @@ export const VPCommandCenter: React.FC<{
 
       {/* Portfolio Health & Lifecycle Distribution */}
       <div id="vp-lifecycle-health" className="scroll-mt-16">
-        <LifecycleHealthPanel skusList={filteredSKUs} isDarkMode={isDarkMode} onSelectSku={setSelectedSkuForModal} onAuditClick={onAuditClick} />
+        <LifecycleHealthPanel skusList={filteredSKUs} skuRevenueM={liveRevM} isDarkMode={isDarkMode} onSelectSku={setSelectedSkuForModal} onAuditClick={onAuditClick} />
       </div>
 
       {/* Main Command Center Grid */}

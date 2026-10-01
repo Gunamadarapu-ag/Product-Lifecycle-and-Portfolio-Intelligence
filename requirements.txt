@@ -24,9 +24,13 @@ pyarrow==23.0.1          # not imported directly; backs fact_sales.parquet
 # CSVs into PostgreSQL 17 (localhost:5433).
 psycopg2-binary==2.9.11
 
-# ── FastAPI read API (decided 20 Sep 2026; code not yet written) ─────────────
-# The backend is Python. These are pinned now so the environment is reproducible
-# the moment the first endpoint lands; nothing imports them yet.
+# ── FastAPI read API (backend/app/main.py) ───────────────────────────────────
+# Run:  npm run api   (or: python -m uvicorn backend.app.main:app --port 8000)
 fastapi==0.136.0
 uvicorn==0.44.0
 pydantic==2.13.2
+
+# ── API tests (backend/tests, run against the real database) ────────────────
+# Run:  npm run test:api
+httpx==0.28.1            # required by fastapi.testclient
+pytest==9.1.1

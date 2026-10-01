@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Crown, Workflow, TrendingUp, Check, Cpu } from 'lucide-react';
+import { Crown, Workflow, TrendingUp, Check } from 'lucide-react';
 import { Role } from '../../types/dashboard';
+import { BrandBackdrop } from './BrandBackdrop';
 
 interface WelcomeGateProps {
   onSelectRole: (role: Role) => void;
@@ -184,22 +185,7 @@ export const WelcomeGate: React.FC<WelcomeGateProps> = ({ onSelectRole }) => {
       <div className="absolute top-1/2 right-1/4 translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-emerald-500/8 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 translate-y-1/2 w-[350px] h-[350px] rounded-full bg-blue-500/10 blur-[100px] pointer-events-none" />
 
-      {/* Abstract AI Network Lines SVG Overlay */}
-      <div className="absolute inset-0 opacity-[0.02] pointer-events-none">
-        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <path d="M100 200 L300 400 L500 100 L800 500 L1100 300 L1400 600" fill="none" stroke="white" strokeWidth="1" />
-          <path d="M200 600 L400 300 L700 700 L1000 400 L1200 800" fill="none" stroke="white" strokeWidth="1" />
-          <circle cx="100" cy="200" r="3" fill="white" />
-          <circle cx="300" cy="400" r="3" fill="white" />
-          <circle cx="500" cy="100" r="3" fill="white" />
-          <circle cx="800" cy="500" r="3" fill="white" />
-          <circle cx="1100" cy="300" r="3" fill="white" />
-          <circle cx="1400" cy="600" r="3" fill="white" />
-          <circle cx="400" cy="300" r="3" fill="white" />
-          <circle cx="700" cy="700" r="3" fill="white" />
-          <circle cx="1000" cy="400" r="3" fill="white" />
-        </svg>
-      </div>
+      <BrandBackdrop />
 
       <div className="w-full max-w-6xl z-10 space-y-12 flex flex-col items-center">
         
@@ -211,7 +197,7 @@ export const WelcomeGate: React.FC<WelcomeGateProps> = ({ onSelectRole }) => {
             transition={{ duration: 0.6, type: 'spring' }}
             className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full backdrop-blur-md shadow-sm"
           >
-            <Cpu size={12} className="text-amber-400 animate-pulse" />
+            <img src="/logo-mark.png" alt="" className="h-4 w-4" />
             <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-zinc-300">Product Lifecycle & Portfolio Intelligence</span>
           </motion.div>
 

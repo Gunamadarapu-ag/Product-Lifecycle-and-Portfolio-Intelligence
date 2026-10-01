@@ -1,6 +1,20 @@
 import React, { useState } from 'react';
 import { SKUS } from '../../../constants/data';
+import { useLiveData } from '../../../api/liveData';
 import { Search, AlertTriangle, CheckCircle, XCircle, Minus, Layers, Info, Filter, ArrowUpDown } from 'lucide-react';
+
+// The not-listed catalog cutoffs below (85, 48) were authored against
+// SKUS[].rev, which is ~22.43x inflated vs. real net sales (TODO.md O1). A
+// straight unit conversion (divide by 22.43) does not preserve selectivity:
+// SKUS[].rev is a roughly uniform hand-typed spread, while real per-SKU
+// revenue is Pareto-skewed, so the same ratio-to-mean threshold catches a very
+// different share of SKUs (verified: 85 selects 44% of SKUs on the old scale,
+// but 85/22.43 selects 71% on the real distribution; 48 selects 8% vs. 32%).
+// These constants are the real-revenue values ($M) that reproduce the
+// original 44%/8% selectivity, computed from a live /api/skus?months=12 pull
+// (119 SKUs, 2026-09-29) — recompute if the dataset regenerates.
+const NL_NOT_LISTED_LIVE_M = 2.69;
+const FAP_NOT_LISTED_LIVE_M = 0.65;
 
 interface SKUHoldingsMatrixProps {
   isDarkMode?: boolean;
@@ -17,6 +31,10 @@ const COUNTRIES = [
 ];
 
 export const SKUHoldingsMatrix: React.FC<SKUHoldingsMatrixProps> = () => {
+  const { skuRevenueM } = useLiveData();
+  const isLiveRev = !!skuRevenueM;
+  const revOf = (sku: any): number => skuRevenueM?.[sku.name] ?? sku.rev;
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedCell, setSelectedCell] = useState<{ skuName: string; countryName: string } | null>(null);
@@ -28,11 +46,15 @@ export const SKUHoldingsMatrix: React.FC<SKUHoldingsMatrixProps> = () => {
 
   // Determine SKU listing status for a country
   const getSkuStatus = (sku: any, country: string) => {
+    const rev = revOf(sku);
+
     // Netherlands: smallest catalog (45 SKUs) - list only high-revenue items
-    if (country === 'Netherlands' && sku.rev < 85) return 'not-listed';
-    
+    const nlThreshold = isLiveRev ? NL_NOT_LISTED_LIVE_M : 85;
+    if (country === 'Netherlands' && rev < nlThreshold) return 'not-listed';
+
     // France, Austria, Poland: medium catalog (80 SKUs) - omit highly complex low-velocity items
-    if ((country === 'France' || country === 'Austria' || country === 'Poland') && sku.rev < 48) return 'not-listed';
+    const fapThreshold = isLiveRev ? FAP_NOT_LISTED_LIVE_M : 48;
+    if ((country === 'France' || country === 'Austria' || country === 'Poland') && rev < fapThreshold) return 'not-listed';
 
     // Germany (98), Spain (100), Italy (100): largest catalogs - list almost everything
     if (sku.stockouts >= 6) return 'critical'; // Extreme stockouts
@@ -60,9 +82,9 @@ export const SKUHoldingsMatrix: React.FC<SKUHoldingsMatrixProps> = () => {
     const matchesCategory = selectedCategory === 'All' || sku.cat === selectedCategory;
     return matchesSearch && matchesCategory;
   }).sort((a, b) => {
-    let factorA = a[sortBy === 'name' ? 'name' : sortBy === 'rev' ? 'rev' : 'margin'];
-    let factorB = b[sortBy === 'name' ? 'name' : sortBy === 'rev' ? 'rev' : 'margin'];
-    
+    let factorA: string | number = sortBy === 'name' ? a.name : sortBy === 'rev' ? revOf(a) : a.margin;
+    let factorB: string | number = sortBy === 'name' ? b.name : sortBy === 'rev' ? revOf(b) : b.margin;
+
     if (typeof factorA === 'string') {
       return sortOrder === 'asc' 
         ? factorA.localeCompare(factorB as string) 
@@ -197,7 +219,7 @@ export const SKUHoldingsMatrix: React.FC<SKUHoldingsMatrixProps> = () => {
                     <span className="block truncate">{sku.name}</span>
                     <span className="text-[7px] text-zinc-500 uppercase tracking-widest">{sku.cat}</span>
                   </td>
-                  <td className="py-2 px-2 font-mono font-bold text-zinc-500">${sku.rev}M</td>
+                  <td className="py-2 px-2 font-mono font-bold text-zinc-500">${revOf(sku).toLocaleString('en-US', { maximumFractionDigits: 1 })}M</td>
                   <td className="py-2 px-2 font-mono font-bold text-emerald-500">{sku.margin}%</td>
                   
                   {COUNTRIES.map(c => {

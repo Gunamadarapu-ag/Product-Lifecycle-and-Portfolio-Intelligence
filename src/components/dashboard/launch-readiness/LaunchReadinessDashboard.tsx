@@ -13,6 +13,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Cell
 } from 'recharts';
 import { VPLaunchReadinessView } from './VPLaunchReadinessView';
+import { PMLaunchReadinessView } from './PMLaunchReadinessView';
 
 interface LaunchReadinessDashboardProps {
   role: Role;
@@ -27,8 +28,11 @@ interface LaunchReadinessDashboardProps {
 export const LaunchReadinessDashboard: React.FC<LaunchReadinessDashboardProps> = ({ 
   role, isDarkMode, onAuditClick, tourActive, onTourClose, simulateDelay, setSimulateDelay 
 }) => {
-  if (role === 'VP Product Management' || role === 'Product Manager') {
+  if (role === 'VP Product Management') {
     return <VPLaunchReadinessView isDarkMode={isDarkMode} simulateDelay={simulateDelay} setSimulateDelay={setSimulateDelay} onAuditClick={onAuditClick} />;
+  }
+  if (role === 'Product Manager') {
+    return <PMLaunchReadinessView isDarkMode={isDarkMode} onAuditClick={onAuditClick} />;
   }
   const accentColor = isDarkMode ? '#a78bfa' : '#6d28d9';
   const [skuName, setSkuName] = useState('Mango Fizz 500ml');

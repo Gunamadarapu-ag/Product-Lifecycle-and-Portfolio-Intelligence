@@ -10,6 +10,7 @@ import {
 } from 'recharts';
 import { AlertTriangle, RefreshCw, Cpu, BarChart2, Sparkles, TrendingUp, TrendingDown, Info, BadgePercent, Sliders } from 'lucide-react';
 import { srClassify, SR_CLASSES } from './SKURationalization';
+import { useLiveData } from '../../../api/liveData';
 
 interface PLSimulatorSectionProps {
   simTab: 'remove' | 'price' | 'launch';
@@ -120,6 +121,12 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
   cannibalizationRelief,
   netProfitImpact
 }) => {
+  // Real per-SKU net sales ($M); `sku.rev` is ~22x too large (TODO.md O1). Only
+  // used for the two dropdown labels below — the simulator math further down
+  // (priceCurveData, removeRevImpact, etc.) is left on the built-in scale
+  // deliberately, since its percentage constants may be tuned against it.
+  const { skuRevenueM } = useLiveData();
+  const revOf = (s: { name: string; rev: number }) => skuRevenueM?.[s.name] ?? s.rev;
   const cannHaircut = cannibalizationRisk === 2 ? 0.18 : cannibalizationRisk === 1 ? 0.09 : 0.02;
 
   // Pre-calculate Price Elasticity Curve coordinates
@@ -203,7 +210,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                       <optgroup key={`optg-${cat}`} label={cat.toUpperCase()} className="font-extrabold text-[8px] tracking-wider text-zinc-400 dark:text-zinc-500 bg-white dark:bg-[#1a1a24] py-1">
                         {list.map(s => (
                           <option key={s.name} value={s.name} className="dark:bg-[#1a1a24] text-xs font-semibold text-zinc-800 dark:text-white">
-                            {s.name} (${s.rev}M • Margin {s.margin}%)
+                            {s.name} (${revOf(s).toLocaleString("en-US", { maximumFractionDigits: 1 })}M • Margin {s.margin}%)
                           </option>
                         ))}
                       </optgroup>
@@ -245,7 +252,7 @@ export const PLSimulatorSection: React.FC<PLSimulatorSectionProps> = ({
                         >
                           {sunsetSubstituteOptions.map(s => (
                             <option key={`subst-${s.name}`} value={s.name} className="dark:bg-[#1a1a24] text-xs font-semibold text-zinc-800 dark:text-white">
-                              {s.name} (${s.rev}M • Margin {s.margin}%)
+                              {s.name} (${revOf(s).toLocaleString("en-US", { maximumFractionDigits: 1 })}M • Margin {s.margin}%)
                             </option>
                           ))}
                         </select>

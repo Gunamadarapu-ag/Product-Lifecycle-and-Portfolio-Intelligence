@@ -12,6 +12,7 @@ import { SKUS } from '../../constants/data';
 import { parseTrendData, getConfidenceScore, getMetricStatus, getMetricTrend } from '../../utils/auditHelpers';
 import { getChartTheme } from '../../utils/chartTheme';
 import { LAYER } from '../../constants/layers';
+import { useLiveData } from '../../api/liveData';
 import { useDialogBehavior } from '../../hooks/useDialogBehavior';
 
 interface AuditDrawerProps {
@@ -115,6 +116,8 @@ const AccordionSection: React.FC<{
 export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, isDarkMode }) => {
   // Escape-to-close, scroll lock and focus restore, shared with ModalShell.
   useDialogBehavior(!!activeMetric, close);
+  // Real per-SKU net sales ($M); `sku.rev` is ~22x too large (TODO.md O1).
+  const { skuRevenueM } = useLiveData();
   // Map Home tab metrics to their respective Audit Drawer data keys
   const getMappedMetric = (metric: string | null): string | null => {
     if (!metric) return null;
@@ -485,7 +488,7 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
                                             <div className="flex items-center gap-2 text-[8.5px] text-zinc-500 dark:text-zinc-400 font-mono">
                                               <span>Margin: <span className="font-bold text-zinc-700 dark:text-zinc-300">{sku.margin}%</span></span>
                                               <span>·</span>
-                                              <span>Sales: <span className="font-bold text-zinc-700 dark:text-zinc-300">${sku.rev} M</span></span>
+                                              <span>Sales: <span className="font-bold text-zinc-700 dark:text-zinc-300">${(skuRevenueM?.[sku.name] ?? sku.rev).toLocaleString('en-US', { maximumFractionDigits: 1 })} M</span></span>
                                             </div>
                                           </div>
                                         ))}

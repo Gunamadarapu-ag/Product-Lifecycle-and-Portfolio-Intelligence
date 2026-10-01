@@ -18,6 +18,8 @@ import type { TimeHorizon } from '../../../types/dashboard';
 import { useMemo } from 'react';
 import { getChartTheme } from '../../../utils/chartTheme';
 import { ModalShell } from '../../common/Modal';
+import { REGIONS_CONFIG } from '../../../constants/regions';
+import { useLiveData } from '../../../api/liveData';
 
 interface DrilldownSkuModalProps {
   isOpen: boolean;
@@ -29,13 +31,6 @@ interface DrilldownSkuModalProps {
   isDarkMode: boolean;
   timelineRange: TimelineRange;
 }
-
-const REGIONS_CONFIG: Record<string, { name: string; manager: string; email: string; role: string; plant: string }> = {
-  APAC: { name: 'Asia-Pacific', manager: 'Vijay Kumar', email: 'vijay.kumar@aciesglobal.com', role: 'APAC Logistics Head', plant: 'Chennai Bottling Plant' },
-  Americas: { name: 'North & South America', manager: 'Gautam Sen', email: 'gautam.sen@aciesglobal.com', role: 'National Distribution Manager', plant: 'Vapi Consumer Goods Hub' },
-  EMEA: { name: 'Europe, Middle East & Africa', manager: 'Jean-Pierre Dubois', email: 'jp.dubois@aciesglobal.com', role: 'Commodities Hedging Director', plant: 'Baddi Manufacturing Hub' },
-  LATAM: { name: 'Latin America', manager: 'Dieter Maes', email: 'dieter.maes@aciesglobal.com', role: 'Production Scheduler', plant: 'Vapi Consumer Goods Hub' },
-};
 
 export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
   isOpen,
@@ -73,10 +68,18 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
     setSliderCOGS(0);
   }, [skuName, selectedRegion]);
 
+  // Real per-SKU net sales ($M); `sku.rev` is ~22x too large (TODO.md O1).
+  // Only the "Realized Revenue" display below is switched — skuRev keeps its
+  // built-in scale since it also drives the waterfall breakdown and AI
+  // recommendation estimates below (Tier 2 — hand-tuned % constants, same
+  // category as PLSimulatorSection.tsx).
+  const { skuRevenueM } = useLiveData();
+
   if (!isOpen) return null;
 
   const rawSku = SKUS.find(s => s.name === skuName) || SKUS[0];
-  const regionalConfig = REGIONS_CONFIG[selectedRegion] || REGIONS_CONFIG.APAC;
+  const regionalConfig = REGIONS_CONFIG[selectedRegion] || REGIONS_CONFIG['Southern Europe'];
+  const liveRev = skuRevenueM?.[rawSku.name] ?? rawSku.rev * multiplier;
 
   // SKU metrics calculations
   const skuRev = rawSku.rev * multiplier;
@@ -145,8 +148,8 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
       recs.push({
         title: 'Qualify Secondary Logistics Supplier',
         desc: `Lead times have stretched to ${skuLead} days at ${regionObj.plant}, leading to ${skuStockouts} stockout events.`,
-        email: 'vijay.kumar@aciesglobal.com',
-        body: `Hi Vijay,\n\nWe are seeing severe supply bottlenecks for "${rawSku.name}" in the ${selectedRegion} region. Supplier lead times are at ${skuLead} days, leading to ${skuStockouts} stockout events this period.\n\nWe need to qualify secondary logistics routes out of ${regionObj.plant} to stabilize shipping. Let's arrange a call next Tuesday.\n\nBest regards,\nExecutive Director`
+        email: regionObj.email,
+        body: `Hi ${regionObj.manager.split(' ')[0]},\n\nWe are seeing severe supply bottlenecks for "${rawSku.name}" in the ${selectedRegion} region. Supplier lead times are at ${skuLead} days, leading to ${skuStockouts} stockout events this period.\n\nWe need to qualify secondary logistics routes out of ${regionObj.plant} to stabilize shipping. Let's arrange a call next Tuesday.\n\nBest regards,\nExecutive Director`
       });
     } else {
       recs.push({
@@ -238,7 +241,7 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
             <div className="p-3 bg-zinc-50 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded flex flex-col justify-between h-18">
               <p className="font-bold text-[8px] uppercase tracking-widest text-zinc-500 leading-none">Realized Revenue</p>
               <div className="flex items-baseline gap-1 mt-1">
-                <span className="text-lg font-display font-extrabold text-acies-yellow">${skuRev.toFixed(1)}</span>
+                <span className="text-lg font-display font-extrabold text-acies-yellow">${liveRev.toLocaleString('en-US', { maximumFractionDigits: 1 })}</span>
                 <span className="text-[10px] font-bold text-zinc-500">M</span>
               </div>
               <p className="text-[7px] text-zinc-500 uppercase tracking-wider font-bold">Horizon: {timeHorizon}</p>
@@ -567,7 +570,7 @@ export const DrilldownSkuModal: React.FC<DrilldownSkuModalProps> = ({
 
                       <div className="pt-2 border-t border-black/[0.04] dark:border-white/[0.04] flex items-center justify-between gap-2">
                         <span className="text-[7.5px] text-zinc-400">
-                          Route: <span className="font-bold text-zinc-600 dark:text-zinc-400">{regionalConfig.manager.split(' ')[0]}</span> ({regionalConfig.role.split(' ').slice(-1)[0]})
+                          Route: <span className="font-bold text-zinc-600 dark:text-zinc-400">{regionalConfig.manager.split(' ')[0]}</span> ({regionalConfig.name})
                         </span>
                         <button
                           onClick={() => {

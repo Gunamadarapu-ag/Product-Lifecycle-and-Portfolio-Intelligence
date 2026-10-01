@@ -6,16 +6,32 @@
 import React, { useState } from 'react';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 
-export const getLifecycleStage = (growth: number, margin: number, rev: number) => {
+// SKUS[].rev totals $10,608M against real net sales of $473M (TODO.md O1) — a
+// ~22.43x inflation. The Introduction-stage cutoff was authored against the old
+// scale; when real per-SKU revenue is available, the cutoff is divided by the
+// same factor so it selects the same relative slice of the portfolio.
+const REV_SCALE_FACTOR = 10608 / 473;
+const INTRO_REV_THRESHOLD_M = 100;
+const INTRO_REV_THRESHOLD_REAL_M = INTRO_REV_THRESHOLD_M / REV_SCALE_FACTOR;
+
+export const getLifecycleStage = (growth: number, margin: number, rev: number, isLiveRev = false) => {
   if (growth < 0) return 'Decline';
-  if (growth >= 0.15 && rev < 100) return 'Introduction';
+  const introThreshold = isLiveRev ? INTRO_REV_THRESHOLD_REAL_M : INTRO_REV_THRESHOLD_M;
+  if (growth >= 0.15 && rev < introThreshold) return 'Introduction';
   if (growth >= 0.10) return 'Growth';
   return 'Margin';
 };
 
 // Calculate Portfolio Health Score dynamically
 
-export const calculatePortfolioHealth = (skusList: any[]) => {
+/**
+ * @param revenueM  Real net sales in $M by SKU name, from the warehouse
+ *   (useLiveData().skuRevenueM). When given, every revenue figure below —
+ *   including the Introduction-stage cutoff in getLifecycleStage — comes
+ *   from it, with thresholds rescaled to match (TODO.md O1).
+ */
+export const calculatePortfolioHealth = (skusList: any[], revenueM?: Record<string, number>) => {
+  const revOf = (s: any): number => revenueM?.[s.name] ?? s.rev;
   if (skusList.length === 0) {
     return { 
       score: 0, 
@@ -51,24 +67,25 @@ export const calculatePortfolioHealth = (skusList: any[]) => {
   let totalStockouts = 0;
   let totalComplexity = 0;
   
+  const isLiveRev = !!revenueM;
   skusList.forEach(s => {
-    const stage = getLifecycleStage(s.growth, s.margin, s.rev);
+    const stage = getLifecycleStage(s.growth, s.margin, revOf(s), isLiveRev);
     if (stage === 'Introduction') {
       introCount++;
       introSKUs.push(s.name);
-      introRev += s.rev;
+      introRev += revOf(s);
     } else if (stage === 'Growth') {
       growthCount++;
       growthSKUs.push(s.name);
-      growthRev += s.rev;
+      growthRev += revOf(s);
     } else if (stage === 'Margin') {
       marginCount++;
       marginSKUs.push(s.name);
-      marginRev += s.rev;
+      marginRev += revOf(s);
     } else {
       declineCount++;
       declineSKUs.push(s.name);
-      declineRev += s.rev;
+      declineRev += revOf(s);
     }
     totalMargin += s.margin;
     totalStockouts += s.stockouts;
@@ -97,7 +114,7 @@ export const calculatePortfolioHealth = (skusList: any[]) => {
   );
   
   const finalScore = Math.max(0, Math.min(100, score));
-  const totalRev = skusList.reduce((sum, s) => sum + s.rev, 0) || 1;
+  const totalRev = skusList.reduce((sum, s) => sum + revOf(s), 0) || 1;
   
   return {
     score: finalScore,
@@ -121,13 +138,15 @@ export const calculatePortfolioHealth = (skusList: any[]) => {
 
 export interface LifecycleHealthPanelProps {
   skusList: any[];
+  /** Real net sales in $M by SKU name; omit to fall back to the built-in figures. */
+  skuRevenueM?: Record<string, number>;
   isDarkMode: boolean;
   onSelectSku?: (sku: any) => void;
   onAuditClick?: (metric: string) => void;
 }
 
-export const LifecycleHealthPanel: React.FC<LifecycleHealthPanelProps> = ({ skusList, isDarkMode, onSelectSku, onAuditClick }) => {
-  const data = calculatePortfolioHealth(skusList);
+export const LifecycleHealthPanel: React.FC<LifecycleHealthPanelProps> = ({ skusList, skuRevenueM, isDarkMode, onSelectSku, onAuditClick }) => {
+  const data = calculatePortfolioHealth(skusList, skuRevenueM);
   
   // Circular progress ring setup
   const radius = 54;
@@ -268,7 +287,7 @@ export const LifecycleHealthPanel: React.FC<LifecycleHealthPanelProps> = ({ skus
 
                   {/* Absolute Revenue Value */}
                   <span className="text-[9px] font-extrabold text-zinc-700 dark:text-zinc-300 font-mono mt-0.5">
-                    ${Math.round(stage.revAmount).toLocaleString('en-IN')} M
+                    ${stage.revAmount.toLocaleString('en-IN', { maximumFractionDigits: 1 })} M
                   </span>
 
                   {/* Efficiency arrow */}
@@ -345,7 +364,7 @@ export const LifecycleHealthPanel: React.FC<LifecycleHealthPanelProps> = ({ skus
             </span>
             <div className="flex items-baseline gap-1 mt-0.5">
               <span className="text-sm font-display font-extrabold text-zinc-800 dark:text-white font-mono">
-                ${Math.round(totalRevVal).toLocaleString('en-IN')}
+                ${totalRevVal.toLocaleString('en-IN', { maximumFractionDigits: 1 })}
               </span>
               <span className="text-[8px] text-zinc-500 uppercase font-bold">M</span>
             </div>

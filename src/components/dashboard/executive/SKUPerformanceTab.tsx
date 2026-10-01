@@ -9,6 +9,7 @@ import {
   ChevronRight, TrendingUp, AlertTriangle, Layers, Info, Filter, ArrowLeft
 } from 'lucide-react';
 import { SKUS } from '../../../constants/data';
+import { useLiveData } from '../../../api/liveData';
 
 interface SKUPerformanceTabProps {
   isDarkMode: boolean;
@@ -75,6 +76,11 @@ export const SKUPerformanceTab: React.FC<SKUPerformanceTabProps> = ({
   onSelectSku,
   onBack
 }) => {
+  // Real per-SKU net sales ($M); `rev` on SKUS is ~22x too large (TODO.md O1).
+  // Not a fixed ratio per SKU — sorting/ranking must switch together with the
+  // displayed value, or "Top 5" could show real $ in the wrong order.
+  const { skuRevenueM } = useLiveData();
+  const revOf = (s: { name: string; rev: number }) => skuRevenueM?.[s.name] ?? s.rev;
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('ALL');
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
@@ -145,10 +151,13 @@ export const SKUPerformanceTab: React.FC<SKUPerformanceTabProps> = ({
     sorted.sort((a, b) => {
       let aVal: any = a[sortField === 'cx' ? 'cx' : sortField];
       let bVal: any = b[sortField === 'cx' ? 'cx' : sortField];
-      
+
       if (sortField === 'name') {
         aVal = a.name.toLowerCase();
         bVal = b.name.toLowerCase();
+      } else if (sortField === 'rev') {
+        aVal = revOf(a);
+        bVal = revOf(b);
       }
 
       if (aVal < bVal) return sortOrder === 'asc' ? -1 : 1;
@@ -167,21 +176,23 @@ export const SKUPerformanceTab: React.FC<SKUPerformanceTabProps> = ({
     }
   };
 
-  // KPI Calculations
+  // KPI Calculations. Live: warehouse net sales, margin and active-SKU count
+  // (matches the KPI strip / Home). rationalizeCount has no SQL function yet
+  // (TODO.md O7) and keeps its built-in value either way.
+  const liveKpis = useLiveData().kpis;
   const stats = useMemo(() => {
-    // We scale to match the 109 active SKUs narrative
-    const totalCount = 109; 
-    const totalSales = 851.2; // $ M
-    const avgMargin = 38.53; // %
+    const totalCount = liveKpis?.active_skus ?? 109;
+    const totalSales = liveKpis ? +(liveKpis.net_sales / 1e6).toFixed(1) : 851.2; // $ M
+    const avgMargin = liveKpis ? +(liveKpis.gross_margin_pct * 100).toFixed(2) : 38.53; // %
     const rationalizeCount = 35;
-    
+
     return {
       totalCount,
       totalSales,
       avgMargin,
       rationalizeCount
     };
-  }, []);
+  }, [liveKpis]);
 
   const exportCSV = () => {
     const headers = ['SKU Name', 'Category', 'Location', 'Revenue ($ M)', 'Gross Margin %', 'YoY Growth %', 'Complexity', 'Stockouts'];
@@ -189,7 +200,7 @@ export const SKUPerformanceTab: React.FC<SKUPerformanceTabProps> = ({
       s.name,
       s.cat,
       s.location,
-      s.rev,
+      revOf(s),
       s.margin,
       (s.growth * 100).toFixed(1),
       s.cx.toFixed(2),
@@ -208,8 +219,8 @@ export const SKUPerformanceTab: React.FC<SKUPerformanceTabProps> = ({
 
   // Find max revenue for progress bar calculation
   const maxRevenue = useMemo(() => {
-    return Math.max(...SKUS.map(s => s.rev));
-  }, []);
+    return Math.max(...SKUS.map(revOf));
+  }, [skuRevenueM]);
 
   return (
     <div className="space-y-6 pb-12 animate-fadeIn text-zinc-800 dark:text-white text-left">
@@ -432,7 +443,7 @@ export const SKUPerformanceTab: React.FC<SKUPerformanceTabProps> = ({
             </thead>
             <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
               {sortedSKUs.map((sku) => {
-                const revenuePct = (sku.rev / maxRevenue) * 100;
+                const revenuePct = (revOf(sku) / maxRevenue) * 100;
                 
                 return (
                   <tr 
@@ -457,7 +468,7 @@ export const SKUPerformanceTab: React.FC<SKUPerformanceTabProps> = ({
                     {/* Revenue */}
                     <td className="p-3 font-mono font-bold text-zinc-800 dark:text-zinc-400">
                       <div className="flex items-center gap-2">
-                        <span className="w-10">${sku.rev}M</span>
+                        <span className="w-10">${revOf(sku).toLocaleString('en-US', { maximumFractionDigits: 1 })}M</span>
                         <div className="w-12 bg-black/5 dark:bg-white/10 h-1.5 rounded-full overflow-hidden hidden sm:block">
                           <div 
                             className="bg-blue-500 h-full rounded-full"

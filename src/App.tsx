@@ -25,6 +25,8 @@ import { KPICard } from './components/dashboard/KPICard';
 import { AuditDrawer } from './components/dashboard/AuditDrawer';
 import { WelcomeGate } from './components/common/WelcomeGate';
 import { LoginPage } from './components/common/LoginPage';
+import { useLivePortfolio, LiveDataProvider, LiveDataBadge } from './api/liveData';
+import { applyLiveKpis } from './api/liveKpis';
 import { SkuDetailsModal } from './components/dashboard/executive/SkuDetailsModal';
 import { GlobalSearchBar } from './components/common/GlobalSearchBar';
 import { AgentWidget } from './components/common/AgentWidget';
@@ -155,7 +157,10 @@ export default function App() {
   // Timeframe filtered base datasets
   const filteredSKUS = getFilteredSKUS(SKUS, timelineRange);
   const filteredPortfolioData = getFilteredPortfolioData(PORTFOLIO_DATA, timelineRange);
-  const filteredKPIS = getFilteredKPIS(KPIS, timelineRange);
+  // Live warehouse figures (PostgreSQL via the FastAPI backend). Falls back to
+  // the built-in figures when the API is unreachable — the badge says which.
+  const live = useLivePortfolio(timelineRange);
+  const filteredKPIS = applyLiveKpis(getFilteredKPIS(KPIS, timelineRange), live);
 
   // Focus and Selection callbacks for Search
   const [selectedSkuForSearch, setSelectedSkuForSearch] = useState<any>(null);
@@ -345,21 +350,6 @@ export default function App() {
 
   const [isExploreOpen, setIsExploreOpen] = useState<boolean>(false);
 
-  const handleSwitchPersona = () => {
-    try {
-      sessionStorage.removeItem('acies_session_active');
-    } catch (e) {}
-    try {
-      const hash = window.location.hash || '#';
-      const params = new URLSearchParams(hash.substring(1).replace(/\+/g, '%20'));
-      params.delete('role');
-      window.history.replaceState(null, '', '#' + params.toString());
-    } catch (e) {
-      console.warn("Could not remove role parameter from URL hash:", e);
-    }
-    setShowWelcomeGate(true);
-  };
-
   if (showLoginPage) {
     return (
       <LoginPage
@@ -388,6 +378,7 @@ export default function App() {
   }
 
   return (
+    <LiveDataProvider value={live}>
     <div className="min-h-screen font-body bg-acies-offwhite dark:bg-acies-gray transition-colors pb-20">
       <Header 
         currentRole={role} 
@@ -403,7 +394,6 @@ export default function App() {
           }
         }}
         onClickHome={() => setActiveTab(0)}
-        onSwitchPersona={handleSwitchPersona}
         searchBar={
           <GlobalSearchBar
             searchQuery={searchQuery}
@@ -504,6 +494,7 @@ export default function App() {
 
           {/* Main Content Area */}
           <main className="flex-1 min-w-0">
+            <div className="flex justify-end mb-2"><LiveDataBadge live={live} /></div>
             {showSkuPerformancePage ? (
               <ErrorBoundary moduleName="SKU Performance" resetKey="sku-performance">
                 <Suspense fallback={<TabLoading />}>
@@ -583,9 +574,11 @@ export default function App() {
                         },
                         {
                           label: 'Gross Profit',
-                          value: '$308.1 M',
+                          // Live: warehouse gross margin in dollars. Built-in fallback
+                          // was $851.2M x 36.2% — the rejected revenue baseline.
+                          value: live.kpis ? `$${(live.kpis.gross_margin / 1e6).toFixed(1)} M` : live.status === 'loading' ? '…' : '$308.1 M',
                           trend: 'up',
-                          trendValue: '36.2% Gross Margin',
+                          trendValue: live.kpis ? `${(live.kpis.gross_margin_pct * 100).toFixed(2)}% Gross Margin` : '36.2% Gross Margin',
                           info: 'Total gross profit margin across categories before supply chain and promotional expenses.',
                           highlight: ['Pricing and Margin Partner']
                         },
@@ -813,5 +806,6 @@ export default function App() {
         />
       )}
     </div>
+    </LiveDataProvider>
   );
 }

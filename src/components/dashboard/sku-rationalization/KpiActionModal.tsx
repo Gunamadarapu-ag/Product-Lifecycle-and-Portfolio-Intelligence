@@ -2,6 +2,7 @@ import React from 'react';
 import { X, Sparkles, TrendingUp, TrendingDown, ArrowRight, Play, Eye, FileSearch, HelpCircle } from 'lucide-react';
 import { SKUS } from '../../../constants/data';
 import { ModalShell } from '../../common/Modal';
+import { useLiveData } from '../../../api/liveData';
 
 interface KpiActionModalProps {
   activeKpi: string | null;
@@ -23,6 +24,9 @@ export const KpiActionModal: React.FC<KpiActionModalProps> = ({
   setSelectedSkuName,
   setSelectedSkuDetails
 }) => {
+  // Real per-SKU net sales ($M); `s.rev` is ~22x too large (TODO.md O1). Must
+  // run before the early return below — hooks can't be called conditionally.
+  const { skuRevenueM } = useLiveData();
   if (!activeKpi) return null;
 
   // Get the 6 sunset candidates dynamically
@@ -100,7 +104,7 @@ export const KpiActionModal: React.FC<KpiActionModalProps> = ({
               buttonText: 'Discontinue Candidates...',
               isSubmenu: true,
               submenuItems: sunsetCandidates.map(s => ({
-                label: `Discontinue ${s.name} ($${s.rev} M)`,
+                label: `Discontinue ${s.name} ($${(skuRevenueM?.[s.name] ?? s.rev).toLocaleString('en-US', { maximumFractionDigits: 1 })} M)`,
                 onClick: () => {
                   setSelectedSkuName(s.name);
                   setSimTab('remove');

@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus } from 'lucide-react';
 import { ResponsiveContainer, ScatterChart, Scatter, XAxis, YAxis, ZAxis, Tooltip, CartesianGrid, LabelList, Cell, ReferenceLine } from 'recharts';
 import { getChartTheme } from '../../../utils/chartTheme';
+import { useLiveData } from '../../../api/liveData';
 
 export interface InvestmentMarginSku {
   name: string;
@@ -28,7 +29,11 @@ export interface InvestmentMarginMapProps {
   onScheduleMeeting?: (title: string, type: string) => void;
 }
 
-export const getInvestmentMarginData = (skusList: any[]): InvestmentMarginSku[] => {
+// `skuRevenueM` (real per-SKU net sales, $M) only replaces the displayed
+// `rev` field below. The `investment` figure above is derived from `s.rev`
+// via a modulo trick (TODO.md O1 Tier 3) — structurally fabricated, not a
+// rescaling candidate, so it deliberately keeps reading raw `s.rev`.
+export const getInvestmentMarginData = (skusList: any[], skuRevenueM?: Record<string, number>): InvestmentMarginSku[] => {
   return skusList.map(s => {
     let investment = 50;
     let returnMargin = s.margin;
@@ -117,7 +122,7 @@ export const getInvestmentMarginData = (skusList: any[]): InvestmentMarginSku[] 
     return {
       name: s.name,
       cat: s.cat,
-      rev: s.rev,
+      rev: skuRevenueM?.[s.name] ?? s.rev,
       margin: s.margin,
       growth: s.growth,
       investment,
@@ -133,8 +138,9 @@ export const InvestmentMarginMap: React.FC<InvestmentMarginMapProps> = ({ skusLi
   const [viewMode, setViewMode] = useState<'quadrant' | 'category'>('quadrant');
   const [activeCat, setActiveCat] = useState<string>('Beverages');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
-  
-  const oppData = getInvestmentMarginData(skusList);
+  const { skuRevenueM } = useLiveData();
+
+  const oppData = getInvestmentMarginData(skusList, skuRevenueM);
   
   const chartData = categoryFilter === 'all' 
     ? oppData 
@@ -217,7 +223,7 @@ export const InvestmentMarginMap: React.FC<InvestmentMarginMapProps> = ({ skusLi
             </div>
             <div className="flex justify-between gap-4">
               <span className="text-zinc-500">SKU Revenue:</span>
-              <span className="font-bold text-emerald-600 dark:text-emerald-500">${data.rev} M</span>
+              <span className="font-bold text-emerald-600 dark:text-emerald-500">${data.rev.toLocaleString('en-US', { maximumFractionDigits: 1 })} M</span>
             </div>
           </div>
         </div>
@@ -422,7 +428,7 @@ export const InvestmentMarginMap: React.FC<InvestmentMarginMapProps> = ({ skusLi
                       {item.name}
                     </h4>
                     <p className="text-[8.5px] text-zinc-400 dark:text-zinc-500 uppercase font-bold tracking-wider mt-0.5">
-                      {item.cat} • Rev: ${item.rev} M • Margin: {item.margin}%
+                      {item.cat} • Rev: ${item.rev.toLocaleString('en-US', { maximumFractionDigits: 1 })} M • Margin: {item.margin}%
                     </p>
                   </div>
                   <div className="text-right">

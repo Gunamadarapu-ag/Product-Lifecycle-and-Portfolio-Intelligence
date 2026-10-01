@@ -9,6 +9,43 @@ import { ResponsiveContainer, AreaChart, Area, LineChart, Line, XAxis, YAxis, To
 import { Role } from '../../../types/dashboard';
 import { VP_ALERTS, VP_APPROVALS, VP_FORECAST, VP_KPI_BASE, SKUS } from '../../../constants/data';
 import { TimelineRange, getTimeframeScale, getDeterministicNoise, getFilteredSKUS } from '../../../utils/timeframe';
+import { useLiveData, type LiveData } from '../../../api/liveData';
+
+type HomeKpi = (typeof VP_KPI_BASE)[number] & {
+  sparkPoints: { index: number; value: number }[];
+  /** Replaces the default "<n> MoM" trend text when the value comes from the warehouse. */
+  trendLabel?: string;
+  /** Live data is still loading — show a placeholder, never the built-in sample figure. */
+  pending?: boolean;
+  isLive?: boolean;
+};
+
+/** Overlay warehouse figures onto the Home cards. Critical Alerts has no SQL source and is left as is. */
+function withLive(cards: HomeKpi[], live: LiveData): HomeKpi[] {
+  if (live.status === 'offline') return cards;
+  const k = live.kpis;
+  const t = live.trend ?? [];
+  const spark = (vals: number[]) => ({ spark: vals, sparkPoints: vals.map((v, i) => ({ index: i, value: v })) });
+  return cards.map(c => {
+    const livable = c.label === 'Total Revenue' || c.label === 'Gross Margin' || c.label === 'Active SKUs';
+    if (!livable) return c;
+    if (!k) return { ...c, pending: true };
+    if (c.label === 'Total Revenue') {
+      const g = k.growth_pct;
+      return { ...c, ...spark(t.map(p => +(p.net_sales / 1e6).toFixed(1))), isLive: true, pending: false,
+        value: +(k.net_sales / 1e6).toFixed(1), trend: g === null ? 0 : +(g * 100).toFixed(1),
+        trendLabel: g === null ? 'No prior period' : `${Math.abs(g * 100).toFixed(1)}% ${live.months === 12 ? 'YoY' : 'vs prior'}` };
+    }
+    if (c.label === 'Gross Margin') {
+      const diff = (k.gross_margin_pct - 0.40) * 100;
+      return { ...c, ...spark(t.map(p => +(p.gross_margin_pct * 100).toFixed(2))), isLive: true, pending: false,
+        value: +(k.gross_margin_pct * 100).toFixed(2), trend: +diff.toFixed(2),
+        trendLabel: `${Math.abs(diff).toFixed(2)}pp vs 40% bench` };
+    }
+    return { ...c, ...spark(t.map(p => p.active_skus)), isLive: true, pending: false,
+      value: k.active_skus, trend: 0, trendLabel: 'Selling in period' };
+  });
+}
 import { SkuDetailsModal } from './SkuDetailsModal';
 import { RegionalForecastModal } from './RegionalForecastModal';
 import { EmailComposerModal } from '../portfolio-health/EmailComposerModal';
@@ -36,7 +73,8 @@ export interface ExecutiveOverviewProps {
 export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setActiveTab, isDarkMode, onAuditClick, timelineRange, onViewAllSkus }) => {
   const [alerts, setAlerts] = useState(() => VP_ALERTS.map(a => ({ ...a })));
   const [approvals, setApprovals] = useState(() => VP_APPROVALS.map(a => ({ ...a })));
-  const [kpis, setKpis] = useState(() => {
+  const live = useLiveData();
+  const [kpis, setKpis] = useState<HomeKpi[]>(() => {
     let baseKpis = VP_KPI_BASE;
     if (role === 'VP Product Management') {
       baseKpis = baseKpis.filter(k => k.label !== 'Gross Margin');
@@ -92,8 +130,8 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
       };
     });
     
-    setKpis(updated);
-  }, [timelineRange, role]);
+    setKpis(withLive(updated, live));
+  }, [timelineRange, role, live]);
 
   // Live Industry Updates states
   const [viewFormat, setViewFormat] = useState<'grid' | 'table'>('grid');
@@ -199,6 +237,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
   const handleRefresh = () => {
     // Jitter KPIs slightly to simulate real-time updates
     setKpis(prevKpis => prevKpis.map((kpi) => {
+      if (kpi.isLive) return kpi; // real figures don't wobble on refresh
       let newValue = kpi.value;
       if (kpi.label === 'Total Revenue') {
         newValue = +(kpi.value + (Math.random() * 0.6 - 0.2)).toFixed(1);
@@ -267,8 +306,12 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
   const filteredSkus = activeCategory === 'All'
     ? timeframeSkus
     : timeframeSkus.filter(s => s.cat === activeCategory);
-  const topSkus = [...filteredSkus].sort((a, b) => b.rev - a.rev).slice(0, 5);
-  const maxSkuRev = topSkus[0]?.rev || 1;
+  // Real per-SKU net sales ($M); `rev` is ~22x too large and not a fixed ratio
+  // per SKU (TODO.md O1) — sort and display must use the same value, or "Top 5"
+  // could show real $ figures in an order that doesn't match them.
+  const revOf = (s: { name: string; rev: number }) => live.skuRevenueM?.[s.name] ?? s.rev;
+  const topSkus = [...filteredSkus].sort((a, b) => revOf(b) - revOf(a)).slice(0, 5);
+  const maxSkuRev = topSkus[0] ? revOf(topSkus[0]) : 1;
   
   const filteredEvents = eventFilter === 'all' ? feedEvents : feedEvents.filter(e => e.type === eventFilter);
 
@@ -398,13 +441,13 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
               <div>
                 <p className="text-[8.5px] font-bold uppercase tracking-widest opacity-40 mb-0.5">{k.label}</p>
                 <h3 className="text-xl font-display font-bold text-acies-gray dark:text-white leading-none mb-0.5">
-                  {k.fmt(k.value)}
+                  {k.pending ? '…' : k.fmt(k.value)}
                 </h3>
               </div>
               <div className="flex items-center justify-between mt-0.5">
                 <span className={`text-[8px] font-extrabold uppercase tracking-widest px-1.5 py-0.5 rounded-sm flex items-center gap-1 ${trendColor}`}>
                   {trendIcon}
-                  {Math.abs(k.trend)}{k.label === 'Total Revenue' ? ' M' : k.label === 'Gross Margin' ? 'pp' : ''} MoM
+                  {k.trendLabel ?? <>{Math.abs(k.trend)}{k.label === 'Total Revenue' ? ' M' : k.label === 'Gross Margin' ? 'pp' : ''} MoM</>}
                 </span>
                 
                 {/* Micro Sparkline Chart */}
@@ -750,7 +793,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
             <div className="flex-1 flex flex-col min-h-0">
               <div className="space-y-1.5 overflow-y-auto flex-1 pr-1 pb-2">
                 {topSkus.map(s => {
-                  const widthPct = Math.round((s.rev / maxSkuRev) * 100);
+                  const widthPct = Math.round((revOf(s) / maxSkuRev) * 100);
                   return (
                     <button
                       key={s.name}
@@ -761,7 +804,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
                         <span className="font-bold text-zinc-700 dark:text-zinc-400 group-hover:text-acies-yellow dark:group-hover:text-acies-yellow truncate max-w-[220px] transition-colors">
                           {s.name}
                         </span>
-                        <span className="font-extrabold text-acies-yellow group-hover:underline">${s.rev}M</span>
+                        <span className="font-extrabold text-acies-yellow group-hover:underline">${revOf(s).toLocaleString('en-US', { maximumFractionDigits: 1 })}M</span>
                       </div>
                       <div className="w-full h-1.5 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden">
                         <div className="h-full bg-acies-yellow transition-all group-hover:bg-yellow-400" style={{ width: `${widthPct}%` }} />
@@ -813,7 +856,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
               <div className="absolute bottom-1 w-full text-center pointer-events-none px-4">
                 {hoveredSku ? (
                   <span className="text-[9.5px] font-bold text-zinc-700 dark:text-zinc-400 bg-black/5 dark:bg-white/5 py-0.5 px-2 rounded-sm border border-black/5 dark:border-white/5 inline-block">
-                    Hovered: <span className="font-extrabold text-[#6d28d9] dark:text-[#a78bfa]">{hoveredSku.name}</span> (${hoveredSku.rev}M)
+                    Hovered: <span className="font-extrabold text-[#6d28d9] dark:text-[#a78bfa]">{hoveredSku.name}</span> (${revOf(hoveredSku).toLocaleString('en-US', { maximumFractionDigits: 1 })}M)
                   </span>
                 ) : (
                   <span className="text-[8.5px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">

@@ -6,6 +6,7 @@ import { DrilldownSkuGrid }      from './DrilldownSkuGrid';
 import { DrilldownSkuModal }     from './DrilldownSkuModal';
 import { TimelineRange }         from '../../../utils/timeframe';
 import type { TimeHorizon }      from '../../../types/dashboard';
+import { REGIONS_CONFIG }        from '../../../constants/regions';
 
 interface TopDownDrilldownProps {
   isDarkMode: boolean;
@@ -14,18 +15,13 @@ interface TopDownDrilldownProps {
   setTimelineRange: (range: TimelineRange) => void;
 }
 
-const REGIONS_CONFIG: Record<string, { name: string; manager: string; email: string; role: string; plant: string }> = {
-  APAC:     { name: 'Asia-Pacific',                manager: 'Vijay Kumar',         email: 'vijay.kumar@aciesglobal.com', role: 'APAC Logistics Head',           plant: 'Chennai Bottling Plant'  },
-  Americas: { name: 'North & South America',       manager: 'Gautam Sen',          email: 'gautam.sen@aciesglobal.com',  role: 'National Distribution Manager', plant: 'Vapi Consumer Goods Hub' },
-  EMEA:     { name: 'Europe, Middle East & Africa', manager: 'Jean-Pierre Dubois', email: 'jp.dubois@aciesglobal.com',   role: 'Commodities Hedging Director',  plant: 'Baddi Manufacturing Hub' },
-  LATAM:    { name: 'Latin America',               manager: 'Dieter Maes',         email: 'dieter.maes@aciesglobal.com', role: 'Production Scheduler',          plant: 'Vapi Consumer Goods Hub' },
-};
-
+// Editorially curated shortlists of real SKU names per region — not derived
+// from per-country sales data (the schema doesn't expose a per-country SKU
+// breakdown), so treat this as "worth checking here", not a ranked list.
 const REGION_SKUS: Record<string, string[]> = {
-  APAC:     ['Mango Fizz 500ml', 'Oat Cookies',     'Herbal Shampoo',  'Hand Cream SPF'],
-  Americas: ['Choco Wafers',     'Fabric Softener',  'Floor Cleaner',   'Green Tea RTD'],
-  EMEA:     ['Dish Soap 1K',     'Aloe Vera Drink',  'Masala Puffs',    'Foam Face Wash'],
-  LATAM:    ['Mango Fizz 500ml', 'Oat Cookies',      'Fabric Softener', 'Floor Cleaner'],
+  'Southern Europe': ['Mango Fizz 500ml', 'Oat Cookies',     'Herbal Shampoo',  'Hand Cream SPF'],
+  'Western Europe':  ['Choco Wafers',     'Fabric Softener', 'Floor Cleaner',   'Green Tea RTD'],
+  'Central Europe':  ['Dish Soap 1K',     'Aloe Vera Drink', 'Masala Puffs',    'Foam Face Wash'],
 };
 
 export const TopDownDrilldown: React.FC<TopDownDrilldownProps> = ({ isDarkMode, timelineRange, setTimelineRange }) => {
@@ -83,7 +79,7 @@ export const TopDownDrilldown: React.FC<TopDownDrilldownProps> = ({ isDarkMode, 
   };
 
   const multiplier     = getHorizonMultiplier();
-  const regionalConfig = REGIONS_CONFIG[selectedRegion as string] || REGIONS_CONFIG.APAC;
+  const regionalConfig = REGIONS_CONFIG[selectedRegion as string] || REGIONS_CONFIG['Southern Europe'];
 
   return (
     <div className="animate-fadeIn w-full flex flex-col gap-3">
@@ -135,8 +131,8 @@ export const TopDownDrilldown: React.FC<TopDownDrilldownProps> = ({ isDarkMode, 
             selectedRegion={selectedRegion}
             onRegionSelect={handleRegionChange}
             selectedMetric={selectedMetric}
-            multiplier={multiplier}
             timeHorizon={timeHorizon}
+            timelineRange={timelineRange}
             isDarkMode={isDarkMode}
           />
 

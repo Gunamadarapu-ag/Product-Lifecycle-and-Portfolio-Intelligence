@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 
 import { ComplexityType, EnrichedSKU } from './types';
+import { useLiveData } from '../../../../api/liveData';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 type StepStatus = 'not-started' | 'in-progress' | 'done';
@@ -370,6 +371,13 @@ const StepCard: React.FC<{
 
 // ── Main Export ───────────────────────────────────────────────────────────────
 export const StrategicActionPlan: React.FC<Props> = ({ skus, isDarkMode, onNavigate, onSkuClick }) => {
+  // Real per-SKU net sales ($M); `EnrichedSKU.rev` is ~22x too large (TODO.md
+  // O1) but is shared with Tier 2 formulas elsewhere (e.g. avgHiddenCostRatio
+  // in simplify-to-grow/utils.ts), so it isn't rescaled at the source. Only
+  // the two raw revenue sums below use live data instead.
+  const { skuRevenueM } = useLiveData();
+  const revOf = (s: EnrichedSKURef): number => skuRevenueM?.[s.name] ?? s.rev;
+
   const steps = useMemo<StepDef[]>(() => {
     const worstIppvSku = [...skus].sort((a, b) => a.ippv - b.ippv)[0] || { name: 'Fabric Softener' };
 
@@ -473,7 +481,7 @@ export const StrategicActionPlan: React.FC<Props> = ({ skus, isDarkMode, onNavig
         impactLabel: 'Negative-growth SKUs needing cross-functional review',
         impactFn: (skus) => {
           const neg = skus.filter(s => s.growth < 0);
-          const revAtRisk = neg.reduce((a, s) => a + s.rev, 0);
+          const revAtRisk = neg.reduce((a, s) => a + revOf(s), 0);
           return `${neg.length} SKUs · $${revAtRisk.toFixed(1)}M revenue needs managed exit`;
         },
         affectedFn: (skus) => [...skus].filter(s => s.growth < 0).sort((a, b) => a.growth - b.growth),
@@ -514,7 +522,7 @@ export const StrategicActionPlan: React.FC<Props> = ({ skus, isDarkMode, onNavig
         impactLabel: 'Good Variety SKUs generating high consumer value',
         impactFn: (skus) => {
           const good = skus.filter(s => s.complexityType === 'Good Variety');
-          const totalRev = good.reduce((a, s) => a + s.rev, 0);
+          const totalRev = good.reduce((a, s) => a + revOf(s), 0);
           return `${good.length} SKUs · $${totalRev.toFixed(1)}M revenue to protect`;
         },
         affectedFn: (skus) => [...skus].filter(s => s.complexityType === 'Good Variety').sort((a, b) => b.ippv - a.ippv),
@@ -527,7 +535,7 @@ export const StrategicActionPlan: React.FC<Props> = ({ skus, isDarkMode, onNavig
         ],
       },
     ];
-  }, [skus]);
+  }, [skus, skuRevenueM]);
 
   const [statuses, setStatuses] = useState<Record<string, StepStatus>>({
     consumer: 'not-started',
