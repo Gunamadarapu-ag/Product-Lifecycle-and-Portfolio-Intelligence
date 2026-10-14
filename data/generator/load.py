@@ -39,11 +39,27 @@ LOAD_ORDER = [
     "sku_cannibalization",
     "portfolio_metrics",
     "rationalization_scenario",
+    # 7 Oct additions, after the dimensions they reference
+    "fact_price",
+    "dim_customer",
+    "fact_customer_sales",
+    "fact_listing",
+    "fact_plan",
+    "fact_forecast",
+    "fact_inventory",
+    "dim_launch",
+    "launch_gate",
+    "supplier_notice",
+    "dim_cost_assumption",
+    "fact_opex",
+    "sku_fixed_cost",
 ]
 
 # gross_margin is a generated column - the database computes it, so it is not
 # in the CSV and must not be named in the COPY column list.
-GENERATED_COLUMNS = {"fact_sales": {"gross_margin"}}
+GENERATED_COLUMNS = {"fact_sales": {"gross_margin"},
+                     "fact_customer_sales": {"gross_margin"},
+                     "fact_opex": {"amount_usd"}}
 
 
 def read_env(path: Path) -> dict[str, str]:

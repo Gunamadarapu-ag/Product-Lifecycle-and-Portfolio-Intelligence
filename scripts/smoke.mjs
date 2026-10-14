@@ -8,7 +8,7 @@ import puppeteer from 'puppeteer';
 
 const BASE = process.env.BASE ?? 'http://localhost:4173';
 const ROLES = ['VP Product Management', 'Product Manager', 'Pricing and Margin Partner'];
-const TABS = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+const TABS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
 const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
 const page = await browser.newPage();

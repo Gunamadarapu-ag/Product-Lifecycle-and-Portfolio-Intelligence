@@ -1,5 +1,10 @@
 # System Architecture — Now, Next, Future
 
+> **Superseded 8 October 2026** by [`system_architecture_and_data_flow.md`](system_architecture_and_data_flow.md)
+> (architecture + 8 data-flow diagrams, by thread) and [`as_is_process_lineage.md`](as_is_process_lineage.md)
+> (As-Is process). The "Now" diagram below predates the database and API. Kept for history.
+
+
 **Date:** 20 September 2026
 **Companion to:** [`architecture_proposal.md`](architecture_proposal.md) (target state and cost
 strategy), [`data_model_specification.md`](data_model_specification.md) (the schema).

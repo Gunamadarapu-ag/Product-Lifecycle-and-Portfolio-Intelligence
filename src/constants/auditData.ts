@@ -3,6 +3,25 @@ export interface AuditContent {
   value: string;
   soWhat: string;
   action: string;
+  /**
+   * A change figure, only ever set when something real computed it. The drawer
+   * omits the pill when this is absent. It used to come from a hardcoded
+   * per-metric lookup — "+8.4% vs last month" printed next to a live value that
+   * had moved somewhere else entirely (TODO.md O17). None of the static entries
+   * below set it; the live builders in components/dashboard/auditLiveContent.ts
+   * set it where the warehouse supplies a genuine comparison.
+   */
+  trend?: { value: string; isUp: boolean };
+  /**
+   * Where this figure comes from, shown as a badge on the definition card.
+   *
+   * The badge used to read 'FORMULA VERIFIED' unconditionally, on every metric
+   * in this file — including figures with no formula and no source table. That
+   * stamp is the reason a 6 Oct review call stopped trusting the audit trail at
+   * all (TODO.md O17). Left undefined, no badge is shown, which is the honest
+   * default for an entry nobody has audited yet.
+   */
+  provenance?: 'live' | 'no-source' | 'sample';
   columns: { name: string; type: string; desc: string }[];
   formula: string;
   formulaDescription: string;
@@ -13,21 +32,21 @@ export interface AuditContent {
 }
 
 export const AUDIT_DATA: Record<string, AuditContent> = {
-  'Shelf Productivity': {
-    title: 'Shelf Productivity',
+  'Availability-Adjusted Value': {
+    title: 'Availability-Adjusted Value',
     value: '53.6',
-    soWhat: 'Average Shelf Productivity is 53.6/100, which is below the desired retailer win-win health threshold of 55. This is driven by high stockout rates on core volumetric items (e.g. BrandC Biscuits with 440 stockout events).',
+    soWhat: 'Average Availability-Adjusted Value is 53.6/100, which is below the desired retailer win-win health threshold of 55. This is driven by high stockout rates on core volumetric items (e.g. BrandC Biscuits with 440 stockout events).',
     action: 'Launch Joint Business Planning: Collaborate with retailers to establish shared stockout thresholds and optimize shelf placements for high-IPPV SKUs.',
     columns: [
       { name: 'val', type: 'float [DIRECT]', desc: 'Normalized commercial value score based on sales share.' },
       { name: 'stockouts', type: 'int [DIRECT]', desc: 'Number of stockout events recorded for the SKU.' }
     ],
-    formula: '\\text{Shelf Productivity} = \\text{Commercial Value} \\times (1 - \\text{Stockout Rate}) \\times 100',
-    formulaDescription: 'Shelf Productivity combines a SKU\'s commercial value score with its shelf availability. A high stockout frequency directly penalizes the score.',
+    formula: '\\text{Availability-Adjusted Value} = \\text{Commercial Value} \\times (1 - \\text{Stockout Rate}) \\times 100',
+    formulaDescription: 'Availability-Adjusted Value combines a SKU\'s commercial value score with its shelf availability. A high stockout frequency directly penalizes the score.',
     assumptions: [
       'Stockout Rate scaling: Stockout rate is modeled as Stockouts divided by 8, capped at 1.0.'
     ],
-    trendTitle: 'Shelf Productivity by Category',
+    trendTitle: 'Availability-Adjusted Value by Category',
     trendHeaders: ['Category', 'Average Shelf Score', 'Stockout Events', 'Status'],
     trendRows: [
       ['Beverages', '65.2', '12 events', 'Healthy'],
@@ -112,6 +131,7 @@ export const AUDIT_DATA: Record<string, AuditContent> = {
   },
   'Portfolio PCI': {
     title: 'Portfolio Complexity Index (PCI)',
+    provenance: 'sample',
     value: '0.5509',
     soWhat: 'The enterprise PCI is 0.5509 (target ≤ 0.42), heavily driven by supplier fragmentation (1.20) and SKU proliferation (1.02). This drives up inventory carrying costs by an estimated 20%.',
     action: 'Prune Supplier Overlap: Transition from 60 universal suppliers to specialized category clusters to break fragmentation.',
@@ -140,6 +160,7 @@ export const AUDIT_DATA: Record<string, AuditContent> = {
   },
   'Long-Tail SKU Burden': {
     title: 'Long-Tail SKU Burden',
+    provenance: 'sample',
     value: '68%',
     soWhat: '68 items (68% of catalog) generate <1% of revenue each, yet they interact with all 60 suppliers, creating massive administrative overhead without business value.',
     action: 'Consolidate Vendor Networks: Prune overlapping supplier relationships for low-velocity SKUs and transition to specialized distributors.',
@@ -164,6 +185,7 @@ export const AUDIT_DATA: Record<string, AuditContent> = {
   },
   'Rationalize Candidates': {
     title: 'Rationalize Candidates',
+    provenance: 'sample',
     value: '35 SKUs',
     soWhat: 'These 35 items generate very little revenue and low margin, but drive peak stockouts and high promotion erosion, clogging the supply chain.',
     action: 'Prune Bottom 10% Immediately: Execute a phase 1 deletion of the 10 lowest-performing SKUs to free up 8.81% safety stock with only 3.58% revenue risk.',
@@ -187,6 +209,7 @@ export const AUDIT_DATA: Record<string, AuditContent> = {
   },
   'Peak Stockout Freq.': {
     title: 'Peak Stockout Freq.',
+    provenance: 'sample',
     value: '440 events',
     soWhat: 'Peak stockouts (440 events) are heavily concentrated in Hypermarkets (15.9k events), highlighting a channel-specific distribution bottleneck rather than an overall stock shortage.',
     action: 'Priority Logistics Routing: Re-negotiate delivery SLAs and establish dedicated priority freight lanes specifically for the Hypermarket channel.',
@@ -209,6 +232,7 @@ export const AUDIT_DATA: Record<string, AuditContent> = {
   },
   'Revenue Tail Risk': {
     title: 'Revenue Tail Risk',
+    provenance: 'sample',
     value: '27.08%',
     soWhat: 'Removing all 35 Rationalize SKUs simultaneously risks 27.08% of revenue. However, a structured phased pruning can mitigate this risk by redirecting sales to active SKUs.',
     action: 'Run Phased Rationalization Pilot: Implement a phased rollout (starting with bottom 10%) to test customer transfer rates before sun-setting all candidates.',
@@ -334,34 +358,42 @@ export const AUDIT_DATA: Record<string, AuditContent> = {
       ['Operations Validation', '82%', 'On Track', 'Medium']
     ]
   },
+  // PARTIAL SOURCE. Revenue and COGS are real (fact_sales.net_sales and
+  // units_sold x purchase_cost), but there is no operating-expense, SG&A or tax
+  // data anywhere in the 13 tables, so net profit cannot be computed. This entry
+  // used to cite `opex` as a [DIRECT] column; it does not exist (TODO.md O17).
   'Net Profit': {
     title: 'Net Profit',
-    value: '$95.2 M',
-    soWhat: 'Net profitability reaches $95.2 M, driven by strong growth in core beverages, but impacted by rising raw milk COGS in Dairy.',
-    action: 'Re-negotiate milk procurement contracts and increase high-margin snack items distribution focus.',
+    provenance: 'no-source',
+    value: 'Not available',
+    soWhat: 'This card is illustrative, not measured. Gross profit is real and computable — `fact_sales` carries both net_sales and purchase_cost — but net profit needs operating expenses, SG&A and tax, and none of those exist anywhere in the data. The $95.2 M on the card is a typed-in figure, not a calculation.',
+    action: 'Use Gross Profit for any margin decision, since that figure is genuinely computed from the warehouse. Making Net Profit real needs a cost model below the gross line (opex, SG&A, tax) added to the dataset.',
     columns: [
-      { name: 'gross_revenue', type: 'float [DIRECT]', desc: 'Gross sales revenue generated.' },
-      { name: 'cogs', type: 'float [DIRECT]', desc: 'Cost of goods sold from raw materials and production.' },
-      { name: 'opex', type: 'float [DIRECT]', desc: 'Operating expenses, including logistics, marketing, and administration.' }
+      { name: 'net_sales', type: 'float [DIRECT]', desc: 'Revenue per fact_sales row. Real.' },
+      { name: 'purchase_cost', type: 'float [DIRECT]', desc: 'Unit cost per fact_sales row; COGS = units_sold x purchase_cost. Real.' },
+      { name: '—', type: '[NO SOURCE]', desc: 'No opex, SG&A, overhead or tax column exists in any of the 13 tables, so everything below the gross-profit line is missing.' }
     ],
-    formula: 'NP = R_{\\text{gross}} - \\text{COGS} - \\text{OPEX} - \\text{Tax}',
-    formulaDescription: 'Net Profit is derived by subtracting Cost of Goods Sold, Operating Expenses, and Taxes from gross revenue.',
+    formula: 'NP = R_{\\text{net}} - \\text{COGS} - \\text{OPEX} - \\text{Tax}',
+    formulaDescription: 'This is the correct definition of net profit, and it is NOT currently running: only the first two terms have a source in the data. Shown as the definition of intent, not as a description of what produced the number on the card.',
     assumptions: [
-      'Excludes dynamic capital adjustments: Standardized tax and interest expense factors are assumed for reporting periods.'
+      'The displayed figure is typed in, not computed.',
+      'Gross Profit — the same card strip, one tile over — IS live from the warehouse. The two are not comparable in reliability.'
     ],
-    trendTitle: 'Net Profit and Volatility by Category',
-    trendHeaders: ['Category', 'Revenue Contribution', 'Net Margin %', 'Volatility'],
+    trendTitle: 'What this would need to become real',
+    trendHeaders: ['Term in the formula', 'Present in the data?'],
     trendRows: [
-      ['Beverages', '$280 M', '14.2%', 'Low'],
-      ['Snacks', '$260 M', '11.8%', 'Medium'],
-      ['Dairy', '$180 M', '8.5%', 'High'],
-      ['Personal Care', '$131 M', '12.1%', 'Medium']
+      ['Net revenue', 'Yes — fact_sales.net_sales'],
+      ['COGS', 'Yes — units_sold x purchase_cost'],
+      ['Operating expenses', 'No'],
+      ['SG&A overhead', 'No'],
+      ['Tax', 'No']
     ]
   },
   'Gross margin %': {
     title: 'Gross margin %',
+    provenance: 'sample',
     value: '36.2%',
-    soWhat: 'Average segment gross margin is 36.2%, compressed by deep promotional discounts on cookies and chips.',
+    soWhat: 'OFFLINE SAMPLE: the API is unavailable, so this is a built-in illustrative figure, not a measurement. It predates the warehouse connection and does not match the real baseline ($473.0M net sales, 119 SKUs, 38.55% gross margin over 24 months). With the API running, this drawer is replaced by a live explanation computed from the same data the card shows. Average segment gross margin is 36.2%, compressed by deep promotional discounts on cookies and chips.',
     action: 'Cap promotional discount depths at 15% and enforce margin pricing corridors.',
     columns: [
       { name: 'revenue', type: 'float [DIRECT]', desc: 'Net sales revenue.' },
@@ -383,8 +415,9 @@ export const AUDIT_DATA: Record<string, AuditContent> = {
   },
   'Gross Profit': {
     title: 'Gross Profit',
+    provenance: 'sample',
     value: '$308.1 M',
-    soWhat: 'Gross profit contribution stands at $308.1 M (36.2% of sales), driven by Beverages and Snacks categories, but restricted by packaging material inflation in Personal Care.',
+    soWhat: 'OFFLINE SAMPLE: the API is unavailable, so this is a built-in illustrative figure, not a measurement. It predates the warehouse connection and does not match the real baseline ($473.0M net sales, 119 SKUs, 38.55% gross margin over 24 months). With the API running, this drawer is replaced by a live explanation computed from the same data the card shows. Gross profit contribution stands at $308.1 M (36.2% of sales), driven by Beverages and Snacks categories, but restricted by packaging material inflation in Personal Care.',
     action: 'Optimize raw material procurement contracts and consolidate vendor logistics to reduce COGS.',
     columns: [
       { name: 'net_sales', type: 'float [DIRECT]', desc: 'Primary sales revenue generated.' },
@@ -407,8 +440,9 @@ export const AUDIT_DATA: Record<string, AuditContent> = {
   },
   'Revenue MTD': {
     title: 'Total Revenue',
+    provenance: 'sample',
     value: '$851.2 M',
-    soWhat: 'MTD revenue reaches $851.2 M, showing +8.4% growth compared to last month. Beverages continue to dominate, contributing 37.1% of total sales.',
+    soWhat: 'OFFLINE SAMPLE: the API is unavailable, so this is a built-in illustrative figure, not a measurement. It predates the warehouse connection and does not match the real baseline ($473.0M net sales, 119 SKUs, 38.55% gross margin over 24 months). With the API running, this drawer is replaced by a live explanation computed from the same data the card shows. MTD revenue reaches $851.2 M, showing +8.4% growth compared to last month. Beverages continue to dominate, contributing 37.1% of total sales.',
     action: 'Reallocate logistics priority to high-demand beverage SKUs in APAC and EMEA to sustain volume.',
     columns: [
       { name: 'net_sales', type: 'float [DIRECT]', desc: 'Revenue per transaction row (units sold × price).' },
@@ -451,8 +485,9 @@ export const AUDIT_DATA: Record<string, AuditContent> = {
   },
   'Portfolio SKUs': {
     title: 'Active SKUs',
+    provenance: 'sample',
     value: '100',
-    soWhat: 'Portfolio contains 100 total active SKUs, recently optimized by sun-setting 3 low-value tail products.',
+    soWhat: 'OFFLINE SAMPLE: the API is unavailable, so this is a built-in illustrative figure, not a measurement. It predates the warehouse connection and does not match the real baseline ($473.0M net sales, 119 SKUs, 38.55% gross margin over 24 months). With the API running, this drawer is replaced by a live explanation computed from the same data the card shows. Portfolio contains 100 total active SKUs, recently optimized by sun-setting 3 low-value tail products.',
     action: 'Maintain category assortments and monitor baseline volume transfer to core hero SKUs.',
     columns: [
       { name: 'sku_id', type: 'string [DIRECT]', desc: 'Unique database identifier for each active stock-keeping unit.' },
@@ -524,6 +559,7 @@ export const AUDIT_DATA: Record<string, AuditContent> = {
   },
   'Avg Complexity': {
     title: 'Avg Complexity',
+    provenance: 'sample',
     value: '0.48',
     soWhat: 'Catalog complexity average is 0.48, exceeding the corporate ceiling of 0.40 due to vendor fragmentation.',
     action: 'Consolidate logistics by routing tail-end variants to distributor-held fulfillment models.',
@@ -547,6 +583,7 @@ export const AUDIT_DATA: Record<string, AuditContent> = {
   },
   'Total Active Signals': {
     title: 'Critical Alerts',
+    provenance: 'sample',
     value: '6',
     soWhat: 'A total of 6 critical operational signals are active, led by NPS drops in EMEA and cannibalization alerts in India.',
     action: 'Review signals queue and triage urgent tickets to respective category managers.',
@@ -634,8 +671,9 @@ export const AUDIT_DATA: Record<string, AuditContent> = {
   },
   'Portfolio Revenue': {
     title: 'Portfolio Revenue',
+    provenance: 'sample',
     value: '$851.4 M',
-    soWhat: 'Month-to-date total portfolio revenue is $851.4 M, tracking slightly behind the target of $900 M. Top-line velocity remains heavily supported by the Beverages segment (37.1%), while minor supply chain bottlenecks in Personal Care introduce slight margin exposure.',
+    soWhat: 'OFFLINE SAMPLE: the API is unavailable, so this is a built-in illustrative figure, not a measurement. It predates the warehouse connection and does not match the real baseline ($473.0M net sales, 119 SKUs, 38.55% gross margin over 24 months). With the API running, this drawer is replaced by a live explanation computed from the same data the card shows. Month-to-date total portfolio revenue is $851.4 M, tracking slightly behind the target of $900 M. Top-line velocity remains heavily supported by the Beverages segment (37.1%), while minor supply chain bottlenecks in Personal Care introduce slight margin exposure.',
     action: 'Accelerate high-growth SKU allocations in APAC/EMEA hubs and run price-elasticity models for key volumetric drivers.',
     columns: [
       { name: 'net_sales', type: 'float [DIRECT]', desc: 'Revenue per transaction row (units sold × price after discounts).' },
@@ -661,8 +699,9 @@ export const AUDIT_DATA: Record<string, AuditContent> = {
   },
   'Portfolio SKU Count': {
     title: 'Portfolio SKU Count',
+    provenance: 'sample',
     value: '100',
-    soWhat: 'The active SKU count stands at 100 items, which matches the target catalog size of 100. Over-proliferation of low-volume variants drives up supply chain friction, raising average inventory carrying costs and straining manufacturing shift schedules.',
+    soWhat: 'OFFLINE SAMPLE: the API is unavailable, so this is a built-in illustrative figure, not a measurement. It predates the warehouse connection and does not match the real baseline ($473.0M net sales, 119 SKUs, 38.55% gross margin over 24 months). With the API running, this drawer is replaced by a live explanation computed from the same data the card shows. The active SKU count stands at 100 items, which matches the target catalog size of 100. Over-proliferation of low-volume variants drives up supply chain friction, raising average inventory carrying costs and straining manufacturing shift schedules.',
     action: 'Phase out the 35 identified "Rationalize" candidates in low-margin, high-complexity segments (such as Floor Cleaner) to optimize catalog efficiency.',
     columns: [
       { name: 'sku_id', type: 'string [DIRECT]', desc: 'Unique SKU identifier in the product master database.' },
@@ -685,8 +724,9 @@ export const AUDIT_DATA: Record<string, AuditContent> = {
   },
   'Growth Rate': {
     title: 'Revenue Growth',
+    provenance: 'sample',
     value: '8.4%',
-    soWhat: 'The aggregate growth rate sits at 8.4%, slightly below the target threshold of 10.0%. Regional demand shifts in the Americas (-5.0%) drag overall progress, despite strong growth support from APAC (+7.6%) and EMEA (+2.0%).',
+    soWhat: 'OFFLINE SAMPLE: the API is unavailable, so this is a built-in illustrative figure, not a measurement. It predates the warehouse connection and does not match the real baseline ($473.0M net sales, 119 SKUs, 38.55% gross margin over 24 months). With the API running, this drawer is replaced by a live explanation computed from the same data the card shows. The aggregate growth rate sits at 8.4%, slightly below the target threshold of 10.0%. Regional demand shifts in the Americas (-5.0%) drag overall progress, despite strong growth support from APAC (+7.6%) and EMEA (+2.0%).',
     action: 'Deploy targeted promotional support in the Americas and accelerate high-velocity launches to raise the velocity index.',
     columns: [
       { name: 'net_sales', type: 'float [DIRECT]', desc: 'Daily transaction revenue.' },
@@ -707,52 +747,117 @@ export const AUDIT_DATA: Record<string, AuditContent> = {
       ['Q4 25 MTD', '8.4%', '-1.6pp', '10.0%']
     ]
   },
+  // NO DATA SOURCE. There is no orders table in the database — the dataset's
+  // finest grain is one row per SKU/country/channel/day in `fact_sales`, with no
+  // order identifier and no intraday timestamp. This entry used to cite
+  // `order_id` and `order_timestamp` as [DIRECT] columns; neither exists.
+  // Said plainly here rather than fabricating provenance (TODO.md O17).
   'Orders — Today': {
     title: 'Orders — Today',
-    value: '4,232',
-    soWhat: 'Real-time order volume reached 4,232 today, showing a positive +12.3% increase compared to yesterday. A target of 5,000 orders is set to ensure peak distribution center processing optimization and courier lane efficiency.',
-    action: 'Scale distribution center pick-and-pack server capacity during peak hours and coordinate with regional freight carriers.',
+    provenance: 'no-source',
+    value: 'Not available',
+    soWhat: 'This card is illustrative, not measured. The dataset has no order-level table: `fact_sales` records aggregated daily sales per SKU, country and channel, with no order identifier and no intraday timestamp. The number shown on the card is a placeholder that moves with the timeline selector, not an order count.',
+    action: 'Treat the figure as a placeholder. Making it real needs an order-grain source (one row per order, with a creation timestamp) loaded alongside fact_sales — a data-generation change, not a dashboard fix.',
     columns: [
-      { name: 'order_id', type: 'string [DIRECT]', desc: 'Unique transaction token from the order management system.' },
-      { name: 'order_timestamp', type: 'datetime [DIRECT]', desc: 'Fulfillment creation time index.' }
+      { name: '—', type: '[NO SOURCE]', desc: 'No order-grain table exists in the database. 13 tables are loaded; none records individual orders.' }
     ],
-    formula: 'Orders_{today} = \\sum_{k=1}^{L} [Order_k \\text{ created on Today}]',
-    formulaDescription: 'The sum of all sales orders captured by the order management system within the active 24-hour cycle.',
+    formula: '\\text{Orders}_{today} = \\text{not computed}',
+    formulaDescription: 'No formula is running. Computing same-day order volume would require an orders table with one row per order and a creation timestamp; the current schema has neither.',
     assumptions: [
-      'Time zone alignment: Standardized to regional distribution center operating hours.',
-      'Cancelled transactions: Orders cancelled within the same day are filtered out from the final sum.'
+      'The displayed figure is a placeholder with no source table behind it.',
+      'The 5,000 target shown on the card is also illustrative, not drawn from a plan or forecast in the data.'
     ],
-    trendTitle: 'Hourly Order Velocity vs. Target',
-    trendHeaders: ['Time Window', 'Actual Orders', 'Growth vs. Yesterday', 'Target'],
+    trendTitle: 'What this would need to become real',
+    trendHeaders: ['Requirement', 'Present in the data?'],
     trendRows: [
-      ['00:00 - 06:00', '650', '+10.2%', '800'],
-      ['06:00 - 12:00', '1,850', '+12.4%', '2,000'],
-      ['12:00 - 18:00', '1,250', '+15.1%', '1,500'],
-      ['18:00 - 00:00', '482', '+8.0%', '700']
+      ['An order-grain table (one row per order)', 'No'],
+      ['An order creation timestamp (intraday)', 'No — fact_sales is daily grain'],
+      ['Order cancellation status', 'No']
     ]
   },
+  // NO DATA SOURCE. The dataset holds actuals only — there is no forecast
+  // anywhere in the 13 tables, so actual-vs-forecast cannot be computed. This
+  // entry used to cite `forecast_units` and `actual_units` as [DIRECT] columns;
+  // `actual_units` exists in spirit as fact_sales.units_sold, but there is no
+  // forecast column to compare it against (TODO.md O17).
   'Forecast Attainment': {
     title: 'Forecast Attainment',
-    value: '94.6%',
-    soWhat: 'Forecast attainment is 94.6% (target: 97.0%), representing a -2.1pp deviation. The shortfall is primarily driven by cannibalization in Mango Fizz beverage variants and supply bottlenecks for Fabric Softener in Penang.',
-    action: 'Retrain ML demand forecasting models with real-time promotion calendars, competitor activities, and regional supplier constraint logs.',
+    provenance: 'no-source',
+    value: 'Not available',
+    soWhat: 'This card is illustrative, not measured. The dataset contains actuals only: `fact_sales.units_sold` records what was sold, but no table holds a demand forecast, plan or target to compare it against. Without a forecast there is no attainment to compute, so the percentage shown is a placeholder that moves with the timeline selector.',
+    action: 'Treat the figure as a placeholder. Making it real needs a forecast series generated alongside actuals — per SKU, per period — which is a data-generation change, not a dashboard fix. This is the same gap as the inventory/forecast visibility ask raised on 5 October.',
     columns: [
-      { name: 'forecast_units', type: 'int [DIRECT]', desc: 'Expected demand units configured by the supply planning engine.' },
-      { name: 'actual_units', type: 'int [DIRECT]', desc: 'Actual units shipped and invoiced.' }
+      { name: 'units_sold', type: 'int [DIRECT]', desc: 'Actual units sold per SKU/country/channel/day in fact_sales. This half of the comparison is real.' },
+      { name: '—', type: '[NO SOURCE]', desc: 'No forecast or demand-plan column exists in any of the 13 tables, so the other half of the comparison is missing.' }
     ],
-    formula: 'Attainment = \\left(1 - \\frac{|Actual - Forecast|}{Forecast}\\right) \\times 100',
-    formulaDescription: 'Forecast attainment means how much of the predicted (forecasted) target you actually achieved.',
+    formula: '\\text{Attainment} = \\left(1 - \\frac{|Actual - Forecast|}{Forecast}\\right) \\times 100',
+    formulaDescription: 'This is the correct formula for forecast attainment, and it is NOT currently running: the Forecast term has no source in the data. Shown here as the definition of intent, not as a description of what produced the number on the card.',
     assumptions: [
-      'Unsatisfied orders: Excludes backorders that have not been filled or shipped yet.',
-      'Promotion calendar alignment: Assumes forecast models adjusted for standard promotional runs.'
+      'The displayed figure is a placeholder; only the actuals half of the formula has a real source.',
+      'The 97.0% target shown on the card is illustrative, not drawn from a plan in the data.'
     ],
-    trendTitle: 'Forecast Attainment by Category',
-    trendHeaders: ['Category', 'Actual Attainment', 'Variance', 'Target'],
+    trendTitle: 'What this would need to become real',
+    trendHeaders: ['Requirement', 'Present in the data?'],
     trendRows: [
-      ['Beverages', '96.2%', '-0.8pp', '97.0%'],
-      ['Snacks', '95.4%', '-1.6pp', '97.0%'],
-      ['Personal Care', '94.6%', '-2.4pp', '97.0%'],
-      ['Household', '91.8%', '-5.2pp', '97.0%']
+      ['Actual units sold, per SKU and period', 'Yes — fact_sales.units_sold'],
+      ['A demand forecast per SKU and period', 'No'],
+      ['Forecast version / vintage, to compare like for like', 'No']
+    ]
+  },
+  // Both of the entries below were missing entirely, so clicking those two
+  // Profitability cards opened nothing at all — a card offering an audit trail
+  // and then answering "what is the data behind this" with silence (TODO.md O17).
+  //
+  // Value Diluting SKUs IS computable: components/dashboard/auditLiveContent.ts
+  // derives it live from per-SKU margin against the portfolio margin. This entry
+  // is the offline fallback, and the card's own '12 SKUs' is a typed-in figure.
+  'Value Diluting SKUs': {
+    title: 'Value Diluting SKUs',
+    provenance: 'sample',
+    value: '12 SKUs',
+    soWhat: 'Offline: the API is unavailable, so this is the built-in sample figure of 12 SKUs, which is typed in rather than counted. With the API running, this card counts the SKUs whose own gross margin falls below the portfolio\'s revenue-weighted margin, computed from fn_sku_performance().',
+    action: 'Start the API (npm run api) to see the real count and the SKUs behind it. The figure shown offline should not be quoted.',
+    columns: [
+      { name: 'fact_sales.gross_margin', type: 'numeric(14,2) [GENERATED]', desc: 'Per-row margin, aggregated per SKU by fn_sku_performance(). Available when the API is running.' },
+      { name: 'fact_sales.net_sales', type: 'numeric(12,2) [DIRECT]', desc: 'Per-SKU margin denominator, and the ranking basis for materiality.' }
+    ],
+    formula: 'D = \\left\\{ i : GM\\%_i < GM\\%_{portfolio} \\right\\}',
+    formulaDescription: 'SKUs whose gross margin percentage falls below the portfolio\'s revenue-weighted margin. The threshold is the portfolio\'s own figure, not a typed-in target. This definition is real and computable — only the offline figure above is not.',
+    assumptions: [
+      'Diluting margin is not the same as unprofitable: a SKU below the portfolio average is still gross-profitable.',
+      'Because the threshold is a revenue-weighted average, a substantial share of the portfolio sitting below it is arithmetically normal.'
+    ],
+    trendTitle: 'Status of this figure',
+    trendHeaders: ['Aspect', 'State'],
+    trendRows: [
+      ['Definition', 'Real — margin below portfolio margin'],
+      ['Live computation', 'Available when the API is running'],
+      ['Figure shown offline', 'Typed-in sample, not counted']
+    ]
+  },
+  // NO DATA SOURCE. There is no expense, overhead or cost-allocation table in the
+  // schema — only transaction-level purchase_cost, which is COGS, not SG&A.
+  'Total SG&A Overhead': {
+    title: 'Total SG&A Overhead',
+    provenance: 'no-source',
+    value: 'Not available',
+    soWhat: 'This card is illustrative, not measured. Selling, general and administrative expense has no source in the data: the only cost column in the warehouse is fact_sales.purchase_cost, which is cost of goods, not overhead. The $117.7 M shown is a typed-in figure.',
+    action: 'Treat the figure as a placeholder, and treat Gross Profit as the deepest genuinely-measured profit line. Making SG&A real needs an expense ledger or an allocation model added to the dataset.',
+    columns: [
+      { name: '—', type: '[NO SOURCE]', desc: 'No expense, overhead, headcount or cost-allocation table exists in any of the 13 tables. purchase_cost is COGS and is already consumed by Gross Profit.' }
+    ],
+    formula: '\\text{SG\\&A} = \\text{not computed}',
+    formulaDescription: 'No formula is running. SG&A would need an expense ledger, or a defensible allocation of shared cost across SKUs and regions; the schema has neither.',
+    assumptions: [
+      'The displayed figure is typed in, not computed.',
+      'The "Fixed & Variable Mix" label on the card is likewise illustrative — no such split exists in the data.'
+    ],
+    trendTitle: 'What this would need to become real',
+    trendHeaders: ['Requirement', 'Present in the data?'],
+    trendRows: [
+      ['Cost of goods sold', 'Yes — units_sold × purchase_cost'],
+      ['Operating expense ledger', 'No'],
+      ['Allocation basis to SKU or region', 'No']
     ]
   },
   'Avg Lead Time': {

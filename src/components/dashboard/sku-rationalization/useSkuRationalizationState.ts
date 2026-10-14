@@ -13,7 +13,7 @@ import { Role, KPI } from '../../../types/dashboard';
 import { srClassify, getSkuLocation, PAIRS_DATA, SR_CLASSES } from './skuConstants';
 import { TimelineRange, getFilteredSKUS } from '../../../utils/timeframe';
 import { getChartTheme } from '../../../utils/chartTheme';
-import { useLiveData } from '../../../api/liveData';
+import { useLiveData, type SkuSegment } from '../../../api/liveData';
 
 export function useSkuRationalizationState(role: Role, isDarkMode: boolean, timelineRange: TimelineRange) {
   const SKUS = useMemo(() => getFilteredSKUS(GLOBAL_SKUS, timelineRange), [timelineRange]);
@@ -58,20 +58,26 @@ export function useSkuRationalizationState(role: Role, isDarkMode: boolean, time
   // Real per-SKU net sales ($M) from the warehouse. The `rev` field on the
   // built-in SKUS is ~22x too large (TODO.md O1) — summing it is how 11
   // sunset SKUs came to hold $447M of a $473M portfolio.
-  const { skuRevenueM } = useLiveData();
+  const { skuRevenueM, skuSegments } = useLiveData();
+  // Live since 7 Oct (TODO.md O18, thread 3): "sunset" is now the database's
+  // own Rationalize segment (fn_sku_segments — median split of commercial
+  // value and operational complexity) rather than a second, independently-
+  // typed threshold rule that disagreed with it (11 SKUs vs 46).
+  const segmentByName = useMemo(
+    () => new Map((skuSegments ?? []).map(s => [s.sku_name, s] as [string, SkuSegment])),
+    [skuSegments]
+  );
   const kpis = useMemo(() => {
     const activeSkusCount = locationFilteredSkus.length;
-    const isSunset = (s: any) => {
-      if (s.val >= 0.7 && s.cx <= 0.4) return false;
-      if (s.val >= 0.6 && s.growth >= 0.15) return false;
-      if (s.val < 0.5 && s.cx < 0.5 && s.margin >= 30) return false;
-      if (s.val < 0.4 && s.cx >= 0.6) return true;
-      return false;
-    };
+    const isSunset = (s: any) => segmentByName.size
+      ? segmentByName.get(s.name)?.portfolio_segment === 'Rationalize'
+      : (s.val < 0.4 && s.cx >= 0.6); // offline fallback, same shape as the old typed rule
     const sunsetCount  = locationFilteredSkus.filter(isSunset).length;
     const revAtRisk    = locationFilteredSkus.filter(isSunset)
       .reduce((sum, s) => sum + (skuRevenueM?.[s.name] ?? s.rev), 0);
-    const avgComplexity = locationFilteredSkus.reduce((sum, s) => sum + s.cx, 0) / (activeSkusCount || 1);
+    const avgComplexity = segmentByName.size
+      ? locationFilteredSkus.reduce((sum, s) => sum + (segmentByName.get(s.name)?.operational_complexity_score ?? s.cx), 0) / (activeSkusCount || 1)
+      : locationFilteredSkus.reduce((sum, s) => sum + s.cx, 0) / (activeSkusCount || 1);
 
     // Annotated so `highlight` narrows to Role[] rather than widening to
     // string[] — without this the cards do not satisfy the KPI contract.
@@ -116,7 +122,7 @@ export function useSkuRationalizationState(role: Role, isDarkMode: boolean, time
     return role === 'VP Product Management'
       ? cards.filter(c => c.label !== 'Portfolio SKUs')
       : cards;
-  }, [locationFilteredSkus, role, skuRevenueM]);
+  }, [locationFilteredSkus, role, skuRevenueM, segmentByName]);
 
   // ── Auto-scroll to directory ───────────────────────────────────────────────
   useEffect(() => {

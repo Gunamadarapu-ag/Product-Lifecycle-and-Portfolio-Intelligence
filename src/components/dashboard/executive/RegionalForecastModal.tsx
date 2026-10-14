@@ -8,6 +8,7 @@ import {
   X, TrendingUp, TrendingDown, AlertTriangle, Globe, Activity, Mail, CheckCircle, Ship 
 } from 'lucide-react';
 import { ModalShell } from '../../common/Modal';
+import type { RegionMixRow } from '../../../api/liveData';
 
 interface ForecastItem {
   region: string;
@@ -20,6 +21,13 @@ interface ForecastItem {
 interface RegionalForecastModalProps {
   isOpen: boolean;
   region: ForecastItem | null;
+  /**
+   * fn_region_mix rows. When they cover this region, the modal shows the
+   * real category/channel split and data-derived observations, and drops the
+   * typed APAC/Americas/EMEA narrative (people, emails, plans) — none of it
+   * exists in the data. `region.target` is then the prior window's actual.
+   */
+  regionMix?: RegionMixRow[];
   onClose: () => void;
   onRequestAction: (email: string, name: string, subject: string, body: string) => void;
 }
@@ -27,6 +35,7 @@ interface RegionalForecastModalProps {
 export const RegionalForecastModal: React.FC<RegionalForecastModalProps> = ({
   isOpen,
   region,
+  regionMix,
   onClose,
   onRequestAction
 }) => {
@@ -206,7 +215,47 @@ Executive Director`
     return { categories, channels, insights, actions, statusText, statusColor };
   };
 
-  const { categories, channels, insights, actions, statusText, statusColor } = getRegionalMixData(region.region);
+  const MIX_COLORS = ['bg-indigo-500', 'bg-emerald-500', 'bg-blue-500', 'bg-amber-500', 'bg-purple-500', 'bg-orange-500', 'bg-pink-500'];
+
+  // Live: everything below is computed from fn_region_mix for this region.
+  const getLiveMixData = (rows: RegionMixRow[]) => {
+    const toBars = (dim: 'category' | 'channel') => rows
+      .filter(r => r.dimension === dim)
+      .sort((a, b) => b.net_sales - a.net_sales)
+      .map((r, i) => ({ name: r.name, sales: Math.round(r.net_sales / 1e5) / 10, color: MIX_COLORS[i % MIX_COLORS.length] }));
+    const growth = (dim: 'category' | 'channel') => rows
+      .filter(r => r.dimension === dim && r.prior_net_sales)
+      .map(r => ({ name: r.name, g: r.net_sales / r.prior_net_sales! - 1 }))
+      .sort((a, b) => b.g - a.g);
+    const categories = toBars('category');
+    const channels = toBars('channel');
+    const catTotal = categories.reduce((s, c) => s + c.sales, 0) || 1;
+    const fmtG = (g: number) => `${g >= 0 ? '+' : ''}${(g * 100).toFixed(1)}%`;
+    const insights: string[] = [];
+    if (categories[0]) insights.push(`${categories[0].name} is the largest category here: $${categories[0].sales.toFixed(1)} M, ${Math.round(categories[0].sales / catTotal * 100)}% of regional sales.`);
+    const cg = growth('category');
+    if (cg.length) insights.push(`Fastest-growing category vs the prior window: ${cg[0].name} (${fmtG(cg[0].g)}); slowest: ${cg[cg.length - 1].name} (${fmtG(cg[cg.length - 1].g)}).`);
+    const chg = growth('channel');
+    if (chg.length) {
+      const spread = chg[0].g - chg[chg.length - 1].g;
+      insights.push(spread < 0.005
+        ? `All ${chg.length} channels grew at about the same rate (${fmtG(chg[0].g)}); no channel is gaining share here.`
+        : `Channel growth ranges from ${chg[0].name} (${fmtG(chg[0].g)}) to ${chg[chg.length - 1].name} (${fmtG(chg[chg.length - 1].g)}).`);
+    }
+    if (!cg.length) insights.push('No full prior window in the data for this period, so growth is not shown.');
+    const d = region.target > 0 ? region.actual / region.target - 1 : 0;
+    const [statusText, statusColor] = !cg.length ? ['No Prior Window', 'text-zinc-500 bg-zinc-500/10 border-zinc-500/20']
+      : d > 0.02 ? ['Growing', 'text-emerald-500 bg-emerald-500/10 border-emerald-500/20']
+      : d < -0.02 ? ['Declining', 'text-red-500 bg-red-500/10 border-red-500/20']
+      : ['Flat', 'text-indigo-500 bg-indigo-500/10 border-indigo-500/20'];
+    return { categories, channels, insights, actions: [] as ReturnType<typeof getRegionalMixData>['actions'], statusText, statusColor };
+  };
+
+  const liveRows = regionMix?.filter(r => r.region === region.region);
+  const isLive = !!liveRows && liveRows.length > 0;
+  const { categories, channels, insights, actions, statusText, statusColor } =
+    isLive ? getLiveMixData(liveRows!) : getRegionalMixData(region.region);
+  const targetLabel = isLive ? 'Prior Window' : 'Target Sales';
   const variance = region.actual - region.target;
 
   return (
@@ -226,7 +275,7 @@ Executive Director`
               </span>
             </div>
             <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">
-              Forecast vs Actual Exploration
+              {isLive ? 'Actual vs Prior Window · live' : 'Forecast vs Actual Exploration · sample'}
             </p>
           </div>
           <button 
@@ -244,11 +293,11 @@ Executive Director`
             <p className="text-lg font-display font-bold text-acies-yellow">${region.actual} M</p>
           </div>
           <div className="p-3 bg-zinc-50 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded">
-            <p className="font-bold text-[8.5px] uppercase tracking-widest text-zinc-400 mb-1">Target Sales</p>
+            <p className="font-bold text-[8.5px] uppercase tracking-widest text-zinc-400 mb-1">{targetLabel}</p>
             <p className="text-lg font-display font-bold text-zinc-800 dark:text-white">${region.target} M</p>
           </div>
           <div className="p-3 bg-zinc-50 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded">
-            <p className="font-bold text-[8.5px] uppercase tracking-widest text-zinc-400 mb-1">Variance Achievement</p>
+            <p className="font-bold text-[8.5px] uppercase tracking-widest text-zinc-400 mb-1">{isLive ? 'Change' : 'Variance Achievement'}</p>
             <div className="flex items-center gap-1">
               <span className={`text-lg font-display font-bold ${variance >= 0 ? 'text-green-500' : 'text-red-500'}`}>
                 {variance >= 0 ? '+' : ''}{variance.toFixed(1)} M ({pctAchievement.toFixed(1)}%)
@@ -313,7 +362,7 @@ Executive Director`
 
         {/* AI Performance Diagnostics */}
         <div className="space-y-1.5">
-          <p className="font-bold text-[9px] uppercase tracking-widest text-zinc-400">AI Performance Diagnostics</p>
+          <p className="font-bold text-[9px] uppercase tracking-widest text-zinc-400">{isLive ? 'Observations from the data' : 'AI Performance Diagnostics'}</p>
           <div className="bg-zinc-50 dark:bg-white/5 p-3 rounded border border-black/5 dark:border-white/10 space-y-1.5">
             {insights.map((ins, idx) => (
               <div key={idx} className="flex gap-2 text-zinc-700 dark:text-zinc-400 leading-relaxed font-normal">
@@ -327,6 +376,11 @@ Executive Director`
         {/* Tactical Mitigation Plans */}
         <div className="space-y-2">
           <p className="font-bold text-[9px] uppercase tracking-widest text-zinc-400">Tactical Mitigation Actions</p>
+          {isLive && (
+            <p className="text-[10px] text-zinc-500 dark:text-zinc-400 bg-zinc-50 dark:bg-white/5 p-3 rounded border border-black/5 dark:border-white/10">
+              Not generated: the dataset has no regional owners or action plans, so none are shown rather than invented.
+            </p>
+          )}
           <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
             {actions.map((act, index) => (
               <div 

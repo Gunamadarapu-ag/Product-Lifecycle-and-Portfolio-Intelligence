@@ -12,6 +12,7 @@ import { TimelineRange, getTimeframeScale, getDeterministicNoise } from '../../.
 import { getChartTheme } from '../../../utils/chartTheme';
 import { VPProfitabilityTreeView } from './VPProfitabilityTreeView';
 import { Scenario, breakevenSKUs, marginVelocityAlerts } from './profitabilityData';
+import { useLiveData } from '../../../api/liveData';
 
 export interface ProfitabilityTreeProps {
   role: Role;
@@ -57,7 +58,60 @@ export const ProfitabilityTree: React.FC<ProfitabilityTreeProps> = ({
   // Accordion guide
   const [guideOpen, setGuideOpen] = useState(false);
 
+  const live = useLiveData();
+
+  // Margin Velocity Alerts and Break-even SKU Radar, live since 7 Oct
+  // (TODO.md O18): both used typed demo rows presented as "auto-surfaced".
+  // No per-SKU month-over-month margin trend exists yet, so "velocity" is
+  // relabelled to the real metric that does — promo margin erosion
+  // (sku_metrics.margin_erosion, already fetched as live.skuSegments).
+  // Break-even uses live.skus (already fetched), ranked by revenue at risk
+  // among SKUs below a 20% margin line, the same sort the UI already claims.
+  const liveMarginAlerts = live.skuSegments
+    ? [...live.skuSegments].sort((a, b) => b.margin_erosion - a.margin_erosion).slice(0, 4).map(s => ({
+        name: s.sku_name,
+        detail: `Margin erosion on promotion`,
+        delta: `${s.margin_erosion >= 0 ? '-' : '+'}${Math.abs(s.margin_erosion).toFixed(1)}pp`,
+        status: s.margin_erosion >= 8 ? 'critical' : 'high',
+        sColor: s.margin_erosion >= 8 ? '#ef4444' : '#f59e0b',
+      }))
+    : null;
+  const liveBreakeven = live.skus
+    ? [...live.skus].filter(s => s.gross_margin_pct < 0.20).sort((a, b) => b.net_sales - a.net_sales).slice(0, 4).map(s => ({
+        name: s.sku_name,
+        detail: `${s.category_name} · Net sales $${(s.net_sales / 1e6).toFixed(1)} M`,
+        margin: Math.round(s.gross_margin_pct * 100),
+        color: s.gross_margin_pct * 100 < 15 ? '#dc2626' : '#ea580c',
+      }))
+    : null;
+
   useEffect(() => {
+    // Live since 7 Oct (TODO.md O18, thread 2): the sliders' own convention is
+    // rev($M) = units × price / 100 (and so on for cogs/logistics),
+    // unchanged below so every other calculation in this file keeps working.
+    // price/cost are real averages ($/unit, from fn_portfolio_kpis); units is
+    // back-solved so units × price / 100 reproduces the real monthly revenue
+    // exactly — that keeps "units" a believable size instead of the raw
+    // monthly unit count (tens of millions). Touching a slider still runs the
+    // same "what if" math as before.
+    if (live.pnl && live.kpis && live.kpis.units_sold > 0) {
+      const months = Math.max(1, live.kpis.months_available);
+      const avgPrice = live.kpis.net_sales / live.kpis.units_sold;
+      const avgCost = (live.kpis.net_sales - live.kpis.gross_margin) / live.kpis.units_sold;
+      const monthlyRevM = live.kpis.net_sales / months / 1e6;
+      const u = Math.max(1, Math.round((monthlyRevM * 100) / avgPrice));
+      setUnits(u);
+      setPrice(+avgPrice.toFixed(2));
+      setCost(+avgCost.toFixed(2));
+      setLogistics(+((live.pnl.logistics_usd / months / 1e6) * 100 / u).toFixed(2));
+      // Promo and Overhead are $M per month in the EBIT formula below (not
+      // per-unit like Logistics), so they are seeded in $M: marketing as the
+      // promo line, and SG&A (variable + fixed) plus per-SKU fixed cost as
+      // overhead. With these seeds EBIT % equals fn_pnl's.
+      setPromo(+(live.pnl.marketing_usd / months / 1e6).toFixed(2));
+      setOverhead(+((live.pnl.sga_variable_usd + live.pnl.sga_fixed_usd + live.pnl.fixed_sku_cost_usd) / months / 1e6).toFixed(2));
+      return;
+    }
     const scale = getTimeframeScale(timelineRange);
     const noise = 1 + getDeterministicNoise('ProfitTree_Units', timelineRange) * 0.03;
     setUnits(Math.round(850 * scale * noise));
@@ -65,7 +119,7 @@ export const ProfitabilityTree: React.FC<ProfitabilityTreeProps> = ({
     setLogistics(Math.round(18 * scale * (1 + getDeterministicNoise('ProfitTree_Log', timelineRange) * 0.04)));
     setPrice(Math.round(180 + getDeterministicNoise('ProfitTree_Price', timelineRange) * 5));
     setOverhead(Math.round(8 * scale * (1 + getDeterministicNoise('ProfitTree_OH', timelineRange) * 0.03)));
-  }, [timelineRange]);
+  }, [timelineRange, live.pnl, live.kpis]);
 
   // Financial calculations
   const rev = units * price / 100;
@@ -213,7 +267,7 @@ export const ProfitabilityTree: React.FC<ProfitabilityTreeProps> = ({
             <input 
               type="number" 
               value={logistics}
-              onChange={(e) => setLogistics(parseInt(e.target.value) || 0)}
+              onChange={(e) => setLogistics(parseFloat(e.target.value) || 0)}
               className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-2 text-xs font-semibold text-acies-gray dark:text-white outline-none"
             />
           </div>
@@ -261,14 +315,16 @@ export const ProfitabilityTree: React.FC<ProfitabilityTreeProps> = ({
           <div className="flex justify-between items-center">
             <div>
               <h4 className="text-[12px] font-bold uppercase tracking-widest text-zinc-400">Margin Velocity Alerts</h4>
-              <p className="text-[9px] text-zinc-500 uppercase tracking-widest mt-0.5">SKUs declining faster than 2pp/month — auto-surfaced</p>
+              <p className="text-[9px] text-zinc-500 uppercase tracking-widest mt-0.5">
+                {liveMarginAlerts ? 'Highest promo margin erosion, by SKU' : 'SKUs declining faster than 2pp/month — auto-surfaced'}
+              </p>
             </div>
             <span className="text-[8px] font-black bg-red-500/10 text-red-500 border border-red-500/20 px-2 py-0.5 rounded-full shrink-0">
-              3 critical
+              {(liveMarginAlerts ?? marginVelocityAlerts).filter(a => a.status === 'critical').length} critical
             </span>
           </div>
           <div className="divide-y divide-black/[0.04] dark:divide-white/[0.04] text-xs font-semibold">
-            {marginVelocityAlerts.map((a, idx) => (
+            {(liveMarginAlerts ?? marginVelocityAlerts).map((a, idx) => (
               <div key={idx} className="flex justify-between items-center py-3">
                 <div className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: a.sColor }} />
@@ -288,10 +344,12 @@ export const ProfitabilityTree: React.FC<ProfitabilityTreeProps> = ({
         <div className="glass-card bg-white dark:bg-[#1a1a24]/90 border border-black/10 dark:border-white/10 p-5 rounded-xl shadow-sm space-y-4">
           <div>
             <h4 className="text-[12px] font-bold uppercase tracking-widest text-zinc-400">Break-even SKU Radar</h4>
-            <p className="text-[9px] text-zinc-500 uppercase tracking-widest mt-0.5">SKUs near or below break-even — ranked by revenue at risk</p>
+            <p className="text-[9px] text-zinc-500 uppercase tracking-widest mt-0.5">
+              {liveBreakeven ? 'Below 20% gross margin, ranked by net sales' : 'SKUs near or below break-even — ranked by revenue at risk'}
+            </p>
           </div>
           <div className="space-y-5 pt-2 text-xs font-semibold">
-            {breakevenSKUs.map((s, idx) => (
+            {(liveBreakeven ?? breakevenSKUs).map((s, idx) => (
               <div key={idx} className="space-y-1.5">
                 <div className="flex justify-between items-center font-bold text-zinc-800 dark:text-zinc-200">
                   <div>

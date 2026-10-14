@@ -4,6 +4,7 @@
  * Extracted from the original 3,982-line SignalsBoard.tsx.
  */
 import React from 'react';
+import type { LiveSignal } from '../../../api/liveData';
 
 
 export const RECIPIENT_TITLES: Record<string, string> = {
@@ -204,7 +205,11 @@ export interface VPSignal {
   title: string;
   category: string;
   region: string;
-  type: 'Risk' | 'Opportunity' | 'Competitor' | 'Sentiment' | 'Supply' | 'Portfolio';
+  /**
+   * Sample: Risk | Opportunity | Competitor | Sentiment | Supply | Portfolio.
+   * Live (fn_signals): Launch | Supply | Margin | Cannibalization | Demand | Opportunity.
+   */
+  type: string;
   severity: 'critical' | 'warning' | 'info';
   impact: string;
   detail: string;
@@ -356,3 +361,23 @@ export const VP_SIGNALS_DATA: VPSignal[] = [
     rectification: 'Expand regional distribution network agreements to place eco-friendly household detergents in 120 new outlets.'
   }
 ];
+
+/**
+ * fn_signals rows in the VPSignal shape (8 Oct, thread 6). Formatting only —
+ * the impact figure, region, rule and action all come from SQL.
+ */
+export const toVPSignals = (rows: LiveSignal[]): VPSignal[] => rows.map(r => ({
+  id: r.signal_id,
+  title: r.title,
+  category: r.category_name,
+  region: r.region,
+  type: r.signal_type,
+  severity: r.severity,
+  impact: r.impact_usd === null ? '—'
+    : `${r.impact_usd >= 1e6 ? `$${(r.impact_usd / 1e6).toFixed(1)}M` : `$${Math.round(r.impact_usd / 1e3)}K`} ${r.impact_label}`,
+  detail: r.detail,
+  ack: false,
+  refCode: r.signal_id,
+  trigger: `Rule: ${r.trigger_rule}.`,
+  rectification: r.recommended_action,
+}));

@@ -9,11 +9,12 @@ import { X, Database, BookOpen, HelpCircle, Activity, CheckCircle, TrendingUp, A
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell, CartesianGrid } from 'recharts';
 import { AUDIT_DATA } from '../../constants/auditData';
 import { SKUS } from '../../constants/data';
-import { parseTrendData, getConfidenceScore, getMetricStatus, getMetricTrend } from '../../utils/auditHelpers';
+import { parseTrendData, getMetricStatus } from '../../utils/auditHelpers';
 import { getChartTheme } from '../../utils/chartTheme';
 import { LAYER } from '../../constants/layers';
 import { useLiveData } from '../../api/liveData';
 import { useDialogBehavior } from '../../hooks/useDialogBehavior';
+import { buildLiveAuditContent } from './auditLiveContent';
 
 interface AuditDrawerProps {
   activeMetric: string | null;
@@ -116,8 +117,7 @@ const AccordionSection: React.FC<{
 export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, isDarkMode }) => {
   // Escape-to-close, scroll lock and focus restore, shared with ModalShell.
   useDialogBehavior(!!activeMetric, close);
-  // Real per-SKU net sales ($M); `sku.rev` is ~22x too large (TODO.md O1).
-  const { skuRevenueM } = useLiveData();
+  const live = useLiveData();
   // Map Home tab metrics to their respective Audit Drawer data keys
   const getMappedMetric = (metric: string | null): string | null => {
     if (!metric) return null;
@@ -151,10 +151,16 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
     }
   };
 
-  console.log("AuditDrawer activeMetric received:", activeMetric);
   const mappedMetric = getMappedMetric(activeMetric);
-  const content = mappedMetric ? AUDIT_DATA[mappedMetric] : null;
-  console.log("AuditDrawer mappedMetric:", mappedMetric, "content found:", !!content);
+
+  // TODO.md O17: the static AUDIT_DATA entries showed formulas that were never
+  // the real ones, stale values from the rejected $851.2M baseline, and
+  // `[DIRECT]` columns that do not exist in the schema — exactly what a 6 Oct
+  // review call caught live. Where the warehouse can answer a metric, the
+  // explanation is computed from the same live data the card renders, so the
+  // two cannot drift. Where it genuinely cannot, the static entry now says so.
+  const content = buildLiveAuditContent(mappedMetric, live)
+    ?? (mappedMetric ? AUDIT_DATA[mappedMetric] : null);
 
   // Accordion open states
   const [expanded, setExpanded] = useState<Record<string, boolean>>({
@@ -376,32 +382,24 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
                   <div className="flex items-baseline gap-4 flex-wrap">
                     <span className="text-3xl font-display font-bold text-zinc-900 dark:text-white tracking-tight">{content.value}</span>
                     
-                    {/* Trend Pill */}
-                    {(() => {
-                      const trend = getMetricTrend(content.title);
-                      const isAlert = content.title.toLowerCase().includes('alert') || content.title.toLowerCase().includes('signal');
-                      const colorClass = isAlert 
-                        ? 'text-red-700 bg-red-500/10 border-red-500/20 dark:text-red-400' 
-                        : trend.isUp 
-                          ? 'text-green-700 bg-green-500/10 border-green-500/20 dark:text-green-400' 
-                          : 'text-amber-700 bg-amber-500/10 border-amber-500/20 dark:text-amber-400';
-                      return (
-                        <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded flex items-center gap-1 border ${colorClass}`}>
-                          {trend.isUp ? <TrendingUp size={10} /> : <TrendingUp size={10} className="rotate-180" />}
-                          {trend.value}
-                        </span>
-                      );
-                    })()}
+                    {/* Trend pill — only when something real computed a change. */}
+                    {content.trend && (
+                      <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded flex items-center gap-1 border ${
+                        content.trend.isUp
+                          ? 'text-green-700 bg-green-500/10 border-green-500/20 dark:text-green-400'
+                          : 'text-amber-700 bg-amber-500/10 border-amber-500/20 dark:text-amber-400'
+                      }`}>
+                        <TrendingUp size={10} className={content.trend.isUp ? '' : 'rotate-180'} />
+                        {content.trend.value}
+                      </span>
+                    )}
 
-                    {/* Status Badge */}
+                    {/* Risk-category badge — omitted for metrics that aren't risk measures. */}
                     {(() => {
                       const status = getMetricStatus(content.title);
+                      if (!status) return null;
                       return (
-                        <span className={`text-[8.5px] font-bold px-2 py-0.5 rounded border uppercase tracking-wider ${
-                          status.isRisk 
-                            ? 'text-red-700 bg-red-500/10 border-red-500/20 dark:text-red-400' 
-                            : 'text-indigo-700 bg-indigo-500/10 border-indigo-500/20 dark:text-indigo-400'
-                        }`}>
+                        <span className="text-[8.5px] font-bold px-2 py-0.5 rounded border uppercase tracking-wider text-red-700 bg-red-500/10 border-red-500/20 dark:text-red-400">
                           {status.label}
                         </span>
                       );
@@ -420,9 +418,21 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
                         <BookOpen size={11} className="text-purple-500 dark:text-purple-400" />
                         <span className="text-[8.5px] uppercase font-bold text-zinc-500 dark:text-zinc-300 tracking-wider">Metric Definition</span>
                       </div>
-                      <div className="bg-purple-500/10 border border-purple-500/30 text-[8.5px] font-bold text-purple-600 dark:text-purple-300 px-1.5 py-0.5 rounded">
-                        FORMULA VERIFIED
-                      </div>
+                      {content.provenance && (
+                        <div className={`border text-[8.5px] font-bold px-1.5 py-0.5 rounded ${
+                          content.provenance === 'live'
+                            ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-700 dark:text-emerald-300'
+                            : content.provenance === 'no-source'
+                              ? 'bg-red-500/10 border-red-500/30 text-red-700 dark:text-red-300'
+                              : 'bg-amber-500/10 border-amber-500/30 text-amber-700 dark:text-amber-300'
+                        }`}>
+                          {content.provenance === 'live'
+                            ? 'LIVE FROM WAREHOUSE'
+                            : content.provenance === 'no-source'
+                              ? 'NO DATA SOURCE'
+                              : 'ILLUSTRATIVE SAMPLE'}
+                        </div>
+                      )}
                     </div>
                     <p className="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed font-medium">
                       {content.formulaDescription}
@@ -488,7 +498,7 @@ export const AuditDrawer: React.FC<AuditDrawerProps> = ({ activeMetric, close, i
                                             <div className="flex items-center gap-2 text-[8.5px] text-zinc-500 dark:text-zinc-400 font-mono">
                                               <span>Margin: <span className="font-bold text-zinc-700 dark:text-zinc-300">{sku.margin}%</span></span>
                                               <span>·</span>
-                                              <span>Sales: <span className="font-bold text-zinc-700 dark:text-zinc-300">${(skuRevenueM?.[sku.name] ?? sku.rev).toLocaleString('en-US', { maximumFractionDigits: 1 })} M</span></span>
+                                              <span>Sales: <span className="font-bold text-zinc-700 dark:text-zinc-300">${(live.skuRevenueM?.[sku.name] ?? sku.rev).toLocaleString('en-US', { maximumFractionDigits: 1 })} M</span></span>
                                             </div>
                                           </div>
                                         ))}

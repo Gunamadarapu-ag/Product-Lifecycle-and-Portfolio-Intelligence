@@ -158,7 +158,7 @@ export const SkuFocusDrawer: React.FC<SkuFocusDrawerProps> = ({ sku, onClose, on
                   { label: 'Gross Margin', value: `${sku.margin}%`, color: '#10b981' },
                   { label: 'Growth Rate', value: `${growth >= 0 ? '+' : ''}${growth.toFixed(1)}%`, color: growth >= 0 ? '#10b981' : '#ef4444' },
                   { label: 'Promo Dependency', value: `${(sku.promo * 100).toFixed(0)}%`, color: sku.promo > 0.5 ? '#ef4444' : '#f59e0b' },
-                  { label: 'Shelf Productivity', value: `${sku.shelfProductivity.toFixed(0)}/100`, color: '#0ea5e9' },
+                  { label: 'Availability-Adjusted Value', value: `${sku.shelfProductivity.toFixed(0)}/100`, color: '#0ea5e9' },
                   { label: 'Complexity Index', value: `${sku.cx.toFixed(2)}`, color: sku.cx > 0.6 ? '#ef4444' : '#6b7280' },
                 ].map(v => (
                   <div key={v.label} className="bg-black/5 dark:bg-white/5 p-3 rounded-xl border border-black/5 dark:border-white/5 flex flex-col gap-0.5">

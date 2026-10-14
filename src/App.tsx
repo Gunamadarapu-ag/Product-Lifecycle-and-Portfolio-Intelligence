@@ -523,6 +523,73 @@ export default function App() {
                         ['Net Sales (Portfolio)', 'Avg Gross Margin', 'Revenue Concentration', 'Long-Tail SKU Burden'].includes(kpi.label)
                       );
                     }
+                    if (activeTab === 2 && (role === 'VP Product Management' || role === 'Product Manager') && live.launchSummary && live.launches) {
+                      // Live since 8 Oct (TODO.md O18, thread 5): fn_launch_summary.
+                      // "Simulate delay" slips the Medium-risk launches (next gate
+                      // due within 45 days) to overdue, the same rule the VP view uses.
+                      const s = live.launchSummary;
+                      const pipe = live.launches.filter(l => l.sku_id === null);
+                      const atRisk = simulateDelay ? pipe.filter(l => l.risk_level !== 'Low') : pipe.filter(l => l.risk_level === 'High');
+                      const riskUsd = simulateDelay ? atRisk.reduce((sum, l) => sum + l.expected_year1_revenue_usd, 0) : s.revenue_at_risk_usd;
+                      const att = s.launched_plan_attainment_pct;
+                      const flat = (v: number) => Array(8).fill(v);
+                      return [
+                        {
+                          label: 'Overall Readiness %',
+                          value: `${(s.avg_pipeline_readiness_pct * 100).toFixed(0)}%`,
+                          trend: 'neutral',
+                          trendValue: `Across ${s.pipeline_launches} pipeline launches`,
+                          info: 'Average share of gate weight completed across pipeline launches (launch_gate, as of 2025-12-31).',
+                          highlight: ['VP Product Management'],
+                          target: '—', hist: flat(s.avg_pipeline_readiness_pct * 100),
+                          tooltip: {
+                            soWhat: `Pipeline launches have completed ${(s.avg_pipeline_readiness_pct * 100).toFixed(0)}% of their gate weight on average. This mostly reflects how early each launch is, not delay — see Launches at Risk for that.`,
+                            action: 'Use Launches at Risk to find the launches that are actually behind schedule.',
+                          },
+                        },
+                        {
+                          label: 'Launches at Risk',
+                          value: `${atRisk.length} of ${s.pipeline_launches}`,
+                          trend: atRisk.length > 0 ? 'up' : 'neutral',
+                          trendValue: simulateDelay ? 'Simulated: near-term gates slip' : `${s.gates_overdue} gates overdue`,
+                          info: 'Pipeline launches with at least one overdue gate.',
+                          isRisk: true,
+                          highlight: ['Product Manager'],
+                          target: '—', hist: flat(atRisk.length),
+                          tooltip: {
+                            soWhat: `${atRisk.length} pipeline launches have ${simulateDelay ? 'an overdue or near-term gate (simulated slip)' : 'an overdue gate'}.`,
+                            action: 'Chase the gate reviewer on each overdue gate; the Risk & Escalation Center lists them.',
+                          },
+                        },
+                        {
+                          label: 'Launch Revenue at Risk',
+                          value: `$${(riskUsd / 1e6).toFixed(1)}M`,
+                          trend: riskUsd > 0 ? 'up' : 'neutral',
+                          trendValue: `of $${(s.pipeline_year1_plan_usd / 1e6).toFixed(1)}M year-1 plan`,
+                          info: 'Year-1 revenue plan of the at-risk launches (dim_launch.expected_year1_revenue_usd, a labelled assumption).',
+                          isRisk: true,
+                          highlight: ['VP Product Management'],
+                          target: '—', hist: flat(riskUsd / 1e6),
+                          tooltip: {
+                            soWhat: `$${(riskUsd / 1e6).toFixed(1)}M of the $${(s.pipeline_year1_plan_usd / 1e6).toFixed(1)}M pipeline year-1 plan sits on launches at risk. The plan figures are generated assumptions, labelled as such.`,
+                            action: 'Prioritise unblocking the at-risk launch with the largest plan first.',
+                          },
+                        },
+                        {
+                          label: 'Launch Plan Attainment',
+                          value: att === null ? '—' : `${(att * 100).toFixed(0)}%`,
+                          trend: att === null ? 'neutral' : att >= 1 ? 'up' : 'down',
+                          trendValue: `${s.launched} launched SKUs, year 1 vs plan`,
+                          info: 'Launched SKUs: first-365-day net sales from fact_sales (annualised where the data ends sooner) ÷ year-1 plan.',
+                          highlight: ['VP Product Management', 'Product Manager'],
+                          target: '—', hist: flat(att === null ? 0 : att * 100),
+                          tooltip: {
+                            soWhat: att === null ? 'No launched SKUs to compare.' : `The ${s.launched} SKUs launched in 2024-25 delivered ${(att * 100).toFixed(0)}% of their year-1 revenue plan in total.`,
+                            action: 'Use this as the calibration check on the pipeline plan above.',
+                          },
+                        },
+                      ];
+                    }
                     if (activeTab === 2 && (role === 'VP Product Management' || role === 'Product Manager')) {
                       return [
                         {
@@ -566,10 +633,17 @@ export default function App() {
                       return [
                         {
                           label: 'Net Profit',
-                          value: '$95.2 M',
-                          trend: 'up',
-                          trendValue: 'MTD Blended',
-                          info: 'Net profit contribution from active products after raw material costs, freight overheads, and promotional dilution.',
+                          // Live since 7 Oct (TODO.md O18, thread 2): fn_pnl pulls
+                          // opex from fact_opex and fixed cost from sku_fixed_cost,
+                          // both labelled assumptions in dim_cost_assumption — not
+                          // measured the way revenue/COGS are, but no longer typed.
+                          value: live.pnl ? `$${(live.pnl.net_profit_usd / 1e6).toFixed(1)} M` : live.status === 'loading' ? '…' : '$95.2 M',
+                          trend: 'neutral',
+                          trendValue: live.pnl
+                            ? `opex + fixed cost: $${(live.pnl.opex_total_usd / 1e6).toFixed(1)} M (assumptions)`
+                            : 'Illustrative — no cost basis in data',
+                          target: '—',
+                          info: 'Gross profit less logistics, marketing, SG&A and fixed SKU cost (all labelled assumptions in dim_cost_assumption) and corporate tax. The cost terms are assumed, not measured — unlike revenue and COGS, which are.',
                           highlight: ['Pricing and Margin Partner']
                         },
                         {
@@ -579,23 +653,44 @@ export default function App() {
                           value: live.kpis ? `$${(live.kpis.gross_margin / 1e6).toFixed(1)} M` : live.status === 'loading' ? '…' : '$308.1 M',
                           trend: 'up',
                           trendValue: live.kpis ? `${(live.kpis.gross_margin_pct * 100).toFixed(2)}% Gross Margin` : '36.2% Gross Margin',
+                          // The baked-in $320M target and 290-308 sparkline belong to
+                          // the rejected $851.2M baseline. Against the live $182.3M
+                          // they made a healthy margin read as a 43% miss. The data
+                          // holds no gross-profit target, so none is claimed.
+                          target: live.kpis ? '—' : undefined,
+                          hist: live.trend
+                            ? live.trend.slice(-8).map(p => +((p.net_sales * p.gross_margin_pct) / 1e6).toFixed(1))
+                            : undefined,
                           info: 'Total gross profit margin across categories before supply chain and promotional expenses.',
                           highlight: ['Pricing and Margin Partner']
                         },
                         {
                           label: 'Value Diluting SKUs',
-                          value: '12 SKUs',
+                          // Live: SKUs whose own gross margin falls below the
+                          // portfolio's revenue-weighted margin. The card used to
+                          // read a typed-in '12 SKUs' while its own audit drawer
+                          // computed the real figure — the two disagreed on screen.
+                          value: (() => {
+                            if (!live.kpis || !live.skus) return live.status === 'loading' ? '…' : '12 SKUs';
+                            const n = live.skus.filter(s => s.gross_margin_pct < live.kpis!.gross_margin_pct).length;
+                            return `${n} SKUs`;
+                          })(),
                           trend: 'up',
-                          trendValue: 'BrandC Energy Drink',
-                          info: 'Products underperforming portfolio margins (e.g. BrandC Energy Drink at 44% vs 45% target). High-leverage adjustment points.',
+                          trendValue: live.kpis
+                            ? `below ${(live.kpis.gross_margin_pct * 100).toFixed(2)}% portfolio margin`
+                            : 'BrandC Energy Drink',
+                          info: 'SKUs earning a gross margin below the portfolio\'s own revenue-weighted margin. Because the threshold is an average, a large share of the portfolio sitting below it is arithmetically normal — rank by revenue to find the ones that matter.',
                           highlight: ['Product Manager']
                         },
                         {
                           label: 'Total SG&A Overhead',
-                          value: '$117.7 M',
+                          // Live since 7 Oct: sga_variable (% of sales, dim_cost_assumption)
+                          // + sga_fixed (per-country monthly amount, split by category share).
+                          value: live.pnl ? `$${((live.pnl.sga_variable_usd + live.pnl.sga_fixed_usd) / 1e6).toFixed(1)} M` : live.status === 'loading' ? '…' : '$117.7 M',
                           trend: 'neutral',
-                          trendValue: 'Fixed & Variable Mix',
-                          info: 'Selling, General and Administrative expenses including regional shipping, warehousing overheads, and currency hedging margins.',
+                          trendValue: live.pnl ? 'Fixed + variable, both labelled assumptions' : 'Illustrative — no expense data',
+                          target: '—',
+                          info: 'SG&A variable (a % of net sales) plus SG&A fixed (a per-country monthly amount split by category revenue share) — both dim_cost_assumption-labelled assumptions, not measured costs.',
                           highlight: ['Pricing and Margin Partner']
                         }
                       ];

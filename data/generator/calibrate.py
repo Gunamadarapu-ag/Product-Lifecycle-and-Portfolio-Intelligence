@@ -16,6 +16,13 @@ closed form and needs no regeneration.
     => d = (GM_target - GM(0)) / U
 
 The shift is additive, so every SKU keeps its position in the margin ordering.
+
+Since 7 Oct two things changed. List prices move during the window (pricing.py),
+and unit costs inflate by year (COST_INFLATION_BY_YEAR), so a transaction's cost
+is base_price x (1 - m_i - d) x (1 + inflation of its year) - still linear in d,
+with U weighted by the same inflation factor. And the target is solved on the
+REPORT year only: 38.53% is the headline (12-month) figure that 04_validate.sql
+checks, and with prices and costs moving the two years no longer share a margin.
 """
 
 from __future__ import annotations
@@ -28,14 +35,19 @@ import config as C
 
 def calibrate_margin(fact: pd.DataFrame, sku: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, float]:
     """Shift costs so the revenue-weighted portfolio margin lands on target."""
-    price = sku.set_index("sku_id")["base_price"]
-    unit_price = fact["sku_id"].map(price).to_numpy()
+    s = sku.set_index("sku_id")
+    year = pd.to_datetime(fact["date_key"]).dt.year
+    infl = year.map(lambda y: 1.0 + C.COST_INFLATION_BY_YEAR.get(y, 0.0)).to_numpy()
+    base = fact["sku_id"].map(s["base_price"]).to_numpy()
+    m0 = fact["sku_id"].map(s["target_margin_pct"]).to_numpy()
+    units = fact["units_sold"].to_numpy()
 
-    revenue = float(fact["net_sales"].sum())
-    gm_now = revenue - float((fact["units_sold"] * fact["purchase_cost"]).sum())
+    rept = (year == C.REPORT_YEAR).to_numpy()
+    revenue = float(fact.loc[rept, "net_sales"].sum())
+    gm_now = revenue - float((units * base * (1.0 - m0) * infl)[rept].sum())
     gm_target = revenue * C.AVG_GROSS_MARGIN
 
-    u = float((fact["units_sold"].to_numpy() * unit_price).sum())
+    u = float((units * base * infl)[rept].sum())
     delta = (gm_target - gm_now) / u
 
     # Apply to the SKU master, respecting ck_dim_sku_price.
@@ -48,9 +60,11 @@ def calibrate_margin(fact: pd.DataFrame, sku: pd.DataFrame) -> tuple[pd.DataFram
     sku.loc[too_close, "purchase_cost"] = (sku.loc[too_close, "base_price"] - 0.01).round(2)
     sku["purchase_cost"] = sku["purchase_cost"].clip(lower=0.01)
 
-    # Mirror onto the fact rows and recompute the generated column.
+    # Mirror onto the fact rows, inflated to each row's year, and recompute the
+    # generated column. dim_sku.purchase_cost stays the opening (2024) cost.
     fact = fact.copy()
-    fact["purchase_cost"] = fact["sku_id"].map(sku.set_index("sku_id")["purchase_cost"])
+    fact["purchase_cost"] = np.round(
+        fact["sku_id"].map(sku.set_index("sku_id")["purchase_cost"]).to_numpy() * infl, 2)
     fact["gross_margin"] = (
         fact["net_sales"] - fact["units_sold"] * fact["purchase_cost"]
     ).round(2)
@@ -59,6 +73,8 @@ def calibrate_margin(fact: pd.DataFrame, sku: pd.DataFrame) -> tuple[pd.DataFram
 
 
 def report(fact: pd.DataFrame) -> dict:
-    rev = float(fact["net_sales"].sum())
-    gm = float(fact["gross_margin"].sum())
+    """Headline-year figures - the year the margin target is calibrated on."""
+    r = fact[pd.to_datetime(fact["date_key"]).dt.year == C.REPORT_YEAR]
+    rev = float(r["net_sales"].sum())
+    gm = float(r["gross_margin"].sum())
     return {"net_sales": rev, "gross_margin": gm, "margin_pct": gm / rev}

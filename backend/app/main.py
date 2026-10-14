@@ -113,3 +113,122 @@ def regions_fulfillment(months: int = Query(12)):
 @app.get("/api/channels")
 def channels(months: int = Query(12)):
     return query("SELECT * FROM fn_channel_performance(%s)", (_months(months),))
+
+
+# ── 7 Oct additions: wiring the generated tables (TODO.md O18) ──────────────
+# fn_sku_segments / fn_portfolio_snapshot / fn_cannibalization /
+# fn_rationalization_scenarios are snapshot functions (no months parameter):
+# see the comment above them in 03_derive_metrics.sql for why.
+
+@app.get("/api/skus/segments")
+def sku_segments():
+    return query("SELECT * FROM fn_sku_segments()")
+
+
+@app.get("/api/portfolio/snapshot")
+def portfolio_snapshot():
+    return query("SELECT * FROM fn_portfolio_snapshot()")[0]
+
+
+@app.get("/api/skus/cannibalization")
+def cannibalization():
+    return query("SELECT * FROM fn_cannibalization()")
+
+
+@app.get("/api/rationalization/scenarios")
+def rationalization_scenarios():
+    return query("SELECT * FROM fn_rationalization_scenarios()")
+
+
+@app.get("/api/launches")
+def launches():
+    return query("SELECT * FROM fn_launches()")
+
+
+@app.get("/api/launches/summary")
+def launch_summary():
+    return query("SELECT * FROM fn_launch_summary()")[0]
+
+
+@app.get("/api/launches/gates")
+def all_launch_gates():
+    return query("SELECT * FROM fn_launch_gates(NULL)")
+
+
+@app.get("/api/launches/{launch_id}/gates")
+def launch_gates(launch_id: str):
+    return query("SELECT * FROM fn_launch_gates(%s)", (launch_id,))
+
+
+@app.get("/api/forecast/accuracy")
+def forecast_accuracy(months: int = Query(12)):
+    return query("SELECT * FROM fn_forecast_accuracy(%s)", (_months(months),))[0]
+
+
+@app.get("/api/customers")
+def customers(months: int = Query(12)):
+    return query("SELECT * FROM fn_customer_insights(%s)", (_months(months),))
+
+
+@app.get("/api/customers/by-category")
+def customers_by_category(months: int = Query(12), top: int = Query(5, ge=1, le=100)):
+    return query(
+        "SELECT * FROM fn_customer_category_insights(%s) WHERE category_rank <= %s "
+        "ORDER BY category_name, category_rank",
+        (_months(months), top),
+    )
+
+
+@app.get("/api/regions/mix")
+def region_mix(months: int = Query(12)):
+    return query("SELECT * FROM fn_region_mix(%s)", (_months(months),))
+
+
+@app.get("/api/categories/trend")
+def category_trend(months: int = Query(12), grain: str = Query("month", pattern="^(week|month)$")):
+    return query("SELECT * FROM fn_category_trend(%s, %s)", (_months(months), grain))
+
+
+@app.get("/api/skus/rationale")
+def sku_rationale(months: int = Query(12)):
+    return query("SELECT * FROM fn_sku_rationale(%s)", (_months(months),))
+
+
+@app.get("/api/signals")
+def signals(months: int = Query(12)):
+    return query("SELECT * FROM fn_signals(%s)", (_months(months),))
+
+
+@app.get("/api/alerts")
+def alerts(months: int = Query(12)):
+    return query("SELECT * FROM fn_alerts(%s)", (_months(months),))
+
+
+@app.get("/api/assortment/summary")
+def assortment_summary(months: int = Query(12)):
+    return query("SELECT * FROM fn_assortment_summary(%s)", (_months(months),))[0]
+
+
+@app.get("/api/assortment")
+def assortment(months: int = Query(12)):
+    return query("SELECT * FROM fn_assortment(%s)", (_months(months),))
+
+
+@app.get("/api/listings/gaps")
+def listing_gaps():
+    return query("SELECT * FROM fn_listing_gaps()")
+
+
+@app.get("/api/regions/{region}/top-skus")
+def region_top_skus(region: str, months: int = Query(12)):
+    return query("SELECT * FROM fn_region_sku_shortlist(%s, %s)", (region, _months(months)))
+
+
+@app.get("/api/profitability/pnl")
+def pnl(months: int = Query(12)):
+    return query("SELECT * FROM fn_pnl(%s)", (_months(months),))[0]
+
+
+@app.get("/api/profitability/pnl-by-category")
+def pnl_by_category(months: int = Query(12)):
+    return query("SELECT * FROM fn_pnl_by_category(%s)", (_months(months),))

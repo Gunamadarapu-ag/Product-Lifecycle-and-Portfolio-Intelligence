@@ -130,6 +130,12 @@ def build_sku_master(rng: np.random.Generator,
     for _, idx in df.groupby("category_id").groups.items():
         pos_in_cat = np.arange(len(idx))
         df.loc[idx, "brand_id"] = [brand_ids[i % len(brand_ids)] for i in pos_in_cat]
+    # A SKU whose name carries a brand ("BrandC Energy Drink") belongs to that
+    # brand. Until 7 Oct the round-robin overrode the name for 22 of the 28 such
+    # SKUs, so brand-level figures attributed sales to the wrong brand.
+    by_name = {b[1]: b[0] for b in C.BRANDS}
+    named = df["name"].str.extract(r"^(Brand[A-Z])\b")[0].map(by_name)
+    df.loc[named.notna(), "brand_id"] = named[named.notna()].astype(int)
 
     # ── Supply chain and promo attributes ───────────────────────────────────
     # Long-tail SKUs carry worse supply terms: longer lead times and heavier

@@ -85,7 +85,7 @@ export const SimplifyToGrow: React.FC<Props> = ({ isDarkMode, setActiveTab, sele
         isDarkMode={isDarkMode}
       />
 
-      {/* ── ④ Shelf Productivity ── */}
+      {/* ── ④ Availability-Adjusted Value ── */}
       <ShelfProductivity
         categories={state.categories}
         selectedCategory={state.selectedCategory}

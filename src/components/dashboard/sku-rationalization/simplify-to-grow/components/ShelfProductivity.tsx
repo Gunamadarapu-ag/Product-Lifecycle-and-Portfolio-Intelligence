@@ -28,7 +28,7 @@ export const ShelfProductivity: React.FC<ShelfProductivityProps> = ({
     <div>
       <div className="flex items-center gap-2 border-l-4 border-sky-500 pl-3 mb-3">
         <h3 className="text-xs font-bold uppercase tracking-widest text-sky-600 dark:text-sky-400">
-          ④ Retailer Win-Win — Shelf Productivity Index
+          ④ Retailer Win-Win — Availability-Adjusted Value Index
         </h3>
         <span className="ml-auto text-[7px] font-bold uppercase tracking-wider text-zinc-400">Click a category ring to filter</span>
       </div>
@@ -79,8 +79,8 @@ export const ShelfProductivity: React.FC<ShelfProductivityProps> = ({
               <XAxis dataKey="cat" tick={{ fill: tick, fontSize: 8, fontWeight: 'bold' }} axisLine={false} tickLine={false} />
               <YAxis domain={[0, 100]} tick={{ fill: tick, fontSize: 8 }} axisLine={false} tickLine={false} />
               <Tooltip contentStyle={{ backgroundColor: ttBg, borderColor: ttBorder, fontSize: '9px' }}
-                formatter={(v: any) => [`${v}/100`, 'Shelf Productivity']} />
-              <Bar dataKey="avgShelf" name="Avg Shelf Productivity" radius={[4,4,0,0]} barSize={32}
+                formatter={(v: any) => [`${v}/100`, 'Availability-Adjusted Value']} />
+              <Bar dataKey="avgShelf" name="Avg Availability-Adjusted Value" radius={[4,4,0,0]} barSize={32}
                 onClick={(data) => { const cat = chartDatum<{ cat: string }>(data).cat ?? null; setSelectedCategory(selectedCategory === cat ? null : cat); }}>
                 {categories.map(c => (
                   <Cell key={c.cat} fill={CAT_COLORS[c.cat]} className="cursor-pointer"

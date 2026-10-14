@@ -7,6 +7,7 @@ import { DrilldownSkuModal }     from './DrilldownSkuModal';
 import { TimelineRange }         from '../../../utils/timeframe';
 import type { TimeHorizon }      from '../../../types/dashboard';
 import { REGIONS_CONFIG }        from '../../../constants/regions';
+import { useLiveRegionTopSkus }  from '../../../api/liveData';
 
 interface TopDownDrilldownProps {
   isDarkMode: boolean;
@@ -15,9 +16,9 @@ interface TopDownDrilldownProps {
   setTimelineRange: (range: TimelineRange) => void;
 }
 
-// Editorially curated shortlists of real SKU names per region — not derived
-// from per-country sales data (the schema doesn't expose a per-country SKU
-// breakdown), so treat this as "worth checking here", not a ranked list.
+// Offline fallback only — editorially curated, not derived from sales. Live,
+// fn_region_sku_shortlist (TODO.md O18) replaces this with the real top SKUs
+// by net sales per region.
 const REGION_SKUS: Record<string, string[]> = {
   'Southern Europe': ['Mango Fizz 500ml', 'Oat Cookies',     'Herbal Shampoo',  'Hand Cream SPF'],
   'Western Europe':  ['Choco Wafers',     'Fabric Softener', 'Floor Cleaner',   'Green Tea RTD'],
@@ -54,12 +55,21 @@ export const TopDownDrilldown: React.FC<TopDownDrilldownProps> = ({ isDarkMode, 
   const [selectedSkuName, setSelectedSkuName]   = useState<string>('');
   const [isSkuModalOpen,  setIsSkuModalOpen]     = useState<boolean>(false);
 
-  const activeRegionSkus = selectedRegion ? (REGION_SKUS[selectedRegion] || []) : [];
+  const liveRegionSkus = useLiveRegionTopSkus(selectedRegion, timelineRange);
+  const activeRegionSkus = liveRegionSkus.rows
+    ? liveRegionSkus.rows.map(r => r.sku_name)
+    : selectedRegion ? (REGION_SKUS[selectedRegion] || []) : [];
 
   const handleRegionChange = (region: string) => {
     setSelectedRegion(region);
-    setSelectedSkuName(REGION_SKUS[region]?.[0] || '');
+    setSelectedSkuName('');
   };
+
+  // The shortlist arrives async; seed the selected SKU once it lands rather
+  // than defaulting to the stale offline list's first entry.
+  React.useEffect(() => {
+    if (activeRegionSkus.length && !selectedSkuName) setSelectedSkuName(activeRegionSkus[0]);
+  }, [activeRegionSkus, selectedSkuName]);
 
   const handleSkuSelect = (skuName: string) => {
     setSelectedSkuName(skuName);

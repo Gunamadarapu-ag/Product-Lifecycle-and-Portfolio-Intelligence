@@ -201,12 +201,14 @@ export const PCI_DRIVERS: PCIDriver[] = GENERATED_PCI_DRIVERS;
 export const TOP_SKUS_REVENUE: TopSKU[] = GENERATED_TOP_SKUS_REVENUE;
 
 // ─── Agent Roster ─────────────────────────────────────────────────────────────
+// Roadmap roles, not results: the numbers these used to quote (100 SKUs,
+// 38.53% margin, $246M safety stock) came from retired baselines (8 Oct).
 export const AGENT_ROSTER: Agent[] = [
-  { name: 'Portfolio Agent',     role: 'Monitors 100 SKUs; flagged Dairy as highest drag (27.78%).' },
-  { name: 'Market Signal Agent', role: 'Tracks promo dependency; BrandD Water at 27.97% — highest in portfolio.' },
-  { name: 'Supplier Agent',      role: 'Identified 60 universal suppliers creating interconnectivity risk (0% reducible).' },
-  { name: 'Profitability Agent', role: '12 high-volume SKUs diluting portfolio margin to 38.53% vs 40% target.' },
-  { name: 'Sunset Agent',        role: 'Removing 35 "Rationalize" SKUs frees 42.2% safety stock capital ($246M → $142M).' },
+  { name: 'Portfolio Agent',     role: 'Watches lifecycle stage, growth and margin per SKU; flags categories that drag the portfolio.' },
+  { name: 'Market Signal Agent', role: 'Watches promo dependency and demand shifts by region and category.' },
+  { name: 'Supplier Agent',      role: 'Watches supplier notices, lead times and stockout rates.' },
+  { name: 'Profitability Agent', role: 'Watches margin against the portfolio and promo margin erosion.' },
+  { name: 'Sunset Agent',        role: 'Prepares exit plans for Rationalize-segment SKUs for a person to approve.' },
 ];
 
 export const TABS = [

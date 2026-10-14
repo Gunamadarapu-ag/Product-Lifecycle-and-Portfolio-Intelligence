@@ -541,17 +541,20 @@ Enterprise-level scalars. One row per snapshot, so the PCI can be tracked over t
 ### 6.4 `rationalization_scenario`
 
 The simulator's fixed scenarios. Stored rather than computed on the fly because the UI
-shows the same four every time and they are expensive to recompute.
+shows the same four every time. Since 7 Oct every impact is **computed** from `sku_metrics`
+(`derive.build_rationalization_scenarios`); before that the safety-stock figures were typed
+constants and every other impact was written as 0. Cohorts: the lowest commercial-value
+10/20/30% of SKUs, and the whole Rationalize segment.
 
 | Column | Type | Null | Key | Description |
 | --- | --- | --- | --- | --- |
 | `scenario_id` | `SMALLINT` | NO | **PK** | |
 | `scenario_label` | `TEXT` | NO | UQ | `Bottom 10%`, `Bottom 20%`, `Bottom 30%`, `Full Rationalize` |
 | `skus_removed` | `SMALLINT` | NO | | |
-| `revenue_impact_pct` | `NUMERIC(6,4)` | NO | | Negative |
-| `margin_impact_pct` | `NUMERIC(6,4)` | NO | | Negative |
-| `safety_stock_freed_pct` | `NUMERIC(6,4)` | NO | | 0.088 / 0.223 / 0.296 / 0.422 |
-| `supplier_reduction_pct` | `NUMERIC(6,4)` | NO | | 0 — universal supplier overlap prevents reduction |
+| `revenue_impact_pct` | `NUMERIC(6,4)` | NO | | Share of revenue removed (negative): −1.4% / −3.9% / −8.6% / −13.3% |
+| `margin_impact_pct` | `NUMERIC(6,4)` | NO | | Change in portfolio margin after removal (positive — the removed SKUs dilute margin): +0.15 / +0.46 / +0.80 / +1.16pp |
+| `safety_stock_freed_pct` | `NUMERIC(6,4)` | NO | | Σ `safety_stock_proxy` removed ÷ total: 13.3% / 21.7% / 33.7% / 42.5% |
+| `supplier_reduction_pct` | `NUMERIC(6,4)` | NO | | Computed, and 0 by construction — all 60 suppliers serve all SKUs, so no supplier is freed |
 
 ---
 
@@ -755,7 +758,7 @@ Named here so their absence is a decision, not an oversight.
 
 | Entity | Why deferred |
 | --- | --- |
-| **Launch pipeline** (`LAUNCH_PRODUCTS`, 5 rows) | Forward-looking gate/milestone data with 2026 dates. Different grain, no transactions, no overlap with this star schema. Needs `dim_launch_product`, `launch_gate`, `launch_readiness_metric` |
+| ~~Launch pipeline~~ | **Built 7 Oct** as `dim_launch` + `launch_gate` — see §13. Readiness is computed from gates, not stored |
 | **Competitor intelligence** | Requires review counts, Google Trends, bestseller rank, distribution coverage — **none exist in the FMCG schema**. A separate source with its own grain and refresh cadence. See `dataset_generation_plan.md` §2.4 |
 | **Agent / audit trail** (`auditData.ts`, 38 entries) | Application content, not analytical data. Belongs in app config or a CMS table, not the warehouse |
 | **Users and roles** | The three personas are currently picked from a modal. Real auth is a separate concern |
@@ -768,8 +771,48 @@ Named here so their absence is a decision, not an oversight.
 | ---: | --- | --- | --- |
 | 1 | Should `unit_cost` vary by supplier on `sku_supplier`? | Column is defined but nullable and unused. Supplier rationalization analysis would be richer with it | Leave NULL for phase 1; populate if supplier cost analysis becomes a requirement |
 | 2 | `snapshot_date` on `sku_metrics` — one row per SKU, or history? | Currently PK is `sku_id` alone, so metrics are overwritten on recompute | Keep single-snapshot for phase 1. If trending is needed, move to composite PK `(sku_id, snapshot_date)` |
-| 3 | Should `dim_sku` be a slowly-changing dimension? | Price and cost changes currently overwrite | Not needed — cost is assumed constant. Revisit if real data arrives |
+| 3 | Should `dim_sku` be a slowly-changing dimension? | Price and cost now change over time | Resolved 7 Oct without an SCD: list prices live in `fact_price` (dated spells); `fact_sales.purchase_cost` carries the cost as at the transaction, inflated by year (`config.COST_INFLATION_BY_YEAR`). `dim_sku.base_price` / `purchase_cost` are the opening (2024) values |
 | 4 | Is 2024–2025 the right window? | Two years supports YoY. The app's UI context is 2026 | Confirmed appropriate — 2025 is the last complete year |
+
+---
+
+## 13. 7 October additions — data that did not exist before
+
+Generated so every figure on screen can trace to a table and a formula
+(`documentation/Product_Understanding/data-points-by-thread.docx`). Each module draws from
+its own random stream (`config.STREAM`). Breakdowns of `fact_sales` reconcile to it exactly;
+every assumed figure says so in the data. Checked by `validate.py` (28 exact checks) and
+`04_validate.sql` (58 checks).
+
+**Changes to existing data.**
+- *Per-SKU growth.* Every SKU used to grow 8.28–8.33%, so none could be Intro or Decline.
+  Growth now comes from the seed (23 decliners keep their seed figure, −22% to −2%; growers
+  are scaled so the portfolio still lands on 8.30%). Pareto and the margin target are
+  anchored on the headline year, 2025.
+- *Launch dates* for all 119 SKUs; 10 launch inside the window (4 in 2024, 6 in 2025), with
+  no sales before launch and a 90-day ramp. `fact_sales` falls from 368,013 to 357,471 rows.
+- *Prices and costs move.* List prices per SKU × country (country index + yearly increases,
+  demand responding through a per-SKU elasticity); costs inflate 2.5% in 2025. The
+  Netherlands is now the lowest-margin market, as documented (it used to be highest).
+- *Brands.* SKUs named "BrandX …" now carry that brand; 22 of 28 used to carry another.
+
+| Table | Grain | How it is generated | Guarantee |
+| --- | --- | --- | --- |
+| `fact_price` | SKU × country × price spell | base price × country index, at most one increase a year (1–6%) | every sale has a price in force |
+| `dim_customer` | account | 1–3 fictional accounts per country × channel, one dominant | names coined, match no real retailer |
+| `fact_customer_sales` | month × SKU × account | `fact_sales` split by account share × SKU affinity | reconciles to `fact_sales` to the unit and cent; `gross_margin` generated |
+| `fact_listing` | SKU × country × channel | from first sale; launches listed 4–8 weeks early; 82 listed-never-sold; delistings from EOL notices (2026) | every sale inside a listing |
+| `fact_plan` | month × country × category | actual × (1 + optimistic planning error), phased by expected seasonality — **back-derived, labelled in `basis`** | covers every selling cell; attainment ≈ 98.6% |
+| `fact_forecast` | month × SKU × country | made a month ahead from data then known; trailing mean × seasonality, blended with last year; SKU bias and volatility-scaled error | `created_on < month_start` enforced; WAPE ≈ 26% |
+| `fact_inventory` | week × SKU × country (DC) | periodic-review order-up-to with lead time and safety stock; store stockouts delay receipts | `closing = opening + receipts + expedited − sold` enforced by CHECK; sold = `fact_sales` |
+| `dim_launch`, `launch_gate` | launch; launch × gate | the 10 in-window launches + 15 fictional 2026 pipeline products; 6 weighted gates, status as of 2025-12-31 | readiness = Σ weight of completed gates, never stored |
+| `supplier_notice` | notice | EOL notices for the 6 steepest decliners, effective in 2026 | notice before effective date; SKUs are declining |
+| `dim_cost_assumption` | assumption | logistics, warehousing, marketing, SG&A, fixed SKU cost, tax — **all assumptions** | `basis = 'assumption'` enforced |
+| `fact_opex` | month × country × category × assumption | measured driver × assumed rate | `amount_usd` is a generated column |
+| `sku_fixed_cost` | SKU × year | base + per country listed | `basis = 'assumption'` enforced |
+
+Not stored, because they are arithmetic and belong in SQL: launch readiness, days of
+cover, listing status, promo spend (Σ units × list price − net sales), forecast accuracy.
 
 ---
 
@@ -785,10 +828,23 @@ Named here so their absence is a decision, not an oversight.
 | `dim_supplier` | 60 | S001–S060 |
 | `dim_sku` | 119 | Seed master |
 | `sku_supplier` | 7,140 | 119 × 60, all-to-all |
-| `fact_sales` | ~368,000 | Sparse daily (~15% of combinations active) |
+| `fact_sales` | 357,471 | Sparse daily; 368,013 before in-window launches (7 Oct) |
 | `sku_metrics` | 119 | 1:1 with SKU |
 | `sku_cannibalization` | 1,153 | Within-category pairs |
 | `portfolio_metrics` | 1 | Per snapshot |
-| `rationalization_scenario` | 4 | Fixed scenarios |
-| `agg_sku_monthly` (matview) | 2,856 | 119 × 24 months |
-| **Total** | **~380,200** | Comfortably small for PostgreSQL |
+| `rationalization_scenario` | 4 | Fixed scenarios, impacts computed |
+| `fact_price` | 1,718 | Price spells |
+| `dim_customer` | 66 | Fictional accounts |
+| `fact_customer_sales` | 152,626 | Month × SKU × account |
+| `fact_listing` | 2,814 | Incl. 82 listed-never-sold |
+| `fact_plan` | 1,176 | 24 months × 7 countries × 7 categories |
+| `fact_forecast` | 15,837 | Month × SKU × country |
+| `fact_inventory` | 69,324 | Week × SKU × country |
+| `dim_launch` | 25 | 10 launched + 15 pipeline |
+| `launch_gate` | 150 | 25 × 6 gates |
+| `supplier_notice` | 6 | |
+| `dim_cost_assumption` | 50 | |
+| `fact_opex` | 13,713 | |
+| `sku_fixed_cost` | 235 | SKU × year |
+| `agg_sku_monthly` (matview) | 2,738 | Fewer than 119 × 24 because launches have no pre-launch months |
+| **Total** | **627,300** | Still small for PostgreSQL |

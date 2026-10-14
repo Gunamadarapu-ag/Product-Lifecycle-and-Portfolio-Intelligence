@@ -15,6 +15,13 @@ export interface AlertData {
   sev: 'critical' | 'warning' | 'info';
   title: string;
   detail: string;
+  /**
+   * Set for alerts from fn_alerts. The modal then explains the alert from its
+   * own fields and the rule that raised it — never from the typed a1–a6
+   * narratives or the title-keyword fallback, whose numbers are invented and
+   * can match a real SKU name by accident (e.g. "Fabric Softener").
+   */
+  live?: { alertType: string; detail: string; skuId: number | null };
 }
 
 interface AlertDetailContext {
@@ -185,7 +192,61 @@ const ALERT_DETAILS_CONTEXT: Record<string, AlertDetailContext> = {
   }
 };
 
+// One entry per fn_alerts rule: what it means, which tables it reads, and the
+// exact rule. No figures beyond what the alert row itself carries.
+const LIVE_RULES: Record<string, { impact: string; dataset: string; logic: string; recommendations: string[]; directive: string }> = {
+  Launch: {
+    impact: 'Launch Gate Overdue',
+    dataset: 'launch_gate, dim_launch',
+    logic: "Raised for every launch_gate row with status = 'Overdue' (due date passed, gate not completed). Severity critical: an overdue gate blocks the launch date.",
+    recommendations: ['Confirm with the gate owner what is blocking completion.', 'Decide whether the planned launch date still holds, and re-plan the remaining gates if not.'],
+    directive: 'Escalate the overdue gate to the launch owner.',
+  },
+  Supply: {
+    impact: 'Supplier Notice',
+    dataset: 'supplier_notice, dim_sku',
+    logic: 'Raised for every supplier_notice row (component end-of-life or supplier discontinuation) affecting a SKU. A stockout-rate rule (rate above 1.5x the prior window, at least 5 prior events) also raises Supply alerts.',
+    recommendations: ['Qualify an alternative supplier or component before the effective date.', 'If no alternative is viable, add the SKU to the rationalization review.'],
+    directive: 'Assign a sourcing owner before the effective date.',
+  },
+  Margin: {
+    impact: 'Promotional Margin Erosion',
+    dataset: 'sku_metrics (snapshot), dim_sku',
+    logic: 'Raised for up to 5 SKUs with the largest margin_erosion (at least 5pp): gross margin % at full price minus gross margin % when promoted, over the full history.',
+    recommendations: ['Review promotion depth and frequency on this SKU.', 'Compare promoted volume uplift against the margin given away.'],
+    directive: 'Review the promotion calendar for this SKU.',
+  },
+  Cannibalization: {
+    impact: 'Cannibalization Risk',
+    dataset: 'sku_cannibalization (snapshot), dim_sku',
+    logic: 'Raised for the 5 most negative statistically significant promo-to-units correlations between two SKUs (sku_cannibalization): promoting one coincides with lower units on the other.',
+    recommendations: ['Avoid promoting both SKUs in the same weeks.', 'Check whether the pair overlaps enough to consolidate.'],
+    directive: 'Review the pair before the next promotion plan.',
+  },
+};
+
+const liveAlertContext = (alert: AlertData, l: NonNullable<AlertData['live']>): AlertDetailContext => {
+  const rule = LIVE_RULES[l.alertType] ?? {
+    impact: l.alertType, dataset: 'fn_alerts', logic: 'Rule-based alert from fn_alerts.',
+    recommendations: ['Review the alert detail with the owning team.'], directive: 'Review.',
+  };
+  return {
+    impact: rule.impact,
+    problem: `${alert.title}. ${l.detail}`,
+    metrics: [
+      { label: 'Rule', value: l.alertType },
+      { label: 'Severity', value: alert.sev },
+      { label: 'SKU id', value: l.skuId === null ? '—' : String(l.skuId) },
+    ],
+    financial: 'Not quantified: the rule flags the condition; no revenue-impact model is attached to it.',
+    recommendations: rule.recommendations,
+    directive: rule.directive,
+    agenticTrace: { agent: 'Rule engine (fn_alerts)', dataset: rule.dataset, signals: [l.detail], logic: rule.logic },
+  };
+};
+
 export const getDynamicAlertContext = (alert: AlertData): AlertDetailContext => {
+  if (alert.live) return liveAlertContext(alert, alert.live);
   if (ALERT_DETAILS_CONTEXT[alert.id]) {
     return ALERT_DETAILS_CONTEXT[alert.id];
   }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Filter, RefreshCw, Download, Zap, BarChart2, PieChart as PieIcon, Shield, ShieldAlert, DollarSign, Activity, Play, Check, AlertTriangle, Rocket, TrendingUp, Grid, Table, X, Layers,
   Calendar, User, Plus, Search, ChevronRight, HelpCircle, CheckCircle2, XCircle, AlertCircle, Clock, FileText
@@ -17,7 +17,8 @@ import { LAYER } from '../../../constants/layers';
 import { useDialogBehavior } from '../../../hooks/useDialogBehavior';
 import { StageGateRecord, ProductStageGates, STAGE_NAMES, STAGE_OWNERS,
          generateInitialStageGates, RECIPIENT_TITLES, VPLaunchProduct, VP_PRODUCTS,
-         getHexagonStyles, formatReviewerName } from './launchData';
+         getHexagonStyles, formatReviewerName, toLaunchProducts, toStageGates, isBlockingGate } from './launchData';
+import { useLiveData } from '../../../api/liveData';
 
 interface VPLaunchReadinessViewProps {
   isDarkMode: boolean;
@@ -32,6 +33,15 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
   setSimulateDelay: propSetSimulateDelay,
   onAuditClick
 }) => {
+  // Live since 8 Oct (TODO.md O18, thread 5): the 15 pipeline launches in
+  // dim_launch/launch_gate replace the typed VP_PRODUCTS, which stay as the
+  // offline sample. Risk, readiness and revenue figures are computed in SQL
+  // (fn_launches); see toLaunchProducts for the unit conversion.
+  const live = useLiveData();
+  const isLive = !!(live.launches && live.launchGates);
+  const products = useMemo(
+    () => (isLive ? toLaunchProducts(live.launches!) : VP_PRODUCTS),
+    [isLive, live.launches]);
   const [filterRegion, setFilterRegion] = useState('All');
   const [filterCategory, setFilterCategory] = useState('All');
   const [filterRisk, setFilterRisk] = useState('All');
@@ -146,6 +156,23 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
   };
 
   useEffect(() => {
+    if (!isLive) return;
+    setStageGates(toStageGates(products, live.launchGates!));
+    setSelectedProductId(products[0]?.id ?? '');
+    setSelectedSimProductId(products[0]?.id ?? '');
+    // Escalations: one per overdue gate (launch_gate.status = 'Overdue').
+    setEscalations(live.launchGates!.filter(g => g.status === 'Overdue').map(g => {
+      const prod = products.find(x => x.id === g.launch_id);
+      return {
+        id: `${g.launch_id}-${g.gate_no}`, title: `${g.gate_name} gate overdue`,
+        sub: prod?.name ?? g.launch_id, severity: 'High',
+        impact: `Due ${g.due_date} · $${(prod?.revExposure ?? 0).toFixed(1)}M year-1 plan`,
+        status: 'Pending', color: '#ef4444',
+      };
+    }));
+  }, [isLive, products, live.launchGates]);
+
+  useEffect(() => {
     const updateTime = () => {
       const now = new Date();
       setLastRefreshed(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
@@ -234,7 +261,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
     };
   };
 
-  const selectedSimProduct = VP_PRODUCTS.find(p => p.id === selectedSimProductId) || VP_PRODUCTS[0];
+  const selectedSimProduct = products.find(p => p.id === selectedSimProductId) || products[0];
 
   useEffect(() => {
     const base = getProductDimensions(selectedSimProduct);
@@ -242,12 +269,16 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
     setActiveRecommendations([]);
   }, [selectedSimProductId]);
 
-  const processedProducts = VP_PRODUCTS.map(p => {
+  const processedProducts = products.map(p => {
     let readiness = p.readiness;
     let risk = p.risk;
     let spent = p.spent;
 
-    if (simulateDelay && p.region === 'APAC') {
+    // Live: "simulate delay" slips every Medium-risk launch (next gate due
+    // within 45 days) past its due date, so it becomes High risk.
+    if (simulateDelay && isLive && p.risk === 'Medium') {
+      risk = 'High';
+    } else if (simulateDelay && !isLive && p.region === 'APAC') {
       readiness = Math.max(0, p.readiness - 15);
       risk = readiness < 50 ? 'High' : readiness < 75 ? 'Medium' : p.risk;
     }
@@ -276,23 +307,29 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
   }
 
   const totalLaunches = filteredProducts.length;
-  const onTrackCount = filteredProducts.filter(p => p.readiness >= 75).length;
-  const atRiskCount = filteredProducts.filter(p => p.readiness >= 50 && p.readiness < 75).length;
-  const delayedCount = filteredProducts.filter(p => p.readiness < 50).length;
+  // Live: status comes from fn_launches.risk_level, not readiness thresholds —
+  // a launch at its Business-case gate is 10-25% ready by design, not delayed.
+  const onTrackCount = filteredProducts.filter(p => isLive ? p.risk === 'Low' : p.readiness >= 75).length;
+  const atRiskCount = filteredProducts.filter(p => isLive ? p.risk === 'Medium' : p.readiness >= 50 && p.readiness < 75).length;
+  const delayedCount = filteredProducts.filter(p => isLive ? p.risk === 'High' : p.readiness < 50).length;
   
   const overallReadiness = totalLaunches > 0 
     ? Math.round(filteredProducts.reduce((sum, p) => sum + p.readiness, 0) / totalLaunches)
     : 0;
 
   const revenueExposure = filteredProducts.reduce((sum, p) => {
-    if (p.readiness < 75) {
+    if (isLive ? p.risk === 'High' : p.readiness < 75) {
       return sum + p.revExposure;
     }
     return sum;
   }, 0);
 
-  const marketCoverage = totalLaunches > 0 
-    ? Math.min(100, Math.round((filteredProducts.filter(p => p.readiness >= 75).length / totalLaunches) * 94 + 6))
+  // Live: the share of launches on track. The offline sample keeps its
+  // original (unexplained) x94+6 scaling.
+  const marketCoverage = totalLaunches > 0
+    ? isLive
+      ? Math.round((onTrackCount / totalLaunches) * 100)
+      : Math.min(100, Math.round((filteredProducts.filter(p => p.readiness >= 75).length / totalLaunches) * 94 + 6))
     : 0;
 
   const pipelineCounts = {
@@ -316,8 +353,18 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
     { name: 'Launch', count: pipelineCounts.Launch, fill: '#10b981' }
   ];
 
-  const regionsList = ['APAC', 'EMEA', 'Americas', 'India'];
-  const categoriesList = ['Beverages', 'Snacks', 'Personal Care', 'Household', 'Beauty', 'Fashion'];
+  const regionsList = isLive
+    ? Array.from(new Set(products.map(p => p.region))).sort()
+    : ['APAC', 'EMEA', 'Americas', 'India'];
+  const categoriesList = isLive
+    ? Array.from(new Set(products.map(p => p.category))).sort()
+    : ['Beverages', 'Snacks', 'Personal Care', 'Household', 'Beauty', 'Fashion'];
+  const quartersList = Array.from(new Set(products.map(p => p.quarter))).sort(
+    (a, b) => a.slice(3).localeCompare(b.slice(3)) || a.localeCompare(b));
+  // Live chart series: plan at risk, budget, spent — all real columns. The
+  // sample's "mitigation cost" / "projected savings" have no source.
+  const FIN_B = isLive ? 'Budget' : 'Mitigation cost';
+  const FIN_C = isLive ? 'Spent' : 'Projected savings';
   const getHeatmapVal = (cat: string, reg: string) => {
     const matchProds = filteredProducts.filter(p => p.category === cat && p.region === reg);
     if (matchProds.length === 0) return null;
@@ -326,6 +373,15 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
 
   const financialData = categoriesList.map(cat => {
     const catProds = filteredProducts.filter(p => p.category === cat);
+    if (isLive) {
+      const r1 = (x: number) => parseFloat(x.toFixed(1));
+      return {
+        name: cat,
+        'Revenue at risk': r1(catProds.filter(p => p.risk === 'High').reduce((s, p) => s + p.revExposure, 0)),
+        Budget: r1(catProds.reduce((s, p) => s + p.budget, 0)),
+        Spent: r1(catProds.reduce((s, p) => s + p.spent, 0)),
+      } as Record<string, string | number>;
+    }
     const revenue = catProds.reduce((sum, p) => sum + p.revExposure, 0) * 10;
     const budget = catProds.reduce((sum, p) => sum + p.budget, 0);
     const spent = catProds.reduce((sum, p) => sum + p.spent, 0);
@@ -357,7 +413,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
       'Revenue at risk': parseFloat(revAtRisk.toFixed(1)),
       'Mitigation cost': parseFloat(mitCost.toFixed(1)),
       'Projected savings': parseFloat(projSavings.toFixed(1))
-    };
+    } as Record<string, string | number>;
   });
 
   const radius = 60;
@@ -370,7 +426,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
 
   const totalGatesCount = selectedProductGates.gates.length;
   const passedGatesCount = selectedProductGates.gates.filter(g => g.status === 'Passed').length;
-  const failedGatesCount = selectedProductGates.gates.filter(g => g.status === 'Failed').length;
+  const failedGatesCount = selectedProductGates.gates.filter(g => isBlockingGate(g.status)).length;
   const waivedGatesCount = selectedProductGates.gates.filter(g => g.status === 'Waived').length;
   const completionPct = Math.round(((passedGatesCount + waivedGatesCount) / totalGatesCount) * 100);
 
@@ -379,14 +435,15 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
     const matchCategory = filterCategory === 'All' || pg.category === filterCategory;
     if (!matchRegion || !matchCategory) return [];
 
-    return pg.gates.filter(g => g.status === 'Failed' || g.status === 'Waived').map(g => {
+    return pg.gates.filter(g => isBlockingGate(g.status) || g.status === 'Waived').map(g => {
       let impact = 'Attention Required';
       if (pg.productId === 'LP24') impact = '15d Launch Delay / Critical Path';
       else if (pg.productId === 'LP19') impact = 'Q3 Compliance Review Pending';
       else if (pg.productId === 'LP25') impact = 'EU Market Hold / Regulatory Block';
       else if (pg.productId === 'LP20') impact = 'Formulation Sugar Standard Deviation';
       else {
-        impact = g.status === 'Failed' ? 'High Risk - Launch Blocked' : 'Medium Risk - Timeline Waiver';
+        impact = g.status === 'Overdue' ? `Overdue since ${g.reviewDate}`
+          : g.status === 'Failed' ? 'High Risk - Launch Blocked' : 'Medium Risk - Timeline Waiver';
       }
 
       return {
@@ -396,11 +453,11 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
         status: g.status,
         owner: g.reviewer,
         impact,
-        severity: g.status === 'Failed' ? 'High' : 'Medium',
+        severity: isBlockingGate(g.status) ? 'High' : 'Medium',
         date: g.reviewDate
       };
     });
-  }).sort((a, b) => (a.status === 'Failed' ? -1 : 1));
+  }).sort((a, b) => (isBlockingGate(a.status) ? -1 : 1));
 
   const handleExport = () => {
     const link = document.createElement('a');
@@ -418,7 +475,24 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
   let ratingStroke = '#ef4444';
   let insightText = `Critical delays and high-risk regulatory blockers detected. VP intervention is highly recommended.`;
   
-  if (overallReadiness >= 85) {
+  if (isLive) {
+    // Live: rated on the share of launches with an overdue gate, since
+    // average readiness mostly reflects how early in the pipeline items are.
+    const highShare = totalLaunches > 0 ? delayedCount / totalLaunches : 0;
+    if (delayedCount === 0) {
+      ratingLabel = 'OPTIMAL / ON-TRACK';
+      ratingColorClass = 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20';
+      ratingStroke = '#10b981';
+      insightText = 'No launch has an overdue gate.';
+    } else if (highShare <= 0.2) {
+      ratingLabel = 'WATCH / AT-RISK';
+      ratingColorClass = 'bg-amber-500/10 text-amber-500 border-amber-500/20';
+      ratingStroke = '#f59e0b';
+      insightText = `${delayedCount} of ${totalLaunches} launches have an overdue gate, putting $${revenueExposure.toFixed(1)}M of year-1 plan at risk.`;
+    } else {
+      insightText = `${delayedCount} of ${totalLaunches} launches have an overdue gate ($${revenueExposure.toFixed(1)}M year-1 plan at risk).`;
+    }
+  } else if (overallReadiness >= 85) {
     ratingLabel = 'OPTIMAL / ON-TRACK';
     ratingColorClass = 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20';
     ratingStroke = '#10b981';
@@ -629,10 +703,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
             className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
           >
             <option value="All">All Regions</option>
-            <option value="APAC">APAC</option>
-            <option value="EMEA">EMEA</option>
-            <option value="Americas">Americas</option>
-            <option value="India">India</option>
+            {regionsList.map(r => <option key={r} value={r}>{r}</option>)}
           </select>
 
           <select 
@@ -641,12 +712,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
             className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
           >
             <option value="All">All Categories</option>
-            <option value="Beverages">Beverages</option>
-            <option value="Snacks">Snacks</option>
-            <option value="Personal Care">Personal Care</option>
-            <option value="Household">Household</option>
-            <option value="Beauty">Beauty</option>
-            <option value="Fashion">Fashion</option>
+            {categoriesList.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
 
           <select 
@@ -666,9 +732,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
             className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
           >
             <option value="All">All Quarters</option>
-            <option value="Q2 2026">Q2 2026</option>
-            <option value="Q3 2026">Q3 2026</option>
-            <option value="Q4 2026">Q4 2026</option>
+            {quartersList.map(q => <option key={q} value={q}>{q}</option>)}
           </select>
 
           {(filterRegion !== 'All' || filterCategory !== 'All' || filterRisk !== 'All' || filterQuarter !== 'All') && (
@@ -955,7 +1019,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                 
                 if (gate.status === 'Passed') {
                   Icon = Check;
-                } else if (gate.status === 'Failed') {
+                } else if (isBlockingGate(gate.status)) {
                   Icon = X;
                 } else if (gate.status === 'Waived') {
                   Icon = AlertTriangle;
@@ -1120,7 +1184,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                           {alert.productName}
                         </span>
                         <span className={`text-[7px] font-bold uppercase px-1 rounded-sm ${
-                          alert.status === 'Failed' 
+                          isBlockingGate(alert.status) 
                             ? 'bg-red-500/10 text-red-500' 
                             : 'bg-amber-500/10 text-amber-500'
                         }`}>
@@ -1386,11 +1450,11 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className="w-2.5 h-2.5 rounded-sm bg-[#8b5cf6]" />
-                    <span className="font-semibold text-zinc-700 dark:text-zinc-300">Mitigation cost</span>
+                    <span className="font-semibold text-zinc-700 dark:text-zinc-300">{FIN_B}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className="w-2.5 h-2.5 rounded-sm bg-[#10b981]" />
-                    <span className="font-semibold text-zinc-700 dark:text-zinc-300">Projected savings</span>
+                    <span className="font-semibold text-zinc-700 dark:text-zinc-300">{FIN_C}</span>
                   </div>
                 </div>
                 <div className="flex-1 min-h-0">
@@ -1408,8 +1472,8 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                       />
                       <XAxis
                         type="number"
-                        domain={[0, 120]}
-                        ticks={[0, 20, 40, 60, 80, 100, 120]}
+                        domain={isLive ? [0, 'auto'] : [0, 120]}
+                        ticks={isLive ? undefined : [0, 20, 40, 60, 80, 100, 120]}
                         tick={{ fill: isDarkMode ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', fontSize: 9 }}
                         axisLine={false}
                         tickLine={false}
@@ -1430,8 +1494,8 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                         }}
                       />
                       <Bar dataKey="Revenue at risk" fill="#3b82f6" radius={[0, 2, 2, 0]} />
-                      <Bar dataKey="Mitigation cost" fill="#8b5cf6" radius={[0, 2, 2, 0]} />
-                      <Bar dataKey="Projected savings" fill="#10b981" radius={[0, 2, 2, 0]} />
+                      <Bar dataKey={FIN_B} fill="#8b5cf6" radius={[0, 2, 2, 0]} />
+                      <Bar dataKey={FIN_C} fill="#10b981" radius={[0, 2, 2, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -1476,7 +1540,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                   />
                   <Area 
                     type="monotone" 
-                    dataKey="Mitigation cost" 
+                    dataKey={FIN_B} 
                     stroke="#8b5cf6" 
                     strokeWidth={2}
                     fillOpacity={1} 
@@ -1486,7 +1550,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                   />
                   <Area 
                     type="monotone" 
-                    dataKey="Projected savings" 
+                    dataKey={FIN_C} 
                     stroke="#10b981" 
                     strokeWidth={2}
                     fillOpacity={1} 
@@ -1503,8 +1567,8 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                   <PolarAngleAxis dataKey="name" tick={{ fill: isDarkMode ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 9 }} />
                   <PolarRadiusAxis angle={90} domain={[0, 120]} tick={{ fill: isDarkMode ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', fontSize: 8 }} />
                   <Radar name="Revenue at risk" dataKey="Revenue at risk" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.15} dot={{ r: 3.5, stroke: '#3b82f6', strokeWidth: 2, fill: isDarkMode ? '#1f1f1f' : '#fff' }} />
-                  <Radar name="Mitigation cost" dataKey="Mitigation cost" stroke="#8b5cf6" fill="#8b5cf6" fillOpacity={0.15} dot={{ r: 3.5, stroke: '#8b5cf6', strokeWidth: 2, fill: isDarkMode ? '#1f1f1f' : '#fff' }} />
-                  <Radar name="Projected savings" dataKey="Projected savings" stroke="#10b981" fill="#10b981" fillOpacity={0.15} dot={{ r: 3.5, stroke: '#10b981', strokeWidth: 2, fill: isDarkMode ? '#1f1f1f' : '#fff' }} />
+                  <Radar name={FIN_B} dataKey={FIN_B} stroke="#8b5cf6" fill="#8b5cf6" fillOpacity={0.15} dot={{ r: 3.5, stroke: '#8b5cf6', strokeWidth: 2, fill: isDarkMode ? '#1f1f1f' : '#fff' }} />
+                  <Radar name={FIN_C} dataKey={FIN_C} stroke="#10b981" fill="#10b981" fillOpacity={0.15} dot={{ r: 3.5, stroke: '#10b981', strokeWidth: 2, fill: isDarkMode ? '#1f1f1f' : '#fff' }} />
                   <Tooltip contentStyle={{ backgroundColor: isDarkMode ? '#1f1f1f' : '#fff', border: isDarkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)' }} />
                   <Legend 
                     verticalAlign="top" 
@@ -1536,7 +1600,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
               onChange={(e) => setSelectedSimProductId(e.target.value)}
               className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs text-zinc-700 dark:text-zinc-300 rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-[#6d28d9]"
             >
-              {VP_PRODUCTS.map(p => (
+              {products.map(p => (
                 <option key={p.id} value={p.id} className="dark:bg-zinc-900">
                   {p.name} ({p.id})
                 </option>
@@ -1799,7 +1863,7 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
           <div className="flex justify-between items-center pb-2 border-b border-black/5 dark:border-white/5">
             <div className="flex items-center gap-2">
               <Zap size={12} className="text-[#6d28d9] dark:text-[#a78bfa]" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-[#6d28d9] dark:text-[#a78bfa]">AI Risk Predictions</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#6d28d9] dark:text-[#a78bfa]">AI Risk Predictions{isLive ? ' · Roadmap' : ''}</span>
             </div>
             <div className="flex items-center border border-black/10 dark:border-white/10 rounded-md overflow-hidden bg-black/5 dark:bg-white/5 p-0.5 shrink-0">
               <button
@@ -1829,7 +1893,14 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
             </div>
           </div>
 
-          {predictionsView === 'grid' ? (
+          {isLive ? (
+            // Moved to the roadmap (7 Oct decision): the typed predictions below
+            // have no model or data behind them, so they are not shown next to
+            // live launch data. The offline sample still shows them.
+            <p className="text-[10px] text-zinc-500 dark:text-zinc-400 bg-purple-500/5 border border-purple-500/15 p-3 rounded-sm">
+              Roadmap: predictive launch-risk scoring needs a trained model and supplier/lead-time signals per launch. Until then, risk on this screen is the rule-based level from the gate schedule (overdue gate = High; next gate due within 45 days = Medium).
+            </p>
+          ) : predictionsView === 'grid' ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[9px]">
               {/* Card 1: Sourcing Delay */}
               <div 
@@ -2282,12 +2353,12 @@ export const VPLaunchReadinessView: React.FC<VPLaunchReadinessViewProps> = ({
                   <span className="text-[7px] font-bold uppercase text-zinc-500 block mb-1">Gate Status</span>
                   <span className={`inline-flex items-center gap-1 text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ${
                     selectedStage.status === 'Passed' ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' :
-                    selectedStage.status === 'Failed' ? 'bg-red-500/10 text-red-500 border border-red-500/20' :
+                    isBlockingGate(selectedStage.status) ? 'bg-red-500/10 text-red-500 border border-red-500/20' :
                     selectedStage.status === 'Waived' ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20' :
                     'bg-blue-500/10 text-blue-500 border border-blue-500/20'
                   }`}>
                     {selectedStage.status === 'Passed' && <CheckCircle2 size={9} />}
-                    {selectedStage.status === 'Failed' && <XCircle size={9} />}
+                    {isBlockingGate(selectedStage.status) && <XCircle size={9} />}
                     {selectedStage.status === 'Waived' && <AlertCircle size={9} />}
                     {selectedStage.status === 'Pending' && <Clock size={9} />}
                     {selectedStage.status}

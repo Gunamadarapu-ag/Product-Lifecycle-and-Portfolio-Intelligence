@@ -435,17 +435,17 @@ export const StrategicActionPlan: React.FC<Props> = ({ skus, isDarkMode, onNavig
         color: '#0ea5e9', icon: Link2, routeTab: 1, routeLabel: 'Portfolio Health Map',
         extraParams: `subtab=ph-kpi&metric=Shelf%20Productivity&category=${encodeURIComponent(worstShelfCat)}`,
         action: 'Launch Joint Business Planning for low shelf-score categories',
-        description: 'Categories below 55 Shelf Productivity are under-serving retailers and losing premium shelf placement. The SKUs below are the worst performers inside those categories — they are the focus for retailer co-creation sessions and joint assortment planning.',
-        impactLabel: 'Shelf Productivity improvement opportunity',
+        description: 'Categories below 55 Availability-Adjusted Value are under-serving retailers and losing premium shelf placement. The SKUs below are the worst performers inside those categories — they are the focus for retailer co-creation sessions and joint assortment planning.',
+        impactLabel: 'Availability-Adjusted Value improvement opportunity',
         impactFn: (skus) => {
           const below = skus.filter(s => s.shelfProductivity < 55);
           const totalGap = below.reduce((a, s) => a + (55 - s.shelfProductivity), 0);
           return `${below.length} SKUs below threshold · avg gap ${(totalGap / (below.length || 1)).toFixed(0)} pts`;
         },
         affectedFn: (skus) => [...skus].sort((a, b) => a.shelfProductivity - b.shelfProductivity).slice(0, 8),
-        miniChartKey: 'shelfProductivity', miniChartLabel: 'Shelf Score',
+        miniChartKey: 'shelfProductivity', miniChartLabel: 'Avail.-Adj. Value',
         checks: [
-          { id: 'r1', label: 'Identify categories with Shelf Productivity < 55' },
+          { id: 'r1', label: 'Identify categories with Availability-Adjusted Value < 55' },
           { id: 'r2', label: 'Schedule JBP sessions with top 3 retail accounts' },
           { id: 'r3', label: 'Prepare SKU profit pool growth scenario models' },
           { id: 'r4', label: 'Agree shared KPIs and review cadence with retailers' },

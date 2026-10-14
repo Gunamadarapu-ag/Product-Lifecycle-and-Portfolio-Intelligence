@@ -47,22 +47,26 @@ const KPI_TOOLTIPS: Record<string, { soWhat: string; action: string }> = {
     soWhat: 'Overall category launch readiness stands at 82% (or 79% under delays), dragged down by supplier bottlenecks in Household and Dairy labels.',
     action: 'Escalate lead-time reviews with regional supplier partners and clear the Q4 launch pipeline backlog.'
   },
-  // Tab 3 (Profitability Tree) KPIs
+  // Tab 3 (Profitability Tree) KPIs.
+  // These used to quote fixed figures ($95.2M, 36.2%, $308.1M, $851.2M) that the
+  // live cards above them have since moved away from — a hover tooltip
+  // contradicting the number it was attached to (TODO.md O17). They now describe
+  // what the metric is and where it comes from, with no figure to go stale.
   'Net Profit': {
-    soWhat: 'Net profitability reaches $95.2 M, driven by strong growth in core beverages, but impacted by rising raw milk COGS in Dairy.',
-    action: 'Re-negotiate milk procurement contracts and increase high-margin snack items distribution focus.'
+    soWhat: 'Not measured. Net profit needs operating expenses, SG&A and tax, and the dataset has none of them — only revenue and cost of goods. The figure shown is a placeholder.',
+    action: 'Use Gross Profit for margin decisions; it is genuinely computed. Open the audit trail for what a real net figure would require.'
   },
   'Gross margin %': {
-    soWhat: 'Average segment gross margin is 36.2%, compressed by deep promotional discounts on cookies and chips.',
-    action: 'Cap promotional discount depths at 15% and enforce margin pricing corridors.'
+    soWhat: 'Total gross margin over total net sales for the selected window — revenue-weighted, so high-revenue SKUs pull it. Computed in SQL from fact_sales.',
+    action: 'Check the per-category split in the audit trail before attributing a move to any one category.'
   },
   'Gross Profit': {
-    soWhat: 'Gross profit reached $308.1 M, driven by strong volumes in carbonated beverages and snacks.',
-    action: 'Optimize supply chain logistics to reduce supplier COGS and protect the margins.'
+    soWhat: 'Net sales less cost of goods (units sold × purchase cost), summed over the selected window. A Postgres generated column, so it cannot drift from its inputs.',
+    action: 'This is the deepest genuinely-measured profit line in the product. Anything below it has no cost basis in the data yet.'
   },
   'Revenue MTD': {
-    soWhat: 'MTD revenue reaches $851.2 M (8.4% increase vs last month), driven by a demand surge in natural beverages.',
-    action: 'Expedite distribution channel replenishments in high-velocity retail stores to capture demand.'
+    soWhat: 'Net sales summed over the selected trailing window. Growth compares it against the prior window of equal length, not the same period last year.',
+    action: 'Open the audit trail for the category split and the exact window being summed.'
   },
   'Launch ROI': {
     soWhat: 'Expected launch return stands at 1.85x ROI, buoyed by the upcoming premium Mango Fizz 750ml rollout.',
@@ -130,11 +134,17 @@ const KPI_METRIC_CONFIGS: Record<string, { target: string; color: string; hist: 
   'Customer Sentiment Score': { target: '80', color: '#f59e0b', hist: [75, 74, 73, 73, 72, 72, 72, 72] }
 };
 
-const getMetricConfig = (label: string) => {
-  return KPI_METRIC_CONFIGS[label] || {
+const getMetricConfig = (kpi: KPI) => {
+  const base = KPI_METRIC_CONFIGS[kpi.label] || {
     target: '—',
     color: '#8b5cf6',
     hist: [50, 52, 54, 53, 55, 57, 58, 60]
+  };
+  // A caller with live data overrides the baked-in target and history.
+  return {
+    ...base,
+    target: kpi.target ?? base.target,
+    hist: kpi.hist ?? base.hist,
   };
 };
 
@@ -142,8 +152,8 @@ export const KPICard: React.FC<KPICardProps> = ({ kpi, role, onAuditClick }) => 
   const [showTooltip, setShowTooltip] = useState(false);
   const [isCardHovered, setIsCardHovered] = useState(false);
   const isHighlighted = kpi.highlight?.includes(role) ?? false;
-  const auditDetails = KPI_TOOLTIPS[kpi.label];
-  const config = getMetricConfig(kpi.label);
+  const auditDetails = kpi.tooltip ?? KPI_TOOLTIPS[kpi.label];
+  const config = getMetricConfig(kpi);
 
   const getTrendColor = () => {
     if (kpi.trend === 'neutral') return 'text-zinc-500 dark:text-zinc-400';

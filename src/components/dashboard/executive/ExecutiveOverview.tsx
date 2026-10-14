@@ -9,7 +9,7 @@ import { ResponsiveContainer, AreaChart, Area, LineChart, Line, XAxis, YAxis, To
 import { Role } from '../../../types/dashboard';
 import { VP_ALERTS, VP_APPROVALS, VP_FORECAST, VP_KPI_BASE, SKUS } from '../../../constants/data';
 import { TimelineRange, getTimeframeScale, getDeterministicNoise, getFilteredSKUS } from '../../../utils/timeframe';
-import { useLiveData, type LiveData } from '../../../api/liveData';
+import { useLiveData, useLiveRegionalFulfillment, type LiveData, type CustomerInsight as LiveCustomerInsight } from '../../../api/liveData';
 
 type HomeKpi = (typeof VP_KPI_BASE)[number] & {
   sparkPoints: { index: number; value: number }[];
@@ -20,15 +20,27 @@ type HomeKpi = (typeof VP_KPI_BASE)[number] & {
   isLive?: boolean;
 };
 
-/** Overlay warehouse figures onto the Home cards. Critical Alerts has no SQL source and is left as is. */
+/**
+ * Overlay warehouse figures onto the Home cards. Critical Alerts now has a
+ * real source (fn_alerts, TODO.md O18) — a rule-based count, not a typed
+ * literal — but no monthly series exists to sparkline honestly, so its
+ * sparkline is flat rather than fabricated.
+ */
 function withLive(cards: HomeKpi[], live: LiveData): HomeKpi[] {
   if (live.status === 'offline') return cards;
   const k = live.kpis;
   const t = live.trend ?? [];
   const spark = (vals: number[]) => ({ spark: vals, sparkPoints: vals.map((v, i) => ({ index: i, value: v })) });
   return cards.map(c => {
-    const livable = c.label === 'Total Revenue' || c.label === 'Gross Margin' || c.label === 'Active SKUs';
+    const livable = c.label === 'Total Revenue' || c.label === 'Gross Margin'
+      || c.label === 'Active SKUs' || c.label === 'Critical Alerts';
     if (!livable) return c;
+    if (c.label === 'Critical Alerts') {
+      if (!live.alerts) return { ...c, pending: true };
+      const n = live.alerts.filter(a => a.severity === 'critical').length;
+      return { ...c, ...spark(Array(8).fill(n)), isLive: true, pending: false,
+        value: n, trend: 0, trendLabel: `${live.alerts.length} total alerts` };
+    }
     if (!k) return { ...c, pending: true };
     if (c.label === 'Total Revenue') {
       const g = k.growth_pct;
@@ -57,7 +69,7 @@ import { EventsCalendarModal } from '../portfolio-health/EventsCalendarModal';
 import { ScheduleMeetingModal } from '../portfolio-health/ScheduleMeetingModal';
 import { getChartTheme } from '../../../utils/chartTheme';
 import { MonthForecastModal } from './MonthForecastModal';
-import { CUSTOMER_INSIGHTS, EVENT_TEMPLATES, FLAGGED_SKUS, generateInitialEvents } from './executiveData';
+import { CUSTOMER_INSIGHTS, FLAGGED_SKUS, generateInitialEvents } from './executiveData';
 
 export interface ExecutiveOverviewProps {
   role: Role;
@@ -74,6 +86,18 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
   const [alerts, setAlerts] = useState(() => VP_ALERTS.map(a => ({ ...a })));
   const [approvals, setApprovals] = useState(() => VP_APPROVALS.map(a => ({ ...a })));
   const live = useLiveData();
+
+  // Replace the typed VP_ALERTS seed with real rule-based alerts (fn_alerts,
+  // TODO.md O18) once they arrive. Re-seeds on every live.alerts change
+  // (e.g. the timeline selector), the same as every other live card on this
+  // screen — dismiss state isn't meant to survive a window change.
+  useEffect(() => {
+    if (!live.alerts) return;
+    setAlerts(live.alerts.map(a => ({
+      id: a.alert_id, sev: a.severity, title: a.title, detail: `${a.alert_type} · ${a.detail}`, ack: false,
+      live: { alertType: a.alert_type, detail: a.detail, skuId: a.sku_id },
+    })));
+  }, [live.alerts]);
   const [kpis, setKpis] = useState<HomeKpi[]>(() => {
     let baseKpis = VP_KPI_BASE;
     if (role === 'VP Product Management') {
@@ -137,72 +161,13 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
   const [viewFormat, setViewFormat] = useState<'grid' | 'table'>('grid');
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [eventFilter, setEventFilter] = useState('all');
-  const [feedEvents, setFeedEvents] = useState(() => generateInitialEvents());
+  const [feedEvents] = useState(() => generateInitialEvents());
 
   // Vercel UI states
   const [revenueChartType, setRevenueChartType] = useState<'line' | 'combi' | 'bar'>('line');
   const [categoryChartType, setCategoryChartType] = useState<'donut' | 'bar' | 'radar'>('donut');
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const [activeCategoryInsights, setActiveCategoryInsights] = useState<string>('Beverages');
-  
-  // Toasts
-  interface Toast {
-    id: string;
-    title: string;
-    body: string;
-    color: string;
-  }
-  const [toasts, setToasts] = useState<Toast[]>([]);
-  const addToast = (title: string, body: string, color: string) => {
-    const id = Math.random().toString();
-    setToasts(prev => [{ id, title, body, color }, ...prev]);
-    setTimeout(() => {
-      setToasts(prev => prev.filter(t => t.id !== id));
-    }, 5000);
-  };
-
-  // Timer for adding live events
-  useEffect(() => {
-    const scheduleNextEvent = () => {
-      const delay = 1800 + Math.random() * 4200;
-      return setTimeout(() => {
-        const tmpl = EVENT_TEMPLATES[Math.floor(Math.random() * EVENT_TEMPLATES.length)];
-        const msg = tmpl.msgs[Math.floor(Math.random() * tmpl.msgs.length)];
-        const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        const newEv = {
-          id: 'dyn-' + Date.now(),
-          sev: tmpl.sev,
-          sevC: tmpl.sevC,
-          type: tmpl.type,
-          msg,
-          time: timeStr
-        };
-
-        setFeedEvents(prev => [newEv, ...prev.slice(0, 79)]);
-
-        if (tmpl.sev === 'critical' && Math.random() > 0.6) {
-          addToast('Critical alert', msg, '#ef4444');
-          setAlerts(prevAlerts => {
-            if (prevAlerts.some(a => a.title === msg)) return prevAlerts;
-            const newAlert = {
-              id: 'dyn-al-' + Date.now(),
-              sev: 'critical' as const,
-              title: msg,
-              detail: tmpl.type + ' · Auto-detected',
-              // Auto-detected alerts start unacknowledged. This was previously
-              // omitted, leaving `ack` undefined on generated alerts only.
-              ack: false
-            };
-            return [newAlert, ...prevAlerts.slice(0, 11)];
-          });
-        }
-        timerId = scheduleNextEvent();
-      }, delay);
-    };
-
-    let timerId = scheduleNextEvent();
-    return () => clearTimeout(timerId);
-  }, []);
 
   // Category filter and modal states for Top SKU Performance card
   const [activeCategory, setActiveCategory] = useState<string>('All');
@@ -291,15 +256,68 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
     Target: slicedTarget[idx]
   }));
 
-  // Category performance
+  // Category performance. Colors are a fixed brand palette, not data; the
+  // underlying figures come from fn_sku_performance, grouped here (TODO.md O18)
+  // — the offline fallback below is the old typed+jitter path.
   const scale = getTimeframeScale(timelineRange);
-  const categoryPerfData = [
-    { name: 'Beverages', value: Math.round(316 * scale * (1 + getDeterministicNoise('Beverages_perf', timelineRange) * 0.03)), color: '#7C3AED' },
-    { name: 'Snacks', value: Math.round(253 * scale * (1 + getDeterministicNoise('Snacks_perf', timelineRange) * 0.03)), color: '#0F6E56' },
-    { name: 'Dairy', value: Math.round(180 * scale * (1 + getDeterministicNoise('Dairy_perf', timelineRange) * 0.03)), color: '#F59E0B' },
-    { name: 'Personal Care', value: Math.round(225 * scale * (1 + getDeterministicNoise('PersonalCare_perf', timelineRange) * 0.03)), color: '#185FA5' },
-    { name: 'Household', value: Math.round(145 * scale * (1 + getDeterministicNoise('Household_perf', timelineRange) * 0.03)), color: '#854F0B' }
-  ];
+  const CATEGORY_COLOR: Record<string, string> = {
+    Beverages: '#7C3AED', Snacks: '#0F6E56', Dairy: '#F59E0B',
+    'Personal Care': '#185FA5', Household: '#854F0B', Beauty: '#B23A48', Fashion: '#4B5563',
+  };
+  const categoryPerfData = live.skus
+    ? (() => {
+        const byCat = new Map<string, number>();
+        for (const s of live.skus) byCat.set(s.category_name, (byCat.get(s.category_name) ?? 0) + s.net_sales);
+        return [...byCat.entries()]
+          .sort((a, b) => b[1] - a[1])
+          .map(([name, ns]) => ({ name, value: Math.round(ns / 1e6), color: CATEGORY_COLOR[name] ?? '#6b7280' }));
+      })()
+    : [
+        { name: 'Beverages', value: Math.round(316 * scale * (1 + getDeterministicNoise('Beverages_perf', timelineRange) * 0.03)), color: '#7C3AED' },
+        { name: 'Snacks', value: Math.round(253 * scale * (1 + getDeterministicNoise('Snacks_perf', timelineRange) * 0.03)), color: '#0F6E56' },
+        { name: 'Dairy', value: Math.round(180 * scale * (1 + getDeterministicNoise('Dairy_perf', timelineRange) * 0.03)), color: '#F59E0B' },
+        { name: 'Personal Care', value: Math.round(225 * scale * (1 + getDeterministicNoise('PersonalCare_perf', timelineRange) * 0.03)), color: '#185FA5' },
+        { name: 'Household', value: Math.round(145 * scale * (1 + getDeterministicNoise('Household_perf', timelineRange) * 0.03)), color: '#854F0B' },
+      ];
+
+  // Regional Forecast: the dataset's real 3 European regions in place of the
+  // typed APAC/Americas/EMEA (TODO.md O18) — those regions do not exist in the
+  // data. "Target" is the prior window's actual, the same substitute
+  // fn_portfolio_kpis.growth_pct already uses elsewhere — there is no stated
+  // regional plan table yet, so a comparison window stands in rather than an
+  // invented absolute target.
+  const liveRegions = useLiveRegionalFulfillment(timelineRange);
+  const liveRegionForecast = liveRegions.rows
+    ? (() => {
+        const byRegion = new Map<string, { ns: number; prior: number; hasPrior: boolean }>();
+        for (const r of liveRegions.rows!) {
+          const e = byRegion.get(r.region) ?? { ns: 0, prior: 0, hasPrior: true };
+          e.ns += r.net_sales;
+          e.hasPrior = e.hasPrior && r.prior_net_sales !== null;
+          e.prior += r.prior_net_sales ?? 0;
+          byRegion.set(r.region, e);
+        }
+        return [...byRegion.entries()].map(([region, e]) => {
+          const delta = e.hasPrior && e.prior > 0 ? (e.ns / e.prior - 1) * 100 : null;
+          return {
+            region, actual: Math.round(e.ns / 1e6),
+            target: Math.round((e.hasPrior ? e.prior : e.ns) / 1e6),
+            delta: delta === null ? 'No prior window' : `${delta >= 0 ? '+' : ''}${delta.toFixed(1)}%`,
+            up: delta === null || delta >= 0,
+          };
+        });
+      })()
+    : null;
+
+  // Customer Insights: real retail accounts (TODO.md O18) in place of the
+  // typed CUSTOMER_INSIGHTS narrative. Each category tab lists that
+  // category's top 5 accounts by their sales IN that category
+  // (fn_customer_category_insights) — filtering whole-account rankings by the
+  // account's top SKU left most category tabs empty. "Interest" and a 2-item
+  // buying focus had no real source and are dropped rather than fabricated.
+  const liveCustomerInsights: LiveCustomerInsight[] | null = live.customerCategoryInsights
+    ? live.customerCategoryInsights.filter(c => c.category_name === activeCustomerCategory)
+    : null;
 
   // Top SKUs by revenue filtered by category
   const timeframeSkus = getFilteredSKUS(SKUS, timelineRange);
@@ -1066,7 +1084,42 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
 
           {/* Customer List */}
           <div className="flex-1 overflow-y-auto pr-1 pb-1 space-y-2 min-h-0 no-scrollbar">
-            {(CUSTOMER_INSIGHTS[activeCustomerCategory] || []).map((c) => {
+            {liveCustomerInsights ? liveCustomerInsights.map((c) => {
+              const up = c.growth_pct === null || c.growth_pct >= 0;
+              const trendCol = c.growth_pct === null ? 'text-zinc-600' : up ? 'text-green-500' : 'text-red-500';
+              return (
+                <div
+                  key={c.customer_id}
+                  className="bg-black/2 dark:bg-white/2 border border-black/5 dark:border-white/5 p-2 rounded-sm space-y-1 hover:border-acies-yellow/30 transition-all"
+                >
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h4 className="text-[10px] font-extrabold text-zinc-800 dark:text-zinc-200 truncate max-w-[170px]">
+                        {c.customer_name}
+                      </h4>
+                      <p className="text-[8px] text-zinc-500 font-semibold tracking-wide truncate max-w-[170px]">
+                        {c.account_tier} · {c.channel_name}, {c.country_name}
+                      </p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <span className="text-[9.5px] font-mono font-bold text-acies-yellow block">
+                        ${(c.net_sales / 1e6).toFixed(1)} M
+                      </span>
+                      <span className={`text-[7.5px] font-bold ${trendCol}`}>
+                        {c.growth_pct === null ? 'No prior window' : `${(c.growth_pct * 100).toFixed(1)}% vs prior window`}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1 items-center">
+                    <span className="text-[7.5px] font-bold text-zinc-500 uppercase shrink-0">Top SKU:</span>
+                    <span className="bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 px-1 py-0.5 rounded-sm text-[7.5px] font-bold text-[#6d28d9] dark:text-[#a78bfa] truncate max-w-[150px]">
+                      {c.top_sku_name}
+                    </span>
+                  </div>
+                </div>
+              );
+            }) : (CUSTOMER_INSIGHTS[activeCustomerCategory] || []).map((c) => {
               const trendCol = c.growthDirection === 'up' ? 'text-green-500' : c.growthDirection === 'down' ? 'text-red-500' : 'text-zinc-600';
               return (
                 <div
@@ -1120,7 +1173,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
           <h3 className="text-[11px] font-bold uppercase tracking-widest pb-2 border-b border-black/5 dark:border-white/5 mb-2 flex items-center justify-between gap-1.5">
             <span>Regional Forecast</span>
             <div className="flex items-center gap-2">
-              <span className="text-[7.5px] font-extrabold opacity-40 uppercase">Actual vs Target</span>
+              <span className="text-[7.5px] font-extrabold opacity-40 uppercase">{liveRegionForecast ? 'Actual vs Prior Window' : 'Actual vs Target'}</span>
               <div className="flex items-center border border-black/10 dark:border-white/10 rounded-md overflow-hidden bg-black/5 dark:bg-white/5 p-0.5 ml-1 normal-case shrink-0">
                 <button
                   onClick={() => setRegionViewMode('list')}
@@ -1150,7 +1203,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
           
           {regionViewMode === 'list' ? (
             <div className="space-y-1.5 overflow-y-auto flex-1 pr-1 min-h-0">
-              {VP_FORECAST.map(f => {
+              {(liveRegionForecast ?? VP_FORECAST).map(f => {
                 const widthPct = Math.min(100, Math.round((f.actual / f.target) * 100));
                 const deltaColor = f.up ? 'text-green-500' : 'text-red-500';
                 return (
@@ -1168,7 +1221,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
                     </div>
                     <div className="flex justify-between text-[9px] text-zinc-600 dark:text-zinc-500 font-semibold uppercase tracking-wider">
                       <span>Actual: ${f.actual}M</span>
-                      <span>Target: ${f.target}M</span>
+                      <span>{liveRegionForecast ? 'Prior' : 'Target'}: ${f.target}M</span>
                     </div>
                   </button>
                 );
@@ -1178,7 +1231,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
             <div className="flex-1 min-h-0 flex flex-col justify-between pt-1 pb-0.5">
               <div className="flex-1 min-h-0">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={VP_FORECAST} barGap={4} margin={{ top: 35, right: 15, left: 0, bottom: 5 }}>
+                  <BarChart data={liveRegionForecast ?? VP_FORECAST} barGap={4} margin={{ top: 35, right: 15, left: 0, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridStroke} />
                     <XAxis 
                       dataKey="region" 
@@ -1186,9 +1239,9 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
                       axisLine={false} 
                       tickLine={false} 
                     />
-                    <YAxis 
-                      domain={[0, 350]}
-                      ticks={[0, 50, 100, 150, 200, 250, 300, 350]}
+                    <YAxis
+                      domain={liveRegionForecast ? [0, 'auto'] : [0, 350]}
+                      ticks={liveRegionForecast ? undefined : [0, 50, 100, 150, 200, 250, 300, 350]}
                       tickFormatter={(val) => `$${val}`}
                       tick={{ fill: isDarkMode ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 8, fontWeight: 'bold' }} 
                       axisLine={false} 
@@ -1219,7 +1272,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
                     />
                     <Bar 
                       dataKey="target" 
-                      name="Target" 
+                      name={liveRegionForecast ? 'Prior Window' : 'Target'} 
                       fill={isDarkMode ? '#facc15' : '#ca8a04'} 
                       barSize={30} 
                       radius={[4, 4, 0, 0]} 
@@ -1243,12 +1296,17 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
             {alertsBlock}
           </div>
 
-          {/* FULL WIDTH: LIVE INDUSTRY UPDATES */}
+          {/* FULL WIDTH: INDUSTRY EVENT FEED (illustrative, not a live data feed) */}
           <div className="glass-card bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-4 rounded-sm shadow-sm flex flex-col gap-4 w-full">
             <div className="flex justify-between items-center pb-2 border-b border-black/5 dark:border-white/5">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Live Industry Updates</span>
-                <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Industry Event Feed</span>
+                <span
+                  className="text-[8px] font-bold uppercase tracking-widest text-zinc-400 border border-zinc-400/40 rounded-sm px-1.5 py-0.5"
+                  title="Illustrative sample events, not a live data feed — no auto-refresh"
+                >
+                  Demo content
+                </span>
               </div>
               <div className="flex items-center gap-3">
                 <select 
@@ -1313,7 +1371,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
                     <div 
                       key={ev.id} 
                       className={`flex items-start justify-between gap-3 p-3.5 rounded-sm border border-black/5 dark:border-white/5 transition-all text-xs h-full ${
-                        i === 0 ? 'bg-black/[0.02] dark:bg-white/5 animate-pulse border-emerald-500/35 shadow-sm' : 'bg-transparent'
+                        i === 0 ? 'bg-black/[0.02] dark:bg-white/5 border-emerald-500/35 shadow-sm' : 'bg-transparent'
                       }`}
                     >
                       <div className="flex gap-2 min-w-0">
@@ -1355,7 +1413,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
                         <tr 
                           key={ev.id} 
                           className={`hover:bg-black/[0.01] dark:hover:bg-white/[0.02] transition-colors ${
-                            i === 0 ? 'bg-black/[0.02] dark:bg-white/5 animate-pulse' : 'bg-transparent'
+                            i === 0 ? 'bg-black/[0.02] dark:bg-white/5' : 'bg-transparent'
                           }`}
                         >
                           <td className="py-2.5 px-4">
@@ -1409,6 +1467,7 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
       <RegionalForecastModal 
         isOpen={!!selectedRegion}
         region={selectedRegion}
+        regionMix={live.regionMix}
         onClose={() => setSelectedRegion(null)}
         onRequestAction={(email, name, subject, body) => {
           setEmailData({ to: email, name, subject, body });
@@ -1531,23 +1590,6 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({ role, setA
           </button>
         </div>
       )}
-
-      {/* Floating Corner Toasts Container */}
-      <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none max-w-sm">
-        {toasts.map(t => (
-          <div 
-            key={t.id} 
-            onClick={() => setToasts(prev => prev.filter(x => x.id !== t.id))}
-            className="pointer-events-auto bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/15 p-3.5 rounded shadow-lg flex items-start gap-2.5 cursor-pointer hover:opacity-90 transition-opacity"
-          >
-            <span className="w-2.5 h-2.5 rounded-full shrink-0 mt-1" style={{ backgroundColor: t.color }} />
-            <div>
-              <h5 className="text-[11px] font-bold text-zinc-900 dark:text-zinc-200 leading-none">{t.title}</h5>
-              <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 leading-snug">{t.body}</p>
-            </div>
-          </div>
-        ))}
-      </div>
 
     </div>
   );

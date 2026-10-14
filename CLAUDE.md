@@ -24,9 +24,9 @@ npm run dev          # Vite dev server on :3000
 npm run build        # production build to dist/
 npm run preview      # serve dist/ on :4173 — required before npm run smoke
 npm run lint         # tsc --noEmit (type check; there is no ESLint config)
-npm run smoke        # headless browser test, 3 roles x 9 tabs = 27 combinations
+npm run smoke        # headless browser test, 3 roles x 12 tabs = 36 combinations
 npm run api          # FastAPI backend on :8000 (reads PostgreSQL; Vite proxies /api to it)
-npm run test:api     # 12 API integration tests against the real database
+npm run test:api     # 37 API integration tests against the real database
 ```
 
 **Run `npm run api` alongside `dev`/`preview`.** Without it the app still works, but shows
@@ -40,9 +40,8 @@ compiles, not that it renders, and several tabs have failed only at runtime.
 
 To test one combination, edit the `ROLES` / `TABS` arrays at the top of `scripts/smoke.mjs`.
 
-**Coverage gap:** `TABS` is `[0..8]`, but tabs go to 11. The three SKU-rationalisation
-sub-tabs (9 Rationalisation Home, 10 SKU Drill Down, 11 Task Tracker) are **not** smoke
-tested. Verify those manually, or extend the array.
+`TABS` covers all 12 tabs (`[0..11]`) since 8 Oct. VP is redirected from tabs 9-11 to tab 4,
+so those three combinations re-test tab 4 for VP; tabs 9-11 are exercised by PM and Pricing.
 
 `smoke.mjs` retries a failing combination once before reporting it: `ProductMixClustering`'s
 ScatterChart intermittently logs a Recharts attribute error when `ResponsiveContainer`
@@ -51,10 +50,10 @@ measures zero width on first paint. Only a repeated failure is real.
 ```bash
 pip install -r requirements.txt        # exact pins; see "Determinism" below
 python data/generator/main.py          # regenerate the dataset into data/output/
-python data/generator/validate.py      # 16 reconciliation assertions
+python data/generator/validate.py      # 30 exact checks + reported figures (runs inside main.py too)
 python data/generator/export_ts.py     # data/output/ -> src/constants/generated.ts
 python data/generator/load.py --dry-run # check DB connection + CSVs, write nothing
-python data/generator/load.py          # COPY all 13 tables in FK order (~45s)
+python data/generator/load.py          # COPY all 26 tables in FK order (~60s)
 ```
 
 The SQL calculation layer is installed and checked with psql as the app role. After any
@@ -86,7 +85,7 @@ Wired since 29 Sep. The rules that make it work — keep them:
   months, and growth compares against the prior window of equal length. The data covers
   24 months: 36 is clamped (`months_available`), and growth is `NULL` when there is no full
   prior window, never invented.
-- **`04_validate.sql` (36 checks) and `backend/tests` (12 tests)** assert the targets
+- **`04_validate.sql` (61 checks) and `backend/tests` (37 tests)** assert the targets
   ($473.0M, 38.55%, +8.30%, 119 SKUs, the Pareto anchors). They also assert that every
   breakdown sums to the headline for every period. That second rule is what stops two
   screens disagreeing.
@@ -131,22 +130,25 @@ Data files in `src/constants/`: `data.ts` (authored + re-exported computed),
 
 ## Dataset generator
 
-`data/generator/` is 11 Python modules. `config.py` holds every target and tolerance.
+`data/generator/` is 20 Python modules. `config.py` holds every target and tolerance.
 
 **Determinism is a hard requirement.** Every RNG is seeded (`SEED = 20260909`) and
-`validate.py` asserts 16 reconciliation targets. That is why `requirements.txt` pins exact
+`validate.py` asserts 30 exact checks (headline targets plus the 7 Oct tables' reconciliations). That is why `requirements.txt` pins exact
 versions rather than ranges — a different NumPy or SciPy can move a target outside tolerance
 and silently produce a different dataset. If you change a generator module, re-run
-`validate.py`; 16/16 must still pass.
+`validate.py`; 30/30 must still pass. Each 7 Oct module draws from its own random stream
+(`config.STREAM`), so adding one does not reshuffle the others.
 
-Known data defect: the source documents Netherlands as the lowest-margin country, but the
-generator makes it the highest. Validation checks country revenue share but not margin order.
+Fixed 7 Oct: the Netherlands, documented as the lowest-margin market, used to come out
+highest. A country list-price index (`config.COUNTRY_PRICE_INDEX`) now makes it lowest,
+and validation check 21 asserts it.
 
 ## Database
 
 PostgreSQL 17 on **port 5433** (not 5432). Database `ppl_intelligence`, app role `Pd_lc_app`,
-credentials in `.env` (gitignored; `.env.example` is the tracked template). 13 tables,
-1 materialized view, 1 view; `fact_sales` holds 368,013 rows.
+credentials in `.env` (gitignored; `.env.example` is the tracked template). 26 tables,
+1 materialized view, 1 view; `fact_sales` holds 357,471 rows (13 tables and 368,013 rows
+before the 7 Oct data generation — see `documentation/data_model_specification.md`).
 
 `data/schema/00_create_role.sql` takes `-v app_user`, `-v app_db`, `-v app_password` so it
 tracks `.env` instead of hardcoding. Three traps that have already cost time here:

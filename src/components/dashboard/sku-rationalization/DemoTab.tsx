@@ -9,6 +9,8 @@ import { Task } from './TrackerTab';
 import { ModalShell } from '../../common/Modal';
 import { MarginWaterfallChart, SkuCategoryBenchmarks } from './DemoTabCharts';
 import { EXPLORER_ROWS } from './demoTabData';
+import { useLiveData } from '../../../api/liveData';
+import { toExplorerRows, liveRcaDetails, liveReason, pct, pp, money } from './rationaleLive';
 import { getRationalisationReason, getRcaDetails, getSimulationStrategy } from './demoTabHelpers';
 // DemoTab previously carried a byte-identical copy of this; both now use one source.
 import { generateTasksForSku } from './rationalisationHelpers';
@@ -35,6 +37,13 @@ export const DemoTab: React.FC<DemoTabProps> = ({
   setSearchQuery: propsSetSearchQuery
 }) => {
   const [selectedSkuForRca, setSelectedSkuForRca] = useState<any>(null);
+  // Live since 8 Oct (TODO.md O18, thread 3): the real flagged SKUs from
+  // fn_sku_rationale replace the 200 generated brand x product rows.
+  const live = useLiveData();
+  const sourceRows: any[] = useMemo(() => (live.skuRationale ? toExplorerRows(live.skuRationale) : EXPLORER_ROWS), [live.skuRationale]);
+  const regionOptions = useMemo(() => Array.from(new Set(sourceRows.map(r => r.region))).sort(), [sourceRows]);
+  const productCatOptions = useMemo(() => Array.from(new Set(sourceRows.map(r => r.productCat))).sort(), [sourceRows]);
+  const liveRow = selectedSkuForRca?.live ?? null;
   const [isSimulationModalOpen, setIsSimulationModalOpen] = useState(false);
   const [simulatingSkuName, setSimulatingSkuName] = useState<string | null>(null);
   const [simulationProgress, setSimulationProgress] = useState(0);
@@ -83,7 +92,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
 
   // Filter logic for explorer table
   const filteredRows = useMemo(() => {
-    return EXPLORER_ROWS.filter(row => {
+    return sourceRows.filter(row => {
       const matchesSearch = row.sku.toLowerCase().includes(searchQuery.toLowerCase()) ||
                             row.factor.toLowerCase().includes(searchQuery.toLowerCase()) || 
                             row.desc.toLowerCase().includes(searchQuery.toLowerCase());
@@ -95,7 +104,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
                             actionFilter.toLowerCase().includes(row.action.toLowerCase());
       return matchesSearch && matchesCategory && matchesProductCategory && matchesRegion && matchesImpact && matchesAction;
     });
-  }, [searchQuery, categoryFilter, productCategoryFilter, regionFilter, impactFilter, actionFilter]);
+  }, [sourceRows, searchQuery, categoryFilter, productCategoryFilter, regionFilter, impactFilter, actionFilter]);
 
   // Reset page when filters change
   React.useEffect(() => {
@@ -157,10 +166,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
               className="bg-white dark:bg-acies-gray border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9.5px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
             >
               <option value="All">All Categories</option>
-              <option value="Beverages">Beverages</option>
-              <option value="Snacks">Snacks</option>
-              <option value="Personal Care">Personal Care</option>
-              <option value="Household">Household</option>
+              {productCatOptions.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
 
             <select
@@ -169,10 +175,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
               className="bg-white dark:bg-acies-gray border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9.5px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
             >
               <option value="All">All Regions</option>
-              <option value="LATAM">LATAM</option>
-              <option value="North America">North America</option>
-              <option value="Europe">Europe</option>
-              <option value="APAC">APAC</option>
+              {regionOptions.map(r => <option key={r} value={r}>{r}</option>)}
             </select>
 
             <select
@@ -239,6 +242,30 @@ export const DemoTab: React.FC<DemoTabProps> = ({
               </tr>
             </thead>
             <tbody className="divide-y divide-black/5 dark:divide-white/5 font-semibold text-zinc-700 dark:text-zinc-400">
+                        {liveRow ? (
+                          <>
+                            <tr>
+                              <td className="py-2 px-3 font-bold text-zinc-800 dark:text-zinc-200">Net sales removed</td>
+                              <td className="py-2 px-2 text-right font-mono font-medium">{money(liveRow.net_sales)}</td>
+                              <td className="py-2 px-2 text-right font-mono font-medium">$0</td>
+                              <td className="py-2 px-3 text-right font-mono text-red-500 font-bold">{pct(liveRow.revenue_share_pct, 2)} of portfolio</td>
+                            </tr>
+                            <tr>
+                              <td className="py-2 px-3 font-bold text-zinc-800 dark:text-zinc-200">Portfolio gross margin</td>
+                              <td className="py-2 px-2 text-right font-mono font-medium">{pct(liveRow.portfolio_margin_pct, 2)}</td>
+                              <td className="py-2 px-2 text-right font-mono font-medium">{pct(liveRow.margin_without_sku_pct, 2)}</td>
+                              <td className={`py-2 px-3 text-right font-mono font-bold ${liveRow.margin_without_sku_pct >= liveRow.portfolio_margin_pct ? 'text-emerald-500' : 'text-red-500'}`}>{pp(liveRow.margin_without_sku_pct - liveRow.portfolio_margin_pct, 2)}</td>
+                            </tr>
+                            <tr>
+                              <td className="py-2 px-3 font-bold text-zinc-800 dark:text-zinc-200">Cannibalization partner</td>
+                              <td className="py-2 px-2 text-right font-mono font-medium" colSpan={3}>{liveRow.cann_partner ? `${liveRow.cann_partner} (correlation ${liveRow.cann_correlation?.toFixed(2)})` : 'No significant pair'}</td>
+                            </tr>
+                            <tr>
+                              <td className="py-2 px-3 text-[9px] text-zinc-500" colSpan={4}>Assumes no demand moves to other SKUs (no transfer data exists), so revenue loss is an upper bound. Cost savings and working capital are not modelled per SKU.</td>
+                            </tr>
+                          </>
+                        ) : (
+                          <>
               {paginatedRows.map(row => (
                 <tr key={row.sku} className="hover:bg-black/[0.01] dark:hover:bg-white/[0.01] transition-all">
                   <td className="py-2.5 px-3 font-extrabold text-zinc-900 dark:text-zinc-100">{row.sku}</td>
@@ -280,7 +307,9 @@ export const DemoTab: React.FC<DemoTabProps> = ({
                   </td>
                 </tr>
               )}
-            </tbody>
+            </>
+                        )}
+</tbody>
           </table>
         </div>
 
@@ -311,7 +340,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
 
       {/* Root Cause Analysis Modal */}
       {selectedSkuForRca && (() => {
-        const rca = getRcaDetails(selectedSkuForRca.sku, selectedSkuForRca.factor);
+        const rca: any = liveRow ? liveRcaDetails(liveRow) : getRcaDetails(selectedSkuForRca.sku, selectedSkuForRca.factor);
         return (
           <ModalShell isOpen onClose={() => setSelectedSkuForRca(null)} layer="base" blur="sm" className="flex items-center justify-center p-4 md:p-6 animate-fadeIn">
             <div className="bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-sm max-w-3xl w-full overflow-hidden shadow-2xl relative flex flex-col max-h-[85vh] animate-slideIn">
@@ -341,7 +370,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
                 <div className="space-y-2">
                   <h4 className="text-[9.5px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-500">Primary Root Causes</h4>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    {rca.rootCauses.map((cause, index) => (
+                    {rca.rootCauses.map((cause: any, index: number) => (
                       <div key={cause.title} className="bg-black/2 dark:bg-white/2 border border-black/5 dark:border-white/5 p-2.5 rounded-sm relative flex flex-col gap-2 text-left hover:border-indigo-500/30 transition-all hover:shadow-xs">
                         <div className="flex justify-between items-center">
                           <span className="w-4 h-4 rounded-full bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-400 flex items-center justify-center font-bold text-[8.5px] shrink-0">
@@ -362,7 +391,27 @@ export const DemoTab: React.FC<DemoTabProps> = ({
                 <div className="space-y-4">
                   <h4 className="text-[9.5px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-500">Margin Performance Diagnostics</h4>
                   
-                  {/* Margin KPI Tiles */}
+                  {liveRow ? (
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="bg-black/10 dark:bg-white/5 border border-black/5 dark:border-white/5 p-4 rounded-sm text-left">
+                        <span className="text-[10px] font-bold text-zinc-500 block mb-2 lowercase">portfolio margin</span>
+                        <h4 className="text-2xl font-display font-black text-zinc-800 dark:text-white leading-none">{pct(liveRow?.portfolio_margin_pct)}</h4>
+                      </div>
+                      <div className="bg-black/10 dark:bg-white/5 border border-black/5 dark:border-white/5 p-4 rounded-sm text-left">
+                        <span className="text-[10px] font-bold text-zinc-500 block mb-2 lowercase">this sku's margin</span>
+                        <h4 className="text-2xl font-display font-black text-zinc-800 dark:text-white leading-none">{pct(liveRow?.gross_margin_pct)}</h4>
+                      </div>
+                      <div className="bg-black/10 dark:bg-white/5 border border-black/5 dark:border-white/5 p-4 rounded-sm text-left">
+                        <span className="text-[10px] font-bold text-zinc-500 block mb-2 lowercase">gap</span>
+                        <h4 className={`text-2xl font-display font-black leading-none ${liveRow && liveRow.gross_margin_pct < liveRow.portfolio_margin_pct ? 'text-red-500' : 'text-emerald-500'}`}>{liveRow ? pp(liveRow.gross_margin_pct - liveRow.portfolio_margin_pct) : '—'}</h4>
+                      </div>
+                    </div>
+                    <p className="text-[9.5px] text-zinc-500">Window figures from fn_sku_rationale. Promo margin erosion: {liveRow?.margin_erosion.toFixed(1)}pt; stockouts on {pct(liveRow?.stockout_rate)} of sales rows (portfolio {pct(liveRow?.portfolio_stockout_rate)}).</p>
+                  </div>
+) : (
+<>
+{/* Margin KPI Tiles */}
                   <div className="grid grid-cols-3 gap-4">
                     <div className="bg-black/10 dark:bg-white/5 border border-black/5 dark:border-white/5 p-4 rounded-sm text-left">
                       <span className="text-[10px] font-bold text-zinc-500 dark:text-zinc-500 block mb-2 lowercase">target margin</span>
@@ -383,6 +432,8 @@ export const DemoTab: React.FC<DemoTabProps> = ({
                     <MarginWaterfallChart />
                     <SkuCategoryBenchmarks skuName={selectedSkuForRca.sku} category={selectedSkuForRca.productCat} />
                   </div>
+</>
+)}
                 </div>
                </div>
 
@@ -498,10 +549,11 @@ export const DemoTab: React.FC<DemoTabProps> = ({
 
                   <div className="bg-amber-500/5 border border-amber-500/10 p-3 rounded-sm text-left">
                     <span className="text-[8.5px] font-black text-amber-600 dark:text-amber-500 block uppercase tracking-widest mb-1">Descriptive Rationalisation Justification</span>
-                    <p className="text-[10px] leading-relaxed text-zinc-700 dark:text-zinc-400 font-semibold">{getRationalisationReason(selectedSkuForRca?.factor || '')}</p>
+                    <p className="text-[10px] leading-relaxed text-zinc-700 dark:text-zinc-400 font-semibold">{liveRow ? liveReason(liveRow) : getRationalisationReason(selectedSkuForRca?.factor || '')}</p>
                   </div>
 
-                  <div className="space-y-1.5">
+                  {!liveRow && (
+<div className="space-y-1.5">
                     <span className="text-[8.5px] font-black text-zinc-500 dark:text-zinc-400 block uppercase tracking-widest text-left">Simulation Evaluation Factors</span>
                     <div className="grid grid-cols-2 gap-3">
                       {/* Verify Profitability Card */}
@@ -545,6 +597,7 @@ export const DemoTab: React.FC<DemoTabProps> = ({
                       </div>
                     </div>
                   </div>
+)}
 
                   {(() => {
                     const strategy = getSimulationStrategy(selectedSkuForRca?.action || '');

@@ -15,6 +15,22 @@ export interface KPI {
   isRisk?: boolean;
   /** Which roles should this card be highlighted for */
   highlight?: Role[];
+  /**
+   * Target and sparkline history, supplied when the caller has live data.
+   *
+   * Without these, KPICard falls back to a hardcoded table keyed by label, which
+   * is still pinned to the rejected $851.2M baseline — so a live card would show
+   * its real value against a stale target and a sparkline that never reaches it
+   * (TODO.md O17). Pass '—' as the target where the data holds no real target
+   * rather than carrying over an invented one.
+   */
+  target?: string;
+  hist?: number[];
+  /**
+   * Hover text computed from the same live data as `value`. Without it,
+   * KPICard falls back to typed text whose numbers predate the warehouse.
+   */
+  tooltip?: { soWhat: string; action: string };
 }
 
 export interface PortfolioItem {

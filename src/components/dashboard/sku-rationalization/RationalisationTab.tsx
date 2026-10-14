@@ -11,6 +11,8 @@ import type { Task } from './trackerTasks';
 import { MarginWaterfallChart, SkuCategoryBenchmarks, renderActiveShape } from './RationalisationCharts';
 import { CustomerMarketDrillDown, FinancialDrillDown, PortfolioDrillDown, RegulatoryDrillDown, SummaryDashboardPage, SupplyChainDrillDown } from './RationalisationDrillDowns';
 import { RATIONALE_DRIVERS, ROADMAP_PHASES_DETAILS } from './rationalisationData';
+import { useLiveData } from '../../../api/liveData';
+import { buildCriticalAlerts, buildDrivers, buildPhases, groupCounts, liveRcaDetails, NO_SOURCE_GROUPS } from './rationaleLive';
 import { generateTasksForSku, getRcaDetails } from './rationalisationHelpers';
 
 export interface RationalisationTabProps {
@@ -36,7 +38,31 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
   const [riskViewMode, setRiskViewMode] = useState<'line' | 'grid'>('line');
   const [selectedRiskForAnalysis, setSelectedRiskForAnalysis] = useState<any>(null);
 
-  const CRITICAL_ALERTS = useMemo(() => [
+  // Live since 8 Oct (TODO.md O18, thread 3): fn_sku_rationale classifies the
+  // real 119 SKUs. The typed SKUs, counts and phases stay as the offline sample.
+  const live = useLiveData();
+  const rat = live.skuRationale;
+  const isLive = !!rat;
+  const liveGroups = useMemo(() => (rat ? groupCounts(rat) : null), [rat]);
+  const drivers = useMemo(() => (rat ? buildDrivers(rat) : RATIONALE_DRIVERS), [rat]);
+  const phases = useMemo(() => (rat ? buildPhases(rat) : ROADMAP_PHASES_DETAILS), [rat]);
+  const phaseTotal = Object.values(phases).reduce((s, ph) => s + ph.skusCount, 0) || 1;
+  const phaseWidth = (k: string) => `${((phases[k]?.skusCount ?? 0) / phaseTotal) * 100}%`;
+  const LIVE_PHASE_NOTES: Record<string, string> = {
+    q1: 'SKUs with a supplier exit notice, long-tail decliners, the weaker SKU of a cannibalizing pair, and long-tail Rationalize SKUs.',
+    q2: 'Declining SKUs that are not long-tail: review price, pack and channel before deciding to exit.',
+    q3: 'Margin more than 8pt below the portfolio, or stockouts at over twice the portfolio rate: fix cost or supply, keep the SKU.',
+    q4: 'Growing 12%+ against the prior window: protect supply and widen distribution.',
+  };
+  // Live: a factor card opens the SKU Drill Down (real rows) instead of the
+  // typed deep-dive pages; groups with no data source do nothing.
+  const openGroup = (drill: string, group: string) => {
+    if (!isLive) { setActiveDrillDown(drill); return; }
+    if (NO_SOURCE_GROUPS[group]) return;
+    if (setActiveTab) setActiveTab(10);
+  };
+
+  const SAMPLE_ALERTS = useMemo(() => [
     {
       sku: 'BrandA Cola 500ml',
       riskScore: '98%',
@@ -86,13 +112,14 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
       productCat: 'Dairy'
     }
   ], []);
+  const CRITICAL_ALERTS: any[] = useMemo(() => (rat ? buildCriticalAlerts(rat) : SAMPLE_ALERTS), [rat, SAMPLE_ALERTS]);
 
   const handlePhaseClick = (phase: string) => {
     if (setSelectedRoadmapPhaseFilter && setActiveTab) {
       let actionVal = 'All';
       if (phase === 'q1') actionVal = 'Discontinue';
-      if (phase === 'q2') actionVal = 'Reformulate';
-      if (phase === 'q3') actionVal = 'Reposition';
+      if (phase === 'q2') actionVal = 'Reposition';
+      if (phase === 'q3') actionVal = 'Reformulate';
       if (phase === 'q4') actionVal = 'Invest';
       
       setSelectedRoadmapPhaseFilter(actionVal);
@@ -182,7 +209,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 border-t border-black/5 dark:border-white/5 pt-3">
           {/* Financial Reasons KPI Card */}
           <button 
-            onClick={() => setActiveDrillDown('financial')}
+            onClick={() => openGroup('financial', 'Financial Reasons')}
             className="neumorphic-soft-card p-3 rounded-xl flex flex-col justify-between h-[105px] hover:border-emerald-500/30 dark:hover:border-emerald-500/40 hover:bg-emerald-500/[0.02] dark:hover:bg-emerald-500/[0.04] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer text-left w-full group relative overflow-hidden outline-none"
           >
             <div className="absolute top-0 right-0 w-16 h-16 bg-emerald-500/5 rounded-full blur-xl group-hover:bg-emerald-500/10 transition-all pointer-events-none" />
@@ -196,10 +223,10 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
             </div>
             <div className="my-1">
               <h4 className="text-[22px] font-display font-black text-zinc-900 dark:text-zinc-100 leading-none">
-                4
+                {liveGroups ? liveGroups['Financial Reasons'].skus : 4}
               </h4>
               <p className="text-[7.5px] font-semibold text-zinc-400 dark:text-zinc-500 mt-0.5 uppercase tracking-wider">
-                Identified Factors
+                {liveGroups ? (NO_SOURCE_GROUPS['Financial Reasons'] ? 'No data source' : `SKUs · ${liveGroups['Financial Reasons'].factors} factor${liveGroups['Financial Reasons'].factors === 1 ? '' : 's'}`) : 'Identified Factors'}
               </p>
             </div>
             <div className="pt-1.5 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[7.5px] font-black uppercase text-emerald-600 dark:text-emerald-500 tracking-wider">
@@ -210,7 +237,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
 
           {/* Portfolio Reasons KPI Card */}
           <button 
-            onClick={() => setActiveDrillDown('portfolio')}
+            onClick={() => openGroup('portfolio', 'Portfolio Reasons')}
             className="neumorphic-soft-card p-3 rounded-xl flex flex-col justify-between h-[105px] hover:border-red-500/30 dark:hover:border-red-500/40 hover:bg-red-500/[0.02] dark:hover:bg-red-500/[0.04] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer text-left w-full group relative overflow-hidden outline-none"
           >
             <div className="absolute top-0 right-0 w-16 h-16 bg-red-500/5 rounded-full blur-xl group-hover:bg-red-500/10 transition-all pointer-events-none" />
@@ -224,10 +251,10 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
             </div>
             <div className="my-1">
               <h4 className="text-[22px] font-display font-black text-zinc-900 dark:text-zinc-100 leading-none">
-                4
+                {liveGroups ? liveGroups['Portfolio Reasons'].skus : 4}
               </h4>
               <p className="text-[7.5px] font-semibold text-zinc-400 dark:text-zinc-500 mt-0.5 uppercase tracking-wider">
-                Identified Factors
+                {liveGroups ? (NO_SOURCE_GROUPS['Portfolio Reasons'] ? 'No data source' : `SKUs · ${liveGroups['Portfolio Reasons'].factors} factor${liveGroups['Portfolio Reasons'].factors === 1 ? '' : 's'}`) : 'Identified Factors'}
               </p>
             </div>
             <div className="pt-1.5 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[7.5px] font-black uppercase text-red-600 dark:text-red-500 tracking-wider">
@@ -238,7 +265,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
 
           {/* Supply Chain KPI Card */}
           <button 
-            onClick={() => setActiveDrillDown('supply_chain')}
+            onClick={() => openGroup('supply_chain', 'Supply Chain Reasons')}
             className="neumorphic-soft-card p-3 rounded-xl flex flex-col justify-between h-[105px] hover:border-blue-500/30 dark:hover:border-blue-500/40 hover:bg-blue-500/[0.02] dark:hover:bg-blue-500/[0.04] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer text-left w-full group relative overflow-hidden outline-none"
           >
             <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/5 rounded-full blur-xl group-hover:bg-blue-500/10 transition-all pointer-events-none" />
@@ -252,10 +279,10 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
             </div>
             <div className="my-1">
               <h4 className="text-[22px] font-display font-black text-zinc-900 dark:text-zinc-100 leading-none">
-                3
+                {liveGroups ? liveGroups['Supply Chain Reasons'].skus : 3}
               </h4>
               <p className="text-[7.5px] font-semibold text-zinc-400 dark:text-zinc-500 mt-0.5 uppercase tracking-wider">
-                Identified Factors
+                {liveGroups ? (NO_SOURCE_GROUPS['Supply Chain Reasons'] ? 'No data source' : `SKUs · ${liveGroups['Supply Chain Reasons'].factors} factor${liveGroups['Supply Chain Reasons'].factors === 1 ? '' : 's'}`) : 'Identified Factors'}
               </p>
             </div>
             <div className="pt-1.5 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[7.5px] font-black uppercase text-blue-600 dark:text-blue-500 tracking-wider">
@@ -266,7 +293,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
 
           {/* Customer/Market KPI Card */}
           <button 
-            onClick={() => setActiveDrillDown('customer_market')}
+            onClick={() => openGroup('customer_market', 'Customer & Market')}
             className="neumorphic-soft-card p-3 rounded-xl flex flex-col justify-between h-[105px] hover:border-amber-500/30 dark:hover:border-amber-500/40 hover:bg-amber-500/[0.02] dark:hover:bg-amber-500/[0.04] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer text-left w-full group relative overflow-hidden outline-none"
           >
             <div className="absolute top-0 right-0 w-16 h-16 bg-amber-500/5 rounded-full blur-xl group-hover:bg-amber-500/10 transition-all pointer-events-none" />
@@ -280,10 +307,10 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
             </div>
             <div className="my-1">
               <h4 className="text-[22px] font-display font-black text-zinc-900 dark:text-zinc-100 leading-none">
-                5
+                {liveGroups ? liveGroups['Customer & Market'].skus : 5}
               </h4>
               <p className="text-[7.5px] font-semibold text-zinc-400 dark:text-zinc-500 mt-0.5 uppercase tracking-wider">
-                Identified Factors
+                {liveGroups ? (NO_SOURCE_GROUPS['Customer & Market'] ? 'No data source' : `SKUs · ${liveGroups['Customer & Market'].factors} factor${liveGroups['Customer & Market'].factors === 1 ? '' : 's'}`) : 'Identified Factors'}
               </p>
             </div>
             <div className="pt-1.5 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[7.5px] font-black uppercase text-amber-600 dark:text-amber-500 tracking-wider">
@@ -294,7 +321,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
 
           {/* Regulatory/Risk KPI Card */}
           <button 
-            onClick={() => setActiveDrillDown('regulatory')}
+            onClick={() => openGroup('regulatory', 'Regulatory & Risk')}
             className="neumorphic-soft-card p-3 rounded-xl flex flex-col justify-between h-[105px] hover:border-purple-500/30 dark:hover:border-purple-500/40 hover:bg-purple-500/[0.02] dark:hover:bg-purple-500/[0.04] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer text-left w-full group relative overflow-hidden outline-none"
           >
             <div className="absolute top-0 right-0 w-16 h-16 bg-purple-500/5 rounded-full blur-xl group-hover:bg-purple-500/10 transition-all pointer-events-none" />
@@ -308,10 +335,10 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
             </div>
             <div className="my-1">
               <h4 className="text-[22px] font-display font-black text-zinc-900 dark:text-zinc-100 leading-none">
-                3
+                {liveGroups ? liveGroups['Regulatory & Risk'].skus : 3}
               </h4>
               <p className="text-[7.5px] font-semibold text-zinc-400 dark:text-zinc-500 mt-0.5 uppercase tracking-wider">
-                Identified Factors
+                {liveGroups ? (NO_SOURCE_GROUPS['Regulatory & Risk'] ? 'No data source' : `SKUs · ${liveGroups['Regulatory & Risk'].factors} factor${liveGroups['Regulatory & Risk'].factors === 1 ? '' : 's'}`) : 'Identified Factors'}
               </p>
             </div>
             <div className="pt-1.5 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[7.5px] font-black uppercase text-purple-600 dark:text-purple-500 tracking-wider">
@@ -338,37 +365,37 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
           <div 
             onClick={() => handlePhaseClick('q1')}
             className="bg-[#ef4444] h-full flex items-center justify-center transition-all hover:brightness-105 active:scale-95 cursor-pointer" 
-            style={{ width: '31.45%' }}
+            style={{ width: isLive ? phaseWidth('q1') : '31.45%' }}
             title="Click to view Q1 Phased Rollout Details"
           >
-            <span>Q1 · 78</span>
+            <span>Q1 · {isLive ? phases.q1.skusCount : 78}</span>
           </div>
           {/* Q2: 56 SKUs (approx 22.58% width) */}
           <div 
             onClick={() => handlePhaseClick('q2')}
             className="bg-[#f59e0b] h-full flex items-center justify-center transition-all hover:brightness-105 active:scale-95 cursor-pointer" 
-            style={{ width: '22.58%' }}
+            style={{ width: isLive ? phaseWidth('q2') : '22.58%' }}
             title="Click to view Q2 Phased Rollout Details"
           >
-            <span>Q2 · 56</span>
+            <span>Q2 · {isLive ? phases.q2.skusCount : 56}</span>
           </div>
           {/* Q3: 72 SKUs (approx 29.03% width) */}
           <div 
             onClick={() => handlePhaseClick('q3')}
             className="bg-[#3b82f6] h-full flex items-center justify-center transition-all hover:brightness-105 active:scale-95 cursor-pointer" 
-            style={{ width: '29.03%' }}
+            style={{ width: isLive ? phaseWidth('q3') : '29.03%' }}
             title="Click to view Q3 Phased Rollout Details"
           >
-            <span>Q3 · 72</span>
+            <span>Q3 · {isLive ? phases.q3.skusCount : 72}</span>
           </div>
           {/* Q4: 42 SKUs (approx 16.94% width) */}
           <div 
             onClick={() => handlePhaseClick('q4')}
             className="bg-[#10b981] h-full flex items-center justify-center transition-all hover:brightness-105 active:scale-95 cursor-pointer" 
-            style={{ width: '16.94%' }}
+            style={{ width: isLive ? phaseWidth('q4') : '16.94%' }}
             title="Click to view Q4 Phased Rollout Details"
           >
-            <span>Q4 · 42</span>
+            <span>Q4 · {isLive ? phases.q4.skusCount : 42}</span>
           </div>
         </div>
 
@@ -383,11 +410,11 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
               Q1 - Step 1
             </span>
             <div className="space-y-0.5">
-              <h4 className="text-[11.5px] font-extrabold text-[#ef4444]">Discontinue / Consolidate</h4>
-              <span className="text-[9px] font-semibold text-zinc-400 uppercase">78 SKUs · $23.4M revenue involved</span>
+              <h4 className="text-[11.5px] font-extrabold text-[#ef4444]">{isLive ? phases.q1.title : 'Discontinue / Consolidate'}</h4>
+              <span className="text-[9px] font-semibold text-zinc-400 uppercase">{isLive ? `${phases.q1.skusCount} SKUs · ${phases.q1.revenue} net sales in window` : '78 SKUs · $23.4M revenue involved'}</span>
             </div>
             <div className="bg-black/2 dark:bg-white/2 p-3 rounded text-[10px] text-zinc-600 dark:text-zinc-500 leading-relaxed font-medium">
-              Fastest to execute and lowest risk to start with — stop the bleeding on low-profitability SKUs before investing effort elsewhere.
+              {isLive ? LIVE_PHASE_NOTES.q1 : 'Fastest to execute and lowest risk to start with — stop the bleeding on low-profitability SKUs before investing effort elsewhere.'}
             </div>
           </div>
 
@@ -400,11 +427,11 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
               Q2 - Step 2
             </span>
             <div className="space-y-0.5">
-              <h4 className="text-[11.5px] font-extrabold text-[#f59e0b]">Reformulate / Margin Improvement</h4>
-              <span className="text-[9px] font-semibold text-zinc-400 uppercase">56 SKUs · $16.8M revenue involved</span>
+              <h4 className="text-[11.5px] font-extrabold text-[#f59e0b]">{isLive ? phases.q2.title : 'Reformulate / Margin Improvement'}</h4>
+              <span className="text-[9px] font-semibold text-zinc-400 uppercase">{isLive ? `${phases.q2.skusCount} SKUs · ${phases.q2.revenue} net sales in window` : '56 SKUs · $16.8M revenue involved'}</span>
             </div>
             <div className="bg-black/2 dark:bg-white/2 p-3 rounded text-[10px] text-zinc-600 dark:text-zinc-500 leading-relaxed font-medium">
-              High margin leakage but reformulating recipes or renegotiating contracts takes 3-6 months. Plan early, execute in phase 2.
+              {isLive ? LIVE_PHASE_NOTES.q2 : 'High margin leakage but reformulating recipes or renegotiating contracts takes 3-6 months. Plan early, execute in phase 2.'}
             </div>
           </div>
 
@@ -417,11 +444,11 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
               Q3 - Step 3
             </span>
             <div className="space-y-0.5">
-              <h4 className="text-[11.5px] font-extrabold text-[#3b82f6]">Renegotiate / Price Adjust</h4>
-              <span className="text-[9px] font-semibold text-zinc-400 uppercase">72 SKUs · $21.6M revenue involved</span>
+              <h4 className="text-[11.5px] font-extrabold text-[#3b82f6]">{isLive ? phases.q3.title : 'Renegotiate / Price Adjust'}</h4>
+              <span className="text-[9px] font-semibold text-zinc-400 uppercase">{isLive ? `${phases.q3.skusCount} SKUs · ${phases.q3.revenue} net sales in window` : '72 SKUs · $21.6M revenue involved'}</span>
             </div>
             <div className="bg-black/2 dark:bg-white/2 p-3 rounded text-[10px] text-zinc-600 dark:text-zinc-500 leading-relaxed font-medium">
-              Requires careful negotiation or customer communication; execute once baseline margin improvement is secured.
+              {isLive ? LIVE_PHASE_NOTES.q3 : 'Requires careful negotiation or customer communication; execute once baseline margin improvement is secured.'}
             </div>
           </div>
 
@@ -434,11 +461,11 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
               Q4 - Step 4
             </span>
             <div className="space-y-0.5">
-              <h4 className="text-[11.5px] font-extrabold text-[#10b981]">Invest / Expand</h4>
-              <span className="text-[9px] font-semibold text-zinc-500 dark:text-zinc-500 uppercase">42 SKUs · $12.8M revenue involved</span>
+              <h4 className="text-[11.5px] font-extrabold text-[#10b981]">{isLive ? phases.q4.title : 'Invest / Expand'}</h4>
+              <span className="text-[9px] font-semibold text-zinc-500 dark:text-zinc-500 uppercase">{isLive ? `${phases.q4.skusCount} SKUs · ${phases.q4.revenue} net sales in window` : '42 SKUs · $12.8M revenue involved'}</span>
             </div>
             <div className="bg-black/2 dark:bg-white/2 p-3 rounded text-[10px] text-zinc-600 dark:text-zinc-500 leading-relaxed font-medium">
-              Scale up once capacity, budget, and attention freed from the earlier phases can be redirected to winners.
+              {isLive ? LIVE_PHASE_NOTES.q4 : 'Scale up once capacity, budget, and attention freed from the earlier phases can be redirected to winners.'}
             </div>
           </div>
         </div>
@@ -595,7 +622,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                 <div className="flex-1 min-h-0">
                   <ResponsiveContainer width="100%" height="95%">
                     <BarChart
-                      data={RATIONALE_DRIVERS}
+                      data={drivers}
                       margin={{ top: 10, right: 10, left: -25, bottom: 0 }}
                     >
                       <XAxis 
@@ -618,7 +645,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                         cursor={{ fill: 'rgba(255,255,255,0.05)' }}
                       />
                       <Bar dataKey="count" radius={[2, 2, 0, 0]} maxBarSize={30}>
-                        {RATIONALE_DRIVERS.map((entry, index) => (
+                        {drivers.map((entry, index) => (
                           <Cell key={`cell-${index}`} fill={entry.color} />
                         ))}
                       </Bar>
@@ -626,7 +653,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                   </ResponsiveContainer>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 text-[8.5px] font-semibold text-zinc-500 dark:text-zinc-400 mt-2 pb-1">
-                  {RATIONALE_DRIVERS.map(d => (
+                  {drivers.map(d => (
                     <div key={d.name} className="flex items-center gap-1.5 justify-center truncate" title={d.name}>
                       <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: d.color }} />
                       <span className="truncate">{d.name} ({d.pct}%)</span>
@@ -649,7 +676,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                             emphasised. `activeShape` still applies on hover.
                             The dead prop was dropped to match real behaviour. */}
                         <Pie
-                          data={RATIONALE_DRIVERS}
+                          data={drivers}
                           cx="50%"
                           cy="50%"
                           innerRadius={0}
@@ -660,7 +687,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                           strokeWidth={2}
                           activeShape={renderActiveShape}
                         >
-                          {RATIONALE_DRIVERS.map((entry, index) => (
+                          {drivers.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={entry.color} />
                           ))}
                         </Pie>
@@ -674,7 +701,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                 
                 {/* Right: Vertical Progress Legend */}
                 <div className="flex flex-col gap-2.5 justify-center shrink-0 pr-4 select-none">
-                  {[...RATIONALE_DRIVERS]
+                  {[...drivers]
                     .sort((a, b) => b.pct - a.pct)
                     .map(d => (
                       <div key={d.name} className="flex items-center justify-between gap-4 text-[9px] font-semibold">
@@ -699,7 +726,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
               <div className="w-full h-full flex flex-col justify-between">
                 <div className="flex-1 min-h-0">
                   <ResponsiveContainer width="100%" height="95%">
-                    <RadarChart cx="50%" cy="50%" outerRadius="70%" data={RATIONALE_DRIVERS}>
+                    <RadarChart cx="50%" cy="50%" outerRadius="70%" data={drivers}>
                       <PolarGrid stroke="currentColor" opacity={0.3} strokeWidth={1} strokeDasharray="3 3" />
                       <PolarAngleAxis dataKey="name" tick={{ fontSize: 9, fill: 'currentColor', fontWeight: 'bold', opacity: 0.9 }} />
                       <PolarRadiusAxis domain={[0, 100]} tick={false} axisLine={false} />
@@ -734,7 +761,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
 
       {/* Roadmap Phase Details Modal */}
       {selectedRoadmapPhase && (() => {
-        const details = ROADMAP_PHASES_DETAILS[selectedRoadmapPhase];
+        const details = phases[selectedRoadmapPhase];
         if (!details) return null;
         
         const modalFilteredSkus = details.skus.filter(sku => 
@@ -937,7 +964,9 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
         );
       })()}      {/* AI Risk Analysis Details Modal */}
       {selectedRiskForAnalysis && (() => {
-        const rca = getRcaDetails(selectedRiskForAnalysis.sku, selectedRiskForAnalysis.factor);
+        const rca: any = selectedRiskForAnalysis.live
+          ? liveRcaDetails(selectedRiskForAnalysis.live)
+          : getRcaDetails(selectedRiskForAnalysis.sku, selectedRiskForAnalysis.factor);
         return (
           <ModalShell isOpen onClose={() => setSelectedRiskForAnalysis(null)} layer="base" blur="sm" className="flex items-center justify-center p-4 md:p-6 animate-fadeIn text-zinc-800 dark:text-zinc-200">
             <div className="bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 rounded-sm max-w-3xl w-full overflow-hidden shadow-2xl relative flex flex-col max-h-[85vh] animate-slideIn">
@@ -980,7 +1009,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                         <tr className="bg-emerald-500/15 border-b border-emerald-500/25 text-[8.5px] uppercase font-black text-emerald-800 dark:text-emerald-500 tracking-wider">
                           <th className="py-2 px-3">Quantitative Perks & Comparison</th>
                           <th className="py-2 px-2 text-right">Current</th>
-                          <th className="py-2 px-2 text-right">Future (Simulated)</th>
+                          <th className="py-2 px-2 text-right">{selectedRiskForAnalysis.live ? 'Benchmark' : 'Future (Simulated)'}</th>
                           <th className="py-2 px-3 text-right">Delta / Benefit</th>
                         </tr>
                       </thead>
@@ -1006,7 +1035,7 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                 <div className="space-y-2">
                   <h4 className="text-[9.5px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-500 text-left">Primary Root Causes</h4>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    {rca.rootCauses.map((cause, index) => (
+                    {rca.rootCauses.map((cause: any, index: number) => (
                       <div key={cause.title} className="bg-black/2 dark:bg-white/2 border border-black/5 dark:border-white/5 p-2.5 rounded-sm relative flex flex-col gap-2 text-left hover:border-indigo-500/30 transition-all">
                         <div className="flex justify-between items-center">
                           <span className="w-4 h-4 rounded-full bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-400 flex items-center justify-center font-bold text-[8.5px] shrink-0">
@@ -1026,10 +1055,22 @@ export const RationalisationTab: React.FC<RationalisationTabProps> = ({
                 {/* Diagnostic Charts */}
                 <div className="space-y-4">
                   <h4 className="text-[9.5px] font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-500 text-left">Diagnostic Analytics</h4>
+                  {selectedRiskForAnalysis.live ? (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      {rca.metrics.map((m: any) => (
+                        <div key={m.label} className="bg-black/2 dark:bg-white/2 border border-black/5 dark:border-white/5 p-3 rounded-sm text-left">
+                          <span className="text-[8.5px] font-bold uppercase tracking-wider text-zinc-400 block">{m.label}</span>
+                          <span className={`text-lg font-display font-black block mt-1 ${m.status === 'Critical' ? 'text-red-500' : m.status === 'Warning' ? 'text-amber-500' : 'text-emerald-500'}`}>{m.value}</span>
+                          <span className="text-[9px] text-zinc-500">{m.target}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <MarginWaterfallChart />
                     <SkuCategoryBenchmarks skuName={selectedRiskForAnalysis.sku} category={selectedRiskForAnalysis.productCat} />
                   </div>
+                  )}
                 </div>
 
               </div>

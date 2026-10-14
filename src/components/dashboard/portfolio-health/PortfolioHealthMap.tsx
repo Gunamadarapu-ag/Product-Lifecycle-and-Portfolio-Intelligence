@@ -273,20 +273,37 @@ export const VPCommandCenter: React.FC<{
   const growthScale = Math.max(0.1, growthVal / 8.4);
   const growthHist = [7.2, 7.5, 7.8, 8.0, 8.1, 8.3, 8.3, 8.4].map(v => v * (Number.isFinite(growthScale) ? growthScale : 1));
 
-  const ordersVal = Math.round(dynamicOrders + jitterOffset.orders);
+  // There is no orders table (TODO.md O17/O18) — "Orders — Today" is replaced
+  // by real units sold in the most recent complete month once live; offline,
+  // the old typed demo card is unchanged (it was never a real orders figure
+  // either way, so relabelling a fabricated number as a real one would be
+  // worse than leaving the old label on the old fallback).
+  const ordersIsLive = isLive && liveData.lastMonthUnits !== undefined;
+  const ordersVal = ordersIsLive ? liveData.lastMonthUnits! : Math.round(dynamicOrders + jitterOffset.orders);
   const ordersScale = Math.max(0.1, ordersVal / 4218);
-  const ordersHist = [3800, 3900, 3980, 4050, 4100, 4150, 4190, 4218].map(v => v * ordersScale);
+  const ordersHist = ordersIsLive
+    ? Array(8).fill(ordersVal) // no live monthly units series to sparkline honestly
+    : [3800, 3900, 3980, 4050, 4100, 4150, 4190, 4218].map(v => v * ordersScale);
 
-  const fcastVal = parseFloat((dynamicFcast + jitterOffset.fcast).toFixed(1));
+  const fcastIsLive = isLive && !!liveData.forecastAccuracy;
+  const fcastVal = fcastIsLive
+    ? parseFloat((liveData.forecastAccuracy!.attainment_pct * 100).toFixed(1))
+    : parseFloat((dynamicFcast + jitterOffset.fcast).toFixed(1));
   const fcastScale = Math.max(0.1, fcastVal / 94.6);
-  const fcastHist = [96.1, 95.8, 95.4, 95.2, 95.0, 94.9, 94.7, 94.6].map(v => v * fcastScale);
+  const fcastHist = fcastIsLive
+    ? Array(8).fill(fcastVal) // single aggregate over the window, no monthly breakdown
+    : [96.1, 95.8, 95.4, 95.2, 95.0, 94.9, 94.7, 94.6].map(v => v * fcastScale);
 
   const kpis = {
     rev: { val: revVal, hist: revHist, target: revTarget, label: 'Portfolio Revenue', suffix: ' M', prefix: '$', color: '#3b82f6' },
     skuCount: { val: skuCountVal, hist: skuCountHist, target: 100, label: 'Portfolio SKU Count', suffix: '', prefix: '', color: '#10b981' },
     growth: { val: Number.isFinite(growthVal) ? growthVal : 'n/a', hist: growthHist, target: 10.0, label: 'Growth Rate', suffix: '%', prefix: '', color: '#ec4899' },
-    orders: { val: ordersVal, hist: ordersHist, target: 5000, label: 'Orders — Today', suffix: '', prefix: '', color: '#8b5cf6' },
-    fcast: { val: fcastVal, hist: fcastHist, target: 97.0, label: 'Forecast Attainment', suffix: '%', prefix: '', color: '#f59e0b' },
+    orders: {
+      val: ordersVal, hist: ordersHist, target: ordersIsLive ? '—' : 5000,
+      label: ordersIsLive ? 'Units Sold — Last Month' : 'Orders — Today',
+      suffix: '', prefix: '', color: '#8b5cf6',
+    },
+    fcast: { val: fcastVal, hist: fcastHist, target: fcastIsLive ? '—' : 97.0, label: 'Forecast Attainment', suffix: '%', prefix: '', color: '#f59e0b' },
   };
 
   const handleExport = () => {
@@ -828,6 +845,17 @@ export const VPCommandCenter: React.FC<{
             deltaColor = gap === null ? 'text-zinc-500 dark:text-zinc-400' : gap >= 0 ? 'text-emerald-500' : 'text-amber-500';
           } else if (key === 'skuCount' && isLive) {
             deltaText = 'Selling in period';
+          } else if (key === 'orders' && ordersIsLive) {
+            deltaText = liveData.lastMonthPeriod ? `${liveData.lastMonthPeriod.start} to ${liveData.lastMonthPeriod.end}` : 'Last complete month';
+            deltaColor = 'text-zinc-500 dark:text-zinc-400';
+          } else if (key === 'fcast' && fcastIsLive) {
+            // Attainment (the value) is volume vs plan; accuracy (1 - WAPE) is
+            // line-level closeness. Both are shown: 92% attainment can hide
+            // large offsetting misses that only accuracy reveals.
+            const f = liveData.forecastAccuracy!;
+            const bias = f.bias_pct * 100;
+            deltaText = `Accuracy ${(f.accuracy_pct * 100).toFixed(1)}% · bias ${bias >= 0 ? '+' : ''}${bias.toFixed(1)}%`;
+            deltaColor = Math.abs(bias) > 10 ? 'text-amber-500' : 'text-zinc-500 dark:text-zinc-400';
           } else if (key === 'rev') {
             deltaText = '▲ +8.4% vs last month';
             deltaColor = 'text-emerald-500';
@@ -1009,7 +1037,7 @@ export const VPCommandCenter: React.FC<{
 
       {/* Portfolio Health & Lifecycle Distribution */}
       <div id="vp-lifecycle-health" className="scroll-mt-16">
-        <LifecycleHealthPanel skusList={filteredSKUs} skuRevenueM={liveRevM} isDarkMode={isDarkMode} onSelectSku={setSelectedSkuForModal} onAuditClick={onAuditClick} />
+        <LifecycleHealthPanel skusList={filteredSKUs} skuRevenueM={liveRevM} skus={liveData.skus} skuSegments={liveData.skuSegments} isDarkMode={isDarkMode} onSelectSku={setSelectedSkuForModal} onAuditClick={onAuditClick} />
       </div>
 
       {/* Main Command Center Grid */}

@@ -14,6 +14,7 @@ import { RegionalChannelPerformance } from './RegionalChannelPerformance';
 import { ProductMixClustering } from './ProductMixClustering';
 
 import { TimelineRange } from '../../../utils/timeframe';
+import { useLiveData } from '../../../api/liveData';
 
 interface AssortmentOverviewProps {
   role: Role;
@@ -35,6 +36,19 @@ export const AssortmentOverview: React.FC<AssortmentOverviewProps> = ({ role, is
     yieldVal: '$3.02 M',
     cannibalization: '0.62'
   });
+
+  // Live since 8 Oct (TODO.md O18, thread 4): fn_assortment_summary. The
+  // typed per-timeframe table below is the offline sample only.
+  const live = useLiveData();
+  const summary = live.assortmentSummary;
+  const liveOverrides = summary ? {
+    density: `${summary.max_density} SKUs`,
+    burden: `${(summary.long_tail_share * 100).toFixed(1)}%`,
+    yieldVal: summary.gross_yield_per_sku >= 1e6
+      ? `$${(summary.gross_yield_per_sku / 1e6).toFixed(2)} M`
+      : `$${Math.round(summary.gross_yield_per_sku / 1e3)} K`,
+    cannibalization: summary.cannibalization_index.toFixed(2),
+  } : null;
 
   // Keep defaults in sync with global timeline picker changes
   React.useEffect(() => {
@@ -124,6 +138,9 @@ export const AssortmentOverview: React.FC<AssortmentOverviewProps> = ({ role, is
     yieldVal: string;
     cannibalizationVal: string;
   }) => {
+    // Live: the delist slider's header numbers come from typed coefficients
+    // (0.012 yield per SKU etc.), so they no longer overwrite live cards.
+    if (liveOverrides) return;
     setKpiOverrides({
       density: simValues.densityVal,
       burden: simValues.burdenVal,
@@ -159,7 +176,7 @@ export const AssortmentOverview: React.FC<AssortmentOverviewProps> = ({ role, is
       <AssortmentKPICards 
         role={role} 
         onAuditClick={onAuditClick} 
-        customValues={kpiOverrides} 
+        customValues={liveOverrides ?? kpiOverrides} 
       />
 
       {/* Sub-tab Selection Header */}

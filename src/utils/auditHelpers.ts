@@ -44,66 +44,17 @@ export const parseTrendData = (headers: string[], rows: string[][]) => {
   }
 };
 
-export const getConfidenceScore = (metric: string): number => {
-  let hash = 0;
-  for (let i = 0; i < metric.length; i++) {
-    hash = metric.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return 92 + (Math.abs(hash) % 7); // Returns 92 - 98
-};
-
-export const getMetricStatus = (metric: string) => {
+/**
+ * Flags metrics that measure a risk rather than a result, so the drawer can
+ * colour them differently.
+ *
+ * This used to label everything else 'OPTIMAL / ON-TRACK' — a performance claim
+ * made without comparing the metric to any target (TODO.md O17). It now returns
+ * null for those, and the drawer shows no badge, rather than asserting a verdict
+ * nothing computed. The surviving label is categorical ("this measures a risk"),
+ * not a statement that risk is currently elevated.
+ */
+export const getMetricStatus = (metric: string): { label: string } | null => {
   const riskMetrics = ['Critical Alerts', 'Long-Tail SKU Burden', 'Rationalize Candidates', 'Revenue Tail Risk', 'Peak Stockout Freq', 'Total Active Signals', 'Long-Tail Burden Ratio', 'Cannibalization Risk Index', 'Total Stockouts'];
-  const isRisk = riskMetrics.includes(metric);
-  return {
-    label: isRisk ? 'ELEVATED RISK' : 'OPTIMAL / ON-TRACK',
-    isRisk
-  };
-};
-
-export const getMetricTrend = (metricName: string) => {
-  switch (metricName) {
-    case 'Total Revenue':
-    case 'Revenue MTD':
-    case 'Portfolio Revenue':
-      return { value: '+8.4% vs last month', isUp: true };
-    case 'Gross Margin':
-    case 'Gross margin %':
-    case 'Avg Gross Margin':
-      return { value: '+1.1% MTD', isUp: true };
-    case 'Active SKUs':
-    case 'Portfolio SKUs':
-      return { value: '-3 SKUs MoM', isUp: false };
-    case 'Portfolio SKU Count':
-      return { value: '-3 SKUs rationalized', isUp: true };
-    case 'Revenue Growth':
-    case 'Growth Rate':
-      return { value: '-1.6pp vs target', isUp: false };
-    case 'Orders — Today':
-      return { value: '+12.3% vs yesterday', isUp: true };
-    case 'Forecast Attainment':
-      return { value: '-2.1pp vs target', isUp: false };
-    case 'Avg Lead Time':
-      return { value: '+2 days vs target', isUp: false };
-    case 'High-Value SKUs':
-      return { value: '+4 SKUs YoY', isUp: true };
-    case 'Critical Alerts':
-    case 'Total Active Signals':
-      return { value: '+2 Active Alerts', isUp: true };
-    case 'Assortment Density':
-      return { value: 'Max in Italy (102)', isUp: true };
-    case 'Long-Tail Burden Ratio':
-      return { value: '68 SKUs <1% rev', isUp: true };
-    case 'Assortment Gross Yield':
-      return { value: '-1.1% vs target', isUp: false };
-    case 'Cannibalization Risk Index':
-      return { value: 'High in Beverages', isUp: true };
-    case 'Shelf Productivity':
-      return { value: '-2.4% vs last month', isUp: false };
-    case 'Total Stockouts':
-    case 'Peak Stockout Freq.':
-      return { value: '440 events MTD', isUp: true };
-    default:
-      return { value: '+0.5% MoM', isUp: true };
-  }
+  return riskMetrics.includes(metric) ? { label: 'RISK METRIC' } : null;
 };

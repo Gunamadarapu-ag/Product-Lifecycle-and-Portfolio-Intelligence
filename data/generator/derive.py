@@ -242,3 +242,43 @@ def build_portfolio_metrics(fact: pd.DataFrame, m: pd.DataFrame, sku: pd.DataFra
         "avg_volatility_cv": avg_cv,
     }
     return pd.DataFrame([row])
+
+
+def build_rationalization_scenarios(m: pd.DataFrame, sku_supplier: pd.DataFrame) -> pd.DataFrame:
+    """
+    What removing each cohort of SKUs would do, computed from sku_metrics.
+
+    Before 7 Oct this table held a typed safety-stock figure per scenario and
+    zeros everywhere else. Cohorts: the lowest commercial-value 10/20/30% of
+    SKUs, and every SKU in the Rationalize segment.
+
+    supplier_reduction_pct is computed honestly and comes out 0: all 60
+    suppliers serve all SKUs (the documented absence of specialisation behind the
+    Supplier Fragmentation Index), so removing SKUs frees no supplier.
+    """
+    m = m.set_index("sku_id")
+    total_rev = m["total_net_sales"].sum()
+    total_gm = m["total_gross_margin"].sum()
+    total_ss = m["safety_stock_proxy"].sum()
+    gm_pct = total_gm / total_rev
+    all_sup = set(sku_supplier["supplier_id"])
+    by_value = m.sort_values("commercial_value_score").index
+
+    rows = []
+    for sid, label, pct in C.RATIONALIZATION_SCENARIOS:
+        if pct is None:
+            removed = m.index[m["portfolio_segment"] == "Rationalize"]
+        else:
+            removed = by_value[: int(round(len(m) * pct))]
+        keep = m.index.difference(removed)
+        rev_after = m.loc[keep, "total_net_sales"].sum()
+        gm_after = m.loc[keep, "total_gross_margin"].sum()
+        still = set(sku_supplier.loc[sku_supplier["sku_id"].isin(keep), "supplier_id"])
+        rows.append({
+            "scenario_id": sid, "scenario_label": label, "skus_removed": len(removed),
+            "revenue_impact_pct": round(float(-(total_rev - rev_after) / total_rev), 4),
+            "margin_impact_pct": round(float(gm_after / rev_after - gm_pct), 4),
+            "safety_stock_freed_pct": round(float(m.loc[removed, "safety_stock_proxy"].sum() / total_ss), 4),
+            "supplier_reduction_pct": round(float(len(all_sup - still) / len(all_sup)), 4),
+        })
+    return pd.DataFrame(rows)

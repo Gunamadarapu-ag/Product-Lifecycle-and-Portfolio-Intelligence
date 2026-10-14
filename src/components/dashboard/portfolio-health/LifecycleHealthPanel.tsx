@@ -5,6 +5,7 @@
  */
 import React, { useState } from 'react';
 import { TrendingUp, TrendingDown } from 'lucide-react';
+import type { SkuPerformance, SkuSegment } from '../../../api/liveData';
 
 // SKUS[].rev totals $10,608M against real net sales of $473M (TODO.md O1) — a
 // ~22.43x inflation. The Introduction-stage cutoff was authored against the old
@@ -13,6 +14,38 @@ import { TrendingUp, TrendingDown } from 'lucide-react';
 const REV_SCALE_FACTOR = 10608 / 473;
 const INTRO_REV_THRESHOLD_M = 100;
 const INTRO_REV_THRESHOLD_REAL_M = INTRO_REV_THRESHOLD_M / REV_SCALE_FACTOR;
+
+/**
+ * Substitutes live growth, margin, complexity and stockouts into the typed
+ * SKUS shape (TODO.md O18, thread 1) so calculatePortfolioHealth's existing
+ * classification and scoring run unchanged over live inputs — growth/margin
+ * from fn_sku_performance (windowed), complexity/stockouts from fn_sku_segments
+ * (a snapshot; see its comment in 03_derive_metrics.sql for why). Falls back
+ * to the typed field per SKU if either source is missing it (e.g. growth_pct
+ * is null with no full prior window).
+ */
+export const liveSkusList = (
+  skusList: any[], skus?: SkuPerformance[], skuSegments?: SkuSegment[]
+): any[] => {
+  if (!skus || !skuSegments) return skusList;
+  const perf = new Map(skus.map(s => [s.sku_name, s]));
+  const seg = new Map(skuSegments.map(s => [s.sku_name, s]));
+  return skusList.map(s => {
+    const p = perf.get(s.name);
+    const g = seg.get(s.name);
+    if (!p || !g) return s;
+    return {
+      ...s,
+      growth: p.growth_pct ?? s.growth,
+      margin: p.gross_margin_pct != null ? p.gross_margin_pct * 100 : s.margin,
+      cx: g.operational_complexity_score,
+      // A rate, not a count: stockout_events grows with the window and the
+      // SKU's row count, so a raw count saturates the penalty below for
+      // every SKU. See calculatePortfolioHealth for the rate -> penalty map.
+      stockoutRatePct: p.transactions ? (100 * p.stockout_events) / p.transactions : undefined,
+    };
+  });
+};
 
 export const getLifecycleStage = (growth: number, margin: number, rev: number, isLiveRev = false) => {
   if (growth < 0) return 'Decline';
@@ -44,7 +77,13 @@ export const calculatePortfolioHealth = (skusList: any[], revenueM?: Record<stri
       marginRev: 0,
       declineRev: 0,
       totalRev: 0,
-      list: { intro: [], growth: [], margin: [], decline: [] } 
+      list: { intro: [], growth: [], margin: [], decline: [] },
+      factors: {
+        positiveTrend: { label: 'Healthy lifecycle mix', value: 0, weight: 0.45, points: 0 },
+        margin: { label: 'Gross margin', value: 0, weight: 0.35, points: 0 },
+        complexity: { label: 'Complexity (inverted)', value: 0, weight: 0.10, points: 0 },
+        stockouts: { label: 'Stockout rate (inverted)', value: 0, weight: 0.10, points: 0 },
+      },
     };
   }
   
@@ -99,9 +138,14 @@ export const calculatePortfolioHealth = (skusList: any[], revenueM?: Record<stri
   const pciScore = (avgComplexity * 0.8 + (avgMargin >= 35 ? 0.2 : 0.4)) / 1.2;
   const complexityPenalty = pciScore * 25;
   
-  // Stockouts penalty
-  const avgStockouts = totalStockouts / skusList.length;
-  const stockoutPenalty = Math.min(15, avgStockouts * 3);
+  // Stockouts penalty. Live: 1 point per percentage point of the average
+  // SKU stockout rate (stockout rows / transaction rows), capped at 15 — a
+  // 15% average rate is already a supply crisis. Offline: the typed per-SKU
+  // counts (1-5) keep their original ×3 mapping, same cap.
+  const rates = skusList.map(s => s.stockoutRatePct).filter((r): r is number => typeof r === 'number');
+  const stockoutPenalty = rates.length === skusList.length
+    ? Math.min(15, rates.reduce((a, b) => a + b, 0) / rates.length)
+    : Math.min(15, (totalStockouts / skusList.length) * 3);
   
   const positiveTrendPct = ((introCount + growthCount + marginCount) / skusList.length) * 100;
   const marginFactor = Math.min(100, (avgMargin / 40) * 100);
@@ -115,7 +159,7 @@ export const calculatePortfolioHealth = (skusList: any[], revenueM?: Record<stri
   
   const finalScore = Math.max(0, Math.min(100, score));
   const totalRev = skusList.reduce((sum, s) => sum + revOf(s), 0) || 1;
-  
+
   return {
     score: finalScore,
     intro: introCount,
@@ -132,7 +176,18 @@ export const calculatePortfolioHealth = (skusList: any[], revenueM?: Record<stri
       growth: growthSKUs,
       margin: marginSKUs,
       decline: declineSKUs
-    }
+    },
+    // The score's 4 weighted components, for the audit-drawer explanation
+    // (TODO.md O17). `value` is the raw factor before weighting; `points` is
+    // what it actually contributes to the 0-100 score. The weights (45/35/10/10)
+    // and the two penalty constants (×25, cap 15/×3 above) are a judgment
+    // call, not a statistical fit — say so wherever this is displayed.
+    factors: {
+      positiveTrend: { label: 'Healthy lifecycle mix', value: positiveTrendPct, weight: 0.45, points: positiveTrendPct * 0.45 },
+      margin: { label: 'Gross margin', value: marginFactor, weight: 0.35, points: marginFactor * 0.35 },
+      complexity: { label: 'Complexity (inverted)', value: 100 - complexityPenalty, weight: 0.10, points: (100 - complexityPenalty) * 0.10 },
+      stockouts: { label: 'Stockout rate (inverted)', value: 100 - stockoutPenalty, weight: 0.10, points: (100 - stockoutPenalty) * 0.10 },
+    },
   };
 };
 
@@ -140,13 +195,17 @@ export interface LifecycleHealthPanelProps {
   skusList: any[];
   /** Real net sales in $M by SKU name; omit to fall back to the built-in figures. */
   skuRevenueM?: Record<string, number>;
+  /** Live growth/margin (windowed) — see liveSkusList. Omit to fall back. */
+  skus?: SkuPerformance[];
+  /** Live complexity/stockouts (snapshot) — see liveSkusList. Omit to fall back. */
+  skuSegments?: SkuSegment[];
   isDarkMode: boolean;
   onSelectSku?: (sku: any) => void;
   onAuditClick?: (metric: string) => void;
 }
 
-export const LifecycleHealthPanel: React.FC<LifecycleHealthPanelProps> = ({ skusList, skuRevenueM, isDarkMode, onSelectSku, onAuditClick }) => {
-  const data = calculatePortfolioHealth(skusList, skuRevenueM);
+export const LifecycleHealthPanel: React.FC<LifecycleHealthPanelProps> = ({ skusList, skuRevenueM, skus, skuSegments, isDarkMode, onSelectSku, onAuditClick }) => {
+  const data = calculatePortfolioHealth(liveSkusList(skusList, skus, skuSegments), skuRevenueM);
   
   // Circular progress ring setup
   const radius = 54;

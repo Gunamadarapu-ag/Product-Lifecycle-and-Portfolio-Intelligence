@@ -62,29 +62,68 @@ def allocate_targets(sku: pd.DataFrame, countries: pd.DataFrame,
     # Normalise within country so each market's share is exact.
     combos["weight"] /= combos.groupby("country_id")["weight"].transform("sum")
     # TOTAL_NET_SALES spans both years; $473M alone is the annual figure.
+    # target_revenue still drives trading activity, so the day draws (and the
+    # main random stream) are unchanged by the per-year targets below.
     combos["target_revenue"] = (
         combos["weight"] * combos["country_share"] * C.TOTAL_NET_SALES
+    )
+    # The headline year carries the Pareto curve and the country split exactly.
+    combos["target_2025"] = (
+        combos["weight"] * combos["country_share"] * C.ANNUAL_NET_SALES
     )
     return combos.drop(columns=["weight", "country_share"])
 
 
-def sku_stockout_targets(sku: pd.DataFrame) -> pd.Series:
+def attach_base_year(combos: pd.DataFrame, sku: pd.DataFrame,
+                     launches: pd.DataFrame) -> tuple[pd.DataFrame, float]:
+    """
+    Give each combination its own 2024 target from its SKU's growth.
+
+    Growth is solved at SKU level (lifecycle.solve_growth) and applied to every
+    market the SKU trades in, so a SKU grows at the same rate everywhere.
+    """
+    import lifecycle  # local: lifecycle imports config only, no cycle
+
+    rev_sku = combos.groupby("sku_id")["target_2025"].sum()
+    base_sku, scale = lifecycle.solve_growth(rev_sku, sku, launches)
+    ratio = (base_sku / rev_sku).fillna(0.0)
+    combos = combos.copy()
+    combos["target_2024"] = combos["target_2025"] * combos["sku_id"].map(ratio)
+    return combos, scale
+
+
+def sku_stockout_targets(sku: pd.DataFrame, rows: pd.Series | None = None) -> pd.Series:
     """
     Per-SKU stockout counts summing to TOTAL_STOCKOUTS with two SKUs at the peak.
 
     Solves the exponent of a power transform on the seed stockout weights so both
     the total and the maximum land on target, rather than leaving either to chance.
+
+    `rows` (sales days per SKU) makes the weight propensity × exposure. Without
+    it, a low-activity SKU received the same count as a high-volume one and
+    saturated: before 7 Oct, Fabric Softener stocked out on 378 of its 378 sales
+    days. Counts are also capped at STOCKOUT_MAX_RATE of a SKU's rows; the cap is
+    applied inside the solve, so the total still lands on target.
     """
     w = sku["seed_stockouts"].to_numpy(dtype=float)
     w = np.maximum(w, 0.5)
+    cap = None
+    if rows is not None:
+        r = rows.reindex(sku["sku_id"].to_numpy()).fillna(0).to_numpy(dtype=float)
+        w = w * r
+        cap = np.floor(C.STOCKOUT_MAX_RATE * r)
 
     # Force a tie at the top: the two highest weights are levelled.
     order = np.argsort(-w)
     w[order[1]] = w[order[0]]
     wmax = w.max()
 
+    def raw_counts(gamma: float) -> np.ndarray:
+        c = np.round(C.PEAK_SKU_STOCKOUTS * (w / wmax) ** gamma)
+        return np.minimum(c, cap) if cap is not None else c
+
     def total_for(gamma: float) -> float:
-        return float(np.round(C.PEAK_SKU_STOCKOUTS * (w / wmax) ** gamma).sum())
+        return float(raw_counts(gamma).sum())
 
     lo, hi = 0.05, 8.0
     for _ in range(80):
@@ -95,15 +134,21 @@ def sku_stockout_targets(sku: pd.DataFrame) -> pd.Series:
             hi = mid
     gamma = (lo + hi) / 2.0
 
-    counts = np.round(C.PEAK_SKU_STOCKOUTS * (w / wmax) ** gamma).astype(int)
+    counts = raw_counts(gamma).astype(int)
 
-    # Absorb the rounding residual into mid-ranked SKUs so the peak stays put.
+    # Absorb the rounding residual into mid-ranked SKUs so the peak stays put,
+    # skipping any SKU already at its rate cap.
     diff = C.TOTAL_STOCKOUTS - int(counts.sum())
     if diff != 0:
         mid_idx = order[len(order) // 4 : 3 * len(order) // 4]
         step = 1 if diff > 0 else -1
-        for i in range(abs(diff)):
-            counts[mid_idx[i % len(mid_idx)]] += step
+        i = 0
+        while diff != 0 and i < 50 * len(mid_idx):
+            k = mid_idx[i % len(mid_idx)]
+            if step < 0 or cap is None or counts[k] < cap[k]:
+                counts[k] += step
+                diff -= step
+            i += 1
     counts = np.maximum(counts, 0)
 
     return pd.Series(counts, index=sku["sku_id"].to_numpy())
@@ -140,17 +185,31 @@ def sku_promo_dependency(sku: pd.DataFrame) -> pd.Series:
 
 
 def generate(sku: pd.DataFrame, dims: dict[str, pd.DataFrame],
-             rng: np.random.Generator) -> pd.DataFrame:
+             rng: np.random.Generator, launches: pd.DataFrame,
+             rng_price: np.random.Generator) -> tuple[pd.DataFrame, dict]:
+    """
+    Returns fact_sales and the extras built alongside it: the list-price paths
+    (exported as fact_price), the per-SKU elasticity and the growth shift (both
+    generation-only, reported by validation).
+    """
+    import pricing  # local: pricing imports config only, no cycle
+
     countries, channels = dims["dim_country"], dims["dim_channel"]
     cal = dims["dim_date"]
 
     combos = allocate_targets(sku, countries, channels)
-    stock_target = sku_stockout_targets(sku)
+    combos, growth_scale = attach_base_year(combos, sku, launches)
     promo_dep = sku_promo_dependency(sku)
+
+    paths = pricing.build_price_paths(sku, countries, combos, rng_price)
+    elasticity = pricing.build_elasticity(sku, rng_price)
+    price_of = pricing.price_lookup(paths)
+    launch_at = dict(zip(launches["sku_id"].to_numpy(),
+                         launches["launch_date"].to_numpy(dtype="datetime64[D]")))
+    in_window = set(launches.loc[launches["launch_year_in_window"].notna(), "sku_id"])
 
     # Per-SKU lookups
     s = sku.set_index("sku_id")
-    price = s["base_price"]
     cost = s["purchase_cost"]
     lead = s["lead_time_days"]
     profile = s["seasonality_profile"]
@@ -230,48 +289,74 @@ def generate(sku: pd.DataFrame, dims: dict[str, pd.DataFrame],
         intensity = np.where(
             promo, rng.choice([0.2, 0.5, 1.0], size=n_active, p=[0.45, 0.35, 0.20]), 0.0
         )
-        eff_price = price[k] * (1.0 - disc[k] * intensity)
-        shape = shape * np.where(promo, lift[k], 1.0)
+        # Drawn here, on every drawn day, so the stream is identical whether or
+        # not some of these days are later dropped as pre-launch.
+        lead_draw = rng.normal(0, 0.6, n_active)
 
-        # Scale each year separately so the year-on-year ratio is exact rather
-        # than an artefact of which days happened to be drawn.
+        # List price in force on each day; demand responds to it relative to the
+        # combination's opening price, so the country index itself moves units
+        # only through the revenue solve, not through elasticity.
+        starts, list_prices = price_of[(k, row.country_id)]
+        day = dates[idx].astype("datetime64[D]")
+        list_p = list_prices[np.searchsorted(starts, day, side="right") - 1]
+        eff_price = list_p * (1.0 - disc[k] * intensity)
+        shape = shape * np.where(promo, lift[k], 1.0)
+        shape = shape * (list_p / list_prices[0]) ** elasticity[k]
+
+        # In-window launches: no sales before launch, and a ramp to full run-rate.
+        keep = day >= launch_at[k]
+        if k in in_window:
+            age = (day - launch_at[k]).astype(float)
+            shape = shape * np.clip(0.4 + 0.6 * age / C.LAUNCH_RAMP_DAYS, 0.4, 1.0)
+
+        # Scale each year separately so every SKU's year-on-year ratio is its
+        # own growth (lifecycle.solve_growth), exactly, rather than an artefact
+        # of which days happened to be drawn.
         is_base = years[idx] == C.BASE_YEAR
         units = np.zeros(n_active, dtype=np.int64)
-        for mask, frac in (
-            (is_base, C.BASE_YEAR_NET_SALES / C.TOTAL_NET_SALES),
-            (~is_base, C.ANNUAL_NET_SALES / C.TOTAL_NET_SALES),
+        for mask, target in (
+            (is_base & keep, row.target_2024),
+            (~is_base & keep, row.target_2025),
         ):
-            if not mask.any():
+            if not mask.any() or target <= 0:
                 continue
             denom = float((shape[mask] * eff_price[mask]).sum())
             if denom <= 0:
                 continue
             units[mask] = np.maximum(
-                1, np.round(shape[mask] * (row.target_revenue * frac / denom))
+                1, np.round(shape[mask] * (target / denom))
             ).astype(np.int64)
         net = np.round(units * eff_price, 2)
 
+        # A day can survive the launch filter yet sit in a year whose target is
+        # zero (a 2025 launch has no 2024 target); it carries no sale, so drop it.
+        keep = keep & (units > 0)
         out_frames.append(
             pd.DataFrame({
-                "date_key": dates[idx],
+                "date_key": dates[idx][keep],
                 "sku_id": k,
                 "country_id": row.country_id,
                 "channel_id": row.channel_id,
                 "supplier_id": supplier[k],
-                "units_sold": units,
-                "net_sales": net,
+                "units_sold": units[keep],
+                "net_sales": net[keep],
                 "purchase_cost": cost[k],
-                "promo_flag": intensity,
+                "promo_flag": intensity[keep],
                 "stock_out_flag": 0,
                 "lead_time_days": np.round(
-                    np.clip(lead[k] + rng.normal(0, 0.6, n_active), 1.0, 60.0), 2
+                    np.clip(lead[k] + lead_draw[keep], 1.0, 60.0), 2
                 ),
             })
         )
 
     fact = pd.concat(out_frames, ignore_index=True)
+    # Stockout targets need each SKU's real sales days (exposure), which only
+    # exist now that the rows are drawn. sku_stockout_targets uses no random
+    # draws, so recomputing here leaves the main stream unchanged.
+    stock_target = sku_stockout_targets(sku, fact.groupby("sku_id").size())
     fact = _assign_stockouts(fact, stock_target, channels, rng)
-    return fact
+    return fact, {"price_paths": paths, "elasticity": elasticity,
+                  "growth_scale": growth_scale}
 
 
 def _assign_stockouts(fact: pd.DataFrame, target: pd.Series,

@@ -9,6 +9,18 @@ import { Bar } from 'recharts';
 import { Role } from '../../../types/dashboard';
 import { VPSignalsBoardView } from './VPSignalsBoardView';
 import { InboxMessage, Signal, skuComparisonData } from './signalsData';
+import { useLiveData } from '../../../api/liveData';
+
+/** PM-only panels with no data source (8 Oct, thread 6) — see VPSignalsBoardView's OutOfScopePanel. */
+const PmOutOfScope: React.FC<{ id: string; title: string; reason: string }> = ({ id, title, reason }) => (
+  <div id={id} className="glass-card bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-5 rounded-sm shadow-sm space-y-2">
+    <div className="flex justify-between items-center pb-2 border-b border-black/5 dark:border-white/5">
+      <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">{title}</span>
+      <span className="text-[8px] font-bold uppercase tracking-wider text-zinc-400 bg-black/5 dark:bg-white/10 px-2 py-0.5 rounded-full">No data source</span>
+    </div>
+    <p className="text-[10px] text-zinc-500 dark:text-zinc-400 leading-relaxed">{reason}</p>
+  </div>
+);
 
 export interface SignalsBoardProps {
   role: Role;
@@ -18,6 +30,10 @@ export interface SignalsBoardProps {
 }
 
 export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, isDarkMode, onExploreToggle }) => {
+  // Live: the competitor console and SKU tracker run on typed rival prices
+  // (Lay's / Frito Balaji, in rupees) and hand-written demand models. With the
+  // warehouse connected they give way to a plain statement instead.
+  const isLive = useLiveData().status === 'live';
   if (role === 'VP Product Management') {
     return <VPSignalsBoardView isDarkMode={isDarkMode} setActiveTab={setActiveTab} onExploreToggle={onExploreToggle} />;
   }
@@ -365,7 +381,14 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
       </div>
 
       {/* Competitor Analysis Decision Console Block (Only for Product Manager) */}
-      {role === 'Product Manager' && (
+      {role === 'Product Manager' && isLive && (
+        <PmOutOfScope
+          id="sig-competitor-console"
+          title="Competitor Analysis Decision Console"
+          reason="Roadmap (7 Oct decision). The four engines (PromoAI, PricingAI, CompeteAI, BundleAI) ran on hand-typed demand curves and rival prices, not on this dataset. Promotion and pricing what-ifs on real data live in Profitability (tab 3); competitor benchmarks need a client or third-party feed."
+        />
+      )}
+      {role === 'Product Manager' && !isLive && (
         <div id="sig-competitor-console" className="glass-card bg-white dark:bg-[#0b1329] border border-black/10 dark:border-[#1e294b] p-6 rounded-sm shadow-xl space-y-6 text-zinc-800 dark:text-slate-100">
           <div>
             <span className="text-[8px] font-extrabold uppercase tracking-widest text-amber-600 dark:text-amber-500">Try It Yourself</span>
@@ -900,7 +923,14 @@ export const SignalsBoard: React.FC<SignalsBoardProps> = ({ role, setActiveTab, 
       {/* VP Signals Board Section for Product Manager */}
 
       {/* Separate Competitor SKU Tracking Block (Only for Product Manager) */}
-      {role === 'Product Manager' && (
+      {role === 'Product Manager' && isLive && (
+        <PmOutOfScope
+          id="sig-competitor-tracker"
+          title="Competitor SKU Tracking Console"
+          reason="Competitor shelf prices, promotions and availability need an external feed (planned via client APIs, 7 Oct decision). No competitor data is generated, so none is shown."
+        />
+      )}
+      {role === 'Product Manager' && !isLive && (
         <div id="sig-competitor-tracker" className="glass-card bg-white dark:bg-[#0b1329] border border-black/10 dark:border-[#1e294b] p-6 rounded-sm shadow-xl space-y-6 text-zinc-800 dark:text-slate-100">
           
           <div className="pb-3 border-b border-black/10 dark:border-[#1e294b] flex items-center justify-between">

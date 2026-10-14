@@ -9,6 +9,7 @@ import { LAYER } from '../../constants/layers';
 import { useDialogBehavior } from '../../hooks/useDialogBehavior';
 import { Zap, ChevronRight } from 'lucide-react';
 import { AGENT_ROSTER } from '../../constants/data';
+import { useLiveData } from '../../api/liveData';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -20,6 +21,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, close }) => {
   // AnimatePresence markup — a centring ModalShell would nest the sliding
   // aside inside the scrim and lose the spring exit.
   useDialogBehavior(isOpen, close);
+  // The "Full Rationalize" scenario from the warehouse (rationalization_scenario,
+  // a snapshot) replaces the old 35-SKU / $246M figures when the API is up.
+  const full = useLiveData().rationalizationScenarios?.find(s => s.scenario_label === 'Full Rationalize');
 
   return (
   <>
@@ -85,8 +89,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, close }) => {
           </div>
           <div className="pl-9 border-l border-acies-yellow/30">
             <p className="text-sm opacity-70 leading-relaxed mb-4">
-              Automated SKU tracking identifies "Rationalize" candidates. Removing these 35 items cuts safety stock by 42.2% 
-              ($246M &rarr; $142M) with minimal revenue risk.
+              {full
+                ? `Automated SKU tracking identifies "Rationalize" candidates. Removing all ${full.skus_removed} cuts the safety-stock proxy by ${(full.safety_stock_freed_pct * 100).toFixed(1)}% at a revenue cost of ${(Math.abs(full.revenue_impact_pct) * 100).toFixed(1)}%, before any demand transfers to remaining SKUs.`
+                : <>Automated SKU tracking identifies "Rationalize" candidates. Removing these 35 items cuts safety stock by 42.2% ($246M &rarr; $142M) with minimal revenue risk.</>}
             </p>
             <div className="bg-acies-yellow/10 p-4 border-l-2 border-acies-yellow">
                <p className="text-[10px] font-bold text-acies-gray dark:text-white uppercase mb-1">Efficiency Gain</p>
@@ -105,8 +110,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, close }) => {
               <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-white">Agentic Swarm (Future)</h3>
             </div>
             <p className="text-sm opacity-90 leading-relaxed mb-10 relative z-10">
-              Agentic simulations target top 12% revenue drivers for 68% portfolio margin uplift. Orchestrated 
-              workflows autonomously prune low-performing categories like Dairy (27.78% friction).
+              Roadmap: agents that watch the same signals this dashboard computes, propose actions and run the
+              what-ifs automatically, with a person approving each change.
             </p>
             
             <div className="space-y-4 relative z-10">

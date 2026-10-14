@@ -2,19 +2,30 @@
  * Launch pipeline reference data, stage-gate seeding and small formatters.
  *
  * Extracted verbatim from the 2,661-line VPLaunchReadinessView.tsx.
+ *
+ * Since 8 Oct the screens read the warehouse (fn_launches / fn_launch_gates,
+ * via useLiveData) through toLaunchProducts / toStageGates below. VP_PRODUCTS
+ * and generateInitialStageGates remain only as the offline sample.
  */
+import type { LiveLaunch, LiveLaunchGate } from '../../../api/liveData';
 
 export interface StageGateRecord {
   stageName: 'Concept' | 'Development' | 'Validation' | 'Launch Ready' | 'Live';
   gateName: string;
   reviewer: string;
   reviewDate: string;
-  status: 'Passed' | 'Failed' | 'Waived' | 'Pending';
+  /** 'Overdue' is live-only: due date passed, gate not completed (launch_gate). */
+  status: GateStatus;
   riskRating: 'No Risk' | 'High Risk' | 'Medium/High Risk' | 'Attention Required';
   approvalNotes: string;
   supportingDocs: string[];
   auditTrail: { timestamp: string; action: string; user: string }[];
 }
+
+export type GateStatus = 'Passed' | 'Failed' | 'Waived' | 'Pending' | 'Overdue';
+
+/** A gate that is blocking the launch: failed (sample) or overdue (live). */
+export const isBlockingGate = (s: GateStatus) => s === 'Failed' || s === 'Overdue';
 
 export interface ProductStageGates {
   productId: string;
@@ -190,7 +201,7 @@ export const VP_PRODUCTS: VPLaunchProduct[] = [
   { id: 'LP25', name: 'BrandC Chocolate Oats', category: 'Snacks', brand: 'BrandC', region: 'Americas', stage: 'Pre-market', quarter: 'Q4 2026', readiness: 48, risk: 'High', revExposure: 2.1, budget: 1.5, spent: 0.8, owner: 'Lisa R.' }
 ];
 
-export const getHexagonStyles = (status: 'Passed' | 'Failed' | 'Waived' | 'Pending', isCurrentPending: boolean, isDarkMode: boolean) => {
+export const getHexagonStyles = (status: GateStatus, isCurrentPending: boolean, isDarkMode: boolean) => {
   if (status === 'Passed') {
     return {
       fill: isDarkMode ? 'rgba(74, 222, 128, 0.15)' : '#c6e8b3',
@@ -198,7 +209,7 @@ export const getHexagonStyles = (status: 'Passed' | 'Failed' | 'Waived' | 'Pendi
       text: isDarkMode ? '#4ade80' : '#4b852f',
     };
   }
-  if (status === 'Failed') {
+  if (isBlockingGate(status)) {
     return {
       fill: isDarkMode ? 'rgba(239, 68, 68, 0.15)' : '#fecaca',
       stroke: isDarkMode ? '#f87171' : '#dc2626',
@@ -237,3 +248,78 @@ export const formatReviewerName = (name: string) => {
   }
   return `${firstName} ${lastName[0]}.`;
 };
+
+// ── Live adapters (8 Oct) ────────────────────────────────────────────────────
+// The database has 6 gates; the screens draw 5 stages. Concept and Business
+// case share the first stage. No arithmetic beyond unit conversion happens
+// here — readiness, risk and revenue figures all come from fn_launches.
+
+const UI_STAGE_FOR_GATE: Record<string, StageGateRecord['stageName']> = {
+  'Concept': 'Concept', 'Business case': 'Concept', 'Development': 'Development',
+  'Consumer testing': 'Validation', 'Launch readiness': 'Launch Ready', 'Launch': 'Live',
+};
+
+const PIPELINE_STAGE: Record<string, VPLaunchProduct['stage']> = {
+  'Concept': 'Ideation', 'Business case': 'Ideation', 'Development': 'Development',
+  'Consumer testing': 'Testing', 'Launch readiness': 'Pre-market', 'Launch': 'Launch',
+};
+
+const quarterOf = (iso: string) => {
+  const [y, m] = iso.split('-').map(Number);
+  return `Q${Math.ceil(m / 3)} ${y}`;
+};
+
+/** Pipeline launches only — launched SKUs have no readiness left to manage. */
+export const toLaunchProducts = (launches: LiveLaunch[]): VPLaunchProduct[] =>
+  launches.filter(l => l.sku_id === null).map(l => ({
+    id: l.launch_id,
+    name: l.product_name,
+    category: l.category_name,
+    brand: l.brand_name,
+    region: l.lead_region,
+    stage: PIPELINE_STAGE[l.stage] ?? 'Launch',
+    quarter: quarterOf(l.planned_launch_date),
+    readiness: Math.round(l.readiness_pct * 100),
+    risk: l.risk_level,
+    revExposure: l.expected_year1_revenue_usd / 1e6,
+    budget: l.budget_usd / 1e6,
+    spent: l.spent_usd / 1e6,
+    owner: l.owner_role,
+  }));
+
+export const toStageGates = (products: VPLaunchProduct[], gates: LiveLaunchGate[]): ProductStageGates[] =>
+  products.map(p => {
+    const mine = gates.filter(g => g.launch_id === p.id);
+    return {
+      productId: p.id, productName: p.name, category: p.category,
+      region: p.region, brand: p.brand, owner: p.owner,
+      gates: STAGE_NAMES.map(stageName => {
+        const src = mine.filter(g => UI_STAGE_FOR_GATE[g.gate_name] === stageName);
+        const overdue = src.find(g => g.status === 'Overdue');
+        const allDone = src.length > 0 && src.every(g => g.status === 'Completed');
+        const status: GateStatus = overdue ? 'Overdue' : allDone ? 'Passed' : 'Pending';
+        const last = src[src.length - 1];
+        const names = src.map(g => g.gate_name).join(' + ');
+        const reviewDate = overdue ? overdue.due_date
+          : allDone ? (last.completed_date ?? last.due_date) : (last?.due_date ?? '--');
+        const approvalNotes = overdue
+          ? `OVERDUE: ${overdue.gate_name} gate was due ${overdue.due_date} and is not complete (launch_gate).`
+          : allDone ? `${names} completed ${src.map(g => g.completed_date).join(', ')}.`
+          : `${names}: scheduled, due ${src.map(g => g.due_date).join(', ')}.`;
+        return {
+          stageName,
+          gateName: names,
+          reviewer: src.map(g => g.reviewer_role).join(' / '),
+          reviewDate,
+          status,
+          riskRating: status === 'Overdue' ? 'High Risk' : status === 'Passed' ? 'No Risk' : 'Attention Required',
+          approvalNotes,
+          supportingDocs: [],
+          auditTrail: src.flatMap(g => [
+            { timestamp: g.due_date, action: `${g.gate_name} gate due (weight ${(g.weight * 100).toFixed(0)}%)`, user: g.reviewer_role },
+            ...(g.completed_date ? [{ timestamp: g.completed_date, action: `${g.gate_name} completed`, user: g.reviewer_role }] : []),
+          ]),
+        };
+      }),
+    };
+  });

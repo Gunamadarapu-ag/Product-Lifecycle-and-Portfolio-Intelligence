@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Zap, Info, FileSearch } from 'lucide-react';
 import { Role } from '../../../types/dashboard';
 import { ResponsiveContainer, AreaChart, Area, YAxis } from 'recharts';
+import { useLiveData } from '../../../api/liveData';
 
 interface AssortmentKPICardsProps {
   role: Role;
@@ -31,6 +32,7 @@ interface AssortmentKPI {
 export const AssortmentKPICards: React.FC<AssortmentKPICardsProps> = ({ role, onAuditClick, customValues }) => {
   const [hoveredCardIdx, setHoveredCardIdx] = useState<number | null>(null);
   const [showTooltipIdx, setShowTooltipIdx] = useState<number | null>(null);
+  const s = useLiveData().assortmentSummary;
 
   const kpis: AssortmentKPI[] = [
     {
@@ -84,6 +86,37 @@ export const AssortmentKPICards: React.FC<AssortmentKPICardsProps> = ({ role, on
       action: 'Synchronize promo calendars and bundle competing lines to capture incremental sales.'
     }
   ];
+
+  // Live (fn_assortment_summary): replace trend text, hover text, the
+  // invented targets and the drawn histories. Values arrive via customValues.
+  if (s) {
+    const flat = (v: number) => Array(8).fill(v);
+    const live: Record<string, Partial<AssortmentKPI>> = {
+      'Assortment Density': {
+        trend: 'neutral', trendValue: `Max in ${s.max_density_country}; ${s.active_skus} SKUs selling`,
+        target: '—', hist: flat(s.max_density),
+        soWhat: `${s.max_density_country} sells all ${s.max_density} of its SKUs; ${s.listed_never_sold} listings across markets have never sold.`,
+        action: 'Review the listed-never-sold lines first: they carry listing cost with no revenue.',
+      },
+      'Long-Tail Burden Ratio': {
+        trendValue: `${s.long_tail_skus} SKUs <1% rev`, target: '—', hist: flat(s.long_tail_share * 100),
+        soWhat: `${s.long_tail_skus} of ${s.active_skus} SKUs each bring in under 1% of revenue in this window. With ${s.active_skus} SKUs the average share is ${(100 / s.active_skus).toFixed(2)}%, so most SKUs fall under 1% by arithmetic alone.`,
+        action: 'Read with the Rationalize segment: long-tail AND high-complexity SKUs are the real candidates.',
+      },
+      'Assortment Gross Yield': {
+        trend: 'neutral', trendValue: 'Gross margin per selling SKU', target: '—', hist: flat(s.gross_yield_per_sku / 1e6),
+        soWhat: `Each selling SKU earned $${(s.gross_yield_per_sku / 1e6).toFixed(2)}M gross margin on average in this window.`,
+        action: 'Compare with the Rationalize segment\'s yield before removing SKUs.',
+      },
+      'Cannibalization Risk Index': {
+        trendValue: `${s.cannibalization_pairs} pairs; most in ${s.top_cannibalization_category} (snapshot)`, target: '—',
+        hist: flat(s.cannibalization_index),
+        soWhat: `${s.cannibalization_pairs} SKU pairs show a significant negative promo-to-units correlation, averaging ${s.cannibalization_index.toFixed(2)}. ${s.top_cannibalization_category} has the most.`,
+        action: 'Stagger promotions within the most-affected category.',
+      },
+    };
+    kpis.forEach((k, i) => { if (live[k.label]) kpis[i] = { ...k, ...live[k.label] }; });
+  }
 
   const getTrendColor = (kpi: AssortmentKPI) => {
     if (kpi.trend === 'neutral') return 'text-zinc-500 dark:text-zinc-400';

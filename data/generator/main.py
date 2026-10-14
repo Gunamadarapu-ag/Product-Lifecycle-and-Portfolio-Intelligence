@@ -23,6 +23,14 @@ import config as C  # noqa: E402
 import demand  # noqa: E402
 import derive  # noqa: E402
 import dimensions  # noqa: E402
+import lifecycle  # noqa: E402
+import costs as cost_model  # noqa: E402
+import customers as customer_model  # noqa: E402
+import forecast as forecast_model  # noqa: E402
+import inventory as inventory_model  # noqa: E402
+import launches as launch_model  # noqa: E402
+import listing as listing_model  # noqa: E402
+import plan as plan_model  # noqa: E402
 import sku_master  # noqa: E402
 import validate  # noqa: E402
 
@@ -51,12 +59,23 @@ def main() -> int:
     sku_supplier = sku_master.build_sku_supplier(sku, rng)
     print(f"  sku master      {len(sku)} SKUs, {len(sku_supplier):,} supplier links")
 
+    def stream(name: str) -> np.random.Generator:
+        # Separate streams for 7 Oct additions; see config.STREAM.
+        return np.random.default_rng([C.SEED, C.STREAM[name]])
+
+    launches = lifecycle.assign_launch_dates(sku, stream("lifecycle"))
+    sku = sku.assign(launch_date=sku["sku_id"].map(
+        launches.set_index("sku_id")["launch_date"]))   # keeps column order
+
     t = time.time()
-    fact = demand.generate(sku, dims, rng)
+    fact, extras = demand.generate(sku, dims, rng, launches, stream("pricing"))
     fact["gross_margin"] = (
         fact["net_sales"] - fact["units_sold"] * fact["purchase_cost"]
     ).round(2)
     print(f"  transactions    {len(fact):,} rows ({time.time()-t:.1f}s)")
+    n_in = int(launches["launch_year_in_window"].notna().sum())
+    print(f"  lifecycle       growth scale x{extras['growth_scale']:.4f}, "
+          f"{n_in} in-window launches, {len(extras['price_paths']):,} price spells")
 
     fact, sku, delta = calibrate.calibrate_margin(fact, sku)
     print(f"  margin calibrated  cost shift {delta:+.4f} "
@@ -70,13 +89,39 @@ def main() -> int:
     print(f"  derived         {len(metrics)} sku_metrics, {len(cann):,} pairs "
           f"({time.time()-t:.1f}s)")
 
-    scen = pd.DataFrame(
-        [(i, lab, 0, 0.0, 0.0, ss, 0.0) for i, lab, _, ss in C.RATIONALIZATION_SCENARIOS],
-        columns=["scenario_id", "scenario_label", "skus_removed", "revenue_impact_pct",
-                 "margin_impact_pct", "safety_stock_freed_pct", "supplier_reduction_pct"],
-    )
+    scen = derive.build_rationalization_scenarios(metrics, sku_supplier)
 
-    checks = validate.run(fact, sku, metrics, portfolio, dims)
+    # ── 7 Oct additions: tables derived from fact_sales, each on its own stream ─
+    t = time.time()
+    countries, channels, brands = dims["dim_country"], dims["dim_channel"], dims["dim_brand"]
+    rng_c = stream("customers")
+    dim_customer = customer_model.build_customers(countries, channels, rng_c)
+    cust_sales = customer_model.build_customer_sales(fact, dim_customer, rng_c)
+    rng_l = stream("launches")
+    dim_launch, launch_gate = launch_model.build_launches(sku, launches, brands, rng_l)
+    notices = launch_model.build_supplier_notices(sku, fact, rng_l)
+    dim_launch = launch_model.add_launch_targets(dim_launch, fact, sku, countries,
+                                                 stream("launch_targets"))
+    listing = listing_model.build_listing(fact, sku, launches, countries, channels,
+                                          notices, stream("listing"))
+    plan = plan_model.build_plan(fact, sku, stream("plan"))
+    forecast = forecast_model.build_forecast(fact, sku, launches, stream("forecast"))
+    inventory = inventory_model.build_inventory(fact, sku, launches)
+    assumptions = cost_model.build_cost_assumptions(countries, channels, brands)
+    opex = cost_model.build_opex(fact, sku, inventory, countries, channels, brands, assumptions)
+    sku_fixed = cost_model.build_sku_fixed_cost(listing, sku)
+    print(f"  7 Oct tables    {len(dim_customer)} accounts, {len(cust_sales):,} account-sales, "
+          f"{len(listing):,} listings, {len(forecast):,} forecasts, {len(inventory):,} inventory weeks, "
+          f"{len(dim_launch)} launches, {len(opex):,} opex rows ({time.time()-t:.1f}s)")
+
+    extras.update({"dim_customer": dim_customer, "fact_customer_sales": cust_sales,
+                   "dim_launch": dim_launch, "launch_gate": launch_gate,
+                   "supplier_notice": notices, "fact_listing": listing, "fact_plan": plan,
+                   "fact_forecast": forecast, "fact_inventory": inventory,
+                   "dim_cost_assumption": assumptions, "fact_opex": opex,
+                   "sku_fixed_cost": sku_fixed, "rationalization_scenario": scen})
+
+    checks = validate.run(fact, sku, metrics, portfolio, dims, launches, extras)
     all_ok = validate.print_report(checks)
 
     # ── Write outputs ───────────────────────────────────────────────────────
@@ -95,6 +140,19 @@ def main() -> int:
         "sku_cannibalization": cann,
         "portfolio_metrics": portfolio,
         "rationalization_scenario": scen,
+        "fact_price": extras["price_paths"],
+        "dim_customer": dim_customer.drop(columns=["base_share"]),   # generation-only
+        "fact_customer_sales": cust_sales,
+        "fact_listing": listing,
+        "fact_plan": plan,
+        "fact_forecast": forecast,
+        "fact_inventory": inventory,
+        "dim_launch": dim_launch,
+        "launch_gate": launch_gate,
+        "supplier_notice": notices,
+        "dim_cost_assumption": assumptions,
+        "fact_opex": opex.drop(columns=["amount_usd"]),   # generated in the DB
+        "sku_fixed_cost": sku_fixed,
     }
 
     print()

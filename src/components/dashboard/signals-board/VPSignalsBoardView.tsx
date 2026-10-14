@@ -3,7 +3,7 @@
  *
  * Extracted from the original 3,982-line SignalsBoard.tsx.
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { AlertTriangle, Info, Play, Inbox, Filter, RefreshCw, Download, Zap, TrendingUp, Globe, ArrowUpRight, ArrowLeft, Users, Sparkles } from 'lucide-react';
 import { ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid, Legend, LineChart, Line, Bar } from 'recharts';
 import { EmailComposerModal } from '../portfolio-health/EmailComposerModal';
@@ -14,14 +14,38 @@ import { ExploreSignalDetailModal, ExploreSignal } from './ExploreSignalDetailMo
 import { CompetitiveIntelligenceModal } from './CompetitiveIntelligenceModal';
 import { PortfolioDeepDiveModal } from './PortfolioDeepDiveModal';
 import { RegionalAlertsModal } from './RegionalAlertsModal';
-import { RECIPIENT_TITLES, Signal, VPSignal, VP_SIGNALS_DATA } from './signalsData';
+import { RECIPIENT_TITLES, Signal, VPSignal, VP_SIGNALS_DATA, toVPSignals } from './signalsData';
+import { useLiveData, useLiveCategoryTrend } from '../../../api/liveData';
+
+/**
+ * Shown in place of a panel whose subject needs an external feed (competitor
+ * pricing, consumer sentiment, market demand) or a trained model. Out of scope
+ * per the 6-7 Oct calls; showing typed figures next to live ones misleads.
+ */
+const OutOfScopePanel: React.FC<{ title: string; reason: string; className: string }> = ({ title, reason, className }) => (
+  <div className={`${className} bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-5 rounded-sm shadow-sm space-y-3`}>
+    <div className="flex justify-between items-center pb-2 border-b border-black/5 dark:border-white/5">
+      <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">{title}</span>
+      <span className="text-[8px] font-bold uppercase tracking-wider text-zinc-400 bg-black/5 dark:bg-white/10 px-2 py-0.5 rounded-full">No data source</span>
+    </div>
+    <p className="text-[10px] text-zinc-500 dark:text-zinc-400 leading-relaxed">{reason}</p>
+  </div>
+);
+
+const CATEGORY_LINE_COLORS = ['#6d28d9', '#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#ec4899', '#14b8a6'];
 
 export const VPSignalsBoardView: React.FC<{ 
   isDarkMode: boolean; 
   setActiveTab: (tab: number) => void;
   onExploreToggle?: (isOpen: boolean) => void;
 }> = ({ isDarkMode, setActiveTab, onExploreToggle }) => {
+  // Live since 8 Oct (TODO.md O18, thread 6): fn_signals — internal rules
+  // only. The typed VP_SIGNALS_DATA stays as the offline sample.
+  const live = useLiveData();
+  const isLive = !!live.signals;
+  const baseSignals = useMemo(() => (live.signals ? toVPSignals(live.signals) : VP_SIGNALS_DATA), [live.signals]);
   const [signals, setSignals] = useState<VPSignal[]>(VP_SIGNALS_DATA);
+  useEffect(() => { setSignals(baseSignals); }, [baseSignals]);
   const [filterRegion, setFilterRegion] = useState('All');
   const [filterCategory, setFilterCategory] = useState('All');
   const [filterType, setFilterType] = useState('All');
@@ -42,6 +66,7 @@ export const VPSignalsBoardView: React.FC<{
     channel: 'email' | 'message';
   } | null>(null);
   const [trendsTimeframe, setTrendsTimeframe] = useState<'weekly' | 'monthly'>('weekly');
+  const liveTrend = useLiveCategoryTrend(live.months, trendsTimeframe === 'weekly' ? 'week' : 'month');
   const [npsTimeframe, setNpsTimeframe] = useState<'weekly' | 'monthly'>('monthly');
   const [aiPredictionOpen, setAiPredictionOpen] = useState(false);
   const [activePredictionType, setActivePredictionType] = useState<'stockout' | 'elasticity' | 'margin' | 'demand' | null>(null);
@@ -112,6 +137,18 @@ export const VPSignalsBoardView: React.FC<{
   const competitorAlertsCount = filteredSignals.filter(s => s.type === 'Competitor' && !s.ack).length;
   const activeOpportunityCount = filteredSignals.filter(s => s.type === 'Opportunity' && !s.ack).length;
   
+  // Live: fn_signals.impact_usd over the non-opportunity signals on screen,
+  // counting each SKU once (one SKU can raise a supplier, a margin and a
+  // cannibalization signal; its sales are exposed once, not three times).
+  const liveRiskExposure = (() => {
+    const byKey = new Map<string, number>();
+    for (const r of live.signals ?? []) {
+      if (r.signal_type === 'Opportunity' || !filteredSignals.some(s => s.id === r.signal_id)) continue;
+      const key = r.sku_id !== null ? `sku-${r.sku_id}` : r.signal_id;
+      byKey.set(key, Math.max(byKey.get(key) ?? 0, r.impact_usd ?? 0));
+    }
+    return [...byKey.values()].reduce((a, v) => a + v, 0) / 1e6;
+  })();
   // Simulated overall risk exposure ($ Millions)
   const riskExposureVal = filteredSignals.reduce((sum, s) => {
     if (s.type === 'Risk' || s.type === 'Supply') {
@@ -119,16 +156,20 @@ export const VPSignalsBoardView: React.FC<{
     }
     return sum;
   }, 0);
-  const finalRiskExposure = riskExposureVal > 0 ? riskExposureVal : 6.4;
+  const finalRiskExposure = isLive ? liveRiskExposure : riskExposureVal > 0 ? riskExposureVal : 6.4;
 
   // Regions under alert
   const alertRegions = Array.from(new Set(filteredSignals.filter(s => s.severity === 'critical' || s.severity === 'warning').map(s => s.region)));
 
   // Resolution Rate
-  const resolvedCount = VP_SIGNALS_DATA.length - signals.length;
-  const resolutionRate = VP_SIGNALS_DATA.length > 0 
-    ? Math.round((resolvedCount / VP_SIGNALS_DATA.length) * 15 + 85) // simulated baseline 85% + resolved factor
-    : 91;
+  const resolvedCount = baseSignals.length - signals.length;
+  // Live: the share resolved on this screen this session — there is no
+  // resolution history table. The sample keeps its simulated 85% baseline.
+  const resolutionRate = isLive
+    ? (baseSignals.length > 0 ? Math.round((resolvedCount / baseSignals.length) * 100) : 0)
+    : VP_SIGNALS_DATA.length > 0
+      ? Math.round((resolvedCount / VP_SIGNALS_DATA.length) * 15 + 85) // simulated baseline 85% + resolved factor
+      : 91;
 
   // Recharts Trends Line Data
   const categoryTrendsWeeklyData = [
@@ -147,7 +188,22 @@ export const VPSignalsBoardView: React.FC<{
     { name: 'Jun', Beverages: 83, Snacks: 60, PersonalCare: 49, Household: 44 }
   ];
 
-  const categoryTrendsData = trendsTimeframe === 'weekly' ? categoryTrendsWeeklyData : categoryTrendsMonthlyData;
+  // Live: fn_category_trend pivoted to one row per period (sales index,
+  // 100 = each category's first full period in the window).
+  const liveTrendCategories = liveTrend.rows ? Array.from(new Set(liveTrend.rows.map(r => r.category_name))).sort() : [];
+  const liveTrendData = liveTrend.rows ? (() => {
+    const byPeriod = new Map<string, Record<string, string | number>>();
+    for (const r of liveTrend.rows!) {
+      const label = trendsTimeframe === 'weekly'
+        ? r.period_start.slice(5)
+        : new Date(r.period_start + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+      const row = byPeriod.get(r.period_start) ?? { name: label };
+      row[r.category_name] = r.sales_index;
+      byPeriod.set(r.period_start, row);
+    }
+    return [...byPeriod.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([, v]) => v);
+  })() : null;
+  const categoryTrendsData = liveTrendData ?? (trendsTimeframe === 'weekly' ? categoryTrendsWeeklyData : categoryTrendsMonthlyData);
 
   // NPS Trends Data
   const npsTrendsData = [
@@ -181,7 +237,9 @@ export const VPSignalsBoardView: React.FC<{
   const filteredExplore = exploreSignals.filter(s => exploreFilter === 'All' || s.type === s.type && s.type === exploreFilter);
 
   // Heatmap metrics
-  const regionList = ['APAC', 'EMEA', 'Americas', 'India'];
+  const regionList = isLive ? Array.from(new Set(baseSignals.map(s => s.region))).sort() : ['APAC', 'EMEA', 'Americas', 'India'];
+  const categoryOptions = isLive ? Array.from(new Set(baseSignals.map(s => s.category))).sort() : ['Beverages', 'Snacks', 'Personal Care', 'Household'];
+  const typeOptions = isLive ? Array.from(new Set(baseSignals.map(s => s.type))).sort() : ['Risk', 'Opportunity', 'Competitor', 'Sentiment', 'Supply', 'Portfolio'];
   const getAlertLoad = (reg: string) => {
     return filteredSignals.filter(s => s.region === reg && !s.ack).length;
   };
@@ -426,10 +484,7 @@ export const VPSignalsBoardView: React.FC<{
             className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
           >
             <option value="All">All Regions</option>
-            <option value="APAC">APAC</option>
-            <option value="EMEA">EMEA</option>
-            <option value="Americas">Americas</option>
-            <option value="India">India</option>
+            {regionList.map(r => <option key={r} value={r}>{r}</option>)}
           </select>
 
           <select 
@@ -438,10 +493,7 @@ export const VPSignalsBoardView: React.FC<{
             className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
           >
             <option value="All">All Categories</option>
-            <option value="Beverages">Beverages</option>
-            <option value="Snacks">Snacks</option>
-            <option value="Personal Care">Personal Care</option>
-            <option value="Household">Household</option>
+            {categoryOptions.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
 
           <select 
@@ -450,12 +502,7 @@ export const VPSignalsBoardView: React.FC<{
             className="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm p-1.5 text-[9px] font-bold text-zinc-700 dark:text-zinc-400 outline-none cursor-pointer"
           >
             <option value="All">All Signal Types</option>
-            <option value="Risk">Risk</option>
-            <option value="Opportunity">Opportunity</option>
-            <option value="Competitor">Competitor</option>
-            <option value="Sentiment">Sentiment</option>
-            <option value="Supply">Supply</option>
-            <option value="Portfolio">Portfolio</option>
+            {typeOptions.map(ty => <option key={ty} value={ty}>{ty}</option>)}
           </select>
 
           <select 
@@ -501,8 +548,8 @@ export const VPSignalsBoardView: React.FC<{
         {/* KPI 1: Competitor Alerts */}
         <div className="glass-card bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-4 rounded-sm shadow-sm flex flex-col justify-between h-28 hover:bg-black/[0.01] dark:hover:bg-white/[0.01] transition-all">
           <p className="text-[8px] font-bold uppercase tracking-widest text-zinc-400">Competitor Alerts</p>
-          <h4 className="text-2xl font-display font-extrabold text-[#6d28d9] dark:text-[#a78bfa] leading-none">{competitorAlertsCount}</h4>
-          <p className="text-[9px] text-zinc-500 dark:text-zinc-600 font-semibold uppercase font-bold text-[#6d28d9] dark:text-[#a78bfa]">Active Campaigns</p>
+          <h4 className="text-2xl font-display font-extrabold text-[#6d28d9] dark:text-[#a78bfa] leading-none">{isLive ? '—' : competitorAlertsCount}</h4>
+          <p className="text-[9px] text-zinc-500 dark:text-zinc-600 font-semibold uppercase font-bold text-[#6d28d9] dark:text-[#a78bfa]">{isLive ? 'External feed · out of scope' : 'Active Campaigns'}</p>
         </div>
 
         {/* KPI 2: Opportunity Signals */}
@@ -522,8 +569,8 @@ export const VPSignalsBoardView: React.FC<{
         {/* KPI 4: AI Risk Predictions */}
         <div className="glass-card bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-4 rounded-sm shadow-sm flex flex-col justify-between h-28 hover:bg-black/[0.01] dark:hover:bg-white/[0.01] transition-all">
           <p className="text-[8px] font-bold uppercase tracking-widest text-zinc-400">AI Risk Predictions</p>
-          <h4 className="text-2xl font-display font-extrabold text-[#6d28d9] dark:text-[#a78bfa] leading-none">12</h4>
-          <p className="text-[9px] text-zinc-500 dark:text-zinc-600 font-semibold uppercase">Emergent concerns</p>
+          <h4 className="text-2xl font-display font-extrabold text-[#6d28d9] dark:text-[#a78bfa] leading-none">{isLive ? '—' : 12}</h4>
+          <p className="text-[9px] text-zinc-500 dark:text-zinc-600 font-semibold uppercase">{isLive ? 'Roadmap' : 'Emergent concerns'}</p>
         </div>
 
         {/* KPI 5: Regions Under Alert */}
@@ -539,7 +586,7 @@ export const VPSignalsBoardView: React.FC<{
         <div className="glass-card bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-4 rounded-sm shadow-sm flex flex-col justify-between h-28 hover:bg-black/[0.01] dark:hover:bg-white/[0.01] transition-all">
           <p className="text-[8px] font-bold uppercase tracking-widest text-zinc-400">Resolution Rate</p>
           <h4 className="text-2xl font-display font-extrabold text-zinc-800 dark:text-zinc-200 leading-none">{resolutionRate}%</h4>
-          <p className="text-[9px] text-zinc-500 dark:text-zinc-600 font-semibold uppercase">Action efficiency</p>
+          <p className="text-[9px] text-zinc-500 dark:text-zinc-600 font-semibold uppercase">{isLive ? 'Resolved this session' : 'Action efficiency'}</p>
         </div>
 
       </div>
@@ -665,10 +712,16 @@ export const VPSignalsBoardView: React.FC<{
                   labelStyle={{ fontSize: 9, fontWeight: 'bold' }}
                 />
                 <Legend wrapperStyle={{ fontSize: 9 }} />
+                {liveTrendData ? liveTrendCategories.map((c, i) => (
+                  <Line key={c} type="monotone" dataKey={c} stroke={CATEGORY_LINE_COLORS[i % CATEGORY_LINE_COLORS.length]} strokeWidth={2} dot={false} />
+                )) : (
+                  <>
                 <Line type="monotone" dataKey="Beverages" stroke="#6d28d9" strokeWidth={2} dot={false} />
                 <Line type="monotone" dataKey="Snacks" stroke="#10b981" strokeWidth={2} dot={false} />
                 <Line type="monotone" dataKey="PersonalCare" stroke="#3b82f6" strokeWidth={2} dot={false} />
                 <Line type="monotone" dataKey="Household" stroke="#f59e0b" strokeWidth={2} dot={false} />
+                  </>
+                )}
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -711,6 +764,10 @@ export const VPSignalsBoardView: React.FC<{
           </div>
         </div>
 
+        {isLive ? (
+          <OutOfScopePanel className="xl:col-span-7" title="AI Risk Predictions" reason="Roadmap (7 Oct decision): predictive risk scoring needs a trained model. The live signal feed above uses fixed, explainable rules instead." />
+        ) : (
+        <>
         {/* AI Predictions & Risk Scores */}
         <div className="xl:col-span-7 bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-5 rounded-sm shadow-sm space-y-4">
           <div className="flex justify-between items-center pb-2 border-b border-black/5 dark:border-white/5">
@@ -805,12 +862,18 @@ export const VPSignalsBoardView: React.FC<{
 
           </div>
         </div>
+        </>
+        )}
 
       </div>
 
       {/* Row 4: Market Signals | Competitive Intelligence */}
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
         
+        {isLive ? (
+          <OutOfScopePanel className="xl:col-span-7" title="Market signals" reason="External market-demand and consumer-trend feeds are out of scope for now (6-7 Oct calls). Internal demand shifts by region and category appear in the signal feed as Opportunity and Demand signals." />
+        ) : (
+        <>
         {/* Market Signals Card */}
         <div className="xl:col-span-7 bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-5 rounded-sm shadow-sm flex flex-col justify-between min-h-[350px]">
           <div className="space-y-3.5">
@@ -994,7 +1057,13 @@ export const VPSignalsBoardView: React.FC<{
           </button>
 
       </div>
+        </>
+        )}
 
+        {isLive ? (
+          <OutOfScopePanel className="xl:col-span-5" title="Competitive Intelligence" reason="Competitor pricing, launches and distribution need an external or client-supplied feed. Planned as a later phase through client APIs (7 Oct decision); no competitor data is generated." />
+        ) : (
+        <>
         {/* Competitive Intelligence Signals */}
         <div className="xl:col-span-5 bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-5 rounded-sm shadow-sm space-y-4">
           <div className="flex justify-between items-center pb-2 border-b border-black/5 dark:border-white/5">
@@ -1027,12 +1096,18 @@ export const VPSignalsBoardView: React.FC<{
             ))}
           </div>
         </div>
+        </>
+        )}
 
       </div>
 
       {/* Row 5: Customer Sentiment NPS | Portfolio Saturation & Cannibalization */}
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
         
+        {isLive ? (
+          <OutOfScopePanel className="xl:col-span-5" title="Customer NPS Sentiment" reason="NPS and social sentiment need survey or social-listening data, which the dataset does not have. Out of scope for now." />
+        ) : (
+        <>
         {/* Customer Sentiment NPS Meter */}
         <div className="xl:col-span-5 bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-5 rounded-sm shadow-sm space-y-4">
           <div className="flex justify-between items-center pb-2 border-b border-black/5 dark:border-white/5">
@@ -1086,6 +1161,8 @@ export const VPSignalsBoardView: React.FC<{
             </ResponsiveContainer>
           </div>
         </div>
+        </>
+        )}
 
         {/* Portfolio Health & Saturation Dials */}
         <div className="xl:col-span-7 bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 p-5 rounded-sm shadow-sm space-y-4">

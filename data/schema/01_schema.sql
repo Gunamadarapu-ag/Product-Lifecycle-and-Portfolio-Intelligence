@@ -22,6 +22,20 @@
 BEGIN;
 
 -- ── Teardown, reverse dependency order ──────────────────────────────────────
+-- 7 Oct additions first: each depends only on the dimensions below.
+DROP TABLE            IF EXISTS sku_fixed_cost       CASCADE;
+DROP TABLE            IF EXISTS fact_opex            CASCADE;
+DROP TABLE            IF EXISTS dim_cost_assumption  CASCADE;
+DROP TABLE            IF EXISTS supplier_notice      CASCADE;
+DROP TABLE            IF EXISTS launch_gate          CASCADE;
+DROP TABLE            IF EXISTS dim_launch           CASCADE;
+DROP TABLE            IF EXISTS fact_inventory       CASCADE;
+DROP TABLE            IF EXISTS fact_forecast        CASCADE;
+DROP TABLE            IF EXISTS fact_plan            CASCADE;
+DROP TABLE            IF EXISTS fact_listing         CASCADE;
+DROP TABLE            IF EXISTS fact_customer_sales  CASCADE;
+DROP TABLE            IF EXISTS dim_customer         CASCADE;
+DROP TABLE            IF EXISTS fact_price           CASCADE;
 DROP VIEW             IF EXISTS v_supplier_category  CASCADE;
 DROP MATERIALIZED VIEW IF EXISTS agg_sku_monthly     CASCADE;
 DROP TABLE            IF EXISTS rationalization_scenario CASCADE;
@@ -398,6 +412,255 @@ CREATE TABLE rationalization_scenario (
   CONSTRAINT uq_rationalization_label    UNIQUE (scenario_label)
 );
 
+
+-- ════════════════════════════════════════════════════════════════════════════
+-- 7 OCT ADDITIONS  (data/generator: pricing, customers, listing, plan, forecast,
+-- inventory, launches, costs). Every breakdown of fact_sales reconciles to it
+-- exactly; every assumed figure says so in the data (basis column / COMMENT).
+-- ════════════════════════════════════════════════════════════════════════════
+
+-- ── fact_price: list-price history per SKU x country ───────────────────────
+CREATE TABLE fact_price (
+  sku_id         INTEGER       NOT NULL,
+  country_id     SMALLINT      NOT NULL,
+  effective_from DATE          NOT NULL,
+  effective_to   DATE          NULL,          -- exclusive; NULL = still in force
+  list_price     NUMERIC(10,2) NOT NULL,
+  change_pct     NUMERIC(6,4)  NOT NULL,
+
+  CONSTRAINT pk_fact_price PRIMARY KEY (sku_id, country_id, effective_from),
+  CONSTRAINT fk_fact_price_sku     FOREIGN KEY (sku_id)     REFERENCES dim_sku (sku_id),
+  CONSTRAINT fk_fact_price_country FOREIGN KEY (country_id) REFERENCES dim_country (country_id),
+  CONSTRAINT ck_fact_price_positive CHECK (list_price > 0),
+  CONSTRAINT ck_fact_price_spell    CHECK (effective_to IS NULL OR effective_to > effective_from)
+);
+COMMENT ON TABLE fact_price IS
+  'List price before promotion. fact_sales.net_sales / units_sold is the promoted '
+  'price actually paid; the difference is promotional discount.';
+
+-- ── dim_customer / fact_customer_sales: fictional retail accounts ──────────
+CREATE TABLE dim_customer (
+  customer_id   SMALLINT NOT NULL,
+  customer_name TEXT     NOT NULL,
+  country_id    SMALLINT NOT NULL,
+  channel_id    SMALLINT NOT NULL,
+  account_tier  TEXT     NOT NULL,
+
+  CONSTRAINT pk_dim_customer PRIMARY KEY (customer_id),
+  CONSTRAINT uq_dim_customer_name UNIQUE (customer_name),
+  CONSTRAINT fk_dim_customer_country FOREIGN KEY (country_id) REFERENCES dim_country (country_id),
+  CONSTRAINT fk_dim_customer_channel FOREIGN KEY (channel_id) REFERENCES dim_channel (channel_id),
+  CONSTRAINT ck_dim_customer_tier CHECK (account_tier IN ('Key account', 'Regional'))
+);
+COMMENT ON TABLE dim_customer IS
+  'Fictional retail accounts; names are coined and match no real retailer.';
+
+CREATE TABLE fact_customer_sales (
+  month_start   DATE          NOT NULL,
+  sku_id        INTEGER       NOT NULL,
+  customer_id   SMALLINT      NOT NULL,
+  units_sold    INTEGER       NOT NULL,
+  net_sales     NUMERIC(14,2) NOT NULL,
+  purchase_cost NUMERIC(10,2) NOT NULL,
+  gross_margin  NUMERIC(16,2)
+      GENERATED ALWAYS AS (net_sales - (units_sold * purchase_cost)) STORED,
+
+  CONSTRAINT pk_fact_customer_sales PRIMARY KEY (month_start, sku_id, customer_id),
+  CONSTRAINT fk_fcs_sku      FOREIGN KEY (sku_id)      REFERENCES dim_sku (sku_id),
+  CONSTRAINT fk_fcs_customer FOREIGN KEY (customer_id) REFERENCES dim_customer (customer_id),
+  CONSTRAINT ck_fcs_month    CHECK (extract(day FROM month_start) = 1),
+  CONSTRAINT ck_fcs_measures CHECK (units_sold > 0 AND net_sales >= 0 AND purchase_cost > 0)
+);
+COMMENT ON TABLE fact_customer_sales IS
+  'fact_sales split across accounts by month. Reconciles to fact_sales exactly per '
+  'month x SKU x country x channel (04_validate.sql).';
+
+-- ── fact_listing: ranging ──────────────────────────────────────────────────
+CREATE TABLE fact_listing (
+  sku_id      INTEGER  NOT NULL,
+  country_id  SMALLINT NOT NULL,
+  channel_id  SMALLINT NOT NULL,
+  listed_from DATE     NOT NULL,
+  listed_to   DATE     NULL,                 -- exclusive; NULL = still listed
+
+  CONSTRAINT pk_fact_listing PRIMARY KEY (sku_id, country_id, channel_id, listed_from),
+  CONSTRAINT fk_fl_sku     FOREIGN KEY (sku_id)     REFERENCES dim_sku (sku_id),
+  CONSTRAINT fk_fl_country FOREIGN KEY (country_id) REFERENCES dim_country (country_id),
+  CONSTRAINT fk_fl_channel FOREIGN KEY (channel_id) REFERENCES dim_channel (channel_id),
+  CONSTRAINT ck_fl_span    CHECK (listed_to IS NULL OR listed_to > listed_from)
+);
+
+-- ── fact_plan: monthly targets per country x category ─────────────────────
+CREATE TABLE fact_plan (
+  month_start             DATE          NOT NULL,
+  country_id              SMALLINT      NOT NULL,
+  category_id             SMALLINT      NOT NULL,
+  revenue_target_usd      NUMERIC(14,2) NOT NULL,
+  gross_margin_pct_target NUMERIC(6,4)  NOT NULL,
+  basis                   TEXT          NOT NULL,
+
+  CONSTRAINT pk_fact_plan PRIMARY KEY (month_start, country_id, category_id),
+  CONSTRAINT fk_fp_country  FOREIGN KEY (country_id)  REFERENCES dim_country (country_id),
+  CONSTRAINT fk_fp_category FOREIGN KEY (category_id) REFERENCES dim_category (category_id),
+  CONSTRAINT ck_fp_month    CHECK (extract(day FROM month_start) = 1)
+);
+COMMENT ON TABLE fact_plan IS
+  'Generated targets, back-derived from actuals with a planning error (see basis).';
+
+-- ── fact_forecast: one-month-ahead demand forecast ─────────────────────────
+CREATE TABLE fact_forecast (
+  month_start     DATE     NOT NULL,
+  sku_id          INTEGER  NOT NULL,
+  country_id      SMALLINT NOT NULL,
+  forecast_units  INTEGER  NOT NULL,
+  created_on      DATE     NOT NULL,
+  forecast_method TEXT     NOT NULL,
+
+  CONSTRAINT pk_fact_forecast PRIMARY KEY (month_start, sku_id, country_id),
+  CONSTRAINT fk_ff_sku     FOREIGN KEY (sku_id)     REFERENCES dim_sku (sku_id),
+  CONSTRAINT fk_ff_country FOREIGN KEY (country_id) REFERENCES dim_country (country_id),
+  CONSTRAINT ck_ff_causal  CHECK (created_on < month_start),
+  CONSTRAINT ck_ff_units   CHECK (forecast_units >= 0),
+  CONSTRAINT ck_ff_method  CHECK (forecast_method IN ('statistical', 'judgemental (no history)'))
+);
+
+-- ── fact_inventory: weekly DC stock per SKU x country ─────────────────────
+CREATE TABLE fact_inventory (
+  week_start         DATE     NOT NULL,
+  sku_id             INTEGER  NOT NULL,
+  country_id         SMALLINT NOT NULL,
+  opening_units      INTEGER  NOT NULL,
+  receipts_units     INTEGER  NOT NULL,
+  expedited_units    INTEGER  NOT NULL,
+  sold_units         INTEGER  NOT NULL,
+  closing_units      INTEGER  NOT NULL,
+  on_order_units     INTEGER  NOT NULL,
+  safety_stock_units INTEGER  NOT NULL,
+
+  CONSTRAINT pk_fact_inventory PRIMARY KEY (week_start, sku_id, country_id),
+  CONSTRAINT fk_fi_sku     FOREIGN KEY (sku_id)     REFERENCES dim_sku (sku_id),
+  CONSTRAINT fk_fi_country FOREIGN KEY (country_id) REFERENCES dim_country (country_id),
+  CONSTRAINT ck_fi_monday  CHECK (extract(isodow FROM week_start) = 1),
+  CONSTRAINT ck_fi_nonneg  CHECK (opening_units >= 0 AND receipts_units >= 0
+                                  AND expedited_units >= 0 AND sold_units >= 0
+                                  AND closing_units >= 0 AND on_order_units >= 0),
+  -- The flow identity, enforced: stock cannot appear or vanish.
+  CONSTRAINT ck_fi_flow    CHECK (closing_units = opening_units + receipts_units
+                                                 + expedited_units - sold_units)
+);
+COMMENT ON TABLE fact_inventory IS
+  'Distribution-centre stock. fact_sales.stock_out_flag is a store-shelf event: the '
+  'two are correlated (store stockouts delay DC receipts), not identical.';
+
+-- ── dim_launch / launch_gate: launch pipeline ─────────────────────────────
+CREATE TABLE dim_launch (
+  launch_id           TEXT          NOT NULL,
+  sku_id              INTEGER       NULL,      -- NULL = pipeline product, not yet a SKU
+  product_name        TEXT          NOT NULL,
+  category_id         SMALLINT      NOT NULL,
+  brand_id            SMALLINT      NOT NULL,
+  planned_launch_date DATE          NOT NULL,
+  actual_launch_date  DATE          NULL,
+  stage               TEXT          NOT NULL,
+  budget_usd          NUMERIC(14,2) NOT NULL,
+  spent_usd           NUMERIC(14,2) NOT NULL,
+  owner_role          TEXT          NOT NULL,
+  -- 8 Oct, labelled assumptions (config.py "Launch targets"): the region the
+  -- launch is planned around, and the year-1 revenue plan set before launch.
+  lead_region                TEXT          NOT NULL,
+  expected_year1_revenue_usd NUMERIC(14,2) NOT NULL,
+
+  CONSTRAINT pk_dim_launch PRIMARY KEY (launch_id),
+  CONSTRAINT fk_dl_sku      FOREIGN KEY (sku_id)      REFERENCES dim_sku (sku_id),
+  CONSTRAINT fk_dl_category FOREIGN KEY (category_id) REFERENCES dim_category (category_id),
+  CONSTRAINT fk_dl_brand    FOREIGN KEY (brand_id)    REFERENCES dim_brand (brand_id),
+  CONSTRAINT ck_dl_launched CHECK ((sku_id IS NULL) = (actual_launch_date IS NULL))
+);
+
+CREATE TABLE launch_gate (
+  launch_id      TEXT         NOT NULL,
+  gate_no        SMALLINT     NOT NULL,
+  gate_name      TEXT         NOT NULL,
+  weight         NUMERIC(4,3) NOT NULL,
+  reviewer_role  TEXT         NOT NULL,   -- who signs the gate off (a role, not a person)
+  due_date       DATE         NOT NULL,
+  completed_date DATE         NULL,
+  status         TEXT         NOT NULL,
+
+  CONSTRAINT pk_launch_gate PRIMARY KEY (launch_id, gate_no),
+  CONSTRAINT fk_lg_launch   FOREIGN KEY (launch_id) REFERENCES dim_launch (launch_id),
+  CONSTRAINT ck_lg_status   CHECK (status IN ('Completed', 'Overdue', 'Scheduled')),
+  CONSTRAINT ck_lg_done     CHECK ((status = 'Completed') = (completed_date IS NOT NULL))
+);
+COMMENT ON TABLE launch_gate IS
+  'Status as of 2025-12-31, the end of the data. Readiness = sum(weight) of '
+  'Completed gates; it is computed, never stored.';
+
+-- ── supplier_notice: end-of-life notices ──────────────────────────────────
+CREATE TABLE supplier_notice (
+  notice_id          SMALLINT NOT NULL,
+  supplier_id        TEXT     NOT NULL,
+  sku_id             INTEGER  NOT NULL,
+  notice_date        DATE     NOT NULL,
+  eol_effective_date DATE     NOT NULL,
+  notice_type        TEXT     NOT NULL,
+
+  CONSTRAINT pk_supplier_notice PRIMARY KEY (notice_id),
+  CONSTRAINT fk_sn_supplier FOREIGN KEY (supplier_id) REFERENCES dim_supplier (supplier_id),
+  CONSTRAINT fk_sn_sku      FOREIGN KEY (sku_id)      REFERENCES dim_sku (sku_id),
+  CONSTRAINT ck_sn_dates    CHECK (eol_effective_date > notice_date)
+);
+
+-- ── Costs below gross profit: ALL ASSUMPTIONS ─────────────────────────────
+CREATE TABLE dim_cost_assumption (
+  assumption_key TEXT          NOT NULL,
+  cost_type      TEXT          NOT NULL,
+  driver         TEXT          NOT NULL,
+  rate           NUMERIC(14,6) NOT NULL,
+  unit           TEXT          NOT NULL,
+  basis          TEXT          NOT NULL,
+  basis_note     TEXT          NOT NULL,
+
+  CONSTRAINT pk_dim_cost_assumption PRIMARY KEY (assumption_key),
+  CONSTRAINT ck_dca_basis CHECK (basis = 'assumption')
+);
+COMMENT ON TABLE dim_cost_assumption IS
+  'Every cost below gross profit is an assumption, not a measurement. This table '
+  'is the answer to "where does this cost come from".';
+
+CREATE TABLE fact_opex (
+  month_start    DATE          NOT NULL,
+  country_id     SMALLINT      NOT NULL,
+  category_id    SMALLINT      NOT NULL,
+  assumption_key TEXT          NOT NULL,
+  driver_value   NUMERIC(16,6) NOT NULL,
+  rate           NUMERIC(14,6) NOT NULL,
+  -- Generated: amount cannot disagree with driver x rate.
+  amount_usd     NUMERIC(16,2)
+      GENERATED ALWAYS AS (round(driver_value * rate, 2)) STORED,
+  basis          TEXT          NOT NULL,
+
+  CONSTRAINT pk_fact_opex PRIMARY KEY (month_start, country_id, category_id, assumption_key),
+  CONSTRAINT fk_fo_country    FOREIGN KEY (country_id)     REFERENCES dim_country (country_id),
+  CONSTRAINT fk_fo_category   FOREIGN KEY (category_id)    REFERENCES dim_category (category_id),
+  CONSTRAINT fk_fo_assumption FOREIGN KEY (assumption_key) REFERENCES dim_cost_assumption (assumption_key),
+  CONSTRAINT ck_fo_basis      CHECK (basis = 'assumption')
+);
+
+CREATE TABLE sku_fixed_cost (
+  sku_id         INTEGER       NOT NULL,
+  year           SMALLINT      NOT NULL,
+  markets_listed SMALLINT      NOT NULL,
+  amount_usd     NUMERIC(12,2) NOT NULL,
+  assumption_key TEXT          NOT NULL,
+  basis          TEXT          NOT NULL,
+
+  CONSTRAINT pk_sku_fixed_cost PRIMARY KEY (sku_id, year),
+  CONSTRAINT fk_sfc_sku        FOREIGN KEY (sku_id)         REFERENCES dim_sku (sku_id),
+  CONSTRAINT fk_sfc_assumption FOREIGN KEY (assumption_key) REFERENCES dim_cost_assumption (assumption_key),
+  CONSTRAINT ck_sfc_basis      CHECK (basis = 'assumption')
+);
+
 COMMENT ON COLUMN rationalization_scenario.supplier_reduction_pct IS
   'Zero - universal supplier overlap prevents any reduction.';
 
@@ -466,5 +729,5 @@ GROUP BY c.category_id, c.category_name;
 COMMIT;
 
 \echo ''
-\echo 'Schema created: 13 tables, 1 materialized view, 1 view.'
+\echo 'Schema created: 26 tables, 1 materialized view, 1 view.'
 \echo 'Next: python data/generator/load.py, then 03_derive_metrics.sql and 04_validate.sql'

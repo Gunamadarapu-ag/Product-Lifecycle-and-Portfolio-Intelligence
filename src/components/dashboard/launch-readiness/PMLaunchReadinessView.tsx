@@ -13,15 +13,20 @@
  * Reuses the same underlying data the VP view already reads (VP_PRODUCTS,
  * generateInitialStageGates) rather than inventing a parallel dataset —
  * this is a new lens on the same source, not new fabricated content.
+ *
+ * Since 8 Oct that source is the warehouse when the API is up (fn_launches /
+ * fn_launch_gates via toLaunchProducts / toStageGates); the typed sample
+ * remains only as the offline fallback.
  */
 import React, { useMemo, useState } from 'react';
 import {
   CheckCircle2, XCircle, Clock, ShieldAlert, ChevronRight, User, Calendar, FileWarning
 } from 'lucide-react';
 import {
-  VP_PRODUCTS, generateInitialStageGates, STAGE_NAMES,
+  VP_PRODUCTS, generateInitialStageGates, STAGE_NAMES, toLaunchProducts, toStageGates, isBlockingGate,
   type VPLaunchProduct, type StageGateRecord,
 } from './launchData';
+import { useLiveData } from '../../../api/liveData';
 
 interface PMLaunchReadinessViewProps {
   isDarkMode: boolean;
@@ -37,6 +42,7 @@ const STATUS_STYLE: Record<StageGateRecord['status'], { icon: typeof CheckCircle
   Pending: { icon: Clock,        cls: 'text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/20',       label: 'Needs review' },
   Failed:  { icon: XCircle,      cls: 'text-rose-600 dark:text-rose-400 bg-rose-500/10 border-rose-500/20',           label: 'Blocked' },
   Waived:  { icon: ShieldAlert,  cls: 'text-sky-600 dark:text-sky-400 bg-sky-500/10 border-sky-500/20',               label: 'Waived' },
+  Overdue: { icon: XCircle,      cls: 'text-rose-600 dark:text-rose-400 bg-rose-500/10 border-rose-500/20',           label: 'Overdue' },
 };
 
 // Same visual language as STATUS_STYLE, but keyed by a launch's full-history
@@ -57,6 +63,7 @@ function nextAction(current: StageGateRecord, failedGate?: StageGateRecord, waiv
   if (failedGate && failedGate.stageName !== current.stageName) {
     return `Blocked upstream at ${failedGate.stageName} — escalate to ${failedGate.reviewer} before this launch can proceed.`;
   }
+  if (current.status === 'Overdue') return `Overdue since ${current.reviewDate} — chase ${current.reviewer} to close it.`;
   if (current.status === 'Failed') return `Escalate to ${current.reviewer} — this is blocking the launch.`;
   if (waivedGate && waivedGate.stageName !== current.stageName) {
     return `Approved on a waiver at ${waivedGate.stageName} — confirm with ${waivedGate.reviewer} before the launch closes it out.`;
@@ -67,8 +74,15 @@ function nextAction(current: StageGateRecord, failedGate?: StageGateRecord, waiv
 }
 
 export const PMLaunchReadinessView: React.FC<PMLaunchReadinessViewProps> = ({ isDarkMode, onAuditClick }) => {
-  const gateRecords = useMemo(() => generateInitialStageGates(VP_PRODUCTS), []);
-  const [selectedId, setSelectedId] = useState(VP_PRODUCTS[0].id);
+  const live = useLiveData();
+  const isLive = !!(live.launches && live.launchGates);
+  const products = useMemo(
+    () => (isLive ? toLaunchProducts(live.launches!) : VP_PRODUCTS),
+    [isLive, live.launches]);
+  const gateRecords = useMemo(
+    () => (isLive ? toStageGates(products, live.launchGates!) : generateInitialStageGates(VP_PRODUCTS)),
+    [isLive, products, live.launchGates]);
+  const [selectedId, setSelectedId] = useState(products[0].id);
   const [stageFilter, setStageFilter] = useState<'All' | VPLaunchProduct['stage']>('All');
 
   // A product's *current* gate defaults to "Pending — under evaluation" for
@@ -79,11 +93,11 @@ export const PMLaunchReadinessView: React.FC<PMLaunchReadinessViewProps> = ({ is
   // now sitting at "Pre-market" that failed its Validation gate on the way
   // there. Scan the whole gate history, not just the active one, or those
   // launches read as "on track" when they aren't.
-  const rows = useMemo(() => VP_PRODUCTS.map(p => {
+  const rows = useMemo(() => products.map(p => {
     const record = gateRecords.find(g => g.productId === p.id)!;
     const idx = STAGE_INDEX[p.stage];
     const currentGate = record.gates[idx];
-    const failedGate = record.gates.find(g => g.status === 'Failed');
+    const failedGate = record.gates.find(g => isBlockingGate(g.status));
     const waivedGate = !failedGate ? record.gates.find(g => g.status === 'Waived') : undefined;
     // A waived gate is a flagged exception worth its own category even when
     // the current gate is sitting in the same default "Pending" state as
@@ -92,10 +106,13 @@ export const PMLaunchReadinessView: React.FC<PMLaunchReadinessViewProps> = ({ is
     const category: 'blocked' | 'needs-review' | 'waived' | 'on-track' =
       failedGate ? 'blocked'
       : waivedGate ? 'waived'
+      // Live: only launches whose next gate is due within 45 days need review
+      // now (fn_launches.risk_level = Medium); the rest are on schedule.
+      : isLive ? (p.risk === 'Medium' ? 'needs-review' : 'on-track')
       : currentGate.status === 'Pending' ? 'needs-review'
       : 'on-track';
     return { product: p, record, currentGate, stageName: STAGE_NAMES[idx], failedGate, waivedGate, category };
-  }), [gateRecords]);
+  }), [products, gateRecords, isLive]);
 
   const blocked = rows.filter(r => r.category === 'blocked');
   const needsAction = rows.filter(r => r.category === 'needs-review');
@@ -118,7 +135,7 @@ export const PMLaunchReadinessView: React.FC<PMLaunchReadinessViewProps> = ({ is
         <div>
           <h2 className="font-display text-xl text-zinc-800 dark:text-white">My Launch Pipeline</h2>
           <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-            {rows.length} launches · {blocked.length} blocked · {needsAction.length} need your review this week
+            {rows.length} launches · {blocked.length} blocked · {needsAction.length} need your review {isLive ? 'within 45 days' : 'this week'}
           </p>
         </div>
       </div>
