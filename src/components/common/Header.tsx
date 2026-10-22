@@ -17,6 +17,8 @@ interface HeaderProps {
   setTimelineRange: (range: TimelineRange) => void;
   onStartTour?: () => void;
   onClickHome?: () => void;
+  /** Returns to the public landing page (logo and title). */
+  onShowLanding?: () => void;
   searchBar?: React.ReactNode;
   activeTab?: number;
 }
@@ -36,6 +38,7 @@ export const Header: React.FC<HeaderProps> = ({
   setTimelineRange,
   onStartTour,
   onClickHome,
+  onShowLanding,
   searchBar,
   activeTab,
 }) => {
@@ -62,14 +65,19 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="h-14 border-b border-black/10 dark:border-white/10 flex items-center justify-between px-6 bg-white dark:bg-acies-gray sticky top-0 z-40">
-      <div className="flex items-center gap-3">
+      <button
+        type="button"
+        onClick={onShowLanding}
+        title="Back to the V-Labs overview"
+        className="flex items-center gap-3 bg-transparent border-none p-0 cursor-pointer text-left"
+      >
         <img src="/logo-mark.png" alt="" className="h-7 w-7 shrink-0" />
         <div>
           <h1 className="text-xs font-display font-extrabold uppercase tracking-widest leading-none text-acies-gray dark:text-white">
             Product Lifecycle and Portfolio Intelligence
           </h1>
         </div>
-      </div>
+      </button>
 
       <div className="flex items-center gap-3">
         {/* Unified premium toolbar widget matching template */}

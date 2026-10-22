@@ -11,7 +11,9 @@
     "lint": "tsc --noEmit",
     "smoke": "node scripts/smoke.mjs",
     "api": "python -m uvicorn backend.app.main:app --port 8000 --reload",
-    "test:api": "python -m pytest backend/tests -q"
+    "test:api": "python -m pytest backend/tests -q",
+    "snapshot": "python scripts/build_snapshot.py",
+    "build:snapshot": "vite build --mode snapshot"
   },
   "dependencies": {
     "@fontsource/dm-serif-display": "^5.2.8",

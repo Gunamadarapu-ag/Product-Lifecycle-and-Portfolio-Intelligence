@@ -48,13 +48,13 @@ export const WelcomeGate: React.FC<WelcomeGateProps> = ({ onSelectRole }) => {
                 </linearGradient>
               </defs>
               <path
-                d="M 0 16 Q 15 10 30 14 T 60 6 T 90 2K 100 2"
+                d="M 0 16 Q 15 10 30 14 T 60 6 T 90 2 L 100 2"
                 fill="none"
                 stroke="#f59e0b"
                 strokeWidth="1.5"
               />
               <path
-                d="M 0 16 Q 15 10 30 14 T 60 6 T 90 2K 100 2K 100 20K 0 20 Z"
+                d="M 0 16 Q 15 10 30 14 T 60 6 T 90 2 L 100 2 L 100 20 L 0 20 Z"
                 fill="url(#sparkline-grad-1)"
               />
               <circle cx="98" cy="2" r="2" fill="#f59e0b" className="animate-pulse" />

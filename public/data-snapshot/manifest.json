@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-10-15T06:48:26+00:00",
+  "data_end": "2025-12-31",
+  "files": 118,
+  "bytes": 1273196,
+  "health": {
+    "status": "ok",
+    "database": "connected",
+    "fact_rows": 357471,
+    "data_through": "2025-12-31"
+  }
+}

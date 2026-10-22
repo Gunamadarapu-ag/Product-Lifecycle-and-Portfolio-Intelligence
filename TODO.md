@@ -37,6 +37,8 @@ PostgreSQL database.
 | 23. Architecture and data-flow diagrams; data-points docx update | **Done** — 8 Oct: 10 diagrams (`system_architecture_and_data_flow.md`, `as_is_process_lineage.md`); docx gets an "Update — 8 Oct 2026" column |
 | 24. Business-case deck (evidence-backed) | **Done (v2)** — 9 Oct, 9 slides, every external figure sourced. v3 per the 10 Oct review is O28 |
 | 25. Phase-wise implementation plan | **Drafted** — 14 Oct, `documentation/Phase_wise_Implementation_Plan.docx`; owners and decisions D1–D6 to fill. See O31 |
+| 26. Public landing page | **Done** — 15 Oct: `src/components/common/LandingPage.tsx` replaces the placeholder login (deleted). Flow: landing → role picker → app; header logo returns to it; role deep links skip it. Deck styling, sourced figures, demo-dataset mock-ups, ROI calculator, FAQ. Smoke 36/36 |
+| 27. Shareable static site with data snapshot | **Built** — 15 Oct: `npm run snapshot` + `npm run build:snapshot`; real SQL figures frozen to static JSON, no backend needed; smoke 36/36 on a plain static server with zero /api calls. **Deploy pending (user's hosting account).** Re-run the snapshot after any data/SQL change |
 
 ---
 
@@ -1275,6 +1277,7 @@ Users will ask: "I already use two systems; after V-Labs recommends, I still go 
 | 9 Oct | Value in percentages; **67%** faster decisions / ≈67% of revenue at risk protected | User decision |
 | 9 Oct | In-house build time ("~2 years, like Unilever") stated as **our team's experience** | User decision — no public source exists |
 | 10 Oct | **V-Labs is an Acies capability showcase, not a product to sell** — pitch the approach and the technology (GenAI, agentic, AI for BI), not features | Leadership review, 10 Oct call |
+| 15 Oct | **Landing page in deck styling; no login page** — the placeholder login secured nothing and was removed | User decision |
 
 ---
 

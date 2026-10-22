@@ -24,7 +24,7 @@ import { Sidebar } from './components/common/Sidebar';
 import { KPICard } from './components/dashboard/KPICard';
 import { AuditDrawer } from './components/dashboard/AuditDrawer';
 import { WelcomeGate } from './components/common/WelcomeGate';
-import { LoginPage } from './components/common/LoginPage';
+import { LandingPage } from './components/common/LandingPage';
 import { useLivePortfolio, LiveDataProvider, LiveDataBadge } from './api/liveData';
 import { applyLiveKpis } from './api/liveKpis';
 import { SkuDetailsModal } from './components/dashboard/executive/SkuDetailsModal';
@@ -200,14 +200,16 @@ export default function App() {
       return true;
     }
   });
-  // Same bypass rule as the welcome gate: a role-specific deep link (used by
-  // scripts/smoke.mjs and shared links) skips straight past both gates.
-  const [showLoginPage, setShowLoginPage] = useState<boolean>(() => {
+  // Public landing page, shown once per browser session before the role
+  // picker (it replaced the placeholder login page on 15 Oct). Same bypass
+  // rule as the welcome gate: a role-specific deep link (used by
+  // scripts/smoke.mjs and shared links) skips straight past both screens.
+  const [showLanding, setShowLanding] = useState<boolean>(() => {
     const roleParam = getHashParam('role');
     if (roleParam !== null) return false;
 
     try {
-      return sessionStorage.getItem('acies_authenticated') === null;
+      return sessionStorage.getItem('acies_landing_seen') === null;
     } catch (e) {
       return true;
     }
@@ -350,14 +352,15 @@ export default function App() {
 
   const [isExploreOpen, setIsExploreOpen] = useState<boolean>(false);
 
-  if (showLoginPage) {
+  if (showLanding) {
     return (
-      <LoginPage
-        onLogin={() => {
+      <LandingPage
+        onEnterDemo={() => {
           try {
-            sessionStorage.setItem('acies_authenticated', 'true');
+            sessionStorage.setItem('acies_landing_seen', 'true');
           } catch (e) {}
-          setShowLoginPage(false);
+          window.scrollTo(0, 0);
+          setShowLanding(false);
         }}
       />
     );
@@ -394,6 +397,10 @@ export default function App() {
           }
         }}
         onClickHome={() => setActiveTab(0)}
+        onShowLanding={() => {
+          window.scrollTo(0, 0);
+          setShowLanding(true);
+        }}
         searchBar={
           <GlobalSearchBar
             searchQuery={searchQuery}

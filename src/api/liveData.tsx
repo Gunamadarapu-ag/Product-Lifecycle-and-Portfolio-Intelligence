@@ -323,6 +323,8 @@ export interface LiveData {
   assortmentSummary?: AssortmentSummary;
   /** SKU rationale for tabs 9-10 (fn_sku_rationale) — windowed. */
   skuRationale?: LiveSkuRationale[];
+  /** Where live figures came from: the running API, or the frozen snapshot. */
+  source?: 'api' | 'snapshot';
 }
 
 // Thread 3 (SKU Rationalization). Snapshot — computed once from sku_metrics,
@@ -369,9 +371,56 @@ export const TIMELINE_MONTHS: Record<TimelineRange, number> = {
   '1m': 1, '3m': 3, '6m': 6, '12m': 12, '24m': 24, '36m': 36,
 };
 
+/*
+ * Data snapshot (15 Oct). The shareable deployment is a static site with no
+ * database, so scripts/build_snapshot.py freezes every API answer the app asks
+ * for into public/data-snapshot/. Order of preference:
+ *   1. the live API (local development, `npm run api`);
+ *   2. the snapshot — real SQL-computed figures, frozen at the data's end date;
+ *   3. the built-in sample figures (status 'offline'), as before.
+ * A build made with `vite build --mode snapshot` skips step 1 entirely, so
+ * the hosted site never logs failed /api requests.
+ */
+const SNAPSHOT_ONLY = import.meta.env.MODE === 'snapshot';
+/** null = not tried yet; false = unreachable, go straight to the snapshot. */
+let apiReachable: boolean | null = SNAPSHOT_ONLY ? false : null;
+let snapshotUsed = false;
+
+const slug = (s: string) =>
+  s.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '');
+
+/** Must match snapshot_path() in scripts/build_snapshot.py. */
+export function snapshotPath(url: string): string {
+  const u = new URL(url, 'http://snapshot.local');
+  const segments = u.pathname.split('/').filter(s => s && s !== 'api').map(s => slug(decodeURIComponent(s)));
+  const query = [...u.searchParams.entries()]
+    .sort((a, b) => (a[0] === b[0] ? (a[1] < b[1] ? -1 : a[1] > b[1] ? 1 : 0) : a[0] < b[0] ? -1 : 1))
+    .map(([k, v]) => `${slug(k)}-${slug(v)}`)
+    .join('__');
+  return `/data-snapshot/${segments.join('/')}/${query || 'all'}.json`;
+}
+
+const isJson = (res: Response) => (res.headers.get('content-type') ?? '').includes('json');
+
 async function getJson<T>(url: string, signal: AbortSignal): Promise<T> {
-  const res = await fetch(url, { signal });
-  if (!res.ok) throw new Error(`${url} → ${res.status}`);
+  if (apiReachable !== false) {
+    try {
+      const res = await fetch(url, { signal });
+      // A static host may answer an unknown path with index.html and a 200,
+      // so only a JSON response counts as the API.
+      if (res.ok && isJson(res)) {
+        apiReachable = true;
+        return res.json() as Promise<T>;
+      }
+      if (apiReachable === true) throw new Error(`${url} → ${res.status}`);
+    } catch (err) {
+      if (signal.aborted || apiReachable === true) throw err;
+    }
+    apiReachable = false;
+  }
+  const res = await fetch(snapshotPath(url), { signal });
+  if (!res.ok || !isJson(res)) throw new Error(`${url} → no snapshot (${res.status})`);
+  snapshotUsed = true;
   return res.json() as Promise<T>;
 }
 
@@ -411,6 +460,7 @@ export function useLivePortfolio(timelineRange: TimelineRange): LiveData {
       .then(([summary, skus, trend, skuSegments, portfolioSnapshot, alerts, forecastAccuracy, customerInsights, lastMonth, pnl, pnlByCategory, rationalizationScenarios, customerCategoryInsights, regionMix, launches, launchGates, launchSummary, signals, assortmentSummary, skuRationale]) => {
         setData({
           status: 'live',
+          source: snapshotUsed ? 'snapshot' : 'api',
           months,
           kpis: summary.kpis,
           concentration: summary.concentration,
@@ -561,7 +611,13 @@ export function LiveDataBadge({ live }: { live: LiveData }) {
       text: 'Offline · sample figures',
       title: 'The API is not reachable, so built-in sample figures are shown. Start it with: npm run api',
     },
-  }[live.status];
+    snapshot: {
+      dot: 'bg-sky-500',
+      text: `Snapshot · data to ${live.kpis?.period_end ?? '2025-12-31'}`,
+      title: 'Figures computed by the SQL layer and frozen into this site — the same numbers as the live system, ' +
+        'not a live feed.',
+    },
+  }[live.status === 'live' && live.source === 'snapshot' ? 'snapshot' : live.status];
   return (
     <span
       title={cfg.title}

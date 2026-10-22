@@ -27,7 +27,18 @@ npm run lint         # tsc --noEmit (type check; there is no ESLint config)
 npm run smoke        # headless browser test, 3 roles x 12 tabs = 36 combinations
 npm run api          # FastAPI backend on :8000 (reads PostgreSQL; Vite proxies /api to it)
 npm run test:api     # 37 API integration tests against the real database
+npm run snapshot     # freeze every API answer into public/data-snapshot/ (API must be running)
+npm run build:snapshot # static build that reads the snapshot — what the shareable site deploys
 ```
+
+**Shareable static site (15 Oct).** `scripts/build_snapshot.py` saves every URL the app requests,
+for every timeline period, as JSON under `public/data-snapshot/` (118 files, ~1.3 MB).
+`getJson` in `src/api/liveData.tsx` tries the live API, then the snapshot, then falls back to
+the built-in samples; a `--mode snapshot` build skips the API entirely and the badge reads
+"Snapshot · data to 2025-12-31". **Re-run `npm run snapshot` after any data or SQL change**, or
+the hosted site will show stale figures. The URL → file mapping exists twice (`snapshot_path`
+in the script, `snapshotPath` in liveData.tsx) and must stay identical. Deploy `dist/` as a
+static site (e.g. `npx vercel deploy dist --prod`).
 
 **Run `npm run api` alongside `dev`/`preview`.** Without it the app still works, but shows
 built-in sample figures and a grey "Offline · sample figures" badge. The browser also logs the
@@ -89,9 +100,10 @@ Wired since 29 Sep. The rules that make it work — keep them:
   ($473.0M, 38.55%, +8.30%, 119 SKUs, the Pareto anchors). They also assert that every
   breakdown sums to the headline for every period. That second rule is what stops two
   screens disagreeing.
-- **Offline fallback is deliberate.** The static Vercel deployment has no backend. With no
-  API, `useLivePortfolio` returns `status: 'offline'`, screens keep their built-in figures,
-  and `LiveDataBadge` says so.
+- **Offline fallback is deliberate.** The static deployment has no backend, so it reads the
+  data snapshot (see "Shareable static site" above). Only if neither the API nor the snapshot
+  answers does `useLivePortfolio` return `status: 'offline'`, screens keep their built-in
+  figures, and `LiveDataBadge` says so.
 
 **Everything else is still the old path:** `constants/data.ts` / `generated.ts` / values
 typed into components, and for timeline changes `utils/timeframe.ts` adds fabricated
