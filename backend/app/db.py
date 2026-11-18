@@ -56,7 +56,7 @@ def _get_pool() -> psycopg2.pool.ThreadedConnectionPool:
                 raise DatabaseUnavailable(f".env is missing: {', '.join(missing)}")
             try:
                 _pool = psycopg2.pool.ThreadedConnectionPool(
-                    1, 8,
+                    1, 20,
                     host=env["PGHOST"], port=env["PGPORT"], dbname=env["PGDATABASE"],
                     user=env["PGUSER"], password=env["PGPASSWORD"],
                     connect_timeout=5, application_name="ppl-api",
