@@ -22,3 +22,9 @@ __pycache__/
 
 # Python test cache
 .pytest_cache/
+
+# Local environment and database backups
+venv/
+database_backups/
+*.dump
+data/output_backup_*/
